@@ -1,9 +1,9 @@
-package com.firestar.mcbans.pluginInterface;
+package com.mcbans.firestar.mcbans.pluginInterface;
 
 import org.bukkit.ChatColor;
 
-import com.firestar.mcbans.Settings;
-import com.firestar.mcbans.bukkitInterface;
+import com.mcbans.firestar.mcbans.Settings;
+import com.mcbans.firestar.mcbans.bukkitInterface;
 
 @SuppressWarnings("unused")
 public class kick extends Thread {

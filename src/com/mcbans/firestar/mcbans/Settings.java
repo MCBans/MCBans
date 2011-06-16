@@ -1,4 +1,4 @@
-package com.firestar.mcbans;
+package com.mcbans.firestar.mcbans;
 
 import java.io.File;
 

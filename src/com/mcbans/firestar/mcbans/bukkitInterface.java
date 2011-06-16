@@ -1,4 +1,4 @@
-package com.firestar.mcbans;
+package com.mcbans.firestar.mcbans;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -8,9 +8,9 @@ import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.firestar.mcbans.bukkitListeners.playerListener;
-import com.firestar.mcbans.commands.commandHandler;
-import com.firestar.mcbans.log.ActionLog;
+import com.mcbans.firestar.mcbans.bukkitListeners.playerListener;
+import com.mcbans.firestar.mcbans.commands.commandHandler;
+import com.mcbans.firestar.mcbans.log.ActionLog;
 
 public class bukkitInterface extends JavaPlugin {
 	private commandHandler commandHandle; 

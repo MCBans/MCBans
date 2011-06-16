@@ -1,11 +1,11 @@
-package com.firestar.mcbans.pluginInterface;
+package com.mcbans.firestar.mcbans.pluginInterface;
 
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 
-import com.firestar.mcbans.bukkitInterface;
-import com.firestar.mcbans.request.jsonHandler;
+import com.mcbans.firestar.mcbans.bukkitInterface;
+import com.mcbans.firestar.mcbans.request.jsonHandler;
 
 public class ban extends Thread {
 	private bukkitInterface MCBans;
