@@ -1,0 +1,23 @@
+name: mcbans
+main: com.firestar.mcbans.bukkitInterface
+version: 3.0p
+author: Firestar
+commands:
+  kick:
+    description: kicks a user
+    usage: /<command> <playername> [reason]
+  ban:
+    description: ban a user
+    usage: /<command> <playername> [g/reason] [reason]
+  unban:
+    description: unban a user
+    usage: /<command> <playername>
+  tempban:
+    description: temporary ban user
+    usage: /<command> <playername> <duration> <m(minutes) or h(hours) or d(days)> [reason]
+  lookup:
+    description: lookup a player
+    usage: /<command> <playername>
+  mcbans:
+    description: player set
+    usage: /<command> <playername>
