@@ -1,4 +1,4 @@
-package com.firestar.mcbans.commands;
+package com.mcbans.firestar.mcbans.commands;
 
 import java.util.HashMap;
 
@@ -6,12 +6,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.firestar.mcbans.Settings;
-import com.firestar.mcbans.bukkitInterface;
-import com.firestar.mcbans.pluginInterface.ban;
-import com.firestar.mcbans.pluginInterface.kick;
-import com.firestar.mcbans.pluginInterface.lookup;
-import com.firestar.mcbans.pluginInterface.playerSet;
+import com.mcbans.firestar.mcbans.Settings;
+import com.mcbans.firestar.mcbans.bukkitInterface;
+import com.mcbans.firestar.mcbans.pluginInterface.ban;
+import com.mcbans.firestar.mcbans.pluginInterface.kick;
+import com.mcbans.firestar.mcbans.pluginInterface.lookup;
+import com.mcbans.firestar.mcbans.pluginInterface.playerSet;
 
 
 public class commandHandler{

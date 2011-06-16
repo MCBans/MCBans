@@ -1,5 +1,5 @@
 name: mcbans
-main: com.firestar.mcbans.bukkitInterface
+main: com.mcbans.firestar.mcbans.bukkitInterface
 version: 3.0p
 author: Firestar
 commands:

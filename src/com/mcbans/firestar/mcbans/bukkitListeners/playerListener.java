@@ -1,4 +1,4 @@
-package com.firestar.mcbans.bukkitListeners;
+package com.mcbans.firestar.mcbans.bukkitListeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -6,9 +6,9 @@ import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.firestar.mcbans.bukkitInterface;
-import com.firestar.mcbans.pluginInterface.connect;
-import com.firestar.mcbans.pluginInterface.disconnect;
+import com.mcbans.firestar.mcbans.bukkitInterface;
+import com.mcbans.firestar.mcbans.pluginInterface.connect;
+import com.mcbans.firestar.mcbans.pluginInterface.disconnect;
 
 public class playerListener extends PlayerListener {
 	private bukkitInterface MCBans;
