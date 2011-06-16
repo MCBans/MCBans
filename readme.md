@@ -1,9 +1,6 @@
 MCBans Server Plugin
 ====================
 
-MCBans.com
-----------
-
 MCBans is a global ban system for the game MineCraft.
 More information can be found on the [MCBans website](http://www.mcbans.com/) or [wiki](http://wiki.mcbans.com/).
 
