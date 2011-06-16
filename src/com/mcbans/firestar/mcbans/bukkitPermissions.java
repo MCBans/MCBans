@@ -1,4 +1,4 @@
-package com.firestar.mcbans;
+package com.mcbans.firestar.mcbans;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;

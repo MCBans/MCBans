@@ -1,4 +1,4 @@
-package com.firestar.mcbans.request;
+package com.mcbans.firestar.mcbans.request;
 
 import java.io.OutputStreamWriter;
 import java.net.URL;

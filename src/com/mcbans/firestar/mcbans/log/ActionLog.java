@@ -1,4 +1,4 @@
-package com.firestar.mcbans.log;
+package com.mcbans.firestar.mcbans.log;
 /**
  * Utilities log (FROM: http://www.rgagnon.com)
  */
@@ -6,7 +6,7 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
-import com.firestar.mcbans.bukkitInterface;
+import com.mcbans.firestar.mcbans.bukkitInterface;
 
 public class ActionLog {
 
