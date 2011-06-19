@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="com/firestar/mcbans/callBacks/newAlert.java|com/firestar/mcbans/callBacks/newMessages.java" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6"/>
 	<classpathentry kind="lib" path="F:/mcbans_test/craftbukkit.jar"/>
 	<classpathentry kind="lib" path="F:/mcbans_test/plugins/Permissions.jar"/>
