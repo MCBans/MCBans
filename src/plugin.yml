@@ -54,3 +54,6 @@ commands:
   bunblock:
     description: player set
     usage: /<command> <playername>
+  lbev:
+    description: player set
+    usage: /<command> <playername>

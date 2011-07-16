@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import com.mcbans.firestar.mcbans.Settings;
 import com.mcbans.firestar.mcbans.bukkitInterface;
 import com.mcbans.firestar.mcbans.pluginInterface.ban;
+import com.mcbans.firestar.mcbans.pluginInterface.evidence;
 import com.mcbans.firestar.mcbans.pluginInterface.kick;
 import com.mcbans.firestar.mcbans.pluginInterface.lookup;
 import com.mcbans.firestar.mcbans.pluginInterface.messager;
@@ -41,10 +42,12 @@ public class commandHandler{
 		commandList.put("bblock", 9);
 		commandList.put("unblock", 10);
 		commandList.put("bunblock", 10);
+		commandList.put("lbev", 11);
 	}
 	public boolean execCommand(String command, String[] args, CommandSender from){
 		lookup lookupControl = null;
 		playerSet mcbansControl = null;
+		evidence evidenceControl = null;
 		String CommandSend = "";
 		String PlayerIP = "";
 		kick kickControl = null;
@@ -305,6 +308,20 @@ public class commandHandler{
 				}
 				messageControl = new messager( MCBans, "unblock", CommandSend, args[0], "", "" );
 				messageControl.run();
+				commandSet = true;
+			break;
+			case 11:
+				if(args.length<2){
+					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
+					return true;
+				}
+				if(!MCBans.Permissions.isAllow( inWorld, CommandSend, "lb")){
+					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
+					MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
+					return true;
+				}
+				evidenceControl = new evidence( MCBans, args[0], CommandSend, args[1] );
+				evidenceControl.run();
 				commandSet = true;
 			break;
 		}
