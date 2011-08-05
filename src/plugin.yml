@@ -25,34 +25,24 @@ commands:
     description: player set
     usage: /<command> <playername>
   inbox:
-    description: player set
-    usage: /<command> <playername>
+    description: check your inbox
+    aliases: [binbox]
+    usage: /<command>
   read:
-    description: player set
-    usage: /<command> <playername>
+    description: read a message
+    aliases: [bread]
+    usage: /<command> [messageID]
   send:
-    description: player set
-    usage: /<command> <playername>
+    description: send a messsage
+    aliases: [bsend]
+    usage: /<command> <playername> <message>
   block:
     description: player set
+    aliases: [bblock]
     usage: /<command> <playername>
   unblock:
     description: player set
-    usage: /<command> <playername>
-  binbox:
-    description: player set
-    usage: /<command> <playername>
-  bread:
-    description: player set
-    usage: /<command> <playername>
-  bsend:
-    description: player set
-    usage: /<command> <playername>
-  bblock:
-    description: player set
-    usage: /<command> <playername>
-  bunblock:
-    description: player set
+    aliases: [bunblock]
     usage: /<command> <playername>
   lbev:
     description: player set
