@@ -31,17 +31,16 @@ public class connect{
 		if(!response.containsKey("banStatus")){
 			return null;
 		}else{
-			if(response.containsKey("altList")){
-				if(!response.get("altList").equals("")){
-					MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
-				}
-			}
 			switch(responses.get(response.get("banStatus"))){
 				case 0:
+					if(response.containsKey("altList")){
+						if(!response.get("altList").equals("")){
+							MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
+						}
+					}
 					MCBans.log.write( PlayerName + " has connected!" );
 					s = null;
 				break;
-				case 1:
 				case 2:
 				case 3:
 				case 5:
@@ -49,7 +48,13 @@ public class connect{
 					s = response.get("banReason");
 					MCBans.log.write( PlayerName + " access denied!" );
 				break;
+				case 1:
 				case 4:
+					if(response.containsKey("altList")){
+						if(!response.get("altList").equals("")){
+							MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
+						}
+					}
 					if(!response.containsKey("playerRep")){
 						MCBans.broadcastBanView( ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", PlayerName ) );
 						MCBans.log.write( PlayerName + " has connected!" );
