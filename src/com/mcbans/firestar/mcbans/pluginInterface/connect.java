@@ -1,5 +1,6 @@
 package com.mcbans.firestar.mcbans.pluginInterface;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
@@ -22,6 +23,12 @@ public class connect{
 	}
 	public String exec( String PlayerName, String PlayerIP ){
 		String s = null;
+		if(MCBans.getMode()){
+			if(MCBans.Backup.isBanned(PlayerName)){
+				s = MCBans.Settings.getString("offlineReason");
+			}
+			return s;
+		}
 		jsonHandler webHandle = new jsonHandler( MCBans );
 		HashMap<String, String> url_items = new HashMap<String, String>();
 		url_items.put("player", PlayerName);
@@ -31,11 +38,22 @@ public class connect{
 		if(!response.containsKey("banStatus")){
 			return null;
 		}else{
+			ArrayList<String> tempList = new ArrayList<String>();
 			switch(responses.get(response.get("banStatus"))){
 				case 0:
 					if(response.containsKey("altList")){
 						if(!response.get("altList").equals("")){
 							MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
+						}
+					}
+					if(response.containsKey("disputeCount")){
+						if(!response.get("disputeCount").equals("")){
+							tempList.add(ChatColor.DARK_RED + response.get("disputeCount") + " open disputes!" );
+						}
+					}
+					if(response.containsKey("connectMessage")){
+						if(!response.get("connectMessage").equals("")){
+							tempList.add(ChatColor.AQUA + response.get("connectMessage") );
 						}
 					}
 					MCBans.log.write( PlayerName + " has connected!" );
@@ -55,6 +73,17 @@ public class connect{
 							MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
 						}
 					}
+					if(response.containsKey("disputeCount")){
+						if(!response.get("disputeCount").equals("")){
+							tempList.add(ChatColor.DARK_RED + response.get("disputeCount") + " open disputes!" );
+						}
+					}
+					if(response.containsKey("connectMessage")){
+						if(!response.get("connectMessage").equals("")){
+							tempList.add(ChatColor.AQUA + response.get("connectMessage") );
+						}
+					}
+					tempList.add(ChatColor.DARK_RED + "You have bans on record!" );
 					if(!response.containsKey("playerRep")){
 						MCBans.broadcastBanView( ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", PlayerName ) );
 						MCBans.log.write( PlayerName + " has connected!" );
@@ -72,6 +101,9 @@ public class connect{
 						}
 					}
 				break;
+			}
+			if(s==null && tempList.size()>0){
+				MCBans.joinMessages.put( PlayerName, tempList);
 			}
 		}
 		return s;

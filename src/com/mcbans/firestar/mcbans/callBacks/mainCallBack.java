@@ -16,6 +16,9 @@ public class mainCallBack extends Thread {
 	}
 	public void run(){
 		int callBacInterval = MCBans.Settings.getInteger("callBackInterval");
+		if(callBacInterval<600000){
+			callBacInterval=600000;
+		}
 		while(true){
 			this.mainRequest();
 			try {
@@ -37,7 +40,7 @@ public class mainCallBack extends Thread {
 				MCBans.broadcastBanView( ChatColor.DARK_GREEN + "MCbans version " + response.get("oldVersion") + " now available!" );
 			}
 		}
-		if(response.containsKey("newMessages")){
+		/*if(response.containsKey("newMessages")){
 			if(!response.get("newMessages").equals("")){
 				String[] Players = response.get("newMessages").split(",");
 				for( String player: Players ){
@@ -45,7 +48,7 @@ public class mainCallBack extends Thread {
 					MCBans.broadcastPlayer(params[0], ChatColor.GOLD + MCBans.Language.getFormatCount( "newMessage", params[1]) );
 				}
 			}
-		}
+		}*/
 	}
 	private String playerList(){
 		String playerList="";

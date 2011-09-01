@@ -6,10 +6,12 @@ import org.bukkit.util.config.Configuration;
 
 public class Settings{
 	private Configuration config;
+	
 	public Settings( String filename ){
 		File plugin_settings = new File("plugins/mcbans/"+filename);
 		config = new Configuration(plugin_settings);
 		config.load();
+		
 	}
 	public String getString( String variable ){
 		return config.getString( variable, "" );

@@ -1,6 +1,6 @@
 name: mcbans
 main: com.mcbans.firestar.mcbans.bukkitInterface
-version: 3.0p
+version: 3.0
 author: Firestar
 commands:
   kick:
@@ -22,38 +22,5 @@ commands:
     description: alias of lookup
     usage: /<command> <playername>
   mcbans:
-    description: player set
-    usage: /<command> <playername>
-  inbox:
-    description: player set
-    usage: /<command> <playername>
-  read:
-    description: player set
-    usage: /<command> <playername>
-  send:
-    description: player set
-    usage: /<command> <playername>
-  block:
-    description: player set
-    usage: /<command> <playername>
-  unblock:
-    description: player set
-    usage: /<command> <playername>
-  binbox:
-    description: player set
-    usage: /<command> <playername>
-  bread:
-    description: player set
-    usage: /<command> <playername>
-  bsend:
-    description: player set
-    usage: /<command> <playername>
-  bblock:
-    description: player set
-    usage: /<command> <playername>
-  bunblock:
-    description: player set
-    usage: /<command> <playername>
-  lbev:
     description: player set
     usage: /<command> <playername>

@@ -25,13 +25,20 @@ public class playerListener extends PlayerListener {
 		}
 	}
 	public void onPlayerJoin(PlayerJoinEvent event) {
+		String playerName = event.getPlayer().getName();
 		if(MCBans.Settings.getBoolean("onJoinMCBansMessage")){
 			MCBans.broadcastPlayer( event.getPlayer(), ChatColor.DARK_GREEN + "Server secured by MCBans!" );
+		}
+		if(MCBans.joinMessages.containsKey(playerName)){
+			for(String message : MCBans.joinMessages.get(playerName)){
+				MCBans.broadcastPlayer( event.getPlayer(),  message );
+			}
+			MCBans.joinMessages.remove(playerName);
 		}
 	}
 	public void onPlayerQuit(PlayerQuitEvent event) {
         String playerName = event.getPlayer().getName();
         disconnect disconnectHandler = new disconnect( MCBans, playerName );
-        disconnectHandler.run();
+        disconnectHandler.start();
     }
 }

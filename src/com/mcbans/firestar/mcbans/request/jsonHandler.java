@@ -20,16 +20,20 @@ import com.mcbans.firestar.mcbans.bukkitInterface;
 public class jsonHandler{
 	private String apiKey="";
 	private bukkitInterface MCBans;
+	private boolean debug = false;
 	public jsonHandler( bukkitInterface p){
 		MCBans = p;
-		apiKey = MCBans.Settings.getString("apiKey");
+		apiKey = MCBans.getApiKey();
+		debug = MCBans.Settings.getBoolean("isDebug");
 	}
 	public JSONObject get_data(String json_text){
 	    try {
 			JSONObject json = new JSONObject(json_text);
 			return json;
 		} catch (JSONException e) {
-			e.printStackTrace();
+			if(debug){
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -48,8 +52,8 @@ public class jsonHandler{
 				    try {
 						out.put(next, output.getString(next));
 					} catch (JSONException e) {
-						if(MCBans.Settings.getBoolean("isDebug")){
-							System.out.println("mcbans error");
+						if(debug){
+							MCBans.log.write("JSON Error On Retrieve");
 							e.printStackTrace();
 						}
 					}
@@ -66,13 +70,13 @@ public class jsonHandler{
 	}
 	public String request_from_api(String data){
 		try {
-			if(MCBans.Settings.getBoolean("isDebug")){
-				System.out.println("MCBans: Sending request!");
+			if(debug){
+				MCBans.log.write("Sending request!");
 			}
 			URL url = new URL("http://72.10.39.172/v2/"+this.apiKey);
     	    URLConnection conn = url.openConnection();
-    	    conn.setConnectTimeout(4000);
-    	    conn.setReadTimeout(6000);
+    	    conn.setConnectTimeout(5000);
+    	    conn.setReadTimeout(5000);
     	    conn.setDoOutput(true);
     	    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
     	    wr.write(data);
@@ -84,15 +88,15 @@ public class jsonHandler{
     	    	buf.append(line);
     	    }
     	    String result = buf.toString();
-    	    if(MCBans.Settings.getBoolean("isDebug")){
-    	    	//System.out.println("MCBans: " + result);
+    	    if(debug){
+    	    	MCBans.log.write(result);
     	    }
     	    wr.close();
     	    rd.close();
 			return result;
 		} catch (Exception e) {
-			if(MCBans.Settings.getBoolean("isDebug")){
-				System.out.println("mcbans error");
+			if(debug){
+				MCBans.log.write("Fetch Data Error");
 				e.printStackTrace();
 			}
 			return "";
@@ -111,7 +115,7 @@ public class jsonHandler{
 				}
 			}
 		} catch (UnsupportedEncodingException e) {
-			if(MCBans.Settings.getBoolean("isDebug")){
+			if(debug){
 				e.printStackTrace();
 			}
 		}

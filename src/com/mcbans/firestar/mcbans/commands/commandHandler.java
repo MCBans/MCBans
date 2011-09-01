@@ -9,10 +9,8 @@ import org.bukkit.entity.Player;
 import com.mcbans.firestar.mcbans.Settings;
 import com.mcbans.firestar.mcbans.bukkitInterface;
 import com.mcbans.firestar.mcbans.pluginInterface.ban;
-import com.mcbans.firestar.mcbans.pluginInterface.evidence;
 import com.mcbans.firestar.mcbans.pluginInterface.kick;
 import com.mcbans.firestar.mcbans.pluginInterface.lookup;
-import com.mcbans.firestar.mcbans.pluginInterface.messager;
 import com.mcbans.firestar.mcbans.pluginInterface.playerSet;
 
 
@@ -32,26 +30,13 @@ public class commandHandler{
 		commandList.put("lookup", 4);
 		commandList.put("lup", 4);
 		commandList.put("mcbans", 5);
-		commandList.put("inbox", 6);
-		commandList.put("binbox", 6);
-		commandList.put("read", 7);
-		commandList.put("bread", 7);
-		commandList.put("send", 8);
-		commandList.put("bsend", 8);
-		commandList.put("block", 9);
-		commandList.put("bblock", 9);
-		commandList.put("unblock", 10);
-		commandList.put("bunblock", 10);
-		commandList.put("lbev", 11);
 	}
 	public boolean execCommand(String command, String[] args, CommandSender from){
 		lookup lookupControl = null;
 		playerSet mcbansControl = null;
-		evidence evidenceControl = null;
 		String CommandSend = "";
 		String PlayerIP = "";
 		kick kickControl = null;
-		messager messageControl = null;
 		boolean commandSet = false;
 		boolean isPlayer = false;
 		String inWorld = "";
@@ -86,20 +71,13 @@ public class commandHandler{
 							return true;
 						}
 						reasonString = getReason(args,"",2);
-						// If is player
-						if( isPlayer == true ){
-							// Check Permissions
-							if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.global")){
-								banControl = new ban( MCBans, "globalBan", args[0], PlayerIP, CommandSend, reasonString, "", "" );
-								banControl.run();
-							}else{
-								MCBans.broadcastPlayer( CommandSend, MCBans.Language.getFormat( "permissionDenied" ) );
-								MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
-							}
-						}else{
-							// Console sent command, proceed
+						// Check Permissions
+						if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.global") || !isPlayer){
 							banControl = new ban( MCBans, "globalBan", args[0], PlayerIP, CommandSend, reasonString, "", "" );
-							banControl.run();
+							banControl.start();
+						}else{
+							MCBans.broadcastPlayer( CommandSend, MCBans.Language.getFormat( "permissionDenied" ) );
+							MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
 						}
 					}else{
 						if(args.length<1){
@@ -111,20 +89,13 @@ public class commandHandler{
 						}else{
 							reasonString = getReason(args,"",1);
 						}
-						// If is player
-						if( isPlayer == true ){
-							// Check Permissions
-							if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.local")){
-								banControl = new ban( MCBans, "localBan", args[0], PlayerIP, CommandSend, reasonString, "", "" );
-								banControl.run();
-							}else{
-								MCBans.broadcastPlayer( CommandSend, MCBans.Language.getFormat( "permissionDenied" ) );
-								MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
-							}
-						}else{
-							// Console sent command, proceed
+						// Check Permissions
+						if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.local") || !isPlayer){
 							banControl = new ban( MCBans, "localBan", args[0], PlayerIP, CommandSend, reasonString, "", "" );
-							banControl.run();
+							banControl.start();
+						}else{
+							MCBans.broadcastPlayer( CommandSend, MCBans.Language.getFormat( "permissionDenied" ) );
+							MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
 						}
 					}
 				}else{
@@ -137,20 +108,13 @@ public class commandHandler{
 					}else{
 						reasonString = getReason(args,"",1);
 					}
-					// If is player
-					if( isPlayer == true ){
-						// Check Permissions
-						if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.local")){
-							banControl = new ban( MCBans, "localBan", args[0], PlayerIP, CommandSend, reasonString, "", "" );
-							banControl.run();
-						}else{
-							MCBans.broadcastPlayer( CommandSend, MCBans.Language.getFormat( "permissionDenied" ) );
-							MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
-						}
-					}else{
-						// Console sent command, proceed
+					// Check Permissions
+					if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.local") || !isPlayer){
 						banControl = new ban( MCBans, "localBan", args[0], PlayerIP, CommandSend, reasonString, "", "" );
-						banControl.run();
+						banControl.start();
+					}else{
+						MCBans.broadcastPlayer( CommandSend, MCBans.Language.getFormat( "permissionDenied" ) );
+						MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
 					}
 				}
 				commandSet = true;
@@ -165,20 +129,13 @@ public class commandHandler{
 				}else{
 					reasonString = getReason(args,"",3);
 				}
-				// If is player
-				if( isPlayer == true ){
-					// Check Permissions
-					if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.temp")){
-						banControl = new ban( MCBans, "tempBan", args[0], PlayerIP, CommandSend, reasonString, args[1], args[2] );
-						banControl.run();
-					}else{
-						MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
-						MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
-					}
-				}else{
-					// Console sent command, proceed
+				// Check Permissions
+				if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.temp")){
 					banControl = new ban( MCBans, "tempBan", args[0], PlayerIP, CommandSend, reasonString, args[1], args[2] );
-					banControl.run();
+					banControl.start();
+				}else{
+					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
+					MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
 				}
 				commandSet = true;
 			break;
@@ -187,20 +144,13 @@ public class commandHandler{
 					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
 					return true;
 				}
-				// If is player
-				if( isPlayer == true ){
-					// Check Permissions
-					if(MCBans.Permissions.isAllow( inWorld, CommandSend, "unban")){
-						banControl = new ban( MCBans, "unBan", args[0], "", CommandSend, "", "", "" );
-						banControl.run();
-					}else{
-						MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
-						MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
-					}
-				}else{
-					// Console sent command, proceed
+				// Check Permissions
+				if(MCBans.Permissions.isAllow( inWorld, CommandSend, "unban") || !isPlayer){
 					banControl = new ban( MCBans, "unBan", args[0], "", CommandSend, "", "", "" );
-					banControl.run();
+					banControl.start();
+				}else{
+					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
+					MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
 				}
 				commandSet = true;
 			break;
@@ -214,20 +164,13 @@ public class commandHandler{
 				}else{
 					reasonString = getReason(args,"",2);
 				}
-				// If is player
-				if( isPlayer == true ){
-					// Check Permissions
-					if(MCBans.Permissions.isAllow( inWorld, CommandSend, "kick")){
-						kickControl = new kick( Config, MCBans, args[0], CommandSend, getReason(args,"",1) );
-						kickControl.run();
-					}else{
-						MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
-						MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
-					}
-				}else{
-					// Console sent command, proceed
+				// Check Permissions
+				if(MCBans.Permissions.isAllow( inWorld, CommandSend, "kick") || !isPlayer){
 					kickControl = new kick( Config, MCBans, args[0], CommandSend, getReason(args,"",1) );
-					kickControl.run();
+					kickControl.start();
+				}else{
+					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
+					MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
 				}
 				commandSet = true;
 			break;
@@ -236,19 +179,13 @@ public class commandHandler{
 					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
 					return true;
 				}
-				// If is player
-				if( isPlayer == true ){
-					// Check Permissions
-					if(MCBans.Permissions.isAllow( inWorld, CommandSend, "lookup")){
-						lookupControl = new lookup( MCBans, args[0], CommandSend );
-						lookupControl.run();
-					}else{
-						MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
-						MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
-					}
-				}else{
+				// Check Permissions
+				if(MCBans.Permissions.isAllow( inWorld, CommandSend, "lookup") || !isPlayer){
 					lookupControl = new lookup( MCBans, args[0], CommandSend );
-					lookupControl.run();
+					lookupControl.start();
+				}else{
+					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
+					MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
 				}
 				commandSet = true;
 			break;
@@ -257,71 +194,32 @@ public class commandHandler{
 					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
 					return true;
 				}
+				if(args[0].equalsIgnoreCase("online") || args[0].equalsIgnoreCase("offline") || args[0].equalsIgnoreCase("status")){
+					if(MCBans.Permissions.isAllow( inWorld, CommandSend, "mode") || !isPlayer){
+						if(args[0].equalsIgnoreCase("online")){
+							MCBans.broadcastPlayer( CommandSend, ChatColor.LIGHT_PURPLE + "Running online mode!" );
+							MCBans.setMode(false);
+							return true;
+						}else if(args[0].equalsIgnoreCase("offline")){
+							MCBans.broadcastPlayer( CommandSend, ChatColor.LIGHT_PURPLE + "Running offline mode!" );
+							MCBans.setMode(true);
+							return true;
+						}else if(args[0].equalsIgnoreCase("status")){
+							if(MCBans.getMode()){
+								MCBans.broadcastPlayer( CommandSend, ChatColor.WHITE+ "Running in [" + ChatColor.DARK_RED + "offline" + ChatColor.WHITE + "] mode!" );
+							}else{
+								MCBans.broadcastPlayer( CommandSend, ChatColor.WHITE+ "Running in [" + ChatColor.DARK_GREEN + "online" + ChatColor.WHITE + "] mode!" );
+							}
+							MCBans.setMode(true);
+							return true;
+						}
+					}else{
+						MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
+						return true;
+					}
+				}
 				mcbansControl = new playerSet( MCBans, CommandSend, args[0] );
-				mcbansControl.run();
-				commandSet = true;
-			break;
-			case 6:
-				if(args.length>0){
-					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
-					return true;
-				}
-				messageControl = new messager( MCBans, "inbox", CommandSend, "", "", "" );
-				messageControl.run();
-				commandSet = true;
-			break;
-			case 7:
-				if(args.length>1){
-					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
-					return true;
-				}
-				String mid=""; 
-				if(args.length==1){
-					mid = args[0];
-				}
-				messageControl = new messager( MCBans, "read", CommandSend, "", mid, "" );
-				messageControl.run();
-				commandSet = true;
-			break;
-			case 8:
-				if(args.length<2){
-					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
-					return true;
-				}
-				messageControl = new messager( MCBans, "send", CommandSend, args[0], "", getReason( args, "", 1 ) );
-				messageControl.run();
-				commandSet = true;
-			break;
-			case 9:
-				if(args.length<1){
-					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
-					return true;
-				}
-				messageControl = new messager( MCBans, "block", CommandSend, args[0], "", "" );
-				messageControl.run();
-				commandSet = true;
-			break;
-			case 10:
-				if(args.length<1){
-					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
-					return true;
-				}
-				messageControl = new messager( MCBans, "unblock", CommandSend, args[0], "", "" );
-				messageControl.run();
-				commandSet = true;
-			break;
-			case 11:
-				if(args.length<2){
-					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
-					return true;
-				}
-				if(!MCBans.Permissions.isAllow( inWorld, CommandSend, "lb")){
-					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
-					MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
-					return true;
-				}
-				evidenceControl = new evidence( MCBans, args[0], CommandSend, args[1] );
-				evidenceControl.run();
+				mcbansControl.start();
 				commandSet = true;
 			break;
 		}

@@ -19,6 +19,10 @@ public class lookup extends Thread {
 		PlayerAdmin = playerAdmin;
 	}
 	public void run(){
+		if(MCBans.getMode()){
+			MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + "Offline Mode!" );
+			return;
+		}
 		MCBans.log.write( PlayerAdmin + " has looked up the " + PlayerName + "!" );
 		HashMap<String, String> url_items = new HashMap<String, String>();
 		jsonHandler webHandle = new jsonHandler( MCBans );

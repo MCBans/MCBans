@@ -20,17 +20,13 @@ public class bukkitPermissions{
 		if (permissionHandler == null) {
 			if (permissionsPlugin != null) {
 				permissionHandler = ((Permissions) permissionsPlugin).getHandler();
-				System.out.print("MCBans: Permissions found!");
+				MCBans.log.write("Permissions plugin found!");
 			}else{
-				System.out.print("MCBans: No permission found!");
-				MCBans.getPluginLoader().disablePlugin(MCBans);
+				MCBans.log.write("Using bukkit permissions!");
 			}
 		}
 	}
 	public boolean isAllow( String WorldName, String PlayerName, String PermissionNode ){
-		//if( permissionHandler.has( WorldName, PlayerName, "mcbans."+PermissionNode ) ){
-		//	return true;
-		//}
 		Player target = MCBans.getServer().getPlayer(PlayerName);
 		if( target!=null ){
 			 return isAllow( target, PermissionNode );
@@ -38,7 +34,11 @@ public class bukkitPermissions{
 		return false;
 	}
 	public boolean isAllow( Player Player, String PermissionNode ){
-		if( permissionHandler.has( Player, "mcbans."+PermissionNode ) ){
+		if( permissionHandler != null ){
+			if( permissionHandler.has( Player, "mcbans."+PermissionNode ) ){
+				return true;
+			}
+		}else if( Player.hasPermission( "mcbans."+PermissionNode ) ){
 			return true;
 		}
 		return false;
