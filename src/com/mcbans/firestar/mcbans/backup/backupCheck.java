@@ -19,6 +19,7 @@ public class backupCheck extends Thread {
 		apiKey = MCBans.getApiKey();
 		debug = MCBans.Settings.getBoolean("isDebug");
 	}
+	@Override
 	public void run(){
 		while(true){
 			String result = "";

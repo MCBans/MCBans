@@ -15,6 +15,7 @@ public class playerListener extends PlayerListener {
 	public playerListener(bukkitInterface plugin) {
         MCBans = plugin;
     }
+	@Override
 	public void onPlayerPreLogin(PlayerPreLoginEvent event) {
 		String playerIP = event.getAddress().getHostAddress();
         String playerName = event.getName();
@@ -24,6 +25,7 @@ public class playerListener extends PlayerListener {
 			event.disallow(PlayerPreLoginEvent.Result.KICK_BANNED, result);
 		}
 	}
+	@Override
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		String playerName = event.getPlayer().getName();
 		if(MCBans.Settings.getBoolean("onJoinMCBansMessage")){
@@ -36,6 +38,7 @@ public class playerListener extends PlayerListener {
 			MCBans.joinMessages.remove(playerName);
 		}
 	}
+	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
         String playerName = event.getPlayer().getName();
         disconnect disconnectHandler = new disconnect( MCBans, playerName );
