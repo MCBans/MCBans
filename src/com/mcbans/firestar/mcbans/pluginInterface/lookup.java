@@ -18,6 +18,7 @@ public class lookup extends Thread {
 		PlayerName = playerName;
 		PlayerAdmin = playerAdmin;
 	}
+	@Override
 	public void run(){
 		if(MCBans.getMode()){
 			MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + "Offline Mode!" );
