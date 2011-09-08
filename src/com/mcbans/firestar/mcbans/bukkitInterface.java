@@ -122,6 +122,7 @@ public class bukkitInterface extends JavaPlugin {
         
 	}
 	
+	@Override
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
 		return commandHandle.execCommand( command.getName(), args, sender );
 	}

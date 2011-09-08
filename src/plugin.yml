@@ -22,3 +22,39 @@ commands:
   mcbans:
     description: player set
     usage: /<command> <playername>
+permissions:
+  mcbans.ban.view:
+    description: View ban information on user joining
+    default: op
+  mcbans.ban.global:
+    description: Give global bans
+    default: op
+  mcbans.ban.local:
+    description: Give local bans
+    default: op
+  mcbans.ban.temp:
+    description: Give temp bans
+    default: op
+  mcbans.unban:
+    description: Unban users
+    default: op
+  mcbans.lookup:
+    description: Lookup ban history on command
+    default: op
+  mcbans.kick:
+    description: Kick users
+    default: op
+  mcbans.mode:
+    description: Change between online and offline modes
+    default: op
+  mcbans.all:
+    description: All permissions
+    children:
+      mcbans.ban.view: true
+      mcbans.ban.global: true
+      mcbans.ban.local: true
+      mcbans.ban.temp: true
+      mcbans.unban: true
+      mcbans.lookup: true
+      mcbans.kick: true
+      mcbans.mode: true

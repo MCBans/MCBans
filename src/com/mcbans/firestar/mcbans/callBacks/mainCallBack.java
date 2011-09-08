@@ -10,19 +10,20 @@ import com.mcbans.firestar.mcbans.request.jsonHandler;
 
 
 public class mainCallBack extends Thread {
-	private bukkitInterface MCBans = null;
+	private final bukkitInterface MCBans;
 	public mainCallBack(bukkitInterface p){
 		MCBans = p;
 	}
+	@Override
 	public void run(){
-		int callBacInterval = MCBans.Settings.getInteger("callBackInterval");
-		if(callBacInterval<600000){
-			callBacInterval=600000;
+		int callBackInterval = MCBans.Settings.getInteger("callBackInterval");
+		if(callBackInterval<600000){
+			callBackInterval=600000;
 		}
 		while(true){
 			this.mainRequest();
 			try {
-				Thread.sleep(callBacInterval);
+				Thread.sleep(callBackInterval);
 			} catch (InterruptedException e) {
 			}
 		}
@@ -51,14 +52,13 @@ public class mainCallBack extends Thread {
 		}*/
 	}
 	private String playerList(){
-		String playerList="";
+		StringBuilder playerList=new StringBuilder();
 		for(Player player: MCBans.getServer().getOnlinePlayers()){
-			if(playerList.equals("")){
-				playerList = player.getName();
-			}else{
-				playerList += "," + player.getName();
+			if(playerList.length()>0){
+				playerList.append(",");
 			}
+			playerList.append(player.getName());
 		}
-		return playerList;
+		return playerList.toString();
 	}
 }

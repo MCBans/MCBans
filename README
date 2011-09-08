@@ -1,13 +1,13 @@
 MCBans Server Plugin
 ====================
 
-MCBans is a global ban system for the game MineCraft.
+MCBans is a global ban system for the game Minecraft.
 More information can be found on the [MCBans website](http://www.mcbans.com/) or [wiki](http://wiki.mcbans.com/).
 
 Commands
 --------
 
-Below is a lsit of commands suppoorted by MCBans v3.0 "lite"
+Below is a list of commands supported by MCBans v3.0 "lite"
 
 * /lookup <playername>
 * /kick <playername> [reason]

@@ -19,6 +19,7 @@ public class kick extends Thread {
 		PlayerAdmin = playerAdmin;
 		Reason = reason;
 	}
+	@Override
 	public void run( ){
 		
 		if (MCBans.getServer().getPlayer(PlayerName) != null) {
