@@ -17,9 +17,7 @@ commands:
     usage: /<command> <playername> <duration> <m(minutes) or h(hours) or d(days)> [reason]
   lookup:
     description: lookup a player
-    usage: /<command> <playername>
-  lup:
-    description: alias of lookup
+    aliases: [lup]
     usage: /<command> <playername>
   mcbans:
     description: player set

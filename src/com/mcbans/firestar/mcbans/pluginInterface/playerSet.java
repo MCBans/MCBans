@@ -24,14 +24,17 @@ public class playerSet extends Thread {
         url_items.put("string", ConfirmCode);
         url_items.put("exec", "playerSet");
         HashMap<String, String> response = webHandle.mainRequest(url_items);
-        if(response.containsKey("result")){
-        	if(!response.get("result").equals("n")){
-        		MCBans.broadcastPlayer( PlayerName, ChatColor.DARK_GREEN + "Welcome to MCBans: " + response.get("result") );
-        	}else{
-        		MCBans.broadcastPlayer( PlayerName, ChatColor.DARK_RED + "Error, could not authenticate, sure you signed up?" );
-        	}
-        }else{
-        	MCBans.broadcastPlayer( PlayerName, ChatColor.DARK_RED + "Error, could not authenticate, did you enter it correctly?" );
-        }
+	    try {
+	        if(response.containsKey("result")){
+	        	if(!response.get("result").equals("n")){
+	        		MCBans.broadcastPlayer( PlayerName, ChatColor.DARK_GREEN + "Welcome to MCBans: " + response.get("result") );
+	        	}else{
+	        		MCBans.broadcastPlayer( PlayerName, ChatColor.DARK_RED + "Error, could not authenticate, sure you signed up?" );
+	        	}
+	        }else{
+	        	MCBans.broadcastPlayer( PlayerName, ChatColor.DARK_RED + "Error, could not authenticate, did you enter it correctly?" );
+	        }
+        } catch (NullPointerException e) {
+		}
 	}
 }

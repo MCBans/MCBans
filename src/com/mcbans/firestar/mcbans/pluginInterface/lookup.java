@@ -39,6 +39,7 @@ public class lookup extends Thread {
 	        	MCBans.broadcastPlayer( PlayerAdmin, "[Global] " + ChatColor.DARK_RED + result.getJSONArray("global").getString(v) );
 	        }
         } catch (JSONException e) {
+        } catch (NullPointerException e) {
 		}
 	}
 }

@@ -35,77 +35,81 @@ public class connect{
 		url_items.put("playerip", PlayerIP);
 		url_items.put("exec", "playerConnect");
 		HashMap<String, String> response = webHandle.mainRequest(url_items);
-		if(!response.containsKey("banStatus")){
-			return null;
-		}else{
-			ArrayList<String> tempList = new ArrayList<String>();
-			switch(responses.get(response.get("banStatus"))){
-				case 0:
-					if(response.containsKey("altList")){
-						if(!response.get("altList").equals("")){
-							MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
+		try {
+			if(!response.containsKey("banStatus")){
+				return null;
+			}else{
+				ArrayList<String> tempList = new ArrayList<String>();
+				switch(responses.get(response.get("banStatus"))){
+					case 0:
+						if(response.containsKey("altList")){
+							if(!response.get("altList").equals("")){
+								MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
+							}
 						}
-					}
-					if(response.containsKey("disputeCount")){
-						if(!response.get("disputeCount").equals("")){
-							tempList.add(ChatColor.DARK_RED + response.get("disputeCount") + " open disputes!" );
+						if(response.containsKey("disputeCount")){
+							if(!response.get("disputeCount").equals("")){
+								tempList.add(ChatColor.DARK_RED + response.get("disputeCount") + " open disputes!" );
+							}
 						}
-					}
-					if(response.containsKey("connectMessage")){
-						if(!response.get("connectMessage").equals("")){
-							tempList.add(ChatColor.AQUA + response.get("connectMessage") );
+						if(response.containsKey("connectMessage")){
+							if(!response.get("connectMessage").equals("")){
+								tempList.add(ChatColor.AQUA + response.get("connectMessage") );
+							}
 						}
-					}
-					MCBans.log.write( PlayerName + " has connected!" );
-					s = null;
-				break;
-				case 2:
-				case 3:
-				case 5:
-				case 6:
-					s = response.get("banReason");
-					MCBans.log.write( PlayerName + " access denied!" );
-				break;
-				case 1:
-				case 4:
-					if(response.containsKey("altList")){
-						if(!response.get("altList").equals("")){
-							MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
-						}
-					}
-					if(response.containsKey("disputeCount")){
-						if(!response.get("disputeCount").equals("")){
-							tempList.add(ChatColor.DARK_RED + response.get("disputeCount") + " open disputes!" );
-						}
-					}
-					if(response.containsKey("connectMessage")){
-						if(!response.get("connectMessage").equals("")){
-							tempList.add(ChatColor.AQUA + response.get("connectMessage") );
-						}
-					}
-					tempList.add(ChatColor.DARK_RED + "You have bans on record!" );
-					if(!response.containsKey("playerRep")){
-						MCBans.broadcastBanView( ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", PlayerName ) );
 						MCBans.log.write( PlayerName + " has connected!" );
 						s = null;
-					}else{
-						if(MCBans.Settings.getBoolean("isDebug")){
-							System.out.print("Player Rep: "+Float.parseFloat(response.get("playerRep")));
+					break;
+					case 2:
+					case 3:
+					case 5:
+					case 6:
+						s = response.get("banReason");
+						MCBans.log.write( PlayerName + " access denied!" );
+					break;
+					case 1:
+					case 4:
+						if(response.containsKey("altList")){
+							if(!response.get("altList").equals("")){
+								MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
+							}
 						}
-						if( Float.parseFloat( response.get( "playerRep" ) ) >= MCBans.Settings.getFloat("minRep") ){
+						if(response.containsKey("disputeCount")){
+							if(!response.get("disputeCount").equals("")){
+								tempList.add(ChatColor.DARK_RED + response.get("disputeCount") + " open disputes!" );
+							}
+						}
+						if(response.containsKey("connectMessage")){
+							if(!response.get("connectMessage").equals("")){
+								tempList.add(ChatColor.AQUA + response.get("connectMessage") );
+							}
+						}
+						tempList.add(ChatColor.DARK_RED + "You have bans on record!" );
+						if(!response.containsKey("playerRep")){
 							MCBans.broadcastBanView( ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", PlayerName ) );
 							MCBans.log.write( PlayerName + " has connected!" );
 							s = null;
 						}else{
-							s = MCBans.Language.getFormat( "underMinRep" );
+							if(MCBans.Settings.getBoolean("isDebug")){
+								System.out.print("Player Rep: "+Float.parseFloat(response.get("playerRep")));
+							}
+							if( Float.parseFloat( response.get( "playerRep" ) ) >= MCBans.Settings.getFloat("minRep") ){
+								MCBans.broadcastBanView( ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", PlayerName ) );
+								MCBans.log.write( PlayerName + " has connected!" );
+								s = null;
+							}else{
+								s = MCBans.Language.getFormat( "underMinRep" );
+							}
 						}
-					}
-				break;
+					break;
+				}
+				if(s==null && tempList.size()>0){
+					MCBans.joinMessages.put( PlayerName, tempList);
+				}
 			}
-			if(s==null && tempList.size()>0){
-				MCBans.joinMessages.put( PlayerName, tempList);
-			}
+			return s;
+		} catch (NullPointerException e) {
+			return s;
 		}
-		return s;
 	}
 }

@@ -96,7 +96,9 @@ public class jsonHandler{
 			return result;
 		} catch (Exception e) {
 			if(debug){
-				MCBans.log.write("Fetch Data Error");
+				if(MCBans!=null){
+					MCBans.log.write("Fetch Data Error");
+				}
 				e.printStackTrace();
 			}
 			return "";
