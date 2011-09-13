@@ -158,7 +158,7 @@ public class ban extends Thread {
 		url_items.put( "admin", PlayerAdmin );
 		url_items.put( "exec", "globalBan" );
 		HashMap<String, String> response = webHandle.mainRequest(url_items);
-		private string Badword = "";
+		private String Badword = null;
 		try{
 			if(!response.containsKey("result")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
