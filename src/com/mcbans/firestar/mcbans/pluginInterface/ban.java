@@ -16,6 +16,7 @@ public class ban extends Thread {
 	private String Action = null;
 	private String Duration = null;
 	private String Measure = null;
+	private String Badword = null;
 	private HashMap<String, Integer> responses = new HashMap<String, Integer>();
 	public ban( bukkitInterface p, String action, String playerName, String playerIP, String playerAdmin, String reason, String duration, String measure ){
 		MCBans = p;
@@ -158,7 +159,6 @@ public class ban extends Thread {
 		url_items.put( "admin", PlayerAdmin );
 		url_items.put( "exec", "globalBan" );
 		HashMap<String, String> response = webHandle.mainRequest(url_items);
-		private String Badword = null;
 		try{
 			if(!response.containsKey("result")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
