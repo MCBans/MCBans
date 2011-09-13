@@ -32,7 +32,7 @@ public class lookup extends Thread {
         url_items.put("exec", "playerLookup");
         JSONObject result = webHandle.hdl_jobj(url_items);
         try {
-			MCBans.broadcastPlayer( PlayerAdmin, "Player " + ChatColor.DARK_AQUA + PlayerName + ChatColor.WHITE + " has " + ChatColor.DARK_RED + result.getString("total") + " ban(s) " + ChatColor.WHITE + " and " + ChatColor.BLUE + result.getString("reputation") + " REP" + ChatColor.WHITE + "." );
+			MCBans.broadcastPlayer( PlayerAdmin, "Player " + ChatColor.DARK_AQUA + PlayerName + ChatColor.WHITE + " has " + ChatColor.DARK_RED + result.getString("total") + " ban(s)" + ChatColor.WHITE + " and " + ChatColor.BLUE + result.getString("reputation") + " REP" + ChatColor.WHITE + "." );
 	        if (result.getJSONArray("global").length() > 0) {
 	        	MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + "Global bans");
 	        	for (int v = 0; v < result.getJSONArray("global").length(); v++) {
