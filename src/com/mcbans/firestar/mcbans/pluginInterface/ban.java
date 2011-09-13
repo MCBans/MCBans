@@ -174,11 +174,7 @@ public class ban extends Thread {
 			}else if(response.get("result").equals("e")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 			}else if(response.get("result").equals("w")){
-				if(!response.containsKey("result")){
-				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageWarning", PlayerName, PlayerAdmin, Reason, PlayerIP, "N/A" ) );	
-				} else {
-					MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageWarning", PlayerName, PlayerAdmin, Reason, PlayerIP, response.get("word") ) );
-				}
+				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageWarning", PlayerName, PlayerAdmin, Reason, PlayerIP, response.get("word") ) );
 			}else if(response.get("result").equals("s")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageGroup", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 			}else if(response.get("result").equals("a")){
