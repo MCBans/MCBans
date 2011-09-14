@@ -173,6 +173,8 @@ public class ban extends Thread {
 				return;
 			}else if(response.get("result").equals("e")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
+			}else if(response.get("result").equals("w")){
+				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageWarning", PlayerName, PlayerAdmin, Reason, PlayerIP, response.get("word") ) );
 			}else if(response.get("result").equals("s")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageGroup", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 			}else if(response.get("result").equals("a")){
@@ -199,7 +201,7 @@ public class ban extends Thread {
 				return;
 			}
 			if(response.get("result").equals("y")){
-				MCBans.log.write( PlayerName + " has been banned with a global type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
+				MCBans.log.write( PlayerName + " has been banned with a temp type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
 				if (MCBans.getServer().getPlayer(PlayerName) != null) {
 					MCBans.getServer().getPlayer(PlayerName).kickPlayer( MCBans.Language.getFormat( "tempBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 	            }

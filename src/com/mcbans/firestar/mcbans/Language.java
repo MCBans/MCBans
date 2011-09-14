@@ -32,6 +32,9 @@ public class Language{
 	public String getFormat( String Message, String PlayerName, String PlayerAdmin, String Reason, String PlayerIP ){
 		return config.getString( Message, "No language file loaded!" ).replaceAll("%PLAYER%", PlayerName).replaceAll("%PLAYERIP%", PlayerIP).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason);
 	}
+	public String getFormat( String Message, String PlayerName, String PlayerAdmin, String Reason, String PlayerIP, String Word ){
+		return config.getString( Message, "No language file loaded!" ).replaceAll("%PLAYER%", PlayerName).replaceAll("%PLAYERIP%", PlayerIP).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason).replaceAll("%BADWORD%", Word);
+	}
 	public String getFormatAlts( String Message, String PlayerName, String AltList ){
 		return config.getString( Message, "No language file loaded!" ).replaceAll("%PLAYER%", PlayerName).replaceAll("%ALTS%", AltList);
 	}
