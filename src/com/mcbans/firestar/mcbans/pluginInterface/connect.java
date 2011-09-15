@@ -54,6 +54,7 @@ public class connect{
 						if(response.containsKey("is_mcbans_mod")) {
 							if(response.get("is_mcbans_mod").equals("y")){
 								MCBans.broadcastBanView( ChatColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ));
+								tempList.add(ChatColor.AQUA + MCBans.Language.getFormat ("youAreMCBansStaff"));
 							}
 						}
 						if(response.containsKey("disputeCount")){
@@ -117,6 +118,7 @@ public class connect{
 									if(response.containsKey("is_mcbans_mod")) {
 										if(response.get("is_mcbans_mod").equals("y")){
 											MCBans.broadcastBanView( ChatColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ));
+											tempList.add(ChatColor.AQUA + MCBans.Language.getFormat ("youAreMCBansStaff"));
 										}
 									}
 									s = null;
