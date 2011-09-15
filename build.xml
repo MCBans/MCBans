@@ -43,5 +43,9 @@
             <classpath refid="MCBans.classpath"/>
         </java>
     </target>
+    <target name="makelanguages">
+    	<mkdir dir="languages"/>
+    	<copy todir="languages" file="README"/>
+    </target>
 </project>
 
