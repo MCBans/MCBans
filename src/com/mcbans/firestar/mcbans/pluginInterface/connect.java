@@ -51,6 +51,11 @@ public class connect{
 								}
 							}
 						}
+						if(response.containsKey("is_mcbans_mod")) {
+							if(response.get("is_mcbans_mod").equals("y")){
+								MCBans.broadcastBanView( CharColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ));
+							}
+						}
 						if(response.containsKey("disputeCount")){
 							if(!response.get("disputeCount").equals("")){
 								tempList.add(ChatColor.DARK_RED + response.get("disputeCount") + " open disputes!" );
@@ -109,6 +114,11 @@ public class connect{
 								if( Float.parseFloat( response.get( "playerRep" ) ) >= MCBans.Settings.getFloat("minRep") ){
 									MCBans.broadcastBanView( ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", PlayerName ) );
 									MCBans.log.write( PlayerName + " has connected!" );
+									if(response.containsKey("is_mcbans_mod")) {
+										if(response.get("is_mcbans_mod").equals("y")){
+											MCBans.broadcastBanView( CharColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ));
+										}
+									}
 									s = null;
 								}else{
 									s = MCBans.Language.getFormat( "underMinRep" );
