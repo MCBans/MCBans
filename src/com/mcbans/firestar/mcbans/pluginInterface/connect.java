@@ -44,7 +44,7 @@ public class connect{
 					case 0:
 						if(response.containsKey("altList")){
 							if(!response.get("altList").equals("")){
-								if(response.get("altCount") > MCBans.Settings.getFloat("maxAlts") && MCBans.Settings.getBoolean("enableMaxAlts")) {
+								if(Float.valueOf(response.get("altCount").trim()).floatValue() > MCBans.Settings.getFloat("maxAlts") && MCBans.Settings.getBoolean("enableMaxAlts")) {
 									s = MCBans.Language.getFormat( "overMaxAlts" );
 								} else { 
 									MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
@@ -78,7 +78,7 @@ public class connect{
 						Boolean blockConnection = false;
 						if(response.containsKey("altList")){
 							if(!response.get("altList").equals("")){
-								if(response.get("altCount") > MCBans.Settings.getFloat("maxAlts") && MCBans.Settings.getBoolean("enableMaxAlts")) {
+								if(Float.valueOf(response.get("altCount").trim()).floatValue() > MCBans.Settings.getFloat("maxAlts") && MCBans.Settings.getBoolean("enableMaxAlts")) {
 									s = MCBans.Language.getFormat( "overMaxAlts" );
 									blockConnection = true;
 								} else {
