@@ -33,6 +33,8 @@ underMinRep: "Your reputation is below this servers threshold!"
 overMaxAlts: "Your have more alt accounts than this server allows!"
 altBanned: "You have an alt account banned from this server!"
 altAccounts: "%PLAYER% may have alt accounts [ %ALTS% ]!" 
+isMCBansMod: "%PLAYER% is an MCBans.com Staff Member!"
+youAreMCBansStaff: "You are an MCBans Staff Member!"
 
 newMessage: "You have %COUNT% new message(s)!" 
 inboxEmpty: "Your inbox is empty!" 
