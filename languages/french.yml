@@ -1,1 +1,52 @@
-# Requires update
+
+# Fichiers MCBans Français, Traduit par: Crueldog (les nouveaux messages ajoutés par expertmac2) 
+
+unBanMessageSuccess: "%PLAYER% a été dé-banni!" 
+unBanMessageError: "Une erreur est survenue lors du dé-bannage de %PLAYER%!" 
+unBanMessageGroup: "%PLAYER% banni d’un serveur du même groupe que vous!" 
+unBanMessageNot: "%PLAYER% n’a pas été dé-banni!" 
+
+localBanMessagePlayer: "Vous avez été banni, vérifiez MCBans.com" 
+localBanMessageSuccess: "%PLAYER% a été banni pour raison: [%REASON%]" 
+localBanMessageError: "Une erreur est survenue lors du ban de %PLAYER%!" 
+localBanMessageGroup: "%PLAYER% banni d’un serveur du même groupe que vous!" 
+localBanMessageAlready: "%PLAYER% est déjà banni sur ce serveur!" 
+
+globalBanMessagePlayer: " Vous avez été banni, vérifiez MCBans.com " 
+globalBanMessageSuccess: "%PLAYER% a été banni pour raison: [%REASON%]" 
+globalBanMessageError: " Une erreur est survenue lors du ban de %PLAYER%!" 
+globalBanMessageWarning: "Erreur interdisant %PLAYER%! La raison contenues mauvais mot: %BADWORD%"
+globalBanMessageGroup: "%PLAYER% banni d’un serveur du même groupe que vous!" 
+globalBanMessageAlready: "%PLAYER% est déjà banni sur ce serveur!” 
+
+
+tempBanMessagePlayer: "%REASON%" 
+tempBanMessageSuccess: "%PLAYER% a été banni temporairement pour raison: [%REASON%]" 
+tempBanMessageError: "Une erreur est survenue lors du ban de %PLAYER%!" 
+tempBanMessageGroup: "%PLAYER% banni d’un serveur du même groupe que vous!" 
+tempBanMessageAlready: "%PLAYER% est déjà banni sur ce serveur!” 
+
+kickMessagePlayer: "%REASON%" 
+kickMessageSuccess: "%PLAYER% a été expulsé!" 
+
+formatError: "Paramètres incorrects!" 
+permissionDenied: "Permission refusée!" 
+previousBans: "%PLAYER% a des bans antérieurs!" 
+underMinRep: "Votre réputation est sous la limite de ce serveur!" 
+altAccounts: "%PLAYER% pourrait avoir des comptes ALT: [ %ALTS% ]!" 
+altBanned: "Vous avez un compte alt banni de ce serveur!"
+overMaxAlts: "Vous avez des comptes alt plus que le serveur autorise!"
+isMCBansMod: "%PLAYER% est un membre du personnel de MCBans.com"
+youAreMCBansStaff: "Tu es le membre du personnel MCBans.com!"
+
+newMessage: "Vous avez %COUNT% nouveau(x) message(s)!" 
+inboxEmpty: "Vous n’avez aucun nouveau message!" 
+InboxHeader: "Votre boîte de réception!" 
+messageNone: "Aucun message!" 
+messageView: "[%DATE%] %SENDER%: %MESSAGE%" 
+messageError: "Une erreur est survenue lors de l’envoi du message!" 
+messageSent: "Message envoyé!" 
+blockNot: "Non bloqué!" 
+blockAlready: "Déjà bloqué!" 
+unBlockSuccess: "Vous avez débloqué %PLAYER%!" 
+blockSuccess: "Vous avez bloqué %PLAYER%!"
