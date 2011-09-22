@@ -34,7 +34,7 @@ underMinRep: "Je reputatie is onder de norm van de server!"
 overMaxAlts: "Je hebt te veel alt accounts!"
 altBanned: "Je hebt een andere account die gebanned is!"
 altAccounts: "%PLAYER% heeft nog een ander accounts [ %ALTS% ]!" 
-isMCBansMod: "%PLAYER% is an MCBans.com Staff Member!"
+isMCBansMod: "%PLAYER% is een MCBans.com medewerker!"
 youAreMCBansStaff: "You are an MCBans Staff Member!"
 
 newMessage: "Je hebt %COUNT% nieuw(e) bericht(en)!" 
