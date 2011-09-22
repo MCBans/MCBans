@@ -16,6 +16,7 @@ public class ban extends Thread {
 	private String Action = null;
 	private String Duration = null;
 	private String Measure = null;
+	private String Badword = null;
 	private HashMap<String, Integer> responses = new HashMap<String, Integer>();
 	public ban( bukkitInterface p, String action, String playerName, String playerIP, String playerAdmin, String reason, String duration, String measure ){
 		MCBans = p;
@@ -41,7 +42,7 @@ public class ban extends Thread {
 								if (MCBans.getServer().getPlayer(PlayerName) != null) {
 									MCBans.getServer().getPlayer(PlayerName).kickPlayer(MCBans.Language.getFormat( "localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 					            }
-								MCBans.broadcastAll( ChatColor.DARK_RED + MCBans.Language.getFormat( "localBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
+								MCBans.broadcastAll( ChatColor.GREEN + MCBans.Language.getFormat( "localBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 							}else{
 								MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "localBanMessageAlready", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 							}
@@ -55,7 +56,7 @@ public class ban extends Thread {
 								if (MCBans.getServer().getPlayer(PlayerName) != null) {
 									MCBans.getServer().getPlayer(PlayerName).kickPlayer(MCBans.Language.getFormat( "localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 					            }
-								MCBans.broadcastAll( ChatColor.DARK_RED + MCBans.Language.getFormat( "localBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
+								MCBans.broadcastAll( ChatColor.GREEN + MCBans.Language.getFormat( "localBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 							}else{
 								MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "localBanMessageAlready", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 							}
@@ -73,7 +74,7 @@ public class ban extends Thread {
 						if(MCBans.getMode()){
 							if(MCBans.Backup.remove(PlayerName)){
 								MCBans.log.write( PlayerAdmin + " unbanned " + PlayerName + "!" );
-								MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "unBanMessageSuccess", PlayerName, PlayerAdmin ) );
+								MCBans.broadcastPlayer( PlayerAdmin, ChatColor.GREEN + MCBans.Language.getFormat( "unBanMessageSuccess", PlayerName, PlayerAdmin ) );
 							}else{
 								MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "unBanMessageNot", PlayerName, PlayerAdmin ) );
 							}
@@ -102,7 +103,7 @@ public class ban extends Thread {
 			}
 			if(response.get("result").equals("y")){
 				MCBans.log.write( PlayerAdmin + " unbanned " + PlayerName + "!" );
-				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "unBanMessageSuccess", PlayerName, PlayerAdmin ) );
+				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.GREEN + MCBans.Language.getFormat( "unBanMessageSuccess", PlayerName, PlayerAdmin ) );
 				MCBans.Backup.remove(PlayerName);
 				return;
 			}else if(response.get("result").equals("e")){
@@ -135,7 +136,7 @@ public class ban extends Thread {
 				if (MCBans.getServer().getPlayer(PlayerName) != null) {
 					MCBans.getServer().getPlayer(PlayerName).kickPlayer(MCBans.Language.getFormat( "localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 	            }
-				MCBans.broadcastAll( ChatColor.DARK_RED + MCBans.Language.getFormat( "localBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
+				MCBans.broadcastAll( ChatColor.GREEN + MCBans.Language.getFormat( "localBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 				MCBans.Backup.add(PlayerName);
 				return;
 			}else if(response.get("result").equals("e")){
@@ -168,11 +169,14 @@ public class ban extends Thread {
 				if (MCBans.getServer().getPlayer(PlayerName) != null) {
 					MCBans.getServer().getPlayer(PlayerName).kickPlayer(MCBans.Language.getFormat( "globalBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 	            }
-				MCBans.broadcastAll( ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
+				MCBans.broadcastAll( ChatColor.GREEN + MCBans.Language.getFormat( "globalBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 				MCBans.Backup.add(PlayerName);
 				return;
 			}else if(response.get("result").equals("e")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
+			}else if(response.get("result").equals("w")){
+				Badword = response.get("word");
+				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageWarning", PlayerName, PlayerAdmin, Reason, PlayerIP, Badword ) );
 			}else if(response.get("result").equals("s")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageGroup", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 			}else if(response.get("result").equals("a")){
@@ -199,11 +203,11 @@ public class ban extends Thread {
 				return;
 			}
 			if(response.get("result").equals("y")){
-				MCBans.log.write( PlayerName + " has been banned with a global type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
+				MCBans.log.write( PlayerName + " has been banned with a temp type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
 				if (MCBans.getServer().getPlayer(PlayerName) != null) {
 					MCBans.getServer().getPlayer(PlayerName).kickPlayer( MCBans.Language.getFormat( "tempBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 	            }
-				MCBans.broadcastAll( ChatColor.DARK_RED + MCBans.Language.getFormat( "tempBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
+				MCBans.broadcastAll( ChatColor.GREEN + MCBans.Language.getFormat( "tempBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 				return;
 			}else if(response.get("result").equals("e")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "tempBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
