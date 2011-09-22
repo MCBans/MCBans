@@ -1,1 +1,50 @@
-# Requires update
+#Dutch MCBans File Translated By: PingWang/Aronnn Updated By: mmaton
+
+unBanMessageSuccess: "%PLAYER% is niet langer verboden!"
+unBanMessageError: "Fout bij het weghalen van de ban van %PLAYER%!"
+unBanMessageGroup: "%PLAYER% is verboden op een server in dezelfde groep als jou!"
+unBanMessageNot: "%PLAYER% is niet verboden!"
+
+localBanMessagePlayer: "Je bent gebanned, kijk op www.MCBans.com"
+localBanMessageSuccess: "%PLAYER% was gebant, [%REASON%]"
+localBanMessageError: "Fout bij het bannen van %PLAYER%!"
+localBanMessageGroup: "%PLAYER% is verboden op een server in dezelfde groep als jou!"
+localBanMessageAlready: "%PLAYER% is al gebanned van deze server!"
+
+globalBanMessagePlayer: "Je bent gebanned, kijk op www.MCBans.com"
+globalBanMessageSuccess: "%PLAYER% was gebant, [%REASON%]"
+globalBanMessageError: "Fout bij het bannen van %PLAYER%!" 
+globalBanMessageWarning: "Fout bij het bannen van %PLAYER%! Reden had slechten woorden %BADWORD%"
+globalBanMessageGroup: "%PLAYER% is verboden op een server in dezelfde groep als jou!" 
+globalBanMessageAlready: "%PLAYER% is al verboden van deze server!"
+
+tempBanMessagePlayer: "%REASON%" 
+tempBanMessageSuccess: "%PLAYER% was tijdelijk gebant, [%REASON%]"
+tempBanMessageError: "Fout bij het bannen van %PLAYER%!"
+tempBanMessageGroup: "%PLAYER% is verboden op een server in dezelfde groep als jou!" 
+tempBanMessageAlready: "%PLAYER% is al gebanned van deze server!" 
+
+kickMessagePlayer: "%REASON%" 
+kickMessageSuccess: "%PLAYER% is uit de server gegooit!" 
+
+formatError: "Verkeerde waardes!" 
+permissionDenied: "Je hebt geen permissie om dit te doen!"
+previousBans: "%PLAYER% heeft vorige verbod!"
+underMinRep: "Je reputatie is onder de norm van de server!"
+overMaxAlts: "Je hebt te veel alt accounts!"
+altBanned: "Je hebt een andere account die gebanned is!"
+altAccounts: "%PLAYER% heeft nog een ander accounts [ %ALTS% ]!" 
+isMCBansMod: "%PLAYER% is an MCBans.com Staff Member!"
+youAreMCBansStaff: "You are an MCBans Staff Member!"
+
+newMessage: "Je hebt %COUNT% nieuw(e) bericht(en)!" 
+inboxEmpty: "Je inbox is leeg!" 
+InboxHeader: "Jouw Inbox!" 
+messageNone: "Geen Berichten!" 
+messageView: "[%DATE%] %SENDER%: %MESSAGE%" 
+messageError: "Fout bij het verzenden van het bericht!" 
+messageSent: "Bericht verzonden!"
+blockNot: "Niet Geblokkeerd!" 
+blockAlready: "Al eerder geblokkeerd!"
+unBlockSuccess: “%PLAYER% is gedeblokkeerd!"
+blockSuccess: "%PLAYER% is geblokkeerd!"
