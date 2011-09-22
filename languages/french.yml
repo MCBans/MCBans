@@ -1,4 +1,3 @@
-
 # Fichiers MCBans Français, Traduit par: Crueldog (les nouveaux messages ajoutés par expertmac2) 
 
 unBanMessageSuccess: "%PLAYER% a été dé-banni!" 
@@ -17,14 +16,14 @@ globalBanMessageSuccess: "%PLAYER% a été banni pour raison: [%REASON%]"
 globalBanMessageError: " Une erreur est survenue lors du ban de %PLAYER%!" 
 globalBanMessageWarning: "Erreur interdisant %PLAYER%! La raison contenues mauvais mot: %BADWORD%"
 globalBanMessageGroup: "%PLAYER% banni d’un serveur du même groupe que vous!" 
-globalBanMessageAlready: "%PLAYER% est déjà banni sur ce serveur!” 
+globalBanMessageAlready: "%PLAYER% est déjà banni sur ce serveur!"
 
 
 tempBanMessagePlayer: "%REASON%" 
 tempBanMessageSuccess: "%PLAYER% a été banni temporairement pour raison: [%REASON%]" 
 tempBanMessageError: "Une erreur est survenue lors du ban de %PLAYER%!" 
 tempBanMessageGroup: "%PLAYER% banni d’un serveur du même groupe que vous!" 
-tempBanMessageAlready: "%PLAYER% est déjà banni sur ce serveur!” 
+tempBanMessageAlready: "%PLAYER% est déjà banni sur ce serveur!"
 
 kickMessagePlayer: "%REASON%" 
 kickMessageSuccess: "%PLAYER% a été expulsé!" 
