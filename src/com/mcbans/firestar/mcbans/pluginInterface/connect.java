@@ -72,6 +72,7 @@ public class connect{
 							s = null;
 						}
 					break;
+					case 1:
 					case 2:
 					case 3:
 					case 5:
@@ -79,7 +80,6 @@ public class connect{
 						s = response.get("banReason");
 						MCBans.log.write( PlayerName + " access denied!" );
 					break;
-					case 1:
 					case 4:
 						Boolean blockConnection = false;
 						if(response.containsKey("altList")){
