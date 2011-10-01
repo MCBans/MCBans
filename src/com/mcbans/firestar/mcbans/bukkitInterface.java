@@ -99,8 +99,12 @@ public class bukkitInterface extends JavaPlugin {
         if(!languageFile.exists()){
         	if (Core.lang != null) {
         		System.out.print("MCBans: Contacting Master server for language file " + Core.lang + ".yml");
-        		//Core.download("http://myserver.mcbans.com/languages/en-us.yml", "plugins/mcbans/language/en-us.yml");
-        		languageFile = new File("plugins/mcbans/language/en-us.yml");
+        		Core.download("http://myserver.mcbans.com/languages/" + Core.lang + ".yml", "plugins/mcbans/language/" + Core.lang + ".yml");
+        		languageFile = new File("plugins/mcbans/language/" + Core.lang + ".yml");
+        		if (!languageFile.exists()) {
+        			System.out.print("MCBans: " + Core.lang + " does not exist on Master server.");
+        			pm.disablePlugin(pluginInterface("mcbans"));
+        		}
         	} else {
         		System.out.print("MCBans: No language file found!");
         		pm.disablePlugin(pluginInterface("mcbans"));
