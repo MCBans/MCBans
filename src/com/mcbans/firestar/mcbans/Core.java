@@ -24,40 +24,4 @@ public class Core {
 		this.lang = (String) map.get("lang");
 		System.out.print("MCBans: Set Core API Key and Language");
 	}
-	
-	public void download(String address, String localFileName) {
-	    OutputStream out = null;
-	    URLConnection conn = null;
-	    InputStream in = null;
-	    try {
-	        // Get the URL
-	        URL url = new URL(address);
-	        // Open an output stream to the destination file on our local filesystem
-	        out = new BufferedOutputStream(new FileOutputStream(localFileName));
-	        conn = url.openConnection();
-	        in = conn.getInputStream();
-	 
-	        // Get the data
-	        byte[] buffer = new byte[1024];
-	        int numRead;
-	        while ((numRead = in.read(buffer)) != -1) {
-	            out.write(buffer, 0, numRead);
-	        }           
-	        // Done! Just clean up and get out
-	    } catch (Exception exception) {
-	        exception.printStackTrace();
-	    } finally {
-	        try {
-	            if (in != null) {
-	                in.close();
-	            }
-	            if (out != null) {
-	                out.close();
-	            }
-	            System.out.print("MCBans: Download completed.");
-	        } catch (IOException ioe) {
-	            System.out.print("MCBans: Download unsuccessful.");
-	        }
-	    }
-	}
 }
