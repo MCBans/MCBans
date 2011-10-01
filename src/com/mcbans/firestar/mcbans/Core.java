@@ -42,7 +42,7 @@ public class Core {
 	        int numRead;
 	        while ((numRead = in.read(buffer)) != -1) {
 	            out.write(buffer, 0, numRead);
-	        }            
+	        }           
 	        // Done! Just clean up and get out
 	    } catch (Exception exception) {
 	        exception.printStackTrace();

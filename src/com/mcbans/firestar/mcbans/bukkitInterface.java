@@ -68,8 +68,10 @@ public class bukkitInterface extends JavaPlugin {
         // API KEY verification!
         if (Core.apikey != null) {
         	apiKey = this.Core.apikey;
+        	System.out.print("MCBans: Using Core API Key");
         } else {
         	apiKey = this.Settings.getString("apiKey");
+        	System.out.print("MCBans: Using Settings API Key");
         }
         if(apiKey.equalsIgnoreCase("<changeme>")){
         	System.out.print("MCBans: You need to enter your api key! You can find it at http://myserver.mcbans.com.");
@@ -97,7 +99,7 @@ public class bukkitInterface extends JavaPlugin {
         if(!languageFile.exists()){
         	if (Core.lang != null) {
         		System.out.print("MCBans: Contacting Master server for language file " + Core.lang + ".yml");
-        		Core.download("http://myserver.mcbans.com/languages/en-us.yml", "plugins/mcbans/language/en-us.yml");
+        		//Core.download("http://myserver.mcbans.com/languages/en-us.yml", "plugins/mcbans/language/en-us.yml");
         		languageFile = new File("plugins/mcbans/language/en-us.yml");
         	} else {
         		System.out.print("MCBans: No language file found!");
