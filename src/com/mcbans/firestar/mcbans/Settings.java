@@ -3,8 +3,6 @@ package com.mcbans.firestar.mcbans;
 import java.io.File;
 
 import org.bukkit.util.config.Configuration;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 
 public class Settings{
 	private Configuration config;

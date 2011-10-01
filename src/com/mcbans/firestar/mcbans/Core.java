@@ -1,8 +1,6 @@
 package com.mcbans.firestar.mcbans;
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 
