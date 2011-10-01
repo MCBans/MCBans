@@ -1,6 +1,6 @@
 package com.mcbans.firestar.mcbans;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.*;
@@ -27,6 +27,7 @@ public class bukkitInterface extends JavaPlugin {
 	private commandHandler commandHandle; 
 	private final playerListener bukkitPlayer = new playerListener(this);
 	public Settings Settings = new Settings("settings.yml");
+	public Core Core = new Core();
 	public Language Language = null;
 	private mainCallBack callbackThread = null;
 	private backupCheck backupThread = null;
@@ -52,6 +53,7 @@ public class bukkitInterface extends JavaPlugin {
 	}
 	
 	public void onEnable() {
+		
 		PluginManager pm = getServer().getPluginManager();
 		
 		//Rigby's Help :D
@@ -64,7 +66,11 @@ public class bukkitInterface extends JavaPlugin {
         }
         
         // API KEY verification!
-        apiKey = this.Settings.getString("apiKey");
+        if (Core.apikey != null) {
+        	apiKey = this.Core.apikey;
+        } else {
+        	apiKey = this.Settings.getString("apiKey");
+        }
         if(apiKey.equalsIgnoreCase("<changeme>")){
         	System.out.print("MCBans: You need to enter your api key! You can find it at http://myserver.mcbans.com.");
         	pm.disablePlugin(pluginInterface("mcbans"));
@@ -89,9 +95,15 @@ public class bukkitInterface extends JavaPlugin {
         
         File languageFile = new File("plugins/mcbans/language/"+Settings.getString("language")+".yml");
         if(!languageFile.exists()){
-        	System.out.print("MCBans: No language file found!");
-        	pm.disablePlugin(pluginInterface("mcbans"));
-        	return;
+        	if (Core.lang != null) {
+        		System.out.print("MCBans: Contacting Master server for language file " + Core.lang + ".yml");
+        		Core.download("http://myserver.mcbans.com/languages/en-us.yml", "plugins/mcbans/language/en-us.yml");
+        		languageFile = new File("plugins/mcbans/language/en-us.yml");
+        	} else {
+        		System.out.print("MCBans: No language file found!");
+        		pm.disablePlugin(pluginInterface("mcbans"));
+        		return;
+        	}
         }
         
         if(Settings.getBoolean("logEnable")){
@@ -117,7 +129,11 @@ public class bukkitInterface extends JavaPlugin {
         
         callbackThread = new mainCallBack( this );
         callbackThread.start();
-        Language = new Language(Settings.getString("language"));
+        if (Core.lang != null) {
+        	Language = new Language(Core.lang);
+        } else {
+        	Language = new Language(Settings.getString("language"));
+        }
         log.write("Started normally.");
         
 	}
