@@ -22,6 +22,7 @@ public class Core {
 		Map map = (Map)yaml.load(in);
 		this.apikey = (String) map.get("apikey");
 		this.lang = (String) map.get("lang");
+		System.out.print("MCBans: Set Core API Key and Language");
 	}
 	
 	public void download(String address, String localFileName) {
@@ -53,9 +54,9 @@ public class Core {
 	            if (out != null) {
 	                out.close();
 	            }
+	            System.out.print("MCBans: Download completed.");
 	        } catch (IOException ioe) {
-	            // Shouldn't happen, maybe add some logging here if you are not 
-	            // fooling around ;)
+	            System.out.print("MCBans: Download unsuccessful.");
 	        }
 	    }
 	}
