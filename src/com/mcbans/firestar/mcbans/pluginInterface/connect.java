@@ -23,6 +23,40 @@ public class connect{
 	}
 	public String exec( String PlayerName, String PlayerIP ){
 		String s = null;
+		Integer conUserCount = MCBans.getConnectionData(PlayerName);
+		Integer conAllCount = MCBans.getConnectionData("[Global]");
+		if (MCBans.Settings.getBoolean("throttleUsers")) {
+			long timeInMillis = System.currentTimeMillis();
+			long maxTime = 5 * 1000;
+			if (MCBans.lastConnection.get(PlayerName) + maxTime > timeInMillis) {
+				if (MCBans.Settings.getInteger("userConnectionLimit") == conUserCount) {
+					MCBans.lastConnection.put(PlayerName, (int) (timeInMillis + (MCBans.Settings.getInteger("userLockout") * 1000)));
+					if (MCBans.Settings.getString("userLockoutMsg") == null) {
+						return "Throttled - Connecting too fast (" + MCBans.Settings.getInteger("userLockout") + " Secs)";
+					} else {
+						return MCBans.Settings.getString("userLockoutMsg");
+					}
+				} else {
+					MCBans.lastConnection.put(PlayerName, (int) timeInMillis);
+				}
+			}
+		}
+		if (MCBans.Settings.getBoolean("throttleAll")) {
+			long timeInMillis = System.currentTimeMillis();
+			long maxTime = 5 * 1000;
+			if (MCBans.lastConnection.get("[Global]") + maxTime > timeInMillis) {
+				if (MCBans.Settings.getInteger("allConnectionLimit") == conAllCount) {
+					MCBans.lastConnection.put("[Global]", (int) (timeInMillis + (MCBans.Settings.getInteger("userLockout") * 1000)));
+					if (MCBans.Settings.getString("allLockoutMsg") == null) {
+						return "Throttled - Too many connections (" + MCBans.Settings.getInteger("userLockout") + " Secs)";
+					} else {
+						return MCBans.Settings.getString("allLockoutMsg");
+					}
+				} else {
+					MCBans.lastConnection.put("[Global]", (int) timeInMillis);
+				}
+			}
+		}
 		if(MCBans.getMode()){
 			if(MCBans.Backup.isBanned(PlayerName)){
 				s = MCBans.Settings.getString("offlineReason");
@@ -130,6 +164,15 @@ public class connect{
 					break;
 				}
 				if(s==null && tempList.size()>0){
+					if (MCBans.Settings.getBoolean("throttleUsers")) {
+						// +1 to the user's connection count
+						MCBans.setConnectionData(PlayerName, conUserCount + 1);
+					}
+					if (MCBans.Settings.getBoolean("throttleAll")) {
+						// +1 to the total connection count
+						MCBans.setConnectionData("[Global]", conAllCount + 1);
+					}
+					
 					MCBans.joinMessages.put( PlayerName, tempList);
 				}
 			}

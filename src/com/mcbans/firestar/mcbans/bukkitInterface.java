@@ -26,6 +26,8 @@ public class bukkitInterface extends JavaPlugin {
 	
 	private commandHandler commandHandle; 
 	private final playerListener bukkitPlayer = new playerListener(this);
+	private HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
+	public HashMap<String, Integer> lastConnection = new HashMap<String, Integer>();
 	public Settings Settings = new Settings("settings.yml");
 	public Core Core = new Core();
 	public Language Language = null;
@@ -99,9 +101,16 @@ public class bukkitInterface extends JavaPlugin {
         pm.registerEvent( Event.Type.PLAYER_CHAT, bukkitPlayer, Priority.Highest, this );
         pm.registerEvent( Event.Type.PLAYER_QUIT, bukkitPlayer, Priority.Normal, this );
         
-        System.out.print("MCBans: Loading language file: "+Settings.getString("language"));
+        String language;
         
-        File languageFile = new File("plugins/mcbans/language/"+Settings.getString("language")+".yml");
+        if (Core.lang != null) {
+        	language = Core.lang;
+        } else {
+        	language = Settings.getString("language");
+        }
+        System.out.print("MCBans: Loading language file: "+language);
+        
+        File languageFile = new File("plugins/mcbans/language/"+language+".yml");
         if(!languageFile.exists()){
         	if (Core.lang != null) {
         		System.out.print("MCBans: Contacting Master server for language file " + Core.lang + ".yml");
@@ -162,6 +171,14 @@ public class bukkitInterface extends JavaPlugin {
 				player.sendMessage( Settings.getString("prefix")+" "+msg );
 			}
 		}
+	}
+	
+	public Integer getConnectionData (String user) {
+		return connectionData.get(user);
+	}
+	
+	public void setConnectionData (String user, Integer count) {
+		connectionData.put(user, count);
 	}
 	
 	public void broadcastAll(String msg){
