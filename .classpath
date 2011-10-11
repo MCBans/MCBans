@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry excluding="com/firestar/mcbans/callBacks/newAlert.java|com/firestar/mcbans/callBacks/newMessages.java|com/firestar/mcbans/rawserver/|com/firestar/mcbans/webserver/|com/mcbans/firestar/mcbans/rawserver/|com/mcbans/firestar/mcbans/webserver/" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6"/>
-	<classpathentry kind="lib" path="D:/MCBans_Workspace/craftbukkit.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Toshiba/Downloads/craftbukkit-0.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="D:/MCBans_Workspace/Permissions.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -13,7 +13,7 @@ public class Settings{
 		if (!plugin_settings.exists()) {
 			System.out.print("MCBans: " + filename + " not found, downloading default..");
 			Downloader download = new Downloader();
-			download.Download("http://myserver.mcbans.com/settings.yml", "plugins/mcbans/"+filename);
+			download.Download("http://myserver.mcbans.com/getSettings", "plugins/mcbans/"+filename);
 			plugin_settings = new File("plugins/mcbans/"+filename);
 			if (!plugin_settings.exists()) {
 				System.out.print("MCBans: Unable to download " + filename + "!");

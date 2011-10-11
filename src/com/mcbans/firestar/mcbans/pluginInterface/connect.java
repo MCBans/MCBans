@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import com.mcbans.firestar.mcbans.bukkitInterface;
 import com.mcbans.firestar.mcbans.request.jsonHandler;
@@ -25,35 +26,25 @@ public class connect{
 		String s = null;
 		Integer conUserCount = MCBans.getConnectionData(PlayerName);
 		Integer conAllCount = MCBans.getConnectionData("[Global]");
-		if (MCBans.Settings.getBoolean("throttleUsers")) {
-			long timeInMillis = System.currentTimeMillis();
-			long maxTime = 5 * 1000;
-			if (MCBans.lastConnection.get(PlayerName) + maxTime > timeInMillis) {
+		long timeInMillis = System.currentTimeMillis();
+		
+		if (MCBans.Settings.getBoolean("throttleUsers") && MCBans.Settings.getInteger("userConnectionTime") > 0) {
+			long maxTime = MCBans.Settings.getInteger("userConnectionTime") * 1000;
+			if (conUserCount == 0) {
+				long nextReset = timeInMillis + maxTime;
+				MCBans.resetTime.put(PlayerName, nextReset);
+			}
+			long checkTime = MCBans.resetTime.get(PlayerName) + maxTime;
+			if (checkTime > timeInMillis) {
 				if (MCBans.Settings.getInteger("userConnectionLimit") == conUserCount) {
-					MCBans.lastConnection.put(PlayerName, (int) (timeInMillis + (MCBans.Settings.getInteger("userLockout") * 1000)));
+					MCBans.resetTime.put(PlayerName, (timeInMillis + (MCBans.Settings.getInteger("userLockout") * 1000)));
 					if (MCBans.Settings.getString("userLockoutMsg") == null) {
-						return "Throttled - Connecting too fast (" + MCBans.Settings.getInteger("userLockout") + " Secs)";
+						return "Throttled - Connecting too fast";
 					} else {
 						return MCBans.Settings.getString("userLockoutMsg");
 					}
 				} else {
-					MCBans.lastConnection.put(PlayerName, (int) timeInMillis);
-				}
-			}
-		}
-		if (MCBans.Settings.getBoolean("throttleAll")) {
-			long timeInMillis = System.currentTimeMillis();
-			long maxTime = 5 * 1000;
-			if (MCBans.lastConnection.get("[Global]") + maxTime > timeInMillis) {
-				if (MCBans.Settings.getInteger("allConnectionLimit") == conAllCount) {
-					MCBans.lastConnection.put("[Global]", (int) (timeInMillis + (MCBans.Settings.getInteger("userLockout") * 1000)));
-					if (MCBans.Settings.getString("allLockoutMsg") == null) {
-						return "Throttled - Too many connections (" + MCBans.Settings.getInteger("userLockout") + " Secs)";
-					} else {
-						return MCBans.Settings.getString("allLockoutMsg");
-					}
-				} else {
-					MCBans.lastConnection.put("[Global]", (int) timeInMillis);
+					MCBans.setConnectionData(PlayerName, conUserCount++);
 				}
 			}
 		}
@@ -106,7 +97,6 @@ public class connect{
 							s = null;
 						}
 					break;
-					case 1:
 					case 2:
 					case 3:
 					case 5:
@@ -115,6 +105,7 @@ public class connect{
 						MCBans.log.write( PlayerName + " access denied!" );
 					break;
 					case 4:
+					case 1:
 						Boolean blockConnection = false;
 						if(response.containsKey("altList")){
 							if(!response.get("altList").equals("")){
@@ -146,7 +137,7 @@ public class connect{
 								if(MCBans.Settings.getBoolean("isDebug")){
 									System.out.print("Player Rep: "+Float.parseFloat(response.get("playerRep")));
 								}
-								if( Float.parseFloat( response.get( "playerRep" ) ) >= MCBans.Settings.getFloat("minRep") ){
+								if( Float.parseFloat( response.get( "playerRep" ) ) > MCBans.Settings.getFloat("minRep") ){
 									MCBans.broadcastBanView( ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", PlayerName ) );
 									MCBans.log.write( PlayerName + " has connected!" );
 									if(response.containsKey("is_mcbans_mod")) {
@@ -157,7 +148,12 @@ public class connect{
 									}
 									s = null;
 								}else{
-									s = MCBans.Language.getFormat( "underMinRep" );
+									if ( Float.parseFloat( response.get( "playerRep") ) <= 0) {
+										s = response.get("banReason");
+									} else {
+										s = MCBans.Language.getFormat( "underMinRep" );
+									}
+									MCBans.log.write( PlayerName + " access denied!" );
 								}
 							}
 						}
@@ -172,7 +168,12 @@ public class connect{
 						// +1 to the total connection count
 						MCBans.setConnectionData("[Global]", conAllCount + 1);
 					}
-					
+					Player target = MCBans.getServer().getPlayer(PlayerName);
+					if( MCBans.Permissions.isAllow( target.getWorld().getName(), target.getName(), "ban.view" ) ){
+						if (MCBans.Settings.getBoolean("mcbansUnconfigured")) {
+							target.sendMessage( MCBans.Settings.getString("prefix") + " Thank you for installing MCBans on your server! Please edit the settings.yml file located in the plugins/mcbans directory and customize it to your needs. This notice will disappear after the new settings take effect.");
+						}
+					}
 					MCBans.joinMessages.put( PlayerName, tempList);
 				}
 			}

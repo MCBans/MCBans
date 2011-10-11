@@ -3,7 +3,7 @@ package com.mcbans.firestar.mcbans;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.regex.*;
+import java.util.Map;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,6 +14,7 @@ import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import com.mcbans.firestar.mcbans.backup.backup;
 import com.mcbans.firestar.mcbans.backup.backupCheck;
@@ -25,9 +26,11 @@ import com.mcbans.firestar.mcbans.log.ActionLog;
 public class bukkitInterface extends JavaPlugin {
 	
 	private commandHandler commandHandle; 
+	private BukkitScheduler BScheduler;
+	private int taskID = -1;
 	private final playerListener bukkitPlayer = new playerListener(this);
 	private HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
-	public HashMap<String, Integer> lastConnection = new HashMap<String, Integer>();
+	public HashMap<String, Long> resetTime = new HashMap<String, Long>();
 	public Settings Settings = new Settings("settings.yml");
 	public Core Core = new Core();
 	public Language Language = null;
@@ -78,23 +81,10 @@ public class bukkitInterface extends JavaPlugin {
         	apiKey = this.Core.apikey;
         	System.out.print("MCBans: Using Core API Key");
         } else {
-        	apiKey = this.Settings.getString("apiKey");
-        	System.out.print("MCBans: Using Settings API Key");
-        }
-        if(apiKey.equalsIgnoreCase("<changeme>")){
-        	System.out.print("MCBans: You need to enter your api key! You can find it at http://myserver.mcbans.com.");
+        	System.out.print("MCBans: Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
         	pm.disablePlugin(pluginInterface("mcbans"));
         	return;
         }
-        try {
-        	if (apiKey.matches("(?i)<(.*?)>")) {
-        		System.out.print("MCBans: Remove the < and > from the api key, it is not needed!");
-            	pm.disablePlugin(pluginInterface("mcbans"));
-            	return;
-        	} 
-        } catch (PatternSyntaxException ex) {
-        }
-
         
 		pm.registerEvent( Event.Type.PLAYER_JOIN, bukkitPlayer, Priority.Normal, this );
         pm.registerEvent( Event.Type.PLAYER_PRELOGIN, bukkitPlayer, Priority.Normal, this );
@@ -106,7 +96,9 @@ public class bukkitInterface extends JavaPlugin {
         if (Core.lang != null) {
         	language = Core.lang;
         } else {
-        	language = Settings.getString("language");
+        	System.out.print("MCBans: Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
+        	pm.disablePlugin(pluginInterface("mcbans"));
+        	return;
         }
         System.out.print("MCBans: Loading language file: "+language);
         
@@ -156,6 +148,14 @@ public class bukkitInterface extends JavaPlugin {
         } else {
         	Language = new Language(Settings.getString("language"));
         }
+        
+        taskID = BScheduler.scheduleAsyncRepeatingTask(pluginInterface("mcbans"), this.resetThrottleTimer(), 0L, 10L);
+        
+        if (taskID != -1) {
+        	log.write("Unable to schedule throttle reset task");
+        	log.write("Throttling has been disabled.");
+        }
+        
         log.write("Started normally.");
         
 	}
@@ -171,6 +171,18 @@ public class bukkitInterface extends JavaPlugin {
 				player.sendMessage( Settings.getString("prefix")+" "+msg );
 			}
 		}
+	}
+	
+	private Runnable resetThrottleTimer () {
+		long timeInMillis = System.currentTimeMillis();
+		for (Map.Entry<String, Long> entry : resetTime.entrySet()) {
+			if (timeInMillis >= entry.getValue()) {
+				resetTime.remove(entry.getKey());
+				connectionData.remove(entry.getKey());
+				log.write("Resetting throttle timer for " + entry.getKey());
+			}
+		}
+		return null;
 	}
 	
 	public Integer getConnectionData (String user) {
