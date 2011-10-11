@@ -26,7 +26,7 @@ import com.mcbans.firestar.mcbans.log.ActionLog;
 public class bukkitInterface extends JavaPlugin {
 	
 	private commandHandler commandHandle; 
-	private BukkitScheduler BScheduler;
+	private BukkitScheduler BScheduler = getServer().getScheduler();
 	private int taskID = -1;
 	private final playerListener bukkitPlayer = new playerListener(this);
 	private HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
