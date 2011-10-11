@@ -149,7 +149,7 @@ public class bukkitInterface extends JavaPlugin {
         	Language = new Language(Settings.getString("language"));
         }
         
-        taskID = BScheduler.scheduleAsyncRepeatingTask(pluginInterface("mcbans"), this.resetThrottleTimer(), 0L, 10L);
+        taskID = BScheduler.scheduleAsyncRepeatingTask(this, this.resetThrottleTimer(), 0L, 10L);
         
         if (taskID != -1) {
         	log.write("Unable to schedule throttle reset task");
