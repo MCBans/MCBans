@@ -26,10 +26,10 @@ import com.mcbans.firestar.mcbans.log.ActionLog;
 public class bukkitInterface extends JavaPlugin {
 	
 	private commandHandler commandHandle; 
-	private BukkitScheduler BScheduler = getServer().getScheduler();
-	private int taskID = -1;
+	private BukkitScheduler BScheduler;
 	private final playerListener bukkitPlayer = new playerListener(this);
-	private HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
+	public int taskID = 0;
+	public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
 	public HashMap<String, Long> resetTime = new HashMap<String, Long>();
 	public Settings Settings = new Settings("settings.yml");
 	public Core Core = new Core();
@@ -69,6 +69,7 @@ public class bukkitInterface extends JavaPlugin {
 		
 		//Rigby's Help :D
 		CraftServer server = (CraftServer) getServer();
+		
         boolean isFirestarFail = server.getServer().onlineMode;
         if( !isFirestarFail ){
         	System.out.print("MCBans: Can only run in online mode!");
@@ -149,11 +150,15 @@ public class bukkitInterface extends JavaPlugin {
         	Language = new Language(Settings.getString("language"));
         }
         
-        taskID = BScheduler.scheduleAsyncRepeatingTask(this, this.resetThrottleTimer(), 0L, 10L);
+        BScheduler = server.getScheduler();
+        taskID = BScheduler.scheduleAsyncRepeatingTask(this, new ThrottleReset(), 0L, 10L);
         
-        if (taskID != -1) {
+        if (taskID == -1) {
         	log.write("Unable to schedule throttle reset task");
-        	log.write("Throttling has been disabled.");
+        	log.write("Throttling has been disabled. (Task ID: " + taskID + ")");
+        } else {
+        	log.write("Connection throttling operating normally!");
+        	log.write("Task ID: " + taskID);
         }
         
         log.write("Started normally.");
@@ -173,20 +178,12 @@ public class bukkitInterface extends JavaPlugin {
 		}
 	}
 	
-	private Runnable resetThrottleTimer () {
-		long timeInMillis = System.currentTimeMillis();
-		for (Map.Entry<String, Long> entry : resetTime.entrySet()) {
-			if (timeInMillis >= entry.getValue()) {
-				resetTime.remove(entry.getKey());
-				connectionData.remove(entry.getKey());
-				log.write("Resetting throttle timer for " + entry.getKey());
-			}
+	public int getConnectionData (String user) {
+		if (!connectionData.containsKey(user)) {
+			return 0;
+		} else {
+			return connectionData.get(user);
 		}
-		return null;
-	}
-	
-	public Integer getConnectionData (String user) {
-		return connectionData.get(user);
 	}
 	
 	public void setConnectionData (String user, Integer count) {

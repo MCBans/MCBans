@@ -24,17 +24,18 @@ public class connect{
 	}
 	public String exec( String PlayerName, String PlayerIP ){
 		String s = null;
-		Integer conUserCount = MCBans.getConnectionData(PlayerName);
-		Integer conAllCount = MCBans.getConnectionData("[Global]");
+		int conUserCount = MCBans.getConnectionData(PlayerName);
+		int conAllCount = MCBans.getConnectionData("[Global]");
 		long timeInMillis = System.currentTimeMillis();
 		
-		if (MCBans.Settings.getBoolean("throttleUsers") && MCBans.Settings.getInteger("userConnectionTime") > 0) {
+		if (MCBans.Settings.getBoolean("throttleUsers") && MCBans.Settings.getInteger("userConnectionTime") > 0 && MCBans.taskID != -1) {
 			long maxTime = MCBans.Settings.getInteger("userConnectionTime") * 1000;
 			if (conUserCount == 0) {
 				long nextReset = timeInMillis + maxTime;
 				MCBans.resetTime.put(PlayerName, nextReset);
+				MCBans.log.write("resetTime Count: " + MCBans.resetTime.size());
 			}
-			long checkTime = MCBans.resetTime.get(PlayerName) + maxTime;
+			long checkTime = MCBans.resetTime.get(PlayerName);
 			if (checkTime > timeInMillis) {
 				if (MCBans.Settings.getInteger("userConnectionLimit") == conUserCount) {
 					MCBans.resetTime.put(PlayerName, (timeInMillis + (MCBans.Settings.getInteger("userLockout") * 1000)));
@@ -46,6 +47,8 @@ public class connect{
 				} else {
 					MCBans.setConnectionData(PlayerName, conUserCount++);
 				}
+				MCBans.log.write("User: " + PlayerName + "|ConCount: " + conUserCount);
+				MCBans.log.write("checkTime: " + checkTime + "|timeInMillis: " + timeInMillis);
 			}
 		}
 		if(MCBans.getMode()){
