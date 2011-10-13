@@ -33,22 +33,42 @@ public class connect{
 			if (conUserCount == 0) {
 				long nextReset = timeInMillis + maxTime;
 				MCBans.resetTime.put(PlayerName, nextReset);
-				MCBans.log.write("resetTime Count: " + MCBans.resetTime.size());
 			}
 			long checkTime = MCBans.resetTime.get(PlayerName);
 			if (checkTime > timeInMillis) {
 				if (MCBans.Settings.getInteger("userConnectionLimit") == conUserCount) {
-					MCBans.resetTime.put(PlayerName, (timeInMillis + (MCBans.Settings.getInteger("userLockout") * 1000)));
+					MCBans.resetTime.put(PlayerName, (timeInMillis + (MCBans.Settings.getInteger("userLockoutTime") * 1000)));
 					if (MCBans.Settings.getString("userLockoutMsg") == null) {
 						return "Throttled - Connecting too fast";
 					} else {
 						return MCBans.Settings.getString("userLockoutMsg");
 					}
 				} else {
-					MCBans.setConnectionData(PlayerName, conUserCount++);
+					MCBans.setConnectionData(PlayerName, ++conUserCount);
 				}
-				MCBans.log.write("User: " + PlayerName + "|ConCount: " + conUserCount);
-				MCBans.log.write("checkTime: " + checkTime + "|timeInMillis: " + timeInMillis);
+			}
+		}
+		if (MCBans.Settings.getBoolean("throttleAll") && MCBans.Settings.getInteger("allConnectionTime") > 0 && MCBans.taskID != -1) {
+			long maxTime = MCBans.Settings.getInteger("allConnectionTime") * 1000;
+			if (conAllCount == 0) {
+				long allNextReset = timeInMillis + maxTime;
+				MCBans.resetTime.put("[Global]", allNextReset);
+			}
+			long allCheckTime = MCBans.resetTime.get("[Global]");
+			if (allCheckTime > timeInMillis) {
+				if (MCBans.Settings.getInteger("allConnectionLimit") < conAllCount) {
+					if (MCBans.Settings.getInteger("allConnectionLimit") == conAllCount) {
+						MCBans.resetTime.put("[Global]", (timeInMillis + (MCBans.Settings.getInteger("allLockoutTime") * 1000)));
+						MCBans.setConnectionData("[Global]", ++conAllCount);
+					}
+					if (MCBans.Settings.getString("allLockoutMsg") == "") {
+						return "Throttled - Too many connections!";
+					} else {
+						return MCBans.Settings.getString("allLockoutMsg");
+					}
+				} else {
+					MCBans.setConnectionData("[Global]", ++conAllCount);
+				}
 			}
 		}
 		if(MCBans.getMode()){

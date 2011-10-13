@@ -150,15 +150,19 @@ public class bukkitInterface extends JavaPlugin {
         	Language = new Language(Settings.getString("language"));
         }
         
-        BScheduler = server.getScheduler();
-        taskID = BScheduler.scheduleAsyncRepeatingTask(this, new ThrottleReset(), 0L, 10L);
         
-        if (taskID == -1) {
-        	log.write("Unable to schedule throttle reset task");
-        	log.write("Throttling has been disabled. (Task ID: " + taskID + ")");
-        } else {
-        	log.write("Connection throttling operating normally!");
-        	log.write("Task ID: " + taskID);
+        if (Settings.getBoolean("throttleUsers")) {
+        BScheduler = server.getScheduler();
+        taskID = BScheduler.scheduleAsyncRepeatingTask(this, new ThrottleReset(this), 0L, 10L);
+        
+        	if (taskID == -1) {
+        		log.write("Unable to schedule throttle reset task");
+        		log.write("Throttling has been disabled. (Task ID: " + taskID + ")");
+        	} else {
+        		log.write("Connection throttling operating normally!");
+        		log.write("Task ID: " + taskID);
+        		log.write("Throttle Connect Limit: " + Settings.getInteger("userConnectionLimit"));
+        	}
         }
         
         log.write("Started normally.");
@@ -179,6 +183,7 @@ public class bukkitInterface extends JavaPlugin {
 	}
 	
 	public int getConnectionData (String user) {
+		log.write("Debug: " + connectionData.containsKey(user));
 		if (!connectionData.containsKey(user)) {
 			return 0;
 		} else {

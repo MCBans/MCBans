@@ -7,10 +7,14 @@ import com.mcbans.firestar.mcbans.bukkitInterface;
 public class ThrottleReset implements Runnable {
 	private bukkitInterface MCBans;
 	
+	public ThrottleReset(bukkitInterface iface) {
+		MCBans = iface;
+	}
+	
 	public void run() {
 		long timeInMillis = System.currentTimeMillis();
 		
-		if (MCBans == null || MCBans.resetTime == null) return;
+		if (MCBans.resetTime == null) return;
 		
 		for (Map.Entry<String, Long> entry : MCBans.resetTime.entrySet()) {
 			if (timeInMillis >= entry.getValue()) {
