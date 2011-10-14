@@ -2,18 +2,25 @@ package com.mcbans.firestar.mcbans;
 
 import java.io.File;
 
+import com.mcbans.firestar.mcbans.bukkitInterface;
 import org.bukkit.util.config.Configuration;
 
 public class Settings{
+	private bukkitInterface MCBans;
 	private Configuration config;
 	public boolean doTerminate = false;
 	
+	public void connect( bukkitInterface p ){
+		MCBans = p;
+	}
+	
 	public Settings( String filename ){
+		this.connect(MCBans);
 		File plugin_settings = new File("plugins/mcbans/"+filename);
 		if (!plugin_settings.exists()) {
 			System.out.print("MCBans: " + filename + " not found, downloading default..");
 			Downloader download = new Downloader();
-			download.Download("http://myserver.mcbans.com/getSettings", "plugins/mcbans/"+filename);
+			download.Download("http://myserver.mcbans.com/getSettings/" + MCBans.getApiKey(), "plugins/mcbans/"+filename);
 			plugin_settings = new File("plugins/mcbans/"+filename);
 			if (!plugin_settings.exists()) {
 				System.out.print("MCBans: Unable to download " + filename + "!");
