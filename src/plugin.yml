@@ -1,6 +1,6 @@
 name: mcbans
 main: com.mcbans.firestar.mcbans.bukkitInterface
-version: 4.0
+version: 3.2
 author: Firestar
 commands:
   kick:
