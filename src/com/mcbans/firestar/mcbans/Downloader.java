@@ -1,6 +1,7 @@
 package com.mcbans.firestar.mcbans;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +12,16 @@ import java.net.URLConnection;
 public class Downloader {
 	public Downloader () {
 		System.out.print("MCBans: Waiting for download request.");
+		File mcbansFolder = new File("plugins/mcbans");
+		if (!mcbansFolder.exists()) {
+			mcbansFolder.mkdir();
+			System.out.print("MCBans: Created plugin directory..");
+		}
+		File languageFolder = new File("plugins/mcbans/language");
+		if (!languageFolder.exists()) {
+			languageFolder.mkdir();
+			System.out.print("MCBans: Created language directory..");
+		}
 	}
 	
 	public void Download(String address, String localFileName) {

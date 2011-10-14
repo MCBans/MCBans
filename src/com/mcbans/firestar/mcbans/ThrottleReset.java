@@ -13,14 +13,24 @@ public class ThrottleReset implements Runnable {
 	
 	public void run() {
 		long timeInMillis = System.currentTimeMillis();
+		int deleteCount = 0;
+		String[] deletions = new String[MCBans.resetTime.size()];
 		
 		if (MCBans.resetTime == null) return;
-		
 		for (Map.Entry<String, Long> entry : MCBans.resetTime.entrySet()) {
 			if (timeInMillis >= entry.getValue()) {
-				MCBans.resetTime.remove(entry.getKey());
-				MCBans.connectionData.remove(entry.getKey());
-				MCBans.log.write("Resetting throttle timer for " + entry.getKey());
+				deletions[deleteCount] = entry.getKey();
+				++deleteCount;
+			}
+		}
+		
+		if (deleteCount != 0) {
+			for(int i = 0; i < deletions.length; i++) { 
+				String key = deletions[i];
+				if (key != null) {
+					MCBans.clearThrottle(key);
+					MCBans.log.write("Resetting throttle timer for " + key);
+				}
 			}
 		}
 	}

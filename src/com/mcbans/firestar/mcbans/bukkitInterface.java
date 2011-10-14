@@ -153,7 +153,7 @@ public class bukkitInterface extends JavaPlugin {
         
         if (Settings.getBoolean("throttleUsers")) {
         BScheduler = server.getScheduler();
-        taskID = BScheduler.scheduleAsyncRepeatingTask(this, new ThrottleReset(this), 0L, 10L);
+        taskID = BScheduler.scheduleAsyncRepeatingTask(this, new ThrottleReset(this), 0L, 40L);
         
         	if (taskID == -1) {
         		log.write("Unable to schedule throttle reset task");
@@ -182,8 +182,24 @@ public class bukkitInterface extends JavaPlugin {
 		}
 	}
 	
+	public long getResetTime (String user) {
+		if (!resetTime.containsKey(user)) {
+			return 0;
+		} else {
+			return resetTime.get(user);
+		}
+	}
+	
+	public void setResetTime (String user, Long time) {
+		resetTime.put(user, time);
+	}
+	
+	public void clearThrottle (String user) {
+		resetTime.remove(user);
+		connectionData.remove(user);
+	}
+	
 	public int getConnectionData (String user) {
-		log.write("Debug: " + connectionData.containsKey(user));
 		if (!connectionData.containsKey(user)) {
 			return 0;
 		} else {

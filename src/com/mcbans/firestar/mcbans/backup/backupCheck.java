@@ -56,6 +56,7 @@ public class backupCheck extends Thread {
 			}
 			if(!result.equalsIgnoreCase("up")){
 				MCBans.setMode(true);
+				MCBans.log.write("MCBans Master Server is offline!");
 			}else{
 				MCBans.setMode(false);
 			}

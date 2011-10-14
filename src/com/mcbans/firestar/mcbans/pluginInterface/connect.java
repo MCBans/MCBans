@@ -28,46 +28,46 @@ public class connect{
 		int conAllCount = MCBans.getConnectionData("[Global]");
 		long timeInMillis = System.currentTimeMillis();
 		
-		if (MCBans.Settings.getBoolean("throttleUsers") && MCBans.Settings.getInteger("userConnectionTime") > 0 && MCBans.taskID != -1) {
-			long maxTime = MCBans.Settings.getInteger("userConnectionTime") * 1000;
-			if (conUserCount == 0) {
-				long nextReset = timeInMillis + maxTime;
-				MCBans.resetTime.put(PlayerName, nextReset);
-			}
-			long checkTime = MCBans.resetTime.get(PlayerName);
-			if (checkTime > timeInMillis) {
-				if (MCBans.Settings.getInteger("userConnectionLimit") == conUserCount) {
-					MCBans.resetTime.put(PlayerName, (timeInMillis + (MCBans.Settings.getInteger("userLockoutTime") * 1000)));
-					if (MCBans.Settings.getString("userLockoutMsg") == null) {
-						return "Throttled - Connecting too fast";
-					} else {
-						return MCBans.Settings.getString("userLockoutMsg");
-					}
-				} else {
-					MCBans.setConnectionData(PlayerName, ++conUserCount);
-				}
-			}
-		}
 		if (MCBans.Settings.getBoolean("throttleAll") && MCBans.Settings.getInteger("allConnectionTime") > 0 && MCBans.taskID != -1) {
 			long maxTime = MCBans.Settings.getInteger("allConnectionTime") * 1000;
 			if (conAllCount == 0) {
 				long allNextReset = timeInMillis + maxTime;
-				MCBans.resetTime.put("[Global]", allNextReset);
+				MCBans.setResetTime("[Global]", allNextReset);
 			}
-			long allCheckTime = MCBans.resetTime.get("[Global]");
+			long allCheckTime = MCBans.getResetTime("[Global]");
 			if (allCheckTime > timeInMillis) {
 				if (MCBans.Settings.getInteger("allConnectionLimit") < conAllCount) {
 					if (MCBans.Settings.getInteger("allConnectionLimit") == conAllCount) {
-						MCBans.resetTime.put("[Global]", (timeInMillis + (MCBans.Settings.getInteger("allLockoutTime") * 1000)));
+						MCBans.setResetTime("[Global]", (timeInMillis + (MCBans.Settings.getInteger("allLockoutTime") * 1000)));
 						MCBans.setConnectionData("[Global]", ++conAllCount);
 					}
 					if (MCBans.Settings.getString("allLockoutMsg") == "") {
-						return "Throttled - Too many connections!";
+						return "Too many connections! Please wait a few minutes.";
 					} else {
 						return MCBans.Settings.getString("allLockoutMsg");
 					}
 				} else {
 					MCBans.setConnectionData("[Global]", ++conAllCount);
+				}
+			}
+		}
+		if (MCBans.Settings.getBoolean("throttleUsers") && MCBans.Settings.getInteger("userConnectionTime") > 0 && MCBans.taskID != -1) {
+			long maxTime = MCBans.Settings.getInteger("userConnectionTime") * 1000;
+			if (conUserCount == 0) {
+				long nextReset = timeInMillis + maxTime;
+				MCBans.setResetTime(PlayerName, nextReset);
+			}
+			long checkTime = MCBans.getResetTime(PlayerName);
+			if (checkTime > timeInMillis) {
+				if (MCBans.Settings.getInteger("userConnectionLimit") == conUserCount) {
+					MCBans.setResetTime(PlayerName, (timeInMillis + (MCBans.Settings.getInteger("userLockoutTime") * 1000)));
+					if (MCBans.Settings.getString("userLockoutMsg") == "") {
+						return "Connecting too quickly! Please wait a few minutes.";
+					} else {
+						return MCBans.Settings.getString("userLockoutMsg");
+					}
+				} else {
+					MCBans.setConnectionData(PlayerName, ++conUserCount);
 				}
 			}
 		}
@@ -183,14 +183,6 @@ public class connect{
 					break;
 				}
 				if(s==null && tempList.size()>0){
-					if (MCBans.Settings.getBoolean("throttleUsers")) {
-						// +1 to the user's connection count
-						MCBans.setConnectionData(PlayerName, conUserCount + 1);
-					}
-					if (MCBans.Settings.getBoolean("throttleAll")) {
-						// +1 to the total connection count
-						MCBans.setConnectionData("[Global]", conAllCount + 1);
-					}
 					Player target = MCBans.getServer().getPlayer(PlayerName);
 					if( MCBans.Permissions.isAllow( target.getWorld().getName(), target.getName(), "ban.view" ) ){
 						if (MCBans.Settings.getBoolean("mcbansUnconfigured")) {
