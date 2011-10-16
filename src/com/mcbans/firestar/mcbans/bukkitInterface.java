@@ -31,8 +31,8 @@ public class bukkitInterface extends JavaPlugin {
 	public int taskID = 0;
 	public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
 	public HashMap<String, Long> resetTime = new HashMap<String, Long>();
-	public Settings Settings = new Settings("settings.yml");
 	public Core Core = new Core();
+	public Settings Settings = new Settings("settings.yml");
 	public Language Language = null;
 	private mainCallBack callbackThread = null;
 	private backupCheck backupThread = null;
