@@ -10,12 +10,8 @@ public class Settings{
 	private Configuration config;
 	public boolean doTerminate = false;
 	
-	public void connect( bukkitInterface p ){
+	public Settings( String filename, bukkitInterface p ){
 		MCBans = p;
-	}
-	
-	public Settings( String filename ){
-		this.connect(MCBans);
 		File plugin_settings = new File("plugins/mcbans/"+filename);
 		if (!plugin_settings.exists()) {
 			System.out.print("MCBans: " + filename + " not found, downloading default..");

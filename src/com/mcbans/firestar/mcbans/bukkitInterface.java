@@ -73,15 +73,15 @@ public class bukkitInterface extends JavaPlugin {
         
         // API KEY verification!
         if (Core.apikey != null) {
-        	apiKey = this.Core.apikey;
-        	System.out.print("MCBans: Using Core API Key");
+        	this.apiKey = this.Core.apikey;
+        	System.out.print("MCBans: Using Core API Key (" + this.getApiKey() + ")");
         } else {
         	System.out.print("MCBans: Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
         	pm.disablePlugin(pluginInterface("mcbans"));
         	return;
         }
         
-        this.Settings = new Settings("settings.yml");
+        Settings = new Settings("settings.yml", this);
         
         if (Settings.doTerminate) {
 			System.out.print("MCBans: Please download the latest settings.yml from MCBans.com!");
