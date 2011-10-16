@@ -32,7 +32,7 @@ public class bukkitInterface extends JavaPlugin {
 	public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
 	public HashMap<String, Long> resetTime = new HashMap<String, Long>();
 	public Core Core = new Core();
-	public Settings Settings = new Settings("settings.yml");
+	public Settings Settings;
 	public Language Language = null;
 	private mainCallBack callbackThread = null;
 	private backupCheck backupThread = null;
@@ -61,12 +61,6 @@ public class bukkitInterface extends JavaPlugin {
 		
 		PluginManager pm = getServer().getPluginManager();
 		
-		if (Settings.doTerminate) {
-			System.out.print("MCBans: Please download the latest settings.yml from MCBans.com!");
-        	pm.disablePlugin(pluginInterface("mcbans"));
-        	return;
-		}
-		
 		//Rigby's Help :D
 		CraftServer server = (CraftServer) getServer();
 		
@@ -86,6 +80,14 @@ public class bukkitInterface extends JavaPlugin {
         	pm.disablePlugin(pluginInterface("mcbans"));
         	return;
         }
+        
+        this.Settings = new Settings("settings.yml");
+        
+        if (Settings.doTerminate) {
+			System.out.print("MCBans: Please download the latest settings.yml from MCBans.com!");
+        	pm.disablePlugin(pluginInterface("mcbans"));
+        	return;
+		}
         
 		pm.registerEvent( Event.Type.PLAYER_JOIN, bukkitPlayer, Priority.Normal, this );
         pm.registerEvent( Event.Type.PLAYER_PRELOGIN, bukkitPlayer, Priority.Normal, this );
