@@ -66,7 +66,7 @@ public class bukkitInterface extends JavaPlugin {
 		
         boolean isFirestarFail = server.getServer().onlineMode;
         if( !isFirestarFail ){
-        	System.out.print("MCBans: Can only run in online mode!");
+        	System.out.print("MCBans: Your server is not in online mode!");
         	pm.disablePlugin(pluginInterface("mcbans"));
         	return;
         }
@@ -74,7 +74,7 @@ public class bukkitInterface extends JavaPlugin {
         // API KEY verification!
         if (Core.apikey != null) {
         	this.apiKey = this.Core.apikey;
-        	System.out.print("MCBans: Using Core API Key (" + this.getApiKey() + ")");
+        	System.out.print("MCBans: Registered API Key (" + this.getApiKey() + ")");
         } else {
         	System.out.print("MCBans: Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
         	pm.disablePlugin(pluginInterface("mcbans"));
@@ -91,7 +91,6 @@ public class bukkitInterface extends JavaPlugin {
         
 		pm.registerEvent( Event.Type.PLAYER_JOIN, bukkitPlayer, Priority.Normal, this );
         pm.registerEvent( Event.Type.PLAYER_PRELOGIN, bukkitPlayer, Priority.Normal, this );
-        pm.registerEvent( Event.Type.PLAYER_CHAT, bukkitPlayer, Priority.Highest, this );
         pm.registerEvent( Event.Type.PLAYER_QUIT, bukkitPlayer, Priority.Normal, this );
         
         String language;
@@ -159,7 +158,7 @@ public class bukkitInterface extends JavaPlugin {
         
         	if (taskID == -1) {
         		log.write("Unable to schedule throttle reset task");
-        		log.write("Throttling has been disabled. (Task ID: " + taskID + ")");
+        		log.write("Throttling has been disabled.");
         	} else {
         		log.write("Connection throttling operating normally!");
         		log.write("Task ID: " + taskID);
@@ -167,7 +166,7 @@ public class bukkitInterface extends JavaPlugin {
         	}
         }
         
-        log.write("Started normally.");
+        log.write("Started and operating normally!");
         
 	}
 	

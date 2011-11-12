@@ -2,40 +2,46 @@ package com.mcbans.firestar.mcbans;
 
 import java.io.File;
 
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.*;
 
 public class Language{
-	private Configuration config;
+	private YamlConfiguration config;
 	public Language( String filename ){
 		File plugin_settings = new File("plugins/mcbans/language/"+filename+".yml");
-		config = new Configuration(plugin_settings);
-		config.load();
+		config = YamlConfiguration.loadConfiguration(plugin_settings);
+	}
+	private String errorMessage ( String Message ) {
+		if (Message == null) {
+			return "Missing language file!";
+		} else {
+			return "Missing language variable: " + Message;
+		}
 	}
 	public String getFormat( String Message ){
-		return config.getString( Message, "No language file loaded!" );
+		return config.getString( Message, this.errorMessage(Message) );
 	}
 	public String getFormatMessageView( String Message, String Sender, String Date, String message ){
-		return config.getString( Message, "No language file loaded!" ).replaceAll("%SENDER%", Sender).replaceAll("%DATE%", Date).replaceAll("%MESSAGE%", message);
+		return config.getString( Message, this.errorMessage(Message) ).replaceAll("%SENDER%", Sender).replaceAll("%DATE%", Date).replaceAll("%MESSAGE%", message);
 	}
 	public String getFormat( String Message, String PlayerName ){
-		return config.getString( Message, "No language file loaded!" ).replaceAll("%PLAYER%", PlayerName);
+		return config.getString( Message, this.errorMessage(Message) ).replaceAll("%PLAYER%", PlayerName);
 	}
 	public String getFormatCount( String Message, String Count ){
-		return config.getString( Message, "No language file loaded!" ).replaceAll("%COUNT%", Count);
+		return config.getString( Message, this.errorMessage(Message) ).replaceAll("%COUNT%", Count);
 	}
 	public String getFormat( String Message, String PlayerName, String PlayerAdmin ){
-		return config.getString( Message, "No language file loaded!" ).replaceAll("%PLAYER%", PlayerName).replaceAll("%ADMIN%", PlayerAdmin);
+		return config.getString( Message, this.errorMessage(Message) ).replaceAll("%PLAYER%", PlayerName).replaceAll("%ADMIN%", PlayerAdmin);
 	}
 	public String getFormat( String Message, String PlayerName, String PlayerAdmin, String Reason ){
-		return config.getString( Message, "No language file loaded!" ).replaceAll("%PLAYER%", PlayerName).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason);
+		return config.getString( Message, this.errorMessage(Message) ).replaceAll("%PLAYER%", PlayerName).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason);
 	}
 	public String getFormat( String Message, String PlayerName, String PlayerAdmin, String Reason, String PlayerIP ){
-		return config.getString( Message, "No language file loaded!" ).replaceAll("%PLAYER%", PlayerName).replaceAll("%PLAYERIP%", PlayerIP).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason);
+		return config.getString( Message, this.errorMessage(Message) ).replaceAll("%PLAYER%", PlayerName).replaceAll("%PLAYERIP%", PlayerIP).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason);
 	}
 	public String getFormat( String Message, String PlayerName, String PlayerAdmin, String Reason, String PlayerIP, String Word ){
-		return config.getString( Message, "No language file loaded!" ).replaceAll("%PLAYER%", PlayerName).replaceAll("%PLAYERIP%", PlayerIP).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason).replaceAll("%BADWORD%", Word);
+		return config.getString( Message, this.errorMessage(Message) ).replaceAll("%PLAYER%", PlayerName).replaceAll("%PLAYERIP%", PlayerIP).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason).replaceAll("%BADWORD%", Word);
 	}
 	public String getFormatAlts( String Message, String PlayerName, String AltList ){
-		return config.getString( Message, "No language file loaded!" ).replaceAll("%PLAYER%", PlayerName).replaceAll("%ALTS%", AltList);
+		return config.getString( Message, this.errorMessage(Message) ).replaceAll("%PLAYER%", PlayerName).replaceAll("%ALTS%", AltList);
 	}
 }

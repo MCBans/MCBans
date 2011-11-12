@@ -1,7 +1,7 @@
 name: mcbans
 main: com.mcbans.firestar.mcbans.bukkitInterface
-version: 3.2
-author: Firestar
+version: 3.3
+author: Firestar and Crashdoom
 commands:
   kick:
     description: kicks a user

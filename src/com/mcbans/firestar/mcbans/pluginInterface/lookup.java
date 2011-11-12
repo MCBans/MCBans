@@ -46,7 +46,9 @@ public class lookup extends Thread {
 	        	}
 	        }
         } catch (JSONException e) {
+        	MCBans.broadcastPlayer( PlayerAdmin, ChatColor.RED + "There was an error while parsing the data! [JSON Error]");
         } catch (NullPointerException e) {
+        	MCBans.broadcastPlayer( PlayerAdmin, ChatColor.RED + "There was an error while polling the API!");
 		}
 	}
 }

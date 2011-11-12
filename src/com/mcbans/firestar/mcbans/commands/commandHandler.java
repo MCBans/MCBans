@@ -218,8 +218,6 @@ public class commandHandler{
 						return true;
 					}
 				}
-				mcbansControl = new playerSet( MCBans, CommandSend, args[0] );
-				mcbansControl.start();
 				commandSet = true;
 			break;
 		}

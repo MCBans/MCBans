@@ -3,11 +3,11 @@ package com.mcbans.firestar.mcbans;
 import java.io.File;
 
 import com.mcbans.firestar.mcbans.bukkitInterface;
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.*;
 
 public class Settings{
 	private bukkitInterface MCBans;
-	private Configuration config;
+	private YamlConfiguration config;
 	public boolean doTerminate = false;
 	
 	public Settings( String filename, bukkitInterface p ){
@@ -22,12 +22,10 @@ public class Settings{
 				System.out.print("MCBans: Unable to download " + filename + "!");
 				this.doTerminate = true;
 			} else {
-				config = new Configuration(plugin_settings);
-				config.load();
+				config = YamlConfiguration.loadConfiguration(plugin_settings);
 			}
 		} else {
-			config = new Configuration(plugin_settings);
-			config.load();
+			config = YamlConfiguration.loadConfiguration(plugin_settings);
 		}		
 	}
 	public String getString( String variable ){
