@@ -50,7 +50,47 @@ public class Settings{
 	}
 	@SuppressWarnings("unused")
 	private boolean verifyIntegrity () {
-		if (getString("prefix") == null || getString("defaultLocal") == null || getString("defaultTemp") == null || getString("defaultKick") == null || getString("offlineReason") == null || getString("userLockoutMsg") == null || getString("allLockoutMsg") == null || getString("logFile") == null || getString("onJoinMCBansMessage") == null || getString("enableMaxAlts") == null || getString("throttleUsers") == null || getString("throttleAll") == null || getString("isDebug") == null || getString("logEnable") == null) {
+		if (getString("prefix") == null) {
+			System.out.print("MCBans: Invalid prefix!");
+			return false;
+		} else if (getString("defaultLocal") == null) {
+			System.out.print("MCBans: Invalid defaultLocal!");
+			return false;
+		} else if (getString("defaultTemp") == null) {
+			System.out.print("MCBans: Invalid defaultTemp!");
+			return false;
+		} else if (getString("defaultKick") == null) {
+			System.out.print("MCBans: Invalid defaultKick!");
+			return false;
+		} else if (getString("offlineReason") == null) {
+			System.out.print("MCBans: Invalid offlineReason!");
+			return false;
+		} else if (getString("userLockoutMsg") == null) {
+			System.out.print("MCBans: Invalid userLockoutMsg!");
+			return false;
+		} else if (getString("allLockoutMsg") == null) {
+			System.out.print("MCBans: Invalid allLockoutMsg!");
+			return false;
+		} else if (getString("logFile") == null) {
+			System.out.print("MCBans: Invalid logFile!");
+			return false;
+		} else if (getString("onJoinMCBansMessage") == null) {
+			System.out.print("MCBans: Invalid onJoinMCBansMessage!");
+			return false;
+		} else if (getString("enableMaxAlts") == null) {
+			System.out.print("MCBans: Invalid enableMaxAlts!");
+			return false;
+		} else if (getString("throttleUsers") == null) {
+			System.out.print("MCBans: Invalid throttleUsers!");
+			return false;
+		} else if (getString("throttleAll") == null) { 
+			System.out.print("MCBans: Invalid throttleAll!");
+			return false;
+		} else if (getString("isDebug") == null) { 
+			System.out.print("MCBans: Invalid isDebug!");
+			return false;
+		} else if (getString("logEnable") == null) {
+			System.out.print("MCBans: Invalid logEnable!");
 			return false;
 		} else {
 			try {
