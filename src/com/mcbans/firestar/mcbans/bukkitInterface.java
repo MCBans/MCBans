@@ -23,6 +23,9 @@ import com.mcbans.firestar.mcbans.callBacks.mainCallBack;
 import com.mcbans.firestar.mcbans.commands.commandHandler;
 import com.mcbans.firestar.mcbans.log.ActionLog;
 
+import de.diddiz.LogBlock.Consumer;
+import de.diddiz.LogBlock.LogBlock;
+
 public class bukkitInterface extends JavaPlugin {
 	
 	private commandHandler commandHandle; 
@@ -38,6 +41,7 @@ public class bukkitInterface extends JavaPlugin {
 	private backupCheck backupThread = null;
 	public ActionLog log = null;
 	public backup Backup = null;
+	public Consumer lbconsumer = null;
 	private String apiKey = "";
 	private boolean mode = false;
 	public bukkitPermissions Permissions = null;
@@ -81,7 +85,7 @@ public class bukkitInterface extends JavaPlugin {
         	return;
         }
         
-        Settings = new Settings("settings.yml", this);
+        Settings = new Settings(this);
         
         if (Settings.doTerminate) {
 			System.out.print("MCBans: Please download the latest settings.yml from MCBans.com!");
@@ -164,6 +168,12 @@ public class bukkitInterface extends JavaPlugin {
         		log.write("Task ID: " + taskID);
         		log.write("Throttle Connect Limit: " + Settings.getInteger("userConnectionLimit"));
         	}
+        }
+        
+        Plugin logBlock = pm.getPlugin("LogBlock");
+        if (logBlock != null) {
+        	lbconsumer = ((LogBlock)logBlock).getConsumer();
+        	log.write("Enabling LogBlock intergration");
         }
         
         log.write("Started and operating normally!");
