@@ -105,6 +105,10 @@ public class commandHandler{
 					}
 				}
 				// /ban [0]-g [1]<player> [2]<reason>
+				if(args.length<=1){
+					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
+					return true;
+				}
 				Player target = MCBans.getServer().getPlayer(args[1]);
 				username = args[1];
 				if( target!=null ){
@@ -123,19 +127,15 @@ public class commandHandler{
 			case 0:
 				// Check if Global or Local
 				if (useFlags) {
-					if(args.length<1){
-						MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
-						return true;
-					}
 					if(args.length>=2){
-						if(args.length>3){
-							MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
-							return true;
-						}
 						if (globalBan) {
 							reasonString = getReason(args,"",2);
 							// Check Permissions
 							if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.global") || !isPlayer){
+								if (reasonString == "" || reasonString == null) {
+									MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
+									return true;
+								}
 								if (MCBans.lbconsumer != null && rollback) {
 									LogBlock logblock = (LogBlock) MCBans.getServer().getPluginManager().getPlugin("LogBlock");
 									QueryParams params = new QueryParams(logblock);
@@ -321,11 +321,13 @@ public class commandHandler{
 								MCBans.broadcastPlayer( CommandSend, ChatColor.RED + "Reload failed - File missing!");
 							} else if (reload == -1) {
 								MCBans.broadcastPlayer( CommandSend, ChatColor.RED + "Reload failed - File integrity failed!");
+							} else {
+								MCBans.broadcastPlayer( CommandSend, ChatColor.GREEN + "Reload completed!");
 							}
 						} else if(args[1].equalsIgnoreCase("language")){
-							
+							MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + "NOT IMPLIMENTED!" );
 						} else {
-							
+							MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
 						}
 					} else {
 						MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
