@@ -5,7 +5,9 @@ import java.io.File;
 import org.bukkit.configuration.file.*;
 
 public class Language{
+	private bukkitInterface MCBans;
 	private YamlConfiguration config;
+	private YamlConfiguration backupConfig;
 	public Language( String filename ){
 		File plugin_settings = new File("plugins/mcbans/language/"+filename+".yml");
 		config = YamlConfiguration.loadConfiguration(plugin_settings);
@@ -15,6 +17,15 @@ public class Language{
 			return "Missing language file!";
 		} else {
 			return "Missing language variable: " + Message;
+		}
+	}
+	public boolean reload () {
+		File languageFile = new File("plugins/mcbans/language/" + MCBans.Core.lang + ".yml");
+		if (!languageFile.exists()) {
+			return false;
+		} else {
+			config = YamlConfiguration.loadConfiguration(languageFile);
+			return true;
 		}
 	}
 	public String getFormat( String Message ){

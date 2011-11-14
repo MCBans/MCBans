@@ -12,8 +12,6 @@ import com.mcbans.firestar.mcbans.pluginInterface.ban;
 import com.mcbans.firestar.mcbans.pluginInterface.kick;
 import com.mcbans.firestar.mcbans.pluginInterface.lookup;
 
-import de.diddiz.LogBlock.CommandsHandler;
-import de.diddiz.LogBlock.Consumer;
 import de.diddiz.LogBlock.LogBlock;
 import de.diddiz.LogBlock.QueryParams;
 
@@ -157,6 +155,19 @@ public class commandHandler{
 							}
 						} else if (tempBan) {
 							
+						} else {
+							reasonString = getReason(args,"",2);
+							if (reasonString == "") {
+								reasonString = Config.getString("defaultLocal");
+							}
+							// Check Permissions
+							if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.local") || !isPlayer){
+								banControl = new ban( MCBans, "localBan", username, PlayerIP, CommandSend, reasonString, "", "" );
+								banControl.start();
+							}else{
+								MCBans.broadcastPlayer( CommandSend, MCBans.Language.getFormat( "permissionDenied" ) );
+								MCBans.log.write( CommandSend + " has tried the command ["+command+"]!" );
+							}
 						}
 					} else {
 						MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
@@ -312,27 +323,32 @@ public class commandHandler{
 					MCBans.broadcastPlayer( CommandSend, ChatColor.WHITE + "/ban <name> g <reason> " + ChatColor.BLUE + " Global ban user");
 					MCBans.broadcastPlayer( CommandSend, ChatColor.RED + "WARNING " + ChatColor.WHITE + "The above command is deprecated and will be removed");
 					MCBans.broadcastPlayer( CommandSend, ChatColor.WHITE + "/ban <name> <reason>");
-				} else if(args.length<2){
-					if(args[0].equalsIgnoreCase("reload")) {
-						if(args[1].equalsIgnoreCase("settings")){
-							MCBans.broadcastPlayer( CommandSend, ChatColor.AQUA + "Reloading Settings..");
-							Integer reload = MCBans.Settings.reload();
-							if (reload == -2) {
-								MCBans.broadcastPlayer( CommandSend, ChatColor.RED + "Reload failed - File missing!");
-							} else if (reload == -1) {
-								MCBans.broadcastPlayer( CommandSend, ChatColor.RED + "Reload failed - File integrity failed!");
-							} else {
-								MCBans.broadcastPlayer( CommandSend, ChatColor.GREEN + "Reload completed!");
+				} else if(args.length > 1){
+					if(args.length == 2) {
+						if(args[0].equalsIgnoreCase("reload")) {
+							if(args[1].equalsIgnoreCase("settings")) {
+								MCBans.broadcastPlayer( CommandSend, ChatColor.AQUA + "Reloading Settings..");
+								Integer reload = MCBans.Settings.reload();
+								if (reload == -2) {
+									MCBans.broadcastPlayer( CommandSend, ChatColor.RED + "Reload failed - File missing!");
+								} else if (reload == -1) {
+									MCBans.broadcastPlayer( CommandSend, ChatColor.RED + "Reload failed - File integrity failed!");
+								} else {
+									MCBans.broadcastPlayer( CommandSend, ChatColor.GREEN + "Reload completed!");
+								}
+								return true;
+							} else if(args[1].equalsIgnoreCase("language")){
+								MCBans.broadcastPlayer( CommandSend, ChatColor.AQUA + "Reloading Language File..");
+								Boolean reload = MCBans.Language.reload();
+								if (!reload) {
+									MCBans.broadcastPlayer( CommandSend, ChatColor.RED + "Reload failed - File missing!");
+								} else {
+									MCBans.broadcastPlayer( CommandSend, ChatColor.GREEN + "Reload completed!");
+								}
+								return true;
 							}
-						} else if(args[1].equalsIgnoreCase("language")){
-							MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + "NOT IMPLIMENTED!" );
-						} else {
-							MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
 						}
-					} else {
-						MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
 					}
-					return true;
 				} else if(args[0].equalsIgnoreCase("online") || args[0].equalsIgnoreCase("offline") || args[0].equalsIgnoreCase("status")){
 					if(MCBans.Permissions.isAllow( inWorld, CommandSend, "mode") || !isPlayer){
 						if(args[0].equalsIgnoreCase("online")){

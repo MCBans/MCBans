@@ -140,7 +140,7 @@ public class bukkitInterface extends JavaPlugin {
         Permissions.setupPermissions();
         
         log.write("Fetching backup.");
-        Backup = new backup( this.Settings.getBoolean("isDebug"), this.getApiKey() );
+        Backup = new backup( Settings.getBoolean("isDebug"), this.getApiKey() );
         Backup.fetch();
         
         log.write("Starting MCBans online check.");
@@ -188,7 +188,7 @@ public class bukkitInterface extends JavaPlugin {
 	public void broadcastBanView(String msg){
 		for( Player player: this.getServer().getOnlinePlayers() ){
 			if( Permissions.isAllow( player.getWorld().getName(), player.getName(), "ban.view" ) ){
-				player.sendMessage( Settings.getString("prefix")+" "+msg );
+				player.sendMessage( Settings.getPrefix() + " " + msg );
 			}
 		}
 	}
@@ -224,16 +224,16 @@ public class bukkitInterface extends JavaPlugin {
 	
 	public void broadcastAll(String msg){
 		for( Player player: this.getServer().getOnlinePlayers() ){
-			player.sendMessage( Settings.getString("prefix")+" "+msg );
+			player.sendMessage( Settings.getPrefix() + " " + msg );
 		}
 	}
 	
 	public void broadcastPlayer( String Player, String msg ){
 		Player target = this.getServer().getPlayer(Player);
 		if(target!=null){
-			target.sendMessage( Settings.getString("prefix") + " " + msg );
+			target.sendMessage( Settings.getPrefix() + " " + msg );
 		}else{
-			System.out.print( Settings.getString("prefix") + " " + msg );
+			System.out.print( Settings.getPrefix() + " " + msg );
 		}
 	}
 	public boolean getMode(){
@@ -246,7 +246,7 @@ public class bukkitInterface extends JavaPlugin {
 		return this.apiKey;
 	}
 	public void broadcastPlayer( Player target, String msg ){
-		target.sendMessage( Settings.getString("prefix") + " " + msg );
+		target.sendMessage( Settings.getPrefix() + " " + msg );
 	}
 	
 	public Plugin pluginInterface( String pluginName ){

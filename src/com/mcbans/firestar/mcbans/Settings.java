@@ -10,6 +10,7 @@ public class Settings{
 	private YamlConfiguration config;
 	private YamlConfiguration backupConfig;
 	public boolean doTerminate = false;
+	private String NFe = null;
 	
 	public Settings( bukkitInterface p ){
 		MCBans = p;
@@ -28,8 +29,12 @@ public class Settings{
 		} else {
 			config = YamlConfiguration.loadConfiguration(plugin_settings);
 		}		
-		if (!verifyIntegrity()) {
-			System.out.print("MCBans: settings.yml is corrupted! One or more variables are missing/invalid!");
+		String verify = verifyIntegrity();
+		if (verify != "OK") {
+			System.out.print("MCBans: settings.yml is corrupted! One or more variables are missing/invalid! (" + verify + ")");
+			if (NFe != null) {
+				System.out.print("MCBans: " + NFe);
+			}
 			this.doTerminate = true;
 		}
 	}
@@ -40,7 +45,8 @@ public class Settings{
 		} else {
 			backupConfig = config;
 			config = YamlConfiguration.loadConfiguration(plugin_settings);
-			if (verifyIntegrity()) {
+			String verify = verifyIntegrity();
+			if (verify == "OK") {
 				return 1;
 			} else {
 				config = backupConfig;
@@ -48,69 +54,58 @@ public class Settings{
 			}
 		}
 	}
-	@SuppressWarnings("unused")
-	private boolean verifyIntegrity () {
-		if (getString("prefix") == null) {
-			System.out.print("MCBans: Invalid prefix!");
-			return false;
-		} else if (getString("defaultLocal") == null) {
-			System.out.print("MCBans: Invalid defaultLocal!");
-			return false;
-		} else if (getString("defaultTemp") == null) {
-			System.out.print("MCBans: Invalid defaultTemp!");
-			return false;
-		} else if (getString("defaultKick") == null) {
-			System.out.print("MCBans: Invalid defaultKick!");
-			return false;
-		} else if (getString("offlineReason") == null) {
-			System.out.print("MCBans: Invalid offlineReason!");
-			return false;
-		} else if (getString("userLockoutMsg") == null) {
-			System.out.print("MCBans: Invalid userLockoutMsg!");
-			return false;
-		} else if (getString("allLockoutMsg") == null) {
-			System.out.print("MCBans: Invalid allLockoutMsg!");
-			return false;
-		} else if (getString("logFile") == null) {
-			System.out.print("MCBans: Invalid logFile!");
-			return false;
-		} else if (getString("onJoinMCBansMessage") == null) {
-			System.out.print("MCBans: Invalid onJoinMCBansMessage!");
-			return false;
-		} else if (getString("enableMaxAlts") == null) {
-			System.out.print("MCBans: Invalid enableMaxAlts!");
-			return false;
-		} else if (getString("throttleUsers") == null) {
-			System.out.print("MCBans: Invalid throttleUsers!");
-			return false;
-		} else if (getString("throttleAll") == null) { 
-			System.out.print("MCBans: Invalid throttleAll!");
-			return false;
-		} else if (getString("isDebug") == null) { 
-			System.out.print("MCBans: Invalid isDebug!");
-			return false;
-		} else if (getString("logEnable") == null) {
-			System.out.print("MCBans: Invalid logEnable!");
-			return false;
+	private String verifyIntegrity () {
+		if (getPrefix() == "") {
+			return "prefix";
+		} else if (!config.isString("defaultLocal")) {
+			return "defaultLocal";
+		} else if (!config.isString("defaultTemp")) {
+			return "defaultTemp";
+		} else if (!config.isString("defaultKick")) {
+			return "defaultKick";
+		} else if (!config.isString("offlineReason")) {
+			return "offlineReason";
+		} else if (!config.isString("userLockoutMsg")) {
+			return "userLockoutMsg";
+		} else if (!config.isString("allLockoutMsg")) {
+			return "allLockoutMsg";
+		} else if (!config.isString("logFile")) {
+			return "logFile";
+		} else if (!config.isBoolean("onJoinMCBansMessage")) {
+			return "onJoinMCBansMessage";
+		} else if (!config.isBoolean("enableMaxAlts")) {
+			return "enableMaxAlts";
+		} else if (!config.isBoolean("throttleUsers")) {
+			return "throttleUsers";
+		} else if (!config.isBoolean("throttleAll")) { 
+			return "throttleAll";
+		} else if (!config.isBoolean("isDebug")) { 
+			return "isDebug";
+		} else if (!config.isBoolean("logEnable")) {
+			return "logEnable";
 		} else {
 			try {
-				int minRep = Integer.parseInt(getString("minRep"));
-				int callBack = Integer.parseInt(getString("callBackInterval"));
-				int maxAlts = Integer.parseInt(getString("maxAlts"));
-				int userCTime = Integer.parseInt(getString("userConnectionTime"));
-				int userCLimit = Integer.parseInt(getString("userConnectionLimit"));
-				int userLockout = Integer.parseInt(getString("userLockoutTime"));
-				int allCTime = Integer.parseInt(getString("allConnectionTime"));
-				int allCLimit = Integer.parseInt(getString("allConnectionLimit"));
-				int allLockout = Integer.parseInt(getString("allLockoutTime"));
+				Integer.parseInt(getInteger("minRep").toString());
+				Integer.parseInt(getInteger("callBackInterval").toString());
+				Integer.parseInt(getInteger("maxAlts").toString());
+				Integer.parseInt(getInteger("userConnectionTime").toString());
+				Integer.parseInt(getInteger("userConnectionLimit").toString());
+				Integer.parseInt(getInteger("userLockoutTime").toString());
+				Integer.parseInt(getInteger("allConnectionTime").toString());
+				Integer.parseInt(getInteger("allConnectionLimit").toString());
+				Integer.parseInt(getInteger("allLockoutTime").toString());
 			} catch (NumberFormatException nFE) {
-				return false;
+				NFe = nFE.toString();
+				return "numberError";
 			}
 		}
-		return true;
+		return "OK";
 	}
 	public String getString( String variable ){
 		return config.getString( variable, "" );
+	}
+	public String getPrefix () {
+		return config.get("prefix", "").toString();
 	}
 	public Integer getInteger( String variable ){
 		return config.getInt( variable, 0 );
