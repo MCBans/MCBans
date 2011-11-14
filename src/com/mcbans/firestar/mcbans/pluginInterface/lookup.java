@@ -47,8 +47,10 @@ public class lookup extends Thread {
 	        }
         } catch (JSONException e) {
         	MCBans.broadcastPlayer( PlayerAdmin, ChatColor.RED + "There was an error while parsing the data! [JSON Error]");
+        	MCBans.log.write("JSON error while trying to parse lookup data!");
         } catch (NullPointerException e) {
         	MCBans.broadcastPlayer( PlayerAdmin, ChatColor.RED + "There was an error while polling the API!");
+        	MCBans.log.write("Unable to reach MCBans Master server!");
 		}
 	}
 }

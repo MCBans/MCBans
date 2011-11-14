@@ -3,7 +3,6 @@ package com.mcbans.firestar.mcbans;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
