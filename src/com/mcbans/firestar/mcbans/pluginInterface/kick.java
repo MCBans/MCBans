@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 
 import com.mcbans.firestar.mcbans.Settings;
 import com.mcbans.firestar.mcbans.bukkitInterface;
+import org.bukkit.entity.Player;
 
 @SuppressWarnings("unused")
 public class kick extends Thread {
@@ -21,14 +22,14 @@ public class kick extends Thread {
 	}
 	@Override
 	public void run( ){
-		
-		if (MCBans.getServer().getPlayer(PlayerName) != null) {
-			MCBans.log.write( PlayerAdmin + " has kicked " + PlayerName + "[" + Reason + "]" );
-			MCBans.getServer().getPlayer(PlayerName).kickPlayer(MCBans.Language.getFormat( "kickMessagePlayer", PlayerName, PlayerAdmin, Reason ));
-			MCBans.broadcastAll( ChatColor.DARK_RED + MCBans.Language.getFormat( "kickMessageSuccess", PlayerName, PlayerAdmin, Reason ));
-        }else{
-        	MCBans.broadcastAll( ChatColor.DARK_RED + MCBans.Language.getFormat( "kickMessageNoPlayer", PlayerName, PlayerAdmin, Reason ));
-        }
+		Player player = MCBans.getServer().getPlayer(PlayerName);
+		if (player != null) {
+			MCBans.log.write( PlayerAdmin + " has kicked " + player.getName() + "[" + Reason + "]" );
+			player.kickPlayer(MCBans.Language.getFormat( "kickMessagePlayer", player.getName(), PlayerAdmin, Reason ));
+			MCBans.broadcastAll( ChatColor.DARK_RED + MCBans.Language.getFormat( "kickMessageSuccess", player.getName(), PlayerAdmin, Reason ));
+		}else{
+        		MCBans.broadcastAll( ChatColor.DARK_RED + MCBans.Language.getFormat( "kickMessageNoPlayer", PlayerName, PlayerAdmin, Reason ));
+        	}
 		
 	}
 }
