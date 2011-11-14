@@ -1,6 +1,6 @@
 name: mcbans
 main: com.mcbans.mcbans.BukkitInterface
-version: 3.3
+version: 3.3a
 author: Firestar and Crashdoom
 commands:
   kick:
