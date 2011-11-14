@@ -161,8 +161,12 @@ public class ban extends Thread {
 		HashMap<String, String> response = webHandle.mainRequest(url_items);
 		try{
 			if(!response.containsKey("result")){
-				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
-				return;
+				if (MCBans.hasErrored(response)) {
+					return;
+				} else {
+					MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
+					return;
+				}
 			}
 			if(response.get("result").equals("y")){
 				MCBans.log.write( PlayerName + " has been banned with a global type ban [" + Reason + "] [" + PlayerAdmin + "]!" );

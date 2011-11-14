@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftServer;
@@ -246,6 +247,61 @@ public class bukkitInterface extends JavaPlugin {
 	}
 	public void broadcastPlayer( Player target, String msg ){
 		target.sendMessage( Settings.getPrefix() + " " + msg );
+	}
+	
+	public boolean hasErrored (HashMap<String, String> response) {
+		if (response.containsKey("error")) {
+			String error = response.get("error");
+			if (error.contains("Server Disabled")) {
+				if (getMode()) {
+					return true;
+				}
+				broadcastBanView( ChatColor.RED + "Server Disabled by an MCBans Admin");
+				broadcastBanView( "MCBans is running in reduced functionality mode. Only local bans can be used at this time.");
+				log.write("The server API key has been disabled by an MCBans Administrator");
+				log.write("To appeal this decision, please contact an administrator");
+				setMode(true);
+			} else if (error.contains("api key not found.")) {
+				broadcastBanView( ChatColor.RED + "Invalid MCBans.jar!");
+				broadcastBanView( "The API key inside the current MCBans.jar is invalid. Please re-download the plugin from myserver.mcbans.com");
+				log.write("Invalid MCBans.jar - Please re-download from myserver.mcbans.com!");
+				getServer().getPluginManager().disablePlugin(pluginInterface("mcbans"));
+			} else {
+				broadcastBanView( ChatColor.RED + "Unexpected reply from MCBans API!");
+				log.write("API returned an invalid error:");
+				log.write("MCBans said: " + error);
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean hasErrored (String response) {
+		if (response.contains("error")) {
+			if (response.contains("Server Disabled")) {
+				if (getMode()) {
+					return true;
+				}
+				broadcastBanView( ChatColor.RED + "Server Disabled by an MCBans Admin");
+				broadcastBanView( "MCBans is running in reduced functionality mode. Only local bans can be used at this time.");
+				log.write("The server API key has been disabled by an MCBans Administrator");
+				log.write("To appeal this decision, please contact an administrator");
+				setMode(true);
+			} else if (response.contains("api key not found.")) {
+				broadcastBanView( ChatColor.RED + "Invalid MCBans.jar!");
+				broadcastBanView( "The API key inside the current MCBans.jar is invalid. Please re-download the plugin from myserver.mcbans.com");
+				log.write("Invalid MCBans.jar - Please re-download from myserver.mcbans.com!");
+				getServer().getPluginManager().disablePlugin(pluginInterface("mcbans"));
+			} else {
+				broadcastBanView( ChatColor.RED + "Unexpected reply from MCBans API!");
+				log.write("API returned an invalid error:");
+				log.write("MCBans said: " + response);
+			}
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public Plugin pluginInterface( String pluginName ){
