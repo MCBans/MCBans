@@ -1,4 +1,6 @@
-package com.mcbans.firestar.mcbans.backup;
+package com.mcbans.mcbans.backup;
+
+import com.mcbans.mcbans.BukkitInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,13 +10,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import com.mcbans.firestar.mcbans.bukkitInterface;
-
-public class backupCheck extends Thread {
-	private bukkitInterface MCBans;
+public class BackupCheck extends Thread {
+	private BukkitInterface MCBans;
 	private String apiKey = null;
 	private boolean debug = false;
-	public backupCheck( bukkitInterface p ){
+	public BackupCheck(BukkitInterface p){
 		MCBans = p;
 		apiKey = MCBans.getApiKey();
 		debug = MCBans.Settings.getBoolean("isDebug");

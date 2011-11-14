@@ -1,19 +1,18 @@
-package com.mcbans.firestar.mcbans.pluginInterface;
+package com.mcbans.mcbans.pluginInterface;
 
-import java.util.HashMap;
-
+import com.mcbans.mcbans.BukkitInterface;
+import com.mcbans.mcbans.request.JsonHandler;
 import org.bukkit.ChatColor;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mcbans.firestar.mcbans.bukkitInterface;
-import com.mcbans.firestar.mcbans.request.jsonHandler;
+import java.util.HashMap;
 
-public class lookup extends Thread {
-	private bukkitInterface MCBans;
+public class Lookup extends Thread {
+	private BukkitInterface MCBans;
 	private String PlayerName;
 	private String PlayerAdmin;
-	public lookup( bukkitInterface p, String playerName, String playerAdmin ){
+	public Lookup(BukkitInterface p, String playerName, String playerAdmin){
 		MCBans = p;
 		PlayerName = playerName;
 		PlayerAdmin = playerAdmin;
@@ -26,7 +25,7 @@ public class lookup extends Thread {
 		}
 		MCBans.log.write( PlayerAdmin + " has looked up the " + PlayerName + "!" );
 		HashMap<String, String> url_items = new HashMap<String, String>();
-		jsonHandler webHandle = new jsonHandler( MCBans );
+		JsonHandler webHandle = new JsonHandler( MCBans );
         url_items.put("player", PlayerName);
         url_items.put("admin", PlayerAdmin);
         url_items.put("exec", "playerLookup");

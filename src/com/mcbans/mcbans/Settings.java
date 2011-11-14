@@ -1,18 +1,17 @@
-package com.mcbans.firestar.mcbans;
+package com.mcbans.mcbans;
+
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-import com.mcbans.firestar.mcbans.bukkitInterface;
-import org.bukkit.configuration.file.*;
-
 public class Settings{
-	private bukkitInterface MCBans;
+	private BukkitInterface MCBans;
 	private YamlConfiguration config;
 	private YamlConfiguration backupConfig;
 	public boolean doTerminate = false;
 	private String NFe = null;
 	
-	public Settings( bukkitInterface p ){
+	public Settings( BukkitInterface p ){
 		MCBans = p;
 		File plugin_settings = new File("plugins/mcbans/settings.yml");
 		if (!plugin_settings.exists()) {

@@ -1,18 +1,17 @@
-package com.mcbans.firestar.mcbans.pluginInterface;
+package com.mcbans.mcbans.pluginInterface;
+
+import com.mcbans.mcbans.BukkitInterface;
+import com.mcbans.mcbans.request.JsonHandler;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
-import com.mcbans.firestar.mcbans.bukkitInterface;
-import com.mcbans.firestar.mcbans.request.jsonHandler;
-
-public class connect{
-	private bukkitInterface MCBans;
+public class Connect {
+	private BukkitInterface MCBans;
 	private HashMap<String, Integer> responses = new HashMap<String, Integer>();
-	public connect( bukkitInterface p ){
+	public Connect(BukkitInterface p){
 		responses.put("n", 0);
 		responses.put("g", 1);
 		responses.put("s", 2);
@@ -77,7 +76,7 @@ public class connect{
 			}
 			return s;
 		}
-		jsonHandler webHandle = new jsonHandler( MCBans );
+		JsonHandler webHandle = new JsonHandler( MCBans );
 		HashMap<String, String> url_items = new HashMap<String, String>();
 		url_items.put("player", PlayerName);
 		url_items.put("playerip", PlayerIP);

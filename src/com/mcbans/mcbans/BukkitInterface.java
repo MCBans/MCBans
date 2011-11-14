@@ -1,9 +1,13 @@
-package com.mcbans.firestar.mcbans;
+package com.mcbans.mcbans;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import com.mcbans.mcbans.backup.Backup;
+import com.mcbans.mcbans.backup.BackupCheck;
+import com.mcbans.mcbans.bukkitListeners.PlayerListener;
+import com.mcbans.mcbans.callBacks.MainCallBack;
+import com.mcbans.mcbans.commands.CommandHandler;
+import com.mcbans.mcbans.log.ActionLog;
+import de.diddiz.LogBlock.Consumer;
+import de.diddiz.LogBlock.LogBlock;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -16,35 +20,29 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.mcbans.firestar.mcbans.backup.backup;
-import com.mcbans.firestar.mcbans.backup.backupCheck;
-import com.mcbans.firestar.mcbans.bukkitListeners.playerListener;
-import com.mcbans.firestar.mcbans.callBacks.mainCallBack;
-import com.mcbans.firestar.mcbans.commands.commandHandler;
-import com.mcbans.firestar.mcbans.log.ActionLog;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import de.diddiz.LogBlock.Consumer;
-import de.diddiz.LogBlock.LogBlock;
-
-public class bukkitInterface extends JavaPlugin {
+public class BukkitInterface extends JavaPlugin {
 	
-	private commandHandler commandHandle; 
+	private CommandHandler commandHandle;
 	private BukkitScheduler BScheduler;
-	private final playerListener bukkitPlayer = new playerListener(this);
+	private final PlayerListener bukkitPlayer = new PlayerListener(this);
 	public int taskID = 0;
 	public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
 	public HashMap<String, Long> resetTime = new HashMap<String, Long>();
 	public Core Core = new Core();
 	public Settings Settings;
 	public Language Language = null;
-	private mainCallBack callbackThread = null;
-	private backupCheck backupThread = null;
+	private MainCallBack callbackThread = null;
+	private BackupCheck backupThread = null;
 	public ActionLog log = null;
-	public backup Backup = null;
+	public Backup Backup = null;
 	public Consumer lbconsumer = null;
 	private String apiKey = "";
 	private boolean mode = false;
-	public bukkitPermissions Permissions = null;
+	public BukkitPermissions Permissions = null;
 	public HashMap<String, ArrayList<String>> joinMessages = new HashMap<String, ArrayList<String>>();
 	
 	public void onDisable() {
@@ -135,19 +133,19 @@ public class bukkitInterface extends JavaPlugin {
         	System.out.print("MCBans: Log file disabled!");
         }
         
-        Permissions = new bukkitPermissions( Settings, this );
-        commandHandle = new commandHandler( Settings, this );
+        Permissions = new BukkitPermissions( Settings, this );
+        commandHandle = new CommandHandler( Settings, this );
         Permissions.setupPermissions();
         
         log.write("Fetching backup.");
-        Backup = new backup( Settings.getBoolean("isDebug"), this.getApiKey() );
+        Backup = new Backup( Settings.getBoolean("isDebug"), this.getApiKey() );
         Backup.fetch();
         
         log.write("Starting MCBans online check.");
-        backupThread = new backupCheck( this );
+        backupThread = new BackupCheck( this );
         backupThread.start();
         
-        callbackThread = new mainCallBack( this );
+        callbackThread = new MainCallBack( this );
         callbackThread.start();
         if (Core.lang != null) {
         	Language = new Language(Core.lang);

@@ -1,17 +1,16 @@
-package com.mcbans.firestar.mcbans.callBacks;
+package com.mcbans.mcbans.callBacks;
 
-import java.util.HashMap;
-
+import com.mcbans.mcbans.BukkitInterface;
+import com.mcbans.mcbans.request.JsonHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.mcbans.firestar.mcbans.bukkitInterface;
-import com.mcbans.firestar.mcbans.request.jsonHandler;
+import java.util.HashMap;
 
 
-public class mainCallBack extends Thread {
-	private final bukkitInterface MCBans;
-	public mainCallBack(bukkitInterface p){
+public class MainCallBack extends Thread {
+	private final BukkitInterface MCBans;
+	public MainCallBack(BukkitInterface p){
 		MCBans = p;
 	}
 	@Override
@@ -29,7 +28,7 @@ public class mainCallBack extends Thread {
 		}
 	}
 	private void mainRequest(){
-		jsonHandler webHandle = new jsonHandler( MCBans );
+		JsonHandler webHandle = new JsonHandler( MCBans );
 		HashMap<String, String> url_items = new HashMap<String, String>();
 		url_items.put( "maxPlayers", String.valueOf( MCBans.getServer().getMaxPlayers() ) );
 		url_items.put( "playerList", this.playerList() );

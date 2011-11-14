@@ -1,11 +1,11 @@
-package com.mcbans.firestar.mcbans;
+package com.mcbans.mcbans;
+
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-import org.bukkit.configuration.file.*;
-
 public class Language{
-	private bukkitInterface MCBans;
+	private BukkitInterface MCBans;
 	private YamlConfiguration config;
 	private YamlConfiguration backupConfig;
 	public Language( String filename ){

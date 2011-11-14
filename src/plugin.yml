@@ -1,5 +1,5 @@
 name: mcbans
-main: com.mcbans.firestar.mcbans.bukkitInterface
+main: com.mcbans.mcbans.BukkitInterface
 version: 3.3
 author: Firestar and Crashdoom
 commands:

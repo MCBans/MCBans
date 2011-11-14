@@ -1,26 +1,24 @@
-package com.mcbans.firestar.mcbans.commands;
+package com.mcbans.mcbans.commands;
 
-import java.util.HashMap;
-
+import com.mcbans.mcbans.BukkitInterface;
+import com.mcbans.mcbans.Settings;
+import com.mcbans.mcbans.pluginInterface.Ban;
+import com.mcbans.mcbans.pluginInterface.Kick;
+import com.mcbans.mcbans.pluginInterface.Lookup;
+import de.diddiz.LogBlock.LogBlock;
+import de.diddiz.LogBlock.QueryParams;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.mcbans.firestar.mcbans.Settings;
-import com.mcbans.firestar.mcbans.bukkitInterface;
-import com.mcbans.firestar.mcbans.pluginInterface.ban;
-import com.mcbans.firestar.mcbans.pluginInterface.kick;
-import com.mcbans.firestar.mcbans.pluginInterface.lookup;
+import java.util.HashMap;
 
-import de.diddiz.LogBlock.LogBlock;
-import de.diddiz.LogBlock.QueryParams;
-
-public class commandHandler{
-	private bukkitInterface MCBans;
+public class CommandHandler {
+	private BukkitInterface MCBans;
 	private Settings Config;
 	//private String[] protectedGroups;
 	private HashMap<String, Integer> commandList = new HashMap<String, Integer>();
-	public commandHandler( Settings cf, bukkitInterface p ){
+	public CommandHandler(Settings cf, BukkitInterface p){
 		MCBans = p;
 		Config=cf;
 		//protectedGroups = MCBans.Settings.getString("protected").split(",");
@@ -33,15 +31,15 @@ public class commandHandler{
 		commandList.put("mcbans", 5);
 	}
 	public boolean execCommand(String command, String[] args, CommandSender from){
-		lookup lookupControl = null;
+		Lookup lookupControl = null;
 		String CommandSend = "";
 		String PlayerIP = "";
-		kick kickControl = null;
+		Kick kickControl = null;
 		boolean commandSet = false;
 		boolean isPlayer = false;
 		String inWorld = "";
 		String reasonString = "";
-		ban banControl = null;
+		Ban banControl = null;
 		if (from instanceof Player) {
             Player player = (Player) from;
             CommandSend = player.getName();
@@ -147,7 +145,7 @@ public class commandHandler{
 										MCBans.broadcastPlayer( CommandSend, ChatColor.RED + "Unable to rollback player!");
 									}
 								}
-								banControl = new ban( MCBans, "globalBan", username, PlayerIP, CommandSend, reasonString, "", "" );
+								banControl = new Ban( MCBans, "globalBan", username, PlayerIP, CommandSend, reasonString, "", "" );
 								banControl.start();
 							}else{
 								MCBans.broadcastPlayer( CommandSend, MCBans.Language.getFormat( "permissionDenied" ) );
@@ -162,7 +160,7 @@ public class commandHandler{
 							}
 							// Check Permissions
 							if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.local") || !isPlayer){
-								banControl = new ban( MCBans, "localBan", username, PlayerIP, CommandSend, reasonString, "", "" );
+								banControl = new Ban( MCBans, "localBan", username, PlayerIP, CommandSend, reasonString, "", "" );
 								banControl.start();
 							}else{
 								MCBans.broadcastPlayer( CommandSend, MCBans.Language.getFormat( "permissionDenied" ) );
@@ -200,7 +198,7 @@ public class commandHandler{
 										MCBans.broadcastPlayer( CommandSend, ChatColor.RED + "Unable to rollback player!");
 									}
 								}
-								banControl = new ban( MCBans, "globalBan", args[0], PlayerIP, CommandSend, reasonString, "", "" );
+								banControl = new Ban( MCBans, "globalBan", args[0], PlayerIP, CommandSend, reasonString, "", "" );
 								banControl.start();
 							}else{
 								MCBans.broadcastPlayer( CommandSend, MCBans.Language.getFormat( "permissionDenied" ) );
@@ -218,7 +216,7 @@ public class commandHandler{
 							}
 							// Check Permissions
 							if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.local") || !isPlayer){
-								banControl = new ban( MCBans, "localBan", args[0], PlayerIP, CommandSend, reasonString, "", "" );
+								banControl = new Ban( MCBans, "localBan", args[0], PlayerIP, CommandSend, reasonString, "", "" );
 								banControl.start();
 							}else{
 								MCBans.broadcastPlayer( CommandSend, MCBans.Language.getFormat( "permissionDenied" ) );
@@ -237,7 +235,7 @@ public class commandHandler{
 						}
 						// Check Permissions
 						if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.local") || !isPlayer){
-							banControl = new ban( MCBans, "localBan", args[0], PlayerIP, CommandSend, reasonString, "", "" );
+							banControl = new Ban( MCBans, "localBan", args[0], PlayerIP, CommandSend, reasonString, "", "" );
 							banControl.start();
 						}else{
 							MCBans.broadcastPlayer( CommandSend, MCBans.Language.getFormat( "permissionDenied" ) );
@@ -259,7 +257,7 @@ public class commandHandler{
 				}
 				// Check Permissions
 				if(MCBans.Permissions.isAllow( inWorld, CommandSend, "ban.temp")){
-					banControl = new ban( MCBans, "tempBan", args[0], PlayerIP, CommandSend, reasonString, args[1], args[2] );
+					banControl = new Ban( MCBans, "tempBan", args[0], PlayerIP, CommandSend, reasonString, args[1], args[2] );
 					banControl.start();
 				}else{
 					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
@@ -274,7 +272,7 @@ public class commandHandler{
 				}
 				// Check Permissions
 				if(MCBans.Permissions.isAllow( inWorld, CommandSend, "unban") || !isPlayer){
-					banControl = new ban( MCBans, "unBan", args[0], "", CommandSend, "", "", "" );
+					banControl = new Ban( MCBans, "unBan", args[0], "", CommandSend, "", "", "" );
 					banControl.start();
 				}else{
 					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
@@ -294,7 +292,7 @@ public class commandHandler{
 				}
 				// Check Permissions
 				if(MCBans.Permissions.isAllow( inWorld, CommandSend, "kick") || !isPlayer){
-					kickControl = new kick( Config, MCBans, args[0], CommandSend, getReason(args,"",1) );
+					kickControl = new Kick( Config, MCBans, args[0], CommandSend, getReason(args,"",1) );
 					kickControl.start();
 				}else{
 					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );
@@ -309,7 +307,7 @@ public class commandHandler{
 				}
 				// Check Permissions
 				if(MCBans.Permissions.isAllow( inWorld, CommandSend, "lookup") || !isPlayer){
-					lookupControl = new lookup( MCBans, args[0], CommandSend );
+					lookupControl = new Lookup( MCBans, args[0], CommandSend );
 					lookupControl.start();
 				}else{
 					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "permissionDenied" ) );

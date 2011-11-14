@@ -1,8 +1,9 @@
-package com.mcbans.firestar.mcbans;
+package com.mcbans.mcbans;
 
-import java.io.*;
-import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
+
+import java.io.InputStream;
+import java.util.Map;
 
 public class Core {
 	

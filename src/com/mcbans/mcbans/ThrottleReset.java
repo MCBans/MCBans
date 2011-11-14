@@ -1,13 +1,11 @@
-package com.mcbans.firestar.mcbans;
+package com.mcbans.mcbans;
 
 import java.util.Map;
 
-import com.mcbans.firestar.mcbans.bukkitInterface;
-
 public class ThrottleReset implements Runnable {
-	private bukkitInterface MCBans;
+	private BukkitInterface MCBans;
 	
-	public ThrottleReset(bukkitInterface iface) {
+	public ThrottleReset(BukkitInterface iface) {
 		MCBans = iface;
 	}
 	

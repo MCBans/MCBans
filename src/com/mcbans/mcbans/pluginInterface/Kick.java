@@ -1,18 +1,17 @@
-package com.mcbans.firestar.mcbans.pluginInterface;
+package com.mcbans.mcbans.pluginInterface;
 
+import com.mcbans.mcbans.BukkitInterface;
+import com.mcbans.mcbans.Settings;
 import org.bukkit.ChatColor;
 
-import com.mcbans.firestar.mcbans.Settings;
-import com.mcbans.firestar.mcbans.bukkitInterface;
-
 @SuppressWarnings("unused")
-public class kick extends Thread {
+public class Kick extends Thread {
 	private Settings Config;
-	private bukkitInterface MCBans;
+	private BukkitInterface MCBans;
 	private String PlayerName = null;
 	private String PlayerAdmin = null;
 	private String Reason = null;
-	public kick( Settings cf, bukkitInterface p, String playerName, String playerAdmin, String reason ){
+	public Kick(Settings cf, BukkitInterface p, String playerName, String playerAdmin, String reason){
 		Config=cf;
 		MCBans = p;
 		PlayerName = playerName;
