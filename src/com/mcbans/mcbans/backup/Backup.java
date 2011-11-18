@@ -1,27 +1,17 @@
-package com.mcbans.firestar.mcbans.backup;
+package com.mcbans.mcbans.backup;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
 
-public class backup{
+public class Backup {
 	private ArrayList<String> players = new ArrayList<String>();
 	private boolean debug = false;
 	private String apiKey = "";
-	public backup( boolean Debug, String ApiKey ){
+	public Backup(boolean Debug, String ApiKey){
 		debug = Debug;
 		apiKey=ApiKey;
 		String strLine="";

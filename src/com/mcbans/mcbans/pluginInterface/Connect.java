@@ -1,18 +1,17 @@
-package com.mcbans.firestar.mcbans.pluginInterface;
+package com.mcbans.mcbans.pluginInterface;
+
+import com.mcbans.mcbans.BukkitInterface;
+import com.mcbans.mcbans.request.JsonHandler;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
-import com.mcbans.firestar.mcbans.bukkitInterface;
-import com.mcbans.firestar.mcbans.request.jsonHandler;
-
-public class connect{
-	private bukkitInterface MCBans;
+public class Connect {
+	private BukkitInterface MCBans;
 	private HashMap<String, Integer> responses = new HashMap<String, Integer>();
-	public connect( bukkitInterface p ){
+	public Connect(BukkitInterface p){
 		responses.put("n", 0);
 		responses.put("g", 1);
 		responses.put("s", 2);
@@ -77,7 +76,7 @@ public class connect{
 			}
 			return s;
 		}
-		jsonHandler webHandle = new jsonHandler( MCBans );
+		JsonHandler webHandle = new JsonHandler( MCBans );
 		HashMap<String, String> url_items = new HashMap<String, String>();
 		url_items.put("player", PlayerName);
 		url_items.put("playerip", PlayerIP);
@@ -101,10 +100,11 @@ public class connect{
 						}
 						if(response.containsKey("is_mcbans_mod")) {
 							if(response.get("is_mcbans_mod").equals("y")){
+                                MCBans.log.write( PlayerName + " is an MCBans.com Staff member");
 								MCBans.broadcastBanView( ChatColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ));
 								tempList.add(ChatColor.AQUA + MCBans.Language.getFormat ("youAreMCBansStaff"));
-							}
-						}
+                            }
+                        }
 						if(response.containsKey("disputeCount")){
 							if(!response.get("disputeCount").equals("")){
 								tempList.add(ChatColor.DARK_RED + response.get("disputeCount") + " open disputes!" );
@@ -165,9 +165,10 @@ public class connect{
 									MCBans.log.write( PlayerName + " has connected!" );
 									if(response.containsKey("is_mcbans_mod")) {
 										if(response.get("is_mcbans_mod").equals("y")){
-											MCBans.broadcastBanView( ChatColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ));
-											tempList.add(ChatColor.AQUA + MCBans.Language.getFormat ("youAreMCBansStaff"));
-										}
+                                            MCBans.log.write( PlayerName + " is an MCBans.com Staff member");
+								            MCBans.broadcastBanView( ChatColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ));
+								            tempList.add(ChatColor.AQUA + MCBans.Language.getFormat ("youAreMCBansStaff"));
+                                        }
 									}
 									s = null;
 								}else{
@@ -184,13 +185,8 @@ public class connect{
 				}
 				if(s==null && tempList.size()>0){
 					Player target = MCBans.getServer().getPlayer(PlayerName);
-					if( MCBans.Permissions.isAllow( target.getWorld().getName(), target.getName(), "ban.view" ) ){
-						if (MCBans.Settings.getBoolean("mcbansUnconfigured")) {
-							target.sendMessage( MCBans.Settings.getString("prefix") + " Thank you for installing MCBans on your server! Please edit the settings.yml file located in the plugins/mcbans directory and customize it to your needs. This notice will disappear after the new settings take effect.");
-						}
-					}
 					MCBans.joinMessages.put( PlayerName, tempList);
-				}
+                }
 			}
 			return s;
 		} catch (NullPointerException e) {

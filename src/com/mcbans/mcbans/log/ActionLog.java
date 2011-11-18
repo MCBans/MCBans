@@ -1,20 +1,23 @@
-package com.mcbans.firestar.mcbans.log;
+package com.mcbans.mcbans.log;
 /**
  * Utilities log (FROM: http://www.rgagnon.com)
  */
-import java.io.*;
-import java.text.*;
-import java.util.*;
 
-import com.mcbans.firestar.mcbans.bukkitInterface;
+import com.mcbans.mcbans.BukkitInterface;
+
+import java.io.FileWriter;
+import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ActionLog {
 
     private static String logFile = "";
-    private bukkitInterface MCBans = null;
+    private BukkitInterface MCBans = null;
     private final static DateFormat df = new SimpleDateFormat ("yyyy.MM.dd hh:mm:ss ");
 
-    public ActionLog( bukkitInterface p, String logfile ) {
+    public ActionLog( BukkitInterface p, String logfile ) {
     	logFile = logfile;
     	MCBans = p; 
     }

@@ -1,4 +1,8 @@
-package com.mcbans.firestar.mcbans.request;
+package com.mcbans.mcbans.request;
+
+import com.mcbans.mcbans.BukkitInterface;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -11,17 +15,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.mcbans.firestar.mcbans.bukkitInterface;
-
 @SuppressWarnings("unchecked")
-public class jsonHandler{
+public class JsonHandler {
 	private String apiKey="";
-	private bukkitInterface MCBans;
+	private BukkitInterface MCBans;
 	private boolean debug = false;
-	public jsonHandler( bukkitInterface p){
+	public JsonHandler(BukkitInterface p){
 		MCBans = p;
 		apiKey = MCBans.getApiKey();
 		debug = MCBans.Settings.getBoolean("isDebug");

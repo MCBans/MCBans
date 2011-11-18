@@ -1,14 +1,16 @@
-package com.mcbans.firestar.mcbans.pluginInterface;
+package com.mcbans.mcbans.pluginInterface;
+
+import com.mcbans.mcbans.BukkitInterface;
+import com.mcbans.mcbans.request.JsonHandler;
+import org.bukkit.ChatColor;
+import org.getspout.spoutapi.gui.GenericLabel;
+import org.getspout.spoutapi.gui.GenericPopup;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import java.util.HashMap;
 
-import org.bukkit.ChatColor;
-
-import com.mcbans.firestar.mcbans.bukkitInterface;
-import com.mcbans.firestar.mcbans.request.jsonHandler;
-
-public class ban extends Thread {
-	private bukkitInterface MCBans;
+public class Ban extends Thread {
+	private BukkitInterface MCBans;
 	private String PlayerName = null;
 	private String PlayerIP = null;
 	private String PlayerAdmin = null;
@@ -18,7 +20,7 @@ public class ban extends Thread {
 	private String Measure = null;
 	private String Badword = null;
 	private HashMap<String, Integer> responses = new HashMap<String, Integer>();
-	public ban( bukkitInterface p, String action, String playerName, String playerIP, String playerAdmin, String reason, String duration, String measure ){
+	public Ban(BukkitInterface p, String action, String playerName, String playerIP, String playerAdmin, String reason, String duration, String measure){
 		MCBans = p;
 		PlayerName = playerName;
 		PlayerIP = playerIP;
@@ -90,7 +92,7 @@ public class ban extends Thread {
 		}
 	}
 	public void unBan( ){
-		jsonHandler webHandle = new jsonHandler( MCBans );
+		JsonHandler webHandle = new JsonHandler( MCBans );
 		HashMap<String, String> url_items = new HashMap<String, String>();
 		url_items.put( "player", PlayerName );
 		url_items.put( "admin", PlayerAdmin );
@@ -118,7 +120,7 @@ public class ban extends Thread {
 		}
 	}
 	public void localBan( ){
-		jsonHandler webHandle = new jsonHandler( MCBans );
+		JsonHandler webHandle = new JsonHandler( MCBans );
 		HashMap<String, String> url_items = new HashMap<String, String>();
 		url_items.put( "player", PlayerName );
 		url_items.put( "playerip", PlayerIP );
@@ -151,7 +153,7 @@ public class ban extends Thread {
 		}
 	}
 	public void globalBan( ){
-		jsonHandler webHandle = new jsonHandler( MCBans );
+		JsonHandler webHandle = new JsonHandler( MCBans );
 		HashMap<String, String> url_items = new HashMap<String, String>();
 		url_items.put( "player", PlayerName );
 		url_items.put( "playerip", PlayerIP );
@@ -161,8 +163,23 @@ public class ban extends Thread {
 		HashMap<String, String> response = webHandle.mainRequest(url_items);
 		try{
 			if(!response.containsKey("result")){
-				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
-				return;
+				if (MCBans.hasErrored(response)) {
+                    if (MCBans.UsingSpout && response.containsKey("error")) {
+			            if (response.get("error").contains("Server Disabled")) {
+                            SpoutPlayer myplayer = (SpoutPlayer)MCBans.getServer().getPlayer(PlayerAdmin);
+                            GenericPopup somepopup = new GenericPopup();
+                            GenericLabel label = new GenericLabel("This server has been disabled by an MCBans Administrator\nIf you feel there was a mistake, please contact an MCBans Administrator.");
+                            label.setX(myplayer.getMainScreen().getMaxWidth() / 2 - 160);
+                            label.setY(myplayer.getMainScreen().getMaxHeight() / 2 - 15);
+                            somepopup.attachWidget(MCBans, label);
+                            myplayer.getMainScreen().attachPopupScreen(somepopup);
+                        }
+                    }
+					return;
+				} else {
+					MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
+					return;
+				}
 			}
 			if(response.get("result").equals("y")){
 				MCBans.log.write( PlayerName + " has been banned with a global type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
@@ -187,7 +204,7 @@ public class ban extends Thread {
 		}
 	}
 	public void tempBan( ){
-		jsonHandler webHandle = new jsonHandler( MCBans );
+		JsonHandler webHandle = new JsonHandler( MCBans );
 		HashMap<String, String> url_items = new HashMap<String, String>();
 		url_items.put( "player", PlayerName );
 		url_items.put( "playerip", PlayerIP );

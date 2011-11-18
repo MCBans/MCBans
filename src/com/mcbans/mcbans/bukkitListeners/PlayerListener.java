@@ -1,25 +1,27 @@
-package com.mcbans.firestar.mcbans.bukkitListeners;
+package com.mcbans.mcbans.bukkitListeners;
 
+import com.mcbans.mcbans.BukkitInterface;
+import com.mcbans.mcbans.pluginInterface.Connect;
+import com.mcbans.mcbans.pluginInterface.Disconnect;
 import org.bukkit.ChatColor;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.mcbans.firestar.mcbans.bukkitInterface;
-import com.mcbans.firestar.mcbans.pluginInterface.connect;
-import com.mcbans.firestar.mcbans.pluginInterface.disconnect;
-
-public class playerListener extends PlayerListener {
-	private bukkitInterface MCBans;
-	public playerListener(bukkitInterface plugin) {
+public class PlayerListener extends org.bukkit.event.player.PlayerListener {
+	private BukkitInterface MCBans;
+	public PlayerListener(BukkitInterface plugin) {
         MCBans = plugin;
     }
 	@Override
 	public void onPlayerPreLogin(PlayerPreLoginEvent event) {
+		if (event.getResult() != Result.ALLOWED) {
+			return;
+		}
 		String playerIP = event.getAddress().getHostAddress();
         String playerName = event.getName();
-		connect playerConnect = new connect( MCBans );
+		Connect playerConnect = new Connect( MCBans );
 		String result = playerConnect.exec( playerName, playerIP );
 		if( result != null ){
 			event.disallow(PlayerPreLoginEvent.Result.KICK_BANNED, result);
@@ -36,12 +38,12 @@ public class playerListener extends PlayerListener {
 				MCBans.broadcastPlayer( event.getPlayer(),  message );
 			}
 			MCBans.joinMessages.remove(playerName);
-		}
+        }
 	}
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {
         String playerName = event.getPlayer().getName();
-        disconnect disconnectHandler = new disconnect( MCBans, playerName );
+        Disconnect disconnectHandler = new Disconnect( MCBans, playerName );
         disconnectHandler.start();
     }
 }

@@ -1,10 +1,14 @@
-package com.mcbans.firestar.mcbans;
+package com.mcbans.mcbans;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.mcbans.mcbans.backup.Backup;
+import com.mcbans.mcbans.backup.BackupCheck;
+import com.mcbans.mcbans.bukkitListeners.PlayerListener;
+import com.mcbans.mcbans.callBacks.MainCallBack;
+import com.mcbans.mcbans.commands.CommandHandler;
+import com.mcbans.mcbans.log.ActionLog;
+import de.diddiz.LogBlock.Consumer;
+import de.diddiz.LogBlock.LogBlock;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftServer;
@@ -16,31 +20,30 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.mcbans.firestar.mcbans.backup.backup;
-import com.mcbans.firestar.mcbans.backup.backupCheck;
-import com.mcbans.firestar.mcbans.bukkitListeners.playerListener;
-import com.mcbans.firestar.mcbans.callBacks.mainCallBack;
-import com.mcbans.firestar.mcbans.commands.commandHandler;
-import com.mcbans.firestar.mcbans.log.ActionLog;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-public class bukkitInterface extends JavaPlugin {
+public class BukkitInterface extends JavaPlugin {
 	
-	private commandHandler commandHandle; 
+	private CommandHandler commandHandle;
 	private BukkitScheduler BScheduler;
-	private final playerListener bukkitPlayer = new playerListener(this);
+	private final PlayerListener bukkitPlayer = new PlayerListener(this);
 	public int taskID = 0;
 	public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
 	public HashMap<String, Long> resetTime = new HashMap<String, Long>();
 	public Core Core = new Core();
 	public Settings Settings;
 	public Language Language = null;
-	private mainCallBack callbackThread = null;
-	private backupCheck backupThread = null;
+	public MainCallBack callbackThread = null;
+	private BackupCheck backupThread = null;
+    public Boolean UsingSpout = false;
 	public ActionLog log = null;
-	public backup Backup = null;
+	public Backup Backup = null;
+	public Consumer lbconsumer = null;
 	private String apiKey = "";
 	private boolean mode = false;
-	public bukkitPermissions Permissions = null;
+	public BukkitPermissions Permissions = null;
 	public HashMap<String, ArrayList<String>> joinMessages = new HashMap<String, ArrayList<String>>();
 	
 	public void onDisable() {
@@ -66,7 +69,7 @@ public class bukkitInterface extends JavaPlugin {
 		
         boolean isFirestarFail = server.getServer().onlineMode;
         if( !isFirestarFail ){
-        	System.out.print("MCBans: Can only run in online mode!");
+        	System.out.print("MCBans: Your server is not in online mode!");
         	pm.disablePlugin(pluginInterface("mcbans"));
         	return;
         }
@@ -74,14 +77,14 @@ public class bukkitInterface extends JavaPlugin {
         // API KEY verification!
         if (Core.apikey != null) {
         	this.apiKey = this.Core.apikey;
-        	System.out.print("MCBans: Using Core API Key (" + this.getApiKey() + ")");
+        	System.out.print("MCBans: Registered API Key (" + this.getApiKey() + ")");
         } else {
         	System.out.print("MCBans: Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
         	pm.disablePlugin(pluginInterface("mcbans"));
         	return;
         }
         
-        Settings = new Settings("settings.yml", this);
+        Settings = new Settings(this);
         
         if (Settings.doTerminate) {
 			System.out.print("MCBans: Please download the latest settings.yml from MCBans.com!");
@@ -91,7 +94,6 @@ public class bukkitInterface extends JavaPlugin {
         
 		pm.registerEvent( Event.Type.PLAYER_JOIN, bukkitPlayer, Priority.Normal, this );
         pm.registerEvent( Event.Type.PLAYER_PRELOGIN, bukkitPlayer, Priority.Normal, this );
-        pm.registerEvent( Event.Type.PLAYER_CHAT, bukkitPlayer, Priority.Highest, this );
         pm.registerEvent( Event.Type.PLAYER_QUIT, bukkitPlayer, Priority.Normal, this );
         
         String language;
@@ -132,19 +134,19 @@ public class bukkitInterface extends JavaPlugin {
         	System.out.print("MCBans: Log file disabled!");
         }
         
-        Permissions = new bukkitPermissions( Settings, this );
-        commandHandle = new commandHandler( Settings, this );
+        Permissions = new BukkitPermissions( Settings, this );
+        commandHandle = new CommandHandler( Settings, this );
         Permissions.setupPermissions();
         
         log.write("Fetching backup.");
-        Backup = new backup( this.Settings.getBoolean("isDebug"), this.getApiKey() );
+        Backup = new Backup( Settings.getBoolean("isDebug"), this.getApiKey() );
         Backup.fetch();
         
         log.write("Starting MCBans online check.");
-        backupThread = new backupCheck( this );
+        backupThread = new BackupCheck( this );
         backupThread.start();
         
-        callbackThread = new mainCallBack( this );
+        callbackThread = new MainCallBack( this );
         callbackThread.start();
         if (Core.lang != null) {
         	Language = new Language(Core.lang);
@@ -159,7 +161,7 @@ public class bukkitInterface extends JavaPlugin {
         
         	if (taskID == -1) {
         		log.write("Unable to schedule throttle reset task");
-        		log.write("Throttling has been disabled. (Task ID: " + taskID + ")");
+        		log.write("Throttling has been disabled.");
         	} else {
         		log.write("Connection throttling operating normally!");
         		log.write("Task ID: " + taskID);
@@ -167,7 +169,19 @@ public class bukkitInterface extends JavaPlugin {
         	}
         }
         
-        log.write("Started normally.");
+        Plugin logBlock = pm.getPlugin("LogBlock");
+        if (logBlock != null) {
+        	lbconsumer = ((LogBlock)logBlock).getConsumer();
+        	log.write("Enabling LogBlock integration");
+        }
+
+        Plugin getSpout = pm.getPlugin("Spout");
+        if (getSpout != null) {
+            UsingSpout = true;
+            log.write("Enabling Spout integration");
+        }
+        
+        log.write("Started and operating normally!");
         
 	}
 	
@@ -179,7 +193,7 @@ public class bukkitInterface extends JavaPlugin {
 	public void broadcastBanView(String msg){
 		for( Player player: this.getServer().getOnlinePlayers() ){
 			if( Permissions.isAllow( player.getWorld().getName(), player.getName(), "ban.view" ) ){
-				player.sendMessage( Settings.getString("prefix")+" "+msg );
+				player.sendMessage( Settings.getPrefix() + " " + msg );
 			}
 		}
 	}
@@ -215,16 +229,16 @@ public class bukkitInterface extends JavaPlugin {
 	
 	public void broadcastAll(String msg){
 		for( Player player: this.getServer().getOnlinePlayers() ){
-			player.sendMessage( Settings.getString("prefix")+" "+msg );
+			player.sendMessage( Settings.getPrefix() + " " + msg );
 		}
 	}
 	
 	public void broadcastPlayer( String Player, String msg ){
 		Player target = this.getServer().getPlayer(Player);
 		if(target!=null){
-			target.sendMessage( Settings.getString("prefix") + " " + msg );
+			target.sendMessage( Settings.getPrefix() + " " + msg );
 		}else{
-			System.out.print( Settings.getString("prefix") + " " + msg );
+			System.out.print( Settings.getPrefix() + " " + msg );
 		}
 	}
 	public boolean getMode(){
@@ -237,7 +251,62 @@ public class bukkitInterface extends JavaPlugin {
 		return this.apiKey;
 	}
 	public void broadcastPlayer( Player target, String msg ){
-		target.sendMessage( Settings.getString("prefix") + " " + msg );
+		target.sendMessage( Settings.getPrefix() + " " + msg );
+	}
+	
+	public boolean hasErrored (HashMap<String, String> response) {
+		if (response.containsKey("error")) {
+			String error = response.get("error");
+			if (error.contains("Server Disabled")) {
+				if (getMode()) {
+					return true;
+				}
+				broadcastBanView( ChatColor.RED + "Server Disabled by an MCBans Admin");
+				broadcastBanView( "MCBans is running in reduced functionality mode. Only local bans can be used at this time.");
+				log.write("The server API key has been disabled by an MCBans Administrator");
+				log.write("To appeal this decision, please contact an administrator");
+				setMode(true);
+			} else if (error.contains("api key not found.")) {
+				broadcastBanView( ChatColor.RED + "Invalid MCBans.jar!");
+				broadcastBanView( "The API key inside the current MCBans.jar is invalid. Please re-download the plugin from myserver.mcbans.com");
+				log.write("Invalid MCBans.jar - Please re-download from myserver.mcbans.com!");
+				getServer().getPluginManager().disablePlugin(pluginInterface("mcbans"));
+			} else {
+				broadcastBanView( ChatColor.RED + "Unexpected reply from MCBans API!");
+				log.write("API returned an invalid error:");
+				log.write("MCBans said: " + error);
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean hasErrored (String response) {
+		if (response.contains("error")) {
+			if (response.contains("Server Disabled")) {
+				if (getMode()) {
+					return true;
+				}
+				broadcastBanView( ChatColor.RED + "Server Disabled by an MCBans Admin");
+				broadcastBanView( "MCBans is running in reduced functionality mode. Only local bans can be used at this time.");
+				log.write("The server API key has been disabled by an MCBans Administrator");
+				log.write("To appeal this decision, please contact an administrator");
+				setMode(true);
+			} else if (response.contains("api key not found.")) {
+				broadcastBanView( ChatColor.RED + "Invalid MCBans.jar!");
+				broadcastBanView( "The API key inside the current MCBans.jar is invalid. Please re-download the plugin from myserver.mcbans.com");
+				log.write("Invalid MCBans.jar - Please re-download from myserver.mcbans.com!");
+				getServer().getPluginManager().disablePlugin(pluginInterface("mcbans"));
+			} else {
+				broadcastBanView( ChatColor.RED + "Unexpected reply from MCBans API!");
+				log.write("API returned an invalid error:");
+				log.write("MCBans said: " + response);
+			}
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public Plugin pluginInterface( String pluginName ){
