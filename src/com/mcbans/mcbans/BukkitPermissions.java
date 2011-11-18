@@ -1,17 +1,17 @@
-package com.mcbans.firestar.mcbans;
+package com.mcbans.mcbans;
 
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
-
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
 @SuppressWarnings("unused")
-public class bukkitPermissions{
+public class BukkitPermissions {
 	private static PermissionHandler permissionHandler = null;
-	private bukkitInterface MCBans;
+	private BukkitInterface MCBans;
 	
 	private Settings Config;
-	public bukkitPermissions( Settings cf, bukkitInterface p ){
+	public BukkitPermissions(Settings cf, BukkitInterface p){
 		MCBans = p;
 		Config=cf;
 	}
@@ -28,10 +28,7 @@ public class bukkitPermissions{
 	}
 	public boolean isAllow( String WorldName, String PlayerName, String PermissionNode ){
 		Player target = MCBans.getServer().getPlayer(PlayerName);
-		if( target!=null ){
-			 return isAllow( target, PermissionNode );
-		}
-		return false;
+		return target != null && isAllow( target, PermissionNode );
 	}
 	public boolean isAllow( Player Player, String PermissionNode ){
 		if( permissionHandler != null ){
