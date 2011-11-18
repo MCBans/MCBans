@@ -77,7 +77,7 @@ public class BukkitInterface extends JavaPlugin {
         // API KEY verification!
         if (Core.apikey != null) {
         	this.apiKey = this.Core.apikey;
-        	System.out.print("MCBans: Registered API Key (" + this.getApiKey() + ")");
+        	System.out.print("MCBans: Core loaded successfully!");
         } else {
         	System.out.print("MCBans: Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
         	pm.disablePlugin(pluginInterface("mcbans"));
@@ -180,7 +180,7 @@ public class BukkitInterface extends JavaPlugin {
             UsingSpout = true;
             log.write("Enabling Spout integration");
         }
-        
+
         log.write("Started and operating normally!");
         
 	}
