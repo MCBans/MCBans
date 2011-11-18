@@ -38,7 +38,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener {
 				MCBans.broadcastPlayer( event.getPlayer(),  message );
 			}
 			MCBans.joinMessages.remove(playerName);
-		}
+        }
 	}
 	@Override
 	public void onPlayerQuit(PlayerQuitEvent event) {

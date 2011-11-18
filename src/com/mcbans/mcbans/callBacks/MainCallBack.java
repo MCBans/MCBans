@@ -27,6 +27,9 @@ public class MainCallBack extends Thread {
 			}
 		}
 	}
+    public void goRequest() {
+        mainRequest();
+    }
 	private void mainRequest(){
 		JsonHandler webHandle = new JsonHandler( MCBans );
 		HashMap<String, String> url_items = new HashMap<String, String>();
@@ -50,9 +53,14 @@ public class MainCallBack extends Thread {
 				}
 			}
 		}
-		if (MCBans.hasErrored(response)) {
-			return;
-		}
+        if(response.containsKey("hasNotices")) {
+            for(String cb : response.keySet()) {
+                if (cb.contains("notice")) {
+                    MCBans.broadcastBanView( ChatColor.GOLD + "Notice: " + ChatColor.WHITE + response.get(cb));
+                }
+            }
+        }
+		MCBans.hasErrored(response);
 		/*if(response.containsKey("newMessages")){
 			if(!response.get("newMessages").equals("")){
 				String[] Players = response.get("newMessages").split(",");

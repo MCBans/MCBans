@@ -35,8 +35,9 @@ public class BukkitInterface extends JavaPlugin {
 	public Core Core = new Core();
 	public Settings Settings;
 	public Language Language = null;
-	private MainCallBack callbackThread = null;
+	public MainCallBack callbackThread = null;
 	private BackupCheck backupThread = null;
+    public Boolean UsingSpout = false;
 	public ActionLog log = null;
 	public Backup Backup = null;
 	public Consumer lbconsumer = null;
@@ -171,7 +172,13 @@ public class BukkitInterface extends JavaPlugin {
         Plugin logBlock = pm.getPlugin("LogBlock");
         if (logBlock != null) {
         	lbconsumer = ((LogBlock)logBlock).getConsumer();
-        	log.write("Enabling LogBlock intergration");
+        	log.write("Enabling LogBlock integration");
+        }
+
+        Plugin getSpout = pm.getPlugin("Spout");
+        if (getSpout != null) {
+            UsingSpout = true;
+            log.write("Enabling Spout integration");
         }
         
         log.write("Started and operating normally!");

@@ -100,10 +100,11 @@ public class Connect {
 						}
 						if(response.containsKey("is_mcbans_mod")) {
 							if(response.get("is_mcbans_mod").equals("y")){
+                                MCBans.log.write( PlayerName + " is an MCBans.com Staff member");
 								MCBans.broadcastBanView( ChatColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ));
 								tempList.add(ChatColor.AQUA + MCBans.Language.getFormat ("youAreMCBansStaff"));
-							}
-						}
+                            }
+                        }
 						if(response.containsKey("disputeCount")){
 							if(!response.get("disputeCount").equals("")){
 								tempList.add(ChatColor.DARK_RED + response.get("disputeCount") + " open disputes!" );
@@ -164,9 +165,10 @@ public class Connect {
 									MCBans.log.write( PlayerName + " has connected!" );
 									if(response.containsKey("is_mcbans_mod")) {
 										if(response.get("is_mcbans_mod").equals("y")){
-											MCBans.broadcastBanView( ChatColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ));
-											tempList.add(ChatColor.AQUA + MCBans.Language.getFormat ("youAreMCBansStaff"));
-										}
+                                            MCBans.log.write( PlayerName + " is an MCBans.com Staff member");
+								            MCBans.broadcastBanView( ChatColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ));
+								            tempList.add(ChatColor.AQUA + MCBans.Language.getFormat ("youAreMCBansStaff"));
+                                        }
 									}
 									s = null;
 								}else{
@@ -183,13 +185,8 @@ public class Connect {
 				}
 				if(s==null && tempList.size()>0){
 					Player target = MCBans.getServer().getPlayer(PlayerName);
-					if( MCBans.Permissions.isAllow( target.getWorld().getName(), target.getName(), "ban.view" ) ){
-						if (MCBans.Settings.getBoolean("mcbansUnconfigured")) {
-							target.sendMessage( MCBans.Settings.getString("prefix") + " Thank you for installing MCBans on your server! Please edit the settings.yml file located in the plugins/mcbans directory and customize it to your needs. This notice will disappear after the new settings take effect.");
-						}
-					}
 					MCBans.joinMessages.put( PlayerName, tempList);
-				}
+                }
 			}
 			return s;
 		} catch (NullPointerException e) {
