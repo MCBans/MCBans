@@ -37,7 +37,6 @@ public class BukkitInterface extends JavaPlugin {
 	public Language Language = null;
 	public MainCallBack callbackThread = null;
 	private BackupCheck backupThread = null;
-    public Boolean UsingSpout = false;
 	public ActionLog log = null;
 	public Backup Backup = null;
 	public Consumer lbconsumer = null;
@@ -77,7 +76,7 @@ public class BukkitInterface extends JavaPlugin {
         // API KEY verification!
         if (Core.apikey != null) {
         	this.apiKey = this.Core.apikey;
-        	System.out.print("MCBans: Registered API Key (" + this.getApiKey() + ")");
+        	System.out.print("MCBans: Core loaded successfully!");
         } else {
         	System.out.print("MCBans: Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
         	pm.disablePlugin(pluginInterface("mcbans"));
@@ -175,12 +174,6 @@ public class BukkitInterface extends JavaPlugin {
         	log.write("Enabling LogBlock integration");
         }
 
-        Plugin getSpout = pm.getPlugin("Spout");
-        if (getSpout != null) {
-            UsingSpout = true;
-            log.write("Enabling Spout integration");
-        }
-        
         log.write("Started and operating normally!");
         
 	}
