@@ -3,9 +3,6 @@ package com.mcbans.mcbans.pluginInterface;
 import com.mcbans.mcbans.BukkitInterface;
 import com.mcbans.mcbans.request.JsonHandler;
 import org.bukkit.ChatColor;
-import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.GenericPopup;
-import org.getspout.spoutapi.player.SpoutPlayer;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,15 +51,6 @@ public class Lookup extends Thread {
 				    MCBans.broadcastBanView( "MCBans is running in reduced functionality mode. Only local bans can be used at this time.");
 				    MCBans.log.write("The server API key has been disabled by an MCBans Administrator");
 				    MCBans.log.write("To appeal this decision, please contact an administrator");
-                    if (MCBans.UsingSpout) {
-                        SpoutPlayer myplayer = (SpoutPlayer)MCBans.getServer().getPlayer(PlayerAdmin);
-                        GenericPopup somepopup = new GenericPopup();
-                        GenericLabel label = new GenericLabel("This server has been disabled by an MCBans Administrator\nIf you feel there was a mistake, please contact an MCBans Administrator.");
-                        label.setX(myplayer.getMainScreen().getMaxWidth() / 2 - 160);
-                        label.setY(myplayer.getMainScreen().getMaxHeight() / 2 - 15);
-                        somepopup.attachWidget(MCBans, label);
-                        myplayer.getMainScreen().attachPopupScreen(somepopup);
-                    }
                 }
             } else {
         	    MCBans.broadcastPlayer( PlayerAdmin, ChatColor.RED + "There was an error while parsing the data! [JSON Error]");
