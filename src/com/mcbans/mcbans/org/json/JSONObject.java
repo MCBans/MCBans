@@ -1,4 +1,4 @@
-package org.json;
+package com.mcbans.mcbans.org.json;
 
 /*
 Copyright (c) 2002 JSON.org
@@ -27,16 +27,9 @@ SOFTWARE.
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.TreeSet;
+import java.lang.reflect.Modifier;
+import java.util.*;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its
@@ -426,7 +419,7 @@ public class JSONObject {
             while (string.endsWith("0")) {
                 string = string.substring(0, string.length() - 1);
             }
-            if (string.endsWith(".")) {
+            if (string.endsWith("")) {
                 string = string.substring(0, string.length() - 1);
             }
         }
@@ -739,7 +732,7 @@ public class JSONObject {
             while (string.endsWith("0")) {
                 string = string.substring(0, string.length() - 1);
             }
-            if (string.endsWith(".")) {
+            if (string.endsWith("")) {
                 string = string.substring(0, string.length() - 1);
             }
         }

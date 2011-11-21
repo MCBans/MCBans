@@ -1,8 +1,8 @@
 package com.mcbans.mcbans.request;
 
 import com.mcbans.mcbans.BukkitInterface;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.mcbans.mcbans.org.json.JSONException;
+import com.mcbans.mcbans.org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
