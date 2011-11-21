@@ -1,10 +1,10 @@
 package com.mcbans.mcbans.pluginInterface;
 
 import com.mcbans.mcbans.BukkitInterface;
+import com.mcbans.mcbans.org.json.JSONException;
+import com.mcbans.mcbans.org.json.JSONObject;
 import com.mcbans.mcbans.request.JsonHandler;
 import org.bukkit.ChatColor;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 
