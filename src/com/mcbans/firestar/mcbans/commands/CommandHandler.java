@@ -103,20 +103,22 @@ public class CommandHandler {
 						return true;
 					}
 				}
-				// /ban [0]-g [1]<player> [2]<reason>
-				if(args.length<=1){
-					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
-					return true;
-				}
-                if (rollback && MCBans.lbconsumer == null) {
-                    MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + "LogBlock was not found - You cannot use flag 'r'" );
-					return true;
+                if (useFlags) {
+				    // /ban [0]-g [1]<player> [2]<reason>
+				    if(args.length<=1){
+				    	MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
+				    	return true;
+				    }
+                    if (rollback && MCBans.lbconsumer == null) {
+                        MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + "LogBlock was not found - You cannot use flag 'r'" );
+				    	return true;
+                    }
+				    Player target = MCBans.getServer().getPlayer(args[1]);
+				    username = args[1];
+				    if( target!=null ){
+				    	PlayerIP = target.getAddress().getAddress().getHostAddress();
+				    }
                 }
-				Player target = MCBans.getServer().getPlayer(args[1]);
-				username = args[1];
-				if( target!=null ){
-					PlayerIP = target.getAddress().getAddress().getHostAddress();
-				}
 			}
 			if (!useFlags) {
 				Player target = MCBans.getServer().getPlayer(args[0]);

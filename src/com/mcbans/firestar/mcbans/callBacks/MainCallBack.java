@@ -39,8 +39,8 @@ public class MainCallBack extends Thread {
 		url_items.put( "exec", "callBack" );
 		HashMap<String, String> response = webHandle.mainRequest(url_items);
 		if(response.containsKey("oldVersion")){
-			if(!response.get("oldVersion").equals("")){
-				String oldVersion = response.get("oldVersion");
+            String oldVersion = response.get("oldVersion");
+			if(!oldVersion.equals("")){
 				// Version replies can be:
 				// 3.3imp, 3.3
 				// The former being the update is important and should be downloaded ASAP, the latter is that the update does not contain a critical fix/patch
@@ -51,6 +51,13 @@ public class MainCallBack extends Thread {
 				} else {
 					MCBans.broadcastBanView( ChatColor.BLUE + "A newer version of MCBans (" + oldVersion + ") is now available!");
 				}
+                if (response.containsKey("patchNotes")) {
+                    String patchNotes = response.get("patchNotes");
+                    if(!patchNotes.equals("")){
+                        MCBans.broadcastBanView( ChatColor.BLUE + "Patch Notes v" + oldVersion);
+                        MCBans.broadcastBanView(patchNotes);
+                    }
+                }
 			}
 		}
         if(response.containsKey("hasNotices")) {
