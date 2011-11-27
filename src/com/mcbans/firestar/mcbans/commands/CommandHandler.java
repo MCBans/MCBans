@@ -12,10 +12,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class CommandHandler {
 	private BukkitInterface MCBans;
 	private Settings Config;
+	private static final Pattern pattern = Pattern.compile("^\\w{3,16}$");
 	//private String[] protectedGroups;
 	private HashMap<String, Integer> commandList = new HashMap<String, Integer>();
 	public CommandHandler(Settings cf, BukkitInterface p){
@@ -123,6 +125,10 @@ public class CommandHandler {
 			if (!useFlags) {
 				Player target = MCBans.getServer().getPlayer(args[0]);
 				username = args[0];
+				if (!pattern.matcher(username).matches()) {
+					MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + "Invalid player name - Partial usernames cannot be used for bans" );
+					return true;
+				}
 				if( target!=null ){
 					PlayerIP = target.getAddress().getAddress().getHostAddress();
 				}
