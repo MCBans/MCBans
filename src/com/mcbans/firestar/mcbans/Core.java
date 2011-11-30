@@ -1,5 +1,6 @@
 package com.mcbans.firestar.mcbans;
 
+import com.mcbans.firestar.mcbans.log.LogLevels;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
@@ -10,18 +11,18 @@ public class Core {
 	public String apikey;
 	public String lang;
 	
-	public Core () {
+	public Core (BukkitInterface MCBans) {
 		InputStream in;
 		try {
 			in = Core.class.getClassLoader().getResourceAsStream("core.yml");
 		} catch (NullPointerException ex) {
-            System.out.print("MCBans: Unable to load core.yml!");
+            MCBans.log(LogLevels.FATAL, "MCBans: Unable to load core.yml!");
 			return;
 		}
 		Yaml yaml = new Yaml();
 		Map map = (Map)yaml.load(in);
 		this.apikey = (String) map.get("apikey");
 		this.lang = (String) map.get("lang");
-		System.out.print("MCBans: Starting..");
+		MCBans.log(LogLevels.INFO, "MCBans: Starting..");
 	}
 }

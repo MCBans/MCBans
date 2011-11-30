@@ -1,6 +1,7 @@
 package com.mcbans.firestar.mcbans.log;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
+import org.bukkit.ChatColor;
 
 public class Logger {
     private BukkitInterface MCBans = null;
@@ -16,20 +17,20 @@ public class Logger {
     public void log (LogLevels type, String message) {
         switch (type) {
             case INFO:
-                System.out.print("[MCBans] [INFO] " + message);
+                MCBans.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[MCBans] " + ChatColor.LIGHT_PURPLE + "[INFO] " + ChatColor.WHITE + message);
                 break;
             case WARNING:
-                System.out.print("[MCBans] [WARNING] " + message);
+                MCBans.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[MCBans] " + ChatColor.YELLOW + "[WARNING] " + ChatColor.WHITE + message);
                 break;
             case SEVERE:
-                System.out.print("[MCBans] [SEVERE] " + message);
+                MCBans.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[MCBans] " + ChatColor.GOLD + "[SEVERE] " + ChatColor.WHITE + message);
                 break;
             case FATAL:
-                System.out.print("[MCBans] [FATAL] " + message);
-                MCBans.getServer().getPluginManager().disablePlugin(MCBans.pluginInterface("mcbans"));
+                MCBans.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[MCBans] " + ChatColor.RED + "[FATAL] " + ChatColor.WHITE + message);
+                        MCBans.getServer().getPluginManager().disablePlugin(MCBans.pluginInterface("mcbans"));
                 break;
             default:
-                System.out.print("[MCBans] " + message);
+                MCBans.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "[MCBans] " + ChatColor.WHITE +  message);
                 break;
         }
     }

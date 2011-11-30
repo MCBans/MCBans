@@ -33,7 +33,8 @@ public class BukkitInterface extends JavaPlugin {
 	public int taskID = 0;
 	public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
 	public HashMap<String, Long> resetTime = new HashMap<String, Long>();
-	public Core Core = new Core();
+    public Logger logger = new Logger(this);
+	public Core Core = null;
 	public Settings Settings;
 	public Language Language = null;
 	public MainCallBack callbackThread = null;
@@ -44,7 +45,8 @@ public class BukkitInterface extends JavaPlugin {
 	private String apiKey = "";
 	private boolean mode = false;
 	public BukkitPermissions Permissions = null;
-    public Logger logger = new Logger(this);
+    private String gitRevision = "@@GITREVIVSION@@";
+    private String buildVersion = "@@BUILDVERSION@@";
 	public HashMap<String, ArrayList<String>> joinMessages = new HashMap<String, ArrayList<String>>();
 	
 	public void onDisable() {
@@ -63,6 +65,11 @@ public class BukkitInterface extends JavaPlugin {
 	
 	public void onEnable() {
 
+        if (!buildVersion.contains("BUILDVERSION") && !gitRevision.contains("GITREVISION")) {
+            log(LogLevels.INFO, "Running MCBans v" + getDescription().getVersion() + " git-" + gitRevision + " b" + buildVersion + "bamboo");
+        }
+        log (LogLevels.WARNING, ChatColor.GREEN + "This is version of MCBans is sporting a colorful DEV interface!");
+
 		PluginManager pm = getServer().getPluginManager();
 		
 		//Rigby's Help :D
@@ -74,6 +81,8 @@ public class BukkitInterface extends JavaPlugin {
         	pm.disablePlugin(pluginInterface("mcbans"));
         	return;
         }
+
+        Core = new Core(this);
         
         // API KEY verification!
         if (Core.apikey != null) {
@@ -239,7 +248,7 @@ public class BukkitInterface extends JavaPlugin {
 		if(target!=null){
 			target.sendMessage( Settings.getPrefix() + " " + msg );
 		}else{
-			System.out.print( Settings.getPrefix() + " " + msg );
+			this.getServer().getConsoleSender().sendMessage( ChatColor.AQUA + Settings.getPrefix() +  " " + ChatColor.WHITE + msg );
 		}
 	}
 	public boolean getMode(){
