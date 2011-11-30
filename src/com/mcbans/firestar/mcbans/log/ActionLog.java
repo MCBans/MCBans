@@ -14,7 +14,7 @@ import java.util.Date;
 public class ActionLog {
 
     private static String logFile = "";
-    private BukkitInterface MCBans = null;
+    private static BukkitInterface MCBans = null;
     private final static DateFormat df = new SimpleDateFormat ("yyyy.MM.dd hh:mm:ss ");
 
     public ActionLog( BukkitInterface p, String logfile ) {
@@ -26,17 +26,14 @@ public class ActionLog {
     public void write(String msg) {
     	if(MCBans.Settings.getBoolean("logEnable")){
     		write(logFile, msg);
-    	}else{
-    		System.out.println("MCBans: " + msg);
     	}
     }
     
     public void write(Exception e) {
     	if(MCBans.Settings.getBoolean("logEnable")){
     		write(logFile, stack2string(e));
-    	}else{
-    		System.out.println("MCBans: " + stack2string(e));
     	}
+        MCBans.log(stack2string(e));
     }
 
     public static void write(String file, String msg) {
@@ -51,7 +48,7 @@ public class ActionLog {
             aWriter.close();
         }
         catch (Exception e) {
-            System.out.println(stack2string(e));
+            MCBans.log(LogLevels.WARNING, stack2string(e));
         }
     }
     

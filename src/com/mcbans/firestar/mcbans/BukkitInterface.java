@@ -6,6 +6,8 @@ import com.mcbans.firestar.mcbans.bukkitListeners.PlayerListener;
 import com.mcbans.firestar.mcbans.callBacks.MainCallBack;
 import com.mcbans.firestar.mcbans.commands.CommandHandler;
 import com.mcbans.firestar.mcbans.log.ActionLog;
+import com.mcbans.firestar.mcbans.log.LogLevels;
+import com.mcbans.firestar.mcbans.log.Logger;
 import de.diddiz.LogBlock.Consumer;
 import de.diddiz.LogBlock.LogBlock;
 import org.bukkit.ChatColor;
@@ -27,7 +29,6 @@ import java.util.HashMap;
 public class BukkitInterface extends JavaPlugin {
 	
 	private CommandHandler commandHandle;
-	private BukkitScheduler BScheduler;
 	private final PlayerListener bukkitPlayer = new PlayerListener(this);
 	public int taskID = 0;
 	public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
@@ -37,12 +38,13 @@ public class BukkitInterface extends JavaPlugin {
 	public Language Language = null;
 	public MainCallBack callbackThread = null;
 	private BackupCheck backupThread = null;
-	public ActionLog log = null;
+	public ActionLog actionLog = null;
 	public Backup Backup = null;
 	public Consumer lbconsumer = null;
 	private String apiKey = "";
 	private boolean mode = false;
 	public BukkitPermissions Permissions = null;
+    public Logger logger = new Logger(this);
 	public HashMap<String, ArrayList<String>> joinMessages = new HashMap<String, ArrayList<String>>();
 	
 	public void onDisable() {
@@ -60,7 +62,7 @@ public class BukkitInterface extends JavaPlugin {
 	}
 	
 	public void onEnable() {
-		
+
 		PluginManager pm = getServer().getPluginManager();
 		
 		//Rigby's Help :D
@@ -68,7 +70,7 @@ public class BukkitInterface extends JavaPlugin {
 		
         boolean isFirestarFail = server.getServer().onlineMode;
         if( !isFirestarFail ){
-        	System.out.print("MCBans: Your server is not in online mode!");
+        	logger.log(LogLevels.FATAL, "MCBans: Your server is not in online mode!");
         	pm.disablePlugin(pluginInterface("mcbans"));
         	return;
         }
@@ -76,18 +78,16 @@ public class BukkitInterface extends JavaPlugin {
         // API KEY verification!
         if (Core.apikey != null) {
         	this.apiKey = this.Core.apikey;
-        	System.out.print("MCBans: Core loaded successfully!");
+        	log("Core loaded successfully!");
         } else {
-        	System.out.print("MCBans: Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
-        	pm.disablePlugin(pluginInterface("mcbans"));
+        	log(LogLevels.FATAL, "Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
         	return;
         }
         
         Settings = new Settings(this);
         
         if (Settings.doTerminate) {
-			System.out.print("MCBans: Please download the latest settings.yml from MCBans.com!");
-        	pm.disablePlugin(pluginInterface("mcbans"));
+			log(LogLevels.FATAL, "Please download the latest settings.yml from MCBans.com!");
         	return;
 		}
         
@@ -100,48 +100,45 @@ public class BukkitInterface extends JavaPlugin {
         if (Core.lang != null) {
         	language = Core.lang;
         } else {
-        	System.out.print("MCBans: Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
-        	pm.disablePlugin(pluginInterface("mcbans"));
+        	log(LogLevels.FATAL, "Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
         	return;
         }
-        System.out.print("MCBans: Loading language file: "+language);
+        log(LogLevels.INFO, "Loading language file: "+language);
         
         File languageFile = new File("plugins/mcbans/language/"+language+".yml");
         if(!languageFile.exists()){
         	if (Core.lang != null) {
-        		System.out.print("MCBans: Contacting Master server for language file " + Core.lang + ".yml");
+        		log(LogLevels.INFO, "Contacting Master server for language file " + Core.lang + ".yml");
         		Downloader getLanguage = new Downloader();
         		getLanguage.Download("http://myserver.mcbans.com/languages/" + Core.lang + ".yml", "plugins/mcbans/language/" + Core.lang + ".yml");
         		languageFile = new File("plugins/mcbans/language/" + Core.lang + ".yml");
         		if (!languageFile.exists()) {
-        			System.out.print("MCBans: " + Core.lang + " does not exist on Master server.");
-        			pm.disablePlugin(pluginInterface("mcbans"));
+        			log(LogLevels.FATAL, Core.lang + " does not exist on Master server.");
+                    return;
         		}
         	} else {
-        		System.out.print("MCBans: No language file found!");
-        		pm.disablePlugin(pluginInterface("mcbans"));
+        		log(LogLevels.FATAL, "No language file found!");
         		return;
         	}
         }
         
         if(Settings.getBoolean("logEnable")){
-        	System.out.print("MCBans: Starting to save to log file!");
-        	log = new ActionLog( this, Settings.getString("logFile") );
-        	log.write( "MCBans Log File Started" );
+        	log(LogLevels.INFO, "Starting to save to log file!");
+        	actionLog = new ActionLog( this, Settings.getString("logFile") );
+        	actionLog.write("MCBans Log File Started");
         }else{
-        	log = new ActionLog( this, "" );
-        	System.out.print("MCBans: Log file disabled!");
+        	log(LogLevels.INFO, "Log file disabled!");
         }
         
         Permissions = new BukkitPermissions( Settings, this );
         commandHandle = new CommandHandler( Settings, this );
         Permissions.setupPermissions();
         
-        log.write("Fetching backup.");
+        log("Fetching backup.");
         Backup = new Backup( Settings.getBoolean("isDebug"), this.getApiKey() );
         Backup.fetch();
         
-        log.write("Starting MCBans online check.");
+        log("Starting MCBans online check.");
         backupThread = new BackupCheck( this );
         backupThread.start();
         
@@ -155,26 +152,26 @@ public class BukkitInterface extends JavaPlugin {
         
         
         if (Settings.getBoolean("throttleUsers")) {
-        BScheduler = server.getScheduler();
+        BukkitScheduler BScheduler = server.getScheduler();
         taskID = BScheduler.scheduleAsyncRepeatingTask(this, new ThrottleReset(this), 0L, 40L);
         
         	if (taskID == -1) {
-        		log.write("Unable to schedule throttle reset task");
-        		log.write("Throttling has been disabled.");
+        		log(LogLevels.SEVERE, "Unable to schedule throttle reset task");
+        		log(LogLevels.SEVERE, "Throttling has been disabled.");
         	} else {
-        		log.write("Connection throttling operating normally!");
-        		log.write("Task ID: " + taskID);
-        		log.write("Throttle Connect Limit: " + Settings.getInteger("userConnectionLimit"));
+        		log(LogLevels.INFO, "Connection throttling operating normally!");
+        		log(LogLevels.INFO, "Task ID: " + taskID);
+        		log(LogLevels.INFO, "Throttle Connect Limit: " + Settings.getInteger("userConnectionLimit"));
         	}
         }
         
         Plugin logBlock = pm.getPlugin("LogBlock");
         if (logBlock != null) {
         	lbconsumer = ((LogBlock)logBlock).getConsumer();
-        	log.write("Enabling LogBlock integration");
+        	log(LogLevels.INFO, "Enabling LogBlock integration");
         }
 
-        log.write("Started and operating normally!");
+        log(LogLevels.INFO, "Started and operating normally!");
         
 	}
 	
@@ -182,6 +179,17 @@ public class BukkitInterface extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
 		return commandHandle.execCommand( command.getName(), args, sender );
 	}
+
+    public void log(String message) {
+        log(LogLevels.NONE, message);
+    }
+
+    public void log(LogLevels type, String message) {
+        if (actionLog != null) {
+            actionLog.write(message);
+        }
+        logger.log(type, message);
+    }
 	
 	public void broadcastBanView(String msg){
 		for( Player player: this.getServer().getOnlinePlayers() ){
@@ -256,18 +264,17 @@ public class BukkitInterface extends JavaPlugin {
 				}
 				broadcastBanView( ChatColor.RED + "Server Disabled by an MCBans Admin");
 				broadcastBanView( "MCBans is running in reduced functionality mode. Only local bans can be used at this time.");
-				log.write("The server API key has been disabled by an MCBans Administrator");
-				log.write("To appeal this decision, please contact an administrator");
+				log(LogLevels.SEVERE, "The server API key has been disabled by an MCBans Administrator");
+				log(LogLevels.SEVERE, "To appeal this decision, please contact an administrator");
 				setMode(true);
 			} else if (error.contains("api key not found.")) {
 				broadcastBanView( ChatColor.RED + "Invalid MCBans.jar!");
-				broadcastBanView( "The API key inside the current MCBans.jar is invalid. Please re-download the plugin from myserver.mcbans.com");
-				log.write("Invalid MCBans.jar - Please re-download from myserver.mcbans.com!");
-				getServer().getPluginManager().disablePlugin(pluginInterface("mcbans"));
+				broadcastBanView("The API key inside the current MCBans.jar is invalid. Please re-download the plugin from myserver.mcbans.com");
+				log(LogLevels.FATAL, "Invalid MCBans.jar - Please re-download from myserver.mcbans.com!");
 			} else {
 				broadcastBanView( ChatColor.RED + "Unexpected reply from MCBans API!");
-				log.write("API returned an invalid error:");
-				log.write("MCBans said: " + error);
+				log(LogLevels.SEVERE, "API returned an invalid error:");
+				log(LogLevels.SEVERE, "MCBans said: " + error);
 			}
 			return true;
 		} else {
@@ -283,18 +290,18 @@ public class BukkitInterface extends JavaPlugin {
 				}
 				broadcastBanView( ChatColor.RED + "Server Disabled by an MCBans Admin");
 				broadcastBanView( "MCBans is running in reduced functionality mode. Only local bans can be used at this time.");
-				log.write("The server API key has been disabled by an MCBans Administrator");
-				log.write("To appeal this decision, please contact an administrator");
+				log(LogLevels.SEVERE, "The server API key has been disabled by an MCBans Administrator");
+				log(LogLevels.SEVERE, "To appeal this decision, please contact an administrator");
 				setMode(true);
 			} else if (response.contains("api key not found.")) {
 				broadcastBanView( ChatColor.RED + "Invalid MCBans.jar!");
 				broadcastBanView( "The API key inside the current MCBans.jar is invalid. Please re-download the plugin from myserver.mcbans.com");
-				log.write("Invalid MCBans.jar - Please re-download from myserver.mcbans.com!");
+				log(LogLevels.FATAL, "Invalid MCBans.jar - Please re-download from myserver.mcbans.com!");
 				getServer().getPluginManager().disablePlugin(pluginInterface("mcbans"));
 			} else {
 				broadcastBanView( ChatColor.RED + "Unexpected reply from MCBans API!");
-				log.write("API returned an invalid error:");
-				log.write("MCBans said: " + response);
+				log(LogLevels.SEVERE, "API returned an invalid error:");
+				log(LogLevels.SEVERE, "MCBans said: " + response);
 			}
 			return true;
 		} else {

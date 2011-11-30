@@ -23,7 +23,7 @@ public class Kick extends Thread {
 	public void run( ){
 		Player player = MCBans.getServer().getPlayer(PlayerName);
 		if (player != null) {
-			MCBans.log.write( PlayerAdmin + " has kicked " + player.getName() + "[" + Reason + "]" );
+			MCBans.log( PlayerAdmin + " has kicked " + player.getName() + "[" + Reason + "]" );
 			player.kickPlayer(MCBans.Language.getFormat( "kickMessagePlayer", player.getName(), PlayerAdmin, Reason ));
 			MCBans.broadcastAll( ChatColor.DARK_RED + MCBans.Language.getFormat( "kickMessageSuccess", player.getName(), PlayerAdmin, Reason ));
 		}else{
