@@ -4,9 +4,11 @@ import java.util.Map;
 
 public class ThrottleReset implements Runnable {
 	private BukkitInterface MCBans;
+    private boolean debug = false;
 	
 	public ThrottleReset(BukkitInterface iface) {
 		MCBans = iface;
+        debug = MCBans.Settings.getBoolean("isDebug");
 	}
 	
 	public void run() {
@@ -27,7 +29,9 @@ public class ThrottleReset implements Runnable {
 				String key = deletions[i];
 				if (key != null) {
 					MCBans.clearThrottle(key);
-					MCBans.log.write("Resetting throttle timer for " + key);
+                    if (debug) {
+					    MCBans.log("Resetting throttle timer for " + key);
+                    }
 				}
 			}
 		}

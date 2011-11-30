@@ -1,6 +1,7 @@
 package com.mcbans.firestar.mcbans.backup;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.log.LogLevels;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class BackupCheck extends Thread {
 	    	    }
 	    	    result = buf.toString();
 	    	    if(debug){
-	    	    	MCBans.log.write(result);
+	    	    	MCBans.log(result);
 	    	    }
 	    	    wr.close();
 	    	    rd.close();
@@ -59,7 +60,7 @@ public class BackupCheck extends Thread {
 					return;
 				} else {
 					MCBans.setMode(true);
-					MCBans.log.write("MCBans Master Server is offline!");
+					MCBans.log(LogLevels.SEVERE, "MCBans Master Server is offline!");
 				}
 			}else{
 				MCBans.setMode(false);

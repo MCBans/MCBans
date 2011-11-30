@@ -1,6 +1,7 @@
 package com.mcbans.firestar.mcbans.request;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 
@@ -27,8 +28,7 @@ public class JsonHandler {
 	}
 	public JSONObject get_data(String json_text){
 	    try {
-			JSONObject json = new JSONObject(json_text);
-			return json;
+			return new JSONObject(json_text);
 		} catch (JSONException e) {
 			if(debug){
 				e.printStackTrace();
@@ -52,7 +52,7 @@ public class JsonHandler {
 						out.put(next, output.getString(next));
 					} catch (JSONException e) {
 						if(debug){
-							MCBans.log.write("JSON Error On Retrieve");
+							MCBans.log(LogLevels.SEVERE, "JSON Error On Retrieve");
 							e.printStackTrace();
 						}
 					}
@@ -64,13 +64,12 @@ public class JsonHandler {
 	public JSONObject hdl_jobj(HashMap<String,String> items){
 		String urlReq = urlparse(items);
 		String jsonText = request_from_api(urlReq);
-		JSONObject output = get_data(jsonText);
-		return output;
+		return get_data(jsonText);
 	}
 	public String request_from_api(String data){
 		try {
 			if(debug){
-				MCBans.log.write("Sending request!");
+				MCBans.log(LogLevels.INFO, "Sending request!");
 			}
 			URL url = new URL("http://72.10.39.172/v2/"+this.apiKey);
     	    URLConnection conn = url.openConnection();
@@ -88,7 +87,7 @@ public class JsonHandler {
     	    }
     	    String result = buf.toString();
     	    if(debug){
-    	    	MCBans.log.write(result);
+    	    	MCBans.log(LogLevels.INFO, result);
     	    }
     	    wr.close();
     	    rd.close();
@@ -96,7 +95,7 @@ public class JsonHandler {
 		} catch (Exception e) {
 			if(debug){
 				if(MCBans!=null){
-					MCBans.log.write("Fetch Data Error");
+					MCBans.log(LogLevels.SEVERE, "Fetch Data Error");
 				}
 				e.printStackTrace();
 			}
