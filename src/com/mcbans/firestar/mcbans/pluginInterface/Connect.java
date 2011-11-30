@@ -118,6 +118,7 @@ public class Connect {
 					case L:
 					case S:
                     case I:
+                    case T:
 						s = response.get("banReason");
 						MCBans.log( PlayerName + " is banned and cannot connect!" );
 					break;
