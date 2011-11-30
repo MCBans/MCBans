@@ -1,6 +1,7 @@
 package com.mcbans.firestar.mcbans.callBacks;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -48,14 +49,19 @@ public class MainCallBack extends Thread {
 					oldVersion = oldVersion.replace("imp", "");
 					MCBans.broadcastBanView( ChatColor.BLUE + "A newer version of MCBans (" + oldVersion + ") is now available!");
 					MCBans.broadcastBanView( ChatColor.RED + "This is an important/critical update.");
+                    MCBans.log(LogLevels.INFO, "A newer version of MCBans (" + oldVersion + ") is now available!");
+                    MCBans.log(LogLevels.WARNING, "This is an important/critical update.");
 				} else {
 					MCBans.broadcastBanView( ChatColor.BLUE + "A newer version of MCBans (" + oldVersion + ") is now available!");
+                    MCBans.log(LogLevels.INFO, "A newer version of MCBans (" + oldVersion + ") is now available!");
 				}
                 if (response.containsKey("patchNotes")) {
                     String patchNotes = response.get("patchNotes");
                     if(!patchNotes.equals("")){
                         MCBans.broadcastBanView( ChatColor.BLUE + "Patch Notes v" + oldVersion);
                         MCBans.broadcastBanView(patchNotes);
+                        MCBans.log(LogLevels.INFO, "Patch Notes v" + oldVersion);
+                        MCBans.log(LogLevels.INFO, patchNotes);
                     }
                 }
 			}
@@ -64,6 +70,7 @@ public class MainCallBack extends Thread {
             for(String cb : response.keySet()) {
                 if (cb.contains("notice")) {
                     MCBans.broadcastBanView( ChatColor.GOLD + "Notice: " + ChatColor.WHITE + response.get(cb));
+                    MCBans.log(LogLevels.INFO, "MCBans Notice: " + response.get(cb));
                 }
             }
         }

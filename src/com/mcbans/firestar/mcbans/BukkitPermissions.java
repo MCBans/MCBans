@@ -20,9 +20,9 @@ public class BukkitPermissions {
 		if (permissionHandler == null) {
 			if (permissionsPlugin != null) {
 				permissionHandler = ((Permissions) permissionsPlugin).getHandler();
-				MCBans.log.write("Permissions plugin found!");
+				MCBans.log("Permissions plugin found!");
 			}else{
-				MCBans.log.write("Using bukkit permissions!");
+				MCBans.log("Using bukkit permissions!");
 			}
 		}
 	}

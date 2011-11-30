@@ -72,7 +72,7 @@ public class Ban extends Thread {
 					case 3:
 						if(MCBans.getMode()){
 							if(MCBans.Backup.remove(PlayerName)){
-								MCBans.log.write( PlayerAdmin + " unbanned " + PlayerName + "!" );
+								MCBans.log( PlayerAdmin + " unbanned " + PlayerName + "!" );
 								MCBans.broadcastPlayer( PlayerAdmin, ChatColor.GREEN + MCBans.Language.getFormat( "unBanMessageSuccess", PlayerName, PlayerAdmin ) );
 							}else{
 								MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "unBanMessageNot", PlayerName, PlayerAdmin ) );
@@ -83,7 +83,7 @@ public class Ban extends Thread {
 					break;
 				}
 			}else{
-				MCBans.log.write("Error, caught invalid action! Another plugin using mcbans improperly?");
+				MCBans.log("Error, caught invalid action! Another plugin using mcbans improperly?");
 			}
 		} catch (NullPointerException e) {
 		}
@@ -101,7 +101,7 @@ public class Ban extends Thread {
 				return;
 			}
 			if(response.get("result").equals("y")){
-				MCBans.log.write( PlayerAdmin + " unbanned " + PlayerName + "!" );
+				MCBans.log( PlayerAdmin + " unbanned " + PlayerName + "!" );
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.GREEN + MCBans.Language.getFormat( "unBanMessageSuccess", PlayerName, PlayerAdmin ) );
 				MCBans.Backup.remove(PlayerName);
 				return;
@@ -112,7 +112,7 @@ public class Ban extends Thread {
 			}else if(response.get("result").equals("n")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "unBanMessageNot", PlayerName, PlayerAdmin ) );
 			}
-			MCBans.log.write( PlayerAdmin + " tried to unban " + PlayerName + "!" );
+			MCBans.log( PlayerAdmin + " tried to unban " + PlayerName + "!" );
 		} catch (NullPointerException e) {
 		}
 	}
@@ -131,7 +131,7 @@ public class Ban extends Thread {
 				return;
 			}
 			if(response.get("result").equals("y")){
-				MCBans.log.write( PlayerName + " has been banned with a local type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
+				MCBans.log( PlayerName + " has been banned with a local type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
 				if (MCBans.getServer().getPlayer(PlayerName) != null) {
 					MCBans.getServer().getPlayer(PlayerName).kickPlayer(MCBans.Language.getFormat( "localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 	            }
@@ -145,7 +145,7 @@ public class Ban extends Thread {
 			}else if(response.get("result").equals("a")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "localBanMessageAlready", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 			}
-			MCBans.log.write( PlayerAdmin + " has tried to ban " + PlayerName + " with a local type ban ["+Reason+"]!" );
+			MCBans.log( PlayerAdmin + " has tried to ban " + PlayerName + " with a local type ban ["+Reason+"]!" );
 		} catch (NullPointerException e) {
 		}
 	}
@@ -168,7 +168,7 @@ public class Ban extends Thread {
 				}
 			}
 			if(response.get("result").equals("y")){
-				MCBans.log.write( PlayerName + " has been banned with a global type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
+				MCBans.log( PlayerName + " has been banned with a global type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
 				if (MCBans.getServer().getPlayer(PlayerName) != null) {
 					MCBans.getServer().getPlayer(PlayerName).kickPlayer(MCBans.Language.getFormat( "globalBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 	            }
@@ -185,7 +185,7 @@ public class Ban extends Thread {
 			}else if(response.get("result").equals("a")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageAlready", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 			}
-			MCBans.log.write( PlayerAdmin + " has tried to ban " + PlayerName + " with a global type ban ["+Reason+"]!" );
+			MCBans.log( PlayerAdmin + " has tried to ban " + PlayerName + " with a global type ban ["+Reason+"]!" );
 		} catch (NullPointerException e) {
 		}
 	}
@@ -206,7 +206,7 @@ public class Ban extends Thread {
 				return;
 			}
 			if(response.get("result").equals("y")){
-				MCBans.log.write( PlayerName + " has been banned with a temp type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
+				MCBans.log( PlayerName + " has been banned with a temp type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
 				if (MCBans.getServer().getPlayer(PlayerName) != null) {
 					MCBans.getServer().getPlayer(PlayerName).kickPlayer( MCBans.Language.getFormat( "tempBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 	            }
@@ -219,7 +219,7 @@ public class Ban extends Thread {
 			}else if(response.get("result").equals("a")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "tempBanMessageAlready", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 			}
-			MCBans.log.write( PlayerAdmin + " has tried to ban " + PlayerName + " with a temp type ban ["+Reason+"]!" );
+			MCBans.log( PlayerAdmin + " has tried to ban " + PlayerName + " with a temp type ban ["+Reason+"]!" );
 		} catch (NullPointerException e) {
 		}
 	}

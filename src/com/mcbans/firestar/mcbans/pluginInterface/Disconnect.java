@@ -15,7 +15,7 @@ public class Disconnect extends Thread {
 	}
 	@Override
 	public void run() {
-		MCBans.log.write( PlayerName + " has disconnected!" );
+		MCBans.log( PlayerName + " has disconnected!" );
 		JsonHandler webhandle = new JsonHandler( MCBans );
 		HashMap<String, String> url_items = new HashMap<String, String>();
 		url_items.put("player", PlayerName);
