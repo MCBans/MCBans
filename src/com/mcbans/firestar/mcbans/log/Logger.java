@@ -16,7 +16,7 @@ public class Logger {
     public void log (LogLevels type, String message) {
         switch (type) {
             case INFO:
-                System.out.print("[MCBans][INFO] " + message);
+                System.out.print("[MCBans] [INFO] " + message);
                 break;
             case WARNING:
                 System.out.print("[MCBans] [WARNING] " + message);
