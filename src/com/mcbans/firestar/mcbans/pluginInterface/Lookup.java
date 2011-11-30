@@ -1,6 +1,7 @@
 package com.mcbans.firestar.mcbans.pluginInterface;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
@@ -23,7 +24,7 @@ public class Lookup extends Thread {
 			MCBans.broadcastPlayer( PlayerAdmin, "MCBans is currently in " + ChatColor.DARK_RED + "OFFLINE" + ChatColor.WHITE + " mode." );
 			return;
 		}
-		MCBans.log.write( PlayerAdmin + " has looked up the " + PlayerName + "!" );
+		MCBans.log(PlayerAdmin + " has looked up the " + PlayerName + "!");
 		HashMap<String, String> url_items = new HashMap<String, String>();
 		JsonHandler webHandle = new JsonHandler( MCBans );
         url_items.put("player", PlayerName);
@@ -49,16 +50,16 @@ public class Lookup extends Thread {
 			    if (result.toString().contains("Server Disabled")) {
                     MCBans.broadcastBanView( ChatColor.RED + "Server Disabled by an MCBans Admin");
 				    MCBans.broadcastBanView( "MCBans is running in reduced functionality mode. Only local bans can be used at this time.");
-				    MCBans.log.write("The server API key has been disabled by an MCBans Administrator");
-				    MCBans.log.write("To appeal this decision, please contact an administrator");
+				    MCBans.log(LogLevels.SEVERE, "The server API key has been disabled by an MCBans Administrator");
+				    MCBans.log(LogLevels.SEVERE, "To appeal this decision, please contact an administrator");
                 }
             } else {
         	    MCBans.broadcastPlayer( PlayerAdmin, ChatColor.RED + "There was an error while parsing the data! [JSON Error]");
-        	    MCBans.log.write("JSON error while trying to parse lookup data!");
+        	    MCBans.log(LogLevels.SEVERE, "JSON error while trying to parse lookup data!");
             }
         } catch (NullPointerException e) {
         	MCBans.broadcastPlayer( PlayerAdmin, ChatColor.RED + "There was an error while polling the API!");
-        	MCBans.log.write("Unable to reach MCBans Master server!");
+        	MCBans.log(LogLevels.SEVERE, "Unable to reach MCBans Master server!");
 		}
 	}
 }

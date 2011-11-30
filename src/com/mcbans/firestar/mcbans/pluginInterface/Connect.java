@@ -1,6 +1,7 @@
 package com.mcbans.firestar.mcbans.pluginInterface;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -12,13 +13,6 @@ public class Connect {
 	private BukkitInterface MCBans;
 	private HashMap<String, Integer> responses = new HashMap<String, Integer>();
 	public Connect(BukkitInterface p){
-		responses.put("n", 0);
-		responses.put("g", 1);
-		responses.put("s", 2);
-		responses.put("i", 3);
-		responses.put("b", 4);
-		responses.put("t", 5);
-		responses.put("l", 6);
 		MCBans = p;
 	}
 	public String exec( String PlayerName, String PlayerIP ){
@@ -40,7 +34,7 @@ public class Connect {
 						MCBans.setResetTime("[Global]", (timeInMillis + (MCBans.Settings.getInteger("allLockoutTime") * 1000)));
 						MCBans.setConnectionData("[Global]", ++conAllCount);
 					}
-					if (MCBans.Settings.getString("allLockoutMsg") == "") {
+					if (MCBans.Settings.getString("allLockoutMsg").equals("")) {
 						return "Too many connections! Please wait a few minutes.";
 					} else {
 						return MCBans.Settings.getString("allLockoutMsg");
@@ -60,7 +54,7 @@ public class Connect {
 			if (checkTime > timeInMillis) {
 				if (MCBans.Settings.getInteger("userConnectionLimit") == conUserCount) {
 					MCBans.setResetTime(PlayerName, (timeInMillis + (MCBans.Settings.getInteger("userLockoutTime") * 1000)));
-					if (MCBans.Settings.getString("userLockoutMsg") == "") {
+					if (MCBans.Settings.getString("userLockoutMsg").equals("")) {
 						return "Connecting too quickly! Please wait a few minutes.";
 					} else {
 						return MCBans.Settings.getString("userLockoutMsg");
@@ -87,11 +81,11 @@ public class Connect {
 				return null;
 			}else{
 				ArrayList<String> tempList = new ArrayList<String>();
-				switch(responses.get(response.get("banStatus"))){
-					case 0:
+				switch(ConnectStatus.valueOf(response.get("banStatus").toUpperCase())){
+					case N:
 						if(response.containsKey("altList")){
 							if(!response.get("altList").equals("")){
-								if(Float.valueOf(response.get("altCount").trim()).floatValue() > MCBans.Settings.getFloat("maxAlts") && MCBans.Settings.getBoolean("enableMaxAlts")) {
+								if(Float.valueOf(response.get("altCount").trim()) > MCBans.Settings.getFloat("maxAlts") && MCBans.Settings.getBoolean("enableMaxAlts")) {
 									s = MCBans.Language.getFormat( "overMaxAlts" );
 								} else { 
 									MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
@@ -100,7 +94,7 @@ public class Connect {
 						}
 						if(response.containsKey("is_mcbans_mod")) {
 							if(response.get("is_mcbans_mod").equals("y")){
-                                MCBans.log.write( PlayerName + " is an MCBans.com Staff member");
+                                MCBans.log( LogLevels.INFO, PlayerName + " is an MCBans.com Staff member");
 								MCBans.broadcastBanView( ChatColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ));
 								tempList.add(ChatColor.AQUA + MCBans.Language.getFormat ("youAreMCBansStaff"));
                             }
@@ -116,23 +110,22 @@ public class Connect {
 							}
 						}
 						if (s == null) {
-							MCBans.log.write( PlayerName + " has connected!" );
+							MCBans.log( PlayerName + " has connected!" );
 							s = null;
 						}
 					break;
-					case 1:
-					case 2:
-					case 3:
-					case 5:
-					case 6:
+					case G:
+					case L:
+					case S:
+                    case I:
 						s = response.get("banReason");
-						MCBans.log.write( PlayerName + " access denied!" );
+						MCBans.log( PlayerName + " is banned and cannot connect!" );
 					break;
-					case 4:
+					case B:
 						Boolean blockConnection = false;
 						if(response.containsKey("altList")){
 							if(!response.get("altList").equals("")){
-								if(Float.valueOf(response.get("altCount").trim()).floatValue() > MCBans.Settings.getFloat("maxAlts") && MCBans.Settings.getBoolean("enableMaxAlts")) {
+								if(Float.valueOf(response.get("altCount").trim()) > MCBans.Settings.getFloat("maxAlts") && MCBans.Settings.getBoolean("enableMaxAlts")) {
 									s = MCBans.Language.getFormat( "overMaxAlts" );
 									blockConnection = true;
 								} else {
@@ -154,7 +147,7 @@ public class Connect {
 							tempList.add(ChatColor.DARK_RED + "You have bans on record!" );
 							if(!response.containsKey("playerRep")){
 								MCBans.broadcastBanView( ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", PlayerName ) );
-								MCBans.log.write( PlayerName + " has connected!" );
+								MCBans.log( PlayerName + " has connected!" );
 								s = null;
 							}else{
 								if(MCBans.Settings.getBoolean("isDebug")){
@@ -162,10 +155,10 @@ public class Connect {
 								}
 								if( Float.parseFloat( response.get( "playerRep" ) ) > MCBans.Settings.getFloat("minRep") ){
 									MCBans.broadcastBanView( ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", PlayerName ) );
-									MCBans.log.write( PlayerName + " has connected!" );
+									MCBans.log( PlayerName + " has connected!" );
 									if(response.containsKey("is_mcbans_mod")) {
 										if(response.get("is_mcbans_mod").equals("y")){
-                                            MCBans.log.write( PlayerName + " is an MCBans.com Staff member");
+                                            MCBans.log( LogLevels.INFO, PlayerName + " is an MCBans.com Staff member");
 								            MCBans.broadcastBanView( ChatColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ));
 								            tempList.add(ChatColor.AQUA + MCBans.Language.getFormat ("youAreMCBansStaff"));
                                         }
@@ -177,7 +170,7 @@ public class Connect {
 									} else {
 										s = MCBans.Language.getFormat( "underMinRep" );
 									}
-									MCBans.log.write( PlayerName + " access denied!" );
+									MCBans.log( PlayerName + " is banned and cannot connect!" );
 								}
 							}
 						}
