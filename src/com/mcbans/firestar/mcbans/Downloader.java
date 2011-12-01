@@ -7,7 +7,10 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class Downloader {
-	public Downloader (BukkitInterface MCBans) {
+    private BukkitInterface MCBans;
+
+	public Downloader (BukkitInterface p) {
+        MCBans = p;
 		MCBans.log(LogLevels.INFO, "Waiting for download request.");
 		File mcbansFolder = new File("plugins/mcbans");
 		if (!mcbansFolder.exists()) {
@@ -50,9 +53,9 @@ public class Downloader {
 	            if (out != null) {
 	                out.close();
 	            }
-	            System.out.print("MCBans: Download completed.");
+	            MCBans.log(LogLevels.INFO, "Download completed.");
 	        } catch (IOException ioe) {
-	            System.out.print("MCBans: Download unsuccessful.");
+	            MCBans.log(LogLevels.SEVERE, "Download unsuccessful.");
 	        }
 	    }
 	}
