@@ -5,10 +5,9 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-@SuppressWarnings("unused")
 public class BukkitPermissions {
 	private static PermissionHandler permissionHandler = null;
-	private BukkitInterface MCBans;
+	private BukkitInterface MCBans = null;
 	
 	private Settings Config;
 	public BukkitPermissions(Settings cf, BukkitInterface p){
