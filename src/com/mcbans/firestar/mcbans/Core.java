@@ -16,13 +16,12 @@ public class Core {
 		try {
 			in = Core.class.getClassLoader().getResourceAsStream("core.yml");
 		} catch (NullPointerException ex) {
-            MCBans.log(LogLevels.FATAL, "MCBans: Unable to load core.yml!");
+            MCBans.log(LogLevels.FATAL, "Unable to load core.yml!");
 			return;
 		}
 		Yaml yaml = new Yaml();
 		Map map = (Map)yaml.load(in);
 		this.apikey = (String) map.get("apikey");
 		this.lang = (String) map.get("lang");
-		MCBans.log(LogLevels.INFO, "MCBans: Starting..");
 	}
 }

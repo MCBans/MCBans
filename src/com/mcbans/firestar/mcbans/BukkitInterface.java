@@ -66,6 +66,9 @@ public class BukkitInterface extends JavaPlugin {
 	
 	public void onEnable() {
 
+        Settings = new Settings(this);
+        Core = new Core(this);
+
         useColor = Settings.getBoolean("enableColor");
 
         if (!buildVersion.contains("BUILDVERSION") && !gitRevision.contains("GITREVISION")) {
@@ -89,7 +92,7 @@ public class BukkitInterface extends JavaPlugin {
         }
 
         Core = new Core(this);
-        
+
         // API KEY verification!
         if (Core.apikey != null) {
         	this.apiKey = this.Core.apikey;
@@ -98,14 +101,12 @@ public class BukkitInterface extends JavaPlugin {
         	log(LogLevels.FATAL, "Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
         	return;
         }
-        
-        Settings = new Settings(this);
-        
+
         if (Settings.doTerminate) {
 			log(LogLevels.FATAL, "Please download the latest settings.yml from MCBans.com!");
         	return;
 		}
-        
+
 		pm.registerEvent( Event.Type.PLAYER_JOIN, bukkitPlayer, Priority.Normal, this );
         pm.registerEvent( Event.Type.PLAYER_PRELOGIN, bukkitPlayer, Priority.Normal, this );
         pm.registerEvent( Event.Type.PLAYER_QUIT, bukkitPlayer, Priority.Normal, this );

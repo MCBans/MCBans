@@ -1,5 +1,6 @@
 package com.mcbans.firestar.mcbans;
 
+import com.mcbans.firestar.mcbans.log.LogLevels;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -15,13 +16,14 @@ public class Settings{
 		MCBans = p;
 		File plugin_settings = new File("plugins/mcbans/settings.yml");
 		if (!plugin_settings.exists()) {
-			System.out.print("MCBans: settings.yml not found, downloading default..");
+            MCBans.useColor = false;
+            MCBans.log(LogLevels.INFO, "settings.yml not found, downloading default..");
 			Downloader download = new Downloader();
 			download.Download("http://myserver.mcbans.com/getSettings/" + MCBans.getApiKey(), "plugins/mcbans/settings.yml");
 			plugin_settings = new File("plugins/mcbans/settings.yml");
 			if (!plugin_settings.exists()) {
-				System.out.print("MCBans: Unable to download settings.yml!");
-				this.doTerminate = true;
+				MCBans.log(LogLevels.FATAL, "Unable to download settings.yml!");
+                return;
 			} else {
 				config = YamlConfiguration.loadConfiguration(plugin_settings);
 			}
