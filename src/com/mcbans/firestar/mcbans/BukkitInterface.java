@@ -45,7 +45,7 @@ public class BukkitInterface extends JavaPlugin {
 	private String apiKey = "";
 	private boolean mode = false;
 	public BukkitPermissions Permissions = null;
-    private String gitRevision = "@@GITREVIVSION@@";
+    private String gitRevision = "@@GITREVISION@@";
     private String buildVersion = "@@BUILDVERSION@@";
 	public HashMap<String, ArrayList<String>> joinMessages = new HashMap<String, ArrayList<String>>();
 	
