@@ -44,6 +44,7 @@ public class BukkitInterface extends JavaPlugin {
 	public Consumer lbconsumer = null;
 	private String apiKey = "";
 	private boolean mode = false;
+    public boolean useColor = true;
 	public BukkitPermissions Permissions = null;
     private String gitRevision = "@@GITREVISION@@";
     private String buildVersion = "@@BUILDVERSION@@";
@@ -65,10 +66,15 @@ public class BukkitInterface extends JavaPlugin {
 	
 	public void onEnable() {
 
+        useColor = Settings.getBoolean("enableColor");
+
         if (!buildVersion.contains("BUILDVERSION") && !gitRevision.contains("GITREVISION")) {
             log(LogLevels.INFO, "Running MCBans v" + getDescription().getVersion() + " git-" + gitRevision + " b" + buildVersion + "bamboo");
         }
-        log (LogLevels.WARNING, ChatColor.GREEN + "This is version of MCBans is sporting a colorful DEV interface!");
+        if (useColor) {
+            log (LogLevels.INFO, ChatColor.GREEN + "This is version of MCBans is sporting a colorful interface!");
+            log (LogLevels.INFO, "To disable it, set enableColor to false in the settings.yml");
+        }
 
 		PluginManager pm = getServer().getPluginManager();
 		

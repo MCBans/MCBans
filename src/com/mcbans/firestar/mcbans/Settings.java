@@ -82,6 +82,9 @@ public class Settings{
 			return "isDebug";
 		} else if (!config.isBoolean("logEnable")) {
 			return "logEnable";
+        } else if (!config.isBoolean("enableColor")) {
+            config.addDefault("enableColor", true);
+            config.set("enableColor", true);
 		} else {
 			try {
 				Integer.parseInt(getInteger("minRep").toString());
