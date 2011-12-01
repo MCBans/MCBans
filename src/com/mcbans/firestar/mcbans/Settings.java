@@ -11,10 +11,11 @@ public class Settings{
 	private YamlConfiguration backupConfig;
 	public boolean doTerminate = false;
 	private String NFe = null;
+    private File plugin_settings = null;
 	
 	public Settings( BukkitInterface p ){
 		MCBans = p;
-		File plugin_settings = new File("plugins/mcbans/settings.yml");
+		plugin_settings = new File("plugins/mcbans/settings.yml");
 		if (!plugin_settings.exists()) {
             MCBans.useColor = false;
             MCBans.log(LogLevels.INFO, "settings.yml not found, downloading default..");
@@ -40,7 +41,7 @@ public class Settings{
 		}
 	}
 	public Integer reload() {
-		File plugin_settings = new File("plugins/mcbans/settings.yml");
+		plugin_settings = new File("plugins/mcbans/settings.yml");
 		if (!plugin_settings.exists()) {
 			return -2;
 		} else {
@@ -86,6 +87,12 @@ public class Settings{
 			return "logEnable";
         } else if (!config.isBoolean("enableColor")) {
             config.addDefault("enableColor", true);
+            try {
+                config.save(plugin_settings);
+            } catch (java.io.IOException e) {
+                MCBans.log(LogLevels.FATAL, "Unable to update settings.yml file - Doesn't exist? (enableColor)");
+                return null;
+            }
             config.set("enableColor", true);
 		} else {
 			try {
@@ -99,7 +106,7 @@ public class Settings{
 				Integer.parseInt(getInteger("allConnectionLimit").toString());
 				Integer.parseInt(getInteger("allLockoutTime").toString());
 			} catch (NumberFormatException nFE) {
-				NFe = nFE.toString();
+                NFe = nFE.toString();
 				return "numberError";
 			}
 		}
