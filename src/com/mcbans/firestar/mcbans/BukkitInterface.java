@@ -125,7 +125,7 @@ public class BukkitInterface extends JavaPlugin {
         if(!languageFile.exists()){
         	if (Core.lang != null) {
         		log(LogLevels.INFO, "Contacting Master server for language file " + Core.lang + ".yml");
-        		Downloader getLanguage = new Downloader();
+        		Downloader getLanguage = new Downloader(this);
         		getLanguage.Download("http://myserver.mcbans.com/languages/" + Core.lang + ".yml", "plugins/mcbans/language/" + Core.lang + ".yml");
         		languageFile = new File("plugins/mcbans/language/" + Core.lang + ".yml");
         		if (!languageFile.exists()) {

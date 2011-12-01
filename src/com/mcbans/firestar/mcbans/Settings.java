@@ -18,7 +18,7 @@ public class Settings{
 		if (!plugin_settings.exists()) {
             MCBans.useColor = false;
             MCBans.log(LogLevels.INFO, "settings.yml not found, downloading default..");
-			Downloader download = new Downloader();
+			Downloader download = new Downloader(MCBans);
 			download.Download("http://myserver.mcbans.com/getSettings/" + MCBans.getApiKey(), "plugins/mcbans/settings.yml");
 			plugin_settings = new File("plugins/mcbans/settings.yml");
 			if (!plugin_settings.exists()) {
