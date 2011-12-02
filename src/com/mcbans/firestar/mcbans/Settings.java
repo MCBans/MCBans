@@ -1,5 +1,6 @@
 package com.mcbans.firestar.mcbans;
 
+import com.mcbans.firestar.mcbans.log.LogLevels;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -10,18 +11,20 @@ public class Settings{
 	private YamlConfiguration backupConfig;
 	public boolean doTerminate = false;
 	private String NFe = null;
+    private File plugin_settings = null;
 	
 	public Settings( BukkitInterface p ){
 		MCBans = p;
-		File plugin_settings = new File("plugins/mcbans/settings.yml");
+		plugin_settings = new File("plugins/mcbans/settings.yml");
 		if (!plugin_settings.exists()) {
-			System.out.print("MCBans: settings.yml not found, downloading default..");
-			Downloader download = new Downloader();
+            MCBans.useColor = false;
+            MCBans.log(LogLevels.INFO, "settings.yml not found, downloading default..");
+			Downloader download = new Downloader(MCBans);
 			download.Download("http://myserver.mcbans.com/getSettings/" + MCBans.getApiKey(), "plugins/mcbans/settings.yml");
 			plugin_settings = new File("plugins/mcbans/settings.yml");
 			if (!plugin_settings.exists()) {
-				System.out.print("MCBans: Unable to download settings.yml!");
-				this.doTerminate = true;
+				MCBans.log(LogLevels.FATAL, "Unable to download settings.yml!");
+                return;
 			} else {
 				config = YamlConfiguration.loadConfiguration(plugin_settings);
 			}
@@ -38,7 +41,7 @@ public class Settings{
 		}
 	}
 	public Integer reload() {
-		File plugin_settings = new File("plugins/mcbans/settings.yml");
+		plugin_settings = new File("plugins/mcbans/settings.yml");
 		if (!plugin_settings.exists()) {
 			return -2;
 		} else {
@@ -82,6 +85,15 @@ public class Settings{
 			return "isDebug";
 		} else if (!config.isBoolean("logEnable")) {
 			return "logEnable";
+        } else if (!config.isBoolean("enableColor")) {
+            config.addDefault("enableColor", true);
+            try {
+                config.save(plugin_settings);
+            } catch (java.io.IOException e) {
+                MCBans.log(LogLevels.FATAL, "Unable to update settings.yml file - Doesn't exist? (enableColor)");
+                return null;
+            }
+            config.set("enableColor", true);
 		} else {
 			try {
 				Integer.parseInt(getInteger("minRep").toString());
@@ -94,7 +106,7 @@ public class Settings{
 				Integer.parseInt(getInteger("allConnectionLimit").toString());
 				Integer.parseInt(getInteger("allLockoutTime").toString());
 			} catch (NumberFormatException nFE) {
-				NFe = nFE.toString();
+                NFe = nFE.toString();
 				return "numberError";
 			}
 		}

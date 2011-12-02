@@ -119,7 +119,10 @@ public class CommandHandler {
 					PlayerIP = target.getAddress().getAddress().getHostAddress();
 				}
 			}
-		}
+		} else {
+            MCBans.broadcastPlayer( CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat( "formatError" ) );
+            return true;
+        }
 		switch(Commands.valueOf(command.toUpperCase())){
 			case BAN:
                 // Check username

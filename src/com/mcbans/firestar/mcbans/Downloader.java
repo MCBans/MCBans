@@ -1,21 +1,26 @@
 package com.mcbans.firestar.mcbans;
 
+import com.mcbans.firestar.mcbans.log.LogLevels;
+
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class Downloader {
-	public Downloader () {
-		System.out.print("MCBans: Waiting for download request.");
+    private BukkitInterface MCBans;
+
+	public Downloader (BukkitInterface p) {
+        MCBans = p;
+		MCBans.log(LogLevels.INFO, "Waiting for download request.");
 		File mcbansFolder = new File("plugins/mcbans");
 		if (!mcbansFolder.exists()) {
 			mcbansFolder.mkdir();
-			System.out.print("MCBans: Created plugin directory..");
+			MCBans.log(LogLevels.INFO, "Created plugin directory..");
 		}
 		File languageFolder = new File("plugins/mcbans/language");
 		if (!languageFolder.exists()) {
 			languageFolder.mkdir();
-			System.out.print("MCBans: Created language directory..");
+			MCBans.log(LogLevels.INFO, "Created language directory..");
 		}
 	}
 	
@@ -48,9 +53,9 @@ public class Downloader {
 	            if (out != null) {
 	                out.close();
 	            }
-	            System.out.print("MCBans: Download completed.");
+	            MCBans.log(LogLevels.INFO, "Download completed.");
 	        } catch (IOException ioe) {
-	            System.out.print("MCBans: Download unsuccessful.");
+	            MCBans.log(LogLevels.SEVERE, "Download unsuccessful.");
 	        }
 	    }
 	}
