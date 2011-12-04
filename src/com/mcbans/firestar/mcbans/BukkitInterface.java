@@ -28,6 +28,7 @@ public class BukkitInterface extends JavaPlugin {
 	
 	private CommandHandler commandHandle;
 	private BukkitScheduler BScheduler;
+	private MCBansAPI api;
 	private final PlayerListener bukkitPlayer = new PlayerListener(this);
 	public int taskID = 0;
 	public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
@@ -174,6 +175,8 @@ public class BukkitInterface extends JavaPlugin {
         	log.write("Enabling LogBlock integration");
         }
 
+		api = new MCBansAPI(this);
+
         log.write("Started and operating normally!");
         
 	}
@@ -304,6 +307,10 @@ public class BukkitInterface extends JavaPlugin {
 	
 	public Plugin pluginInterface( String pluginName ){
 		return this.getServer().getPluginManager().getPlugin(pluginName);
+	}
+
+	public MCBansAPI getAPI() {
+		return api;
 	}
 	
 }
