@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class CommandHandler {
 	private BukkitInterface MCBans;
 	private Settings Config;
-    private static final Pattern pattern = Pattern.compile("^\\w{3,16}$");
+    private static final Pattern pattern = Pattern.compile("^\\w{2,16}$");
 
 	public CommandHandler(Settings cf, BukkitInterface p){
 		MCBans = p;
