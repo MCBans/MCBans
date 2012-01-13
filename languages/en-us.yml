@@ -25,6 +25,7 @@ tempBanMessageAlready: "%PLAYER% is already banned from this server!"
 
 kickMessagePlayer: "%REASON%" 
 kickMessageSuccess: "%PLAYER% has been kicked!" 
+kickMessageNoPlayer: "%PLAYER% is not online!"
 
 formatError: "Incorrect parameters!" 
 permissionDenied: "Permission denied!" 
