@@ -17,7 +17,7 @@ public class Settings{
 		if (!plugin_settings.exists()) {
 			System.out.print("MCBans: settings.yml not found, downloading default..");
 			Downloader download = new Downloader();
-			download.Download("http://myserver.mcbans.com/getSettings/" + MCBans.getApiKey(), "plugins/mcbans/settings.yml");
+			download.Download("http://72.10.39.172/getSettings/" + MCBans.getApiKey(), "plugins/mcbans/settings.yml");
 			plugin_settings = new File("plugins/mcbans/settings.yml");
 			if (!plugin_settings.exists()) {
 				System.out.print("MCBans: Unable to download settings.yml!");
