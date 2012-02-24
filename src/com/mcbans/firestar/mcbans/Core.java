@@ -10,6 +10,7 @@ public class Core {
 	public String apikey;
 	public String lang;
 	
+	@SuppressWarnings("rawtypes")
 	public Core () {
 		InputStream in;
 		try {

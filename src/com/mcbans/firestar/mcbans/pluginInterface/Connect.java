@@ -4,14 +4,12 @@ import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Connect {
 	private BukkitInterface MCBans;
-	private HashMap<String, Integer> responses = new HashMap<String, Integer>();
 	public Connect(BukkitInterface p){
 		MCBans = p;
 	}
@@ -178,7 +176,6 @@ public class Connect {
 					break;
 				}
 				if(s==null && tempList.size()>0){
-					Player target = MCBans.getServer().getPlayer(PlayerName);
 					MCBans.joinMessages.put( PlayerName, tempList);
                 }
 			}

@@ -7,7 +7,6 @@ import java.io.File;
 public class Language{
 	private BukkitInterface MCBans;
 	private YamlConfiguration config;
-	private YamlConfiguration backupConfig;
 	public Language( String filename ){
 		File plugin_settings = new File("plugins/mcbans/language/"+filename+".yml");
 		config = YamlConfiguration.loadConfiguration(plugin_settings);

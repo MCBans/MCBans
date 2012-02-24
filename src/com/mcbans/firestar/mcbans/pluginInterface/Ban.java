@@ -132,9 +132,8 @@ public class Ban extends Thread {
 			}
 			if(response.get("result").equals("y")){
 				MCBans.log( PlayerName + " has been banned with a local type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
-				if (MCBans.getServer().getPlayer(PlayerName) != null) {
-					MCBans.getServer().getPlayer(PlayerName).kickPlayer(MCBans.Language.getFormat( "localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
-	            }
+				BukkitInterface mcb = (BukkitInterface)MCBans.getServer().getPluginManager().getPlugin("mcbans");
+				mcb.kickPlayer(PlayerName, MCBans.Language.getFormat( "localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 				MCBans.broadcastAll( ChatColor.GREEN + MCBans.Language.getFormat( "localBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 				MCBans.Backup.add(PlayerName);
 				return;
@@ -169,9 +168,8 @@ public class Ban extends Thread {
 			}
 			if(response.get("result").equals("y")){
 				MCBans.log( PlayerName + " has been banned with a global type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
-				if (MCBans.getServer().getPlayer(PlayerName) != null) {
-					MCBans.getServer().getPlayer(PlayerName).kickPlayer(MCBans.Language.getFormat( "globalBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
-	            }
+				BukkitInterface mcb = (BukkitInterface)MCBans.getServer().getPluginManager().getPlugin("mcbans");
+				mcb.kickPlayer(PlayerName, MCBans.Language.getFormat( "globalBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 				MCBans.broadcastAll( ChatColor.GREEN + MCBans.Language.getFormat( "globalBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 				MCBans.Backup.add(PlayerName);
 				return;
@@ -207,9 +205,8 @@ public class Ban extends Thread {
 			}
 			if(response.get("result").equals("y")){
 				MCBans.log( PlayerName + " has been banned with a temp type ban [" + Reason + "] [" + PlayerAdmin + "]!" );
-				if (MCBans.getServer().getPlayer(PlayerName) != null) {
-					MCBans.getServer().getPlayer(PlayerName).kickPlayer( MCBans.Language.getFormat( "tempBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
-	            }
+				BukkitInterface mcb = (BukkitInterface)MCBans.getServer().getPluginManager().getPlugin("mcbans");
+				mcb.kickPlayer(PlayerName, MCBans.Language.getFormat( "tempBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 				MCBans.broadcastAll( ChatColor.GREEN + MCBans.Language.getFormat( "tempBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 				return;
 			}else if(response.get("result").equals("e")){

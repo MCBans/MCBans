@@ -128,7 +128,6 @@ public class BukkitInterface extends JavaPlugin {
         
         Permissions = new BukkitPermissions( Settings, this );
         commandHandle = new CommandHandler( Settings, this );
-        Permissions.setupPermissions();
         
         log("Fetching backup.");
         Backup = new Backup( Settings.getBoolean("isDebug"), this.getApiKey() );
@@ -210,6 +209,12 @@ public class BukkitInterface extends JavaPlugin {
 	public void clearThrottle (String user) {
 		resetTime.remove(user);
 		connectionData.remove(user);
+	}
+	public void kickPlayer( String playerToKick, String kickString ){
+		Player target = getServer().getPlayer(playerToKick);
+		if(target!=null){
+			target.kickPlayer(kickString);
+		}
 	}
 	
 	public int getConnectionData (String user) {

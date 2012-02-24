@@ -29,7 +29,6 @@ public class CommandHandler {
 		Kick kickControl = null;
 		boolean commandSet = false;
 		boolean isPlayer = false;
-        Player playerStuff = null;
 		String inWorld = "";
 		String reasonString = "";
 		Ban banControl = null;
@@ -38,7 +37,6 @@ public class CommandHandler {
             CommandSend = player.getName();
             isPlayer = true;
             inWorld = player.getWorld().getName();
-            playerStuff = player;
         } else {
             CommandSend = "Console";
             isPlayer = false;
