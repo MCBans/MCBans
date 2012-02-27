@@ -44,6 +44,7 @@ public class BukkitInterface extends JavaPlugin {
 	public BukkitPermissions Permissions = null;
     public Logger logger = new Logger(this);
 	public HashMap<String, ArrayList<String>> joinMessages = new HashMap<String, ArrayList<String>>();
+	public HashMap<String, String> altBroadcast = new HashMap<String, String>();
 	
 	public void onDisable() {
 		System.out.print("MCBans: Disabled");
@@ -188,7 +189,22 @@ public class BukkitInterface extends JavaPlugin {
 	
 	public void broadcastBanView(String msg){
 		for( Player player: this.getServer().getOnlinePlayers() ){
-			if( Permissions.isAllow( player.getWorld().getName(), player.getName(), "ban.view" ) ){
+			if( Permissions.isAllow( player.getName(), "ban.view" ) ){
+				player.sendMessage( Settings.getPrefix() + " " + msg );
+			}
+		}
+	}
+	public void broadcastAltView(String msg){
+		for( Player player: this.getServer().getOnlinePlayers() ){
+			if( Permissions.isAllow( player.getName(), "alts.view" ) ){
+				player.sendMessage( Settings.getPrefix() + " " + msg );
+			}
+		}
+	}
+	
+	public void broadcastKickView(String msg){
+		for( Player player: this.getServer().getOnlinePlayers() ){
+			if( Permissions.isAllow( player.getName(), "kick.view" ) ){
 				player.sendMessage( Settings.getPrefix() + " " + msg );
 			}
 		}
@@ -209,12 +225,6 @@ public class BukkitInterface extends JavaPlugin {
 	public void clearThrottle (String user) {
 		resetTime.remove(user);
 		connectionData.remove(user);
-	}
-	public void kickPlayer( String playerToKick, String kickString ){
-		Player target = getServer().getPlayer(playerToKick);
-		if(target!=null){
-			target.kickPlayer(kickString);
-		}
 	}
 	
 	public int getConnectionData (String user) {

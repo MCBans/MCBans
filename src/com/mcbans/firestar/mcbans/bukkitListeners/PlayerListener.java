@@ -41,11 +41,23 @@ public class PlayerListener implements Listener {
 			}
 			MCBans.joinMessages.remove(playerName);
         }
+		if(MCBans.altBroadcast.containsKey(playerName)){
+			if(!MCBans.Permissions.isAllow(event.getPlayer(), "alts.hide")){
+				MCBans.broadcastAltView(MCBans.altBroadcast.get(playerName));
+			}
+			MCBans.altBroadcast.remove(playerName);
+		}
 	}
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
         String playerName = event.getPlayer().getName();
         Disconnect disconnectHandler = new Disconnect( MCBans, playerName );
         disconnectHandler.start();
+        if(MCBans.altBroadcast.containsKey(playerName)){
+			MCBans.altBroadcast.remove(playerName);
+		}
+        if(MCBans.joinMessages.containsKey(playerName)){
+			MCBans.joinMessages.remove(playerName);
+        }
     }
 }

@@ -12,7 +12,7 @@ public class BukkitPermissions {
 		MCBans = p;
 		Config=cf;
 	}
-	public boolean isAllow( String WorldName, String PlayerName, String PermissionNode ){
+	public boolean isAllow( String PlayerName, String PermissionNode ){
 		Player target = MCBans.getServer().getPlayer(PlayerName);
 		return target != null && isAllow( target, PermissionNode );
 	}

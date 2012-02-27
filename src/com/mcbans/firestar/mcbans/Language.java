@@ -45,6 +45,9 @@ public class Language{
 	public String getFormat( String Message, String PlayerName, String PlayerAdmin, String Reason ){
 		return config.getString( Message, this.errorMessage(Message) ).replaceAll("%PLAYER%", PlayerName).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason);
 	}
+	public String getFormat( String Message, String PlayerName, String PlayerAdmin, String Reason, String defaultMessage, boolean meow){
+		return config.getString( Message, defaultMessage ).replaceAll("%PLAYER%", PlayerName).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason);
+	}
 	public String getFormat( String Message, String PlayerName, String PlayerAdmin, String Reason, String PlayerIP ){
 		return config.getString( Message, this.errorMessage(Message) ).replaceAll("%PLAYER%", PlayerName).replaceAll("%PLAYERIP%", PlayerIP).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason);
 	}

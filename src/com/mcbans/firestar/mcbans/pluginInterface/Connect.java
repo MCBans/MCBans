@@ -86,7 +86,7 @@ public class Connect {
 								if(Float.valueOf(response.get("altCount").trim()) > MCBans.Settings.getFloat("maxAlts") && MCBans.Settings.getBoolean("enableMaxAlts")) {
 									s = MCBans.Language.getFormat( "overMaxAlts" );
 								} else { 
-									MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
+									MCBans.altBroadcast.put( PlayerName, ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
 								}
 							}
 						}
@@ -122,13 +122,13 @@ public class Connect {
 					break;
 					case B:
 						Boolean blockConnection = false;
-						if(response.containsKey("altList")){
+						if(response.containsKey("altList") && !MCBans.Permissions.isAllow( PlayerName, "alt.hide")){
 							if(!response.get("altList").equals("")){
 								if(Float.valueOf(response.get("altCount").trim()) > MCBans.Settings.getFloat("maxAlts") && MCBans.Settings.getBoolean("enableMaxAlts")) {
 									s = MCBans.Language.getFormat( "overMaxAlts" );
 									blockConnection = true;
 								} else {
-									MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
+									MCBans.altBroadcast.put( PlayerName, ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
 								}
 							}
 						}
