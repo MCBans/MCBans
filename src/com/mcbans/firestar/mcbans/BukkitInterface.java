@@ -115,6 +115,7 @@ public class BukkitInterface extends JavaPlugin {
             return;
         }
 
+        Core.lang = language;
         log(LogLevels.INFO, "Loading language file: "+language);
         
         File languageFile = new File("plugins/mcbans/language/"+language+".yml");
@@ -133,6 +134,9 @@ public class BukkitInterface extends JavaPlugin {
         		return;
         	}
         }
+
+        // Load language
+        Language = new Language(language);
         
         if(Settings.getBoolean("logEnable")){
         	log(LogLevels.INFO, "Starting to save to log file!");
