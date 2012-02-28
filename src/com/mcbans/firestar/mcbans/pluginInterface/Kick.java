@@ -21,13 +21,17 @@ public class Kick extends Thread {
 	}
 	@Override
 	public void run( ){
-		Player player = MCBans.getServer().getPlayer(PlayerName);
+		final Player player = MCBans.getServer().getPlayer(PlayerName);
 		if (player != null) {
-			MCBans.log( PlayerAdmin + " has kicked " + player.getName() + "[" + Reason + "]" );
-			player.kickPlayer(MCBans.Language.getFormat( "kickMessagePlayer", player.getName(), PlayerAdmin, Reason ));
-			MCBans.broadcastAll( ChatColor.DARK_RED + MCBans.Language.getFormat( "kickMessageSuccess", player.getName(), PlayerAdmin, Reason ));
+			MCBans.log( PlayerAdmin + " has kicked " + player.getName() + " [" + Reason + "]" );
+			MCBans.getServer().getScheduler().scheduleSyncDelayedTask(MCBans, new Runnable() {
+			    public void run() {
+			    	player.kickPlayer(MCBans.Language.getFormat( "kickMessagePlayer", player.getName(), PlayerAdmin, Reason ));
+			    }
+			}, 1L);
+			MCBans.broadcastKickView( ChatColor.GREEN + MCBans.Language.getFormat( "kickMessageBroadcast", PlayerName, PlayerAdmin, Reason, "%ADMIN% has kicked %PLAYER% [%REASON%]", true ) );
 		}else{
-            MCBans.broadcastAll( ChatColor.DARK_RED + MCBans.Language.getFormat( "kickMessageNoPlayer", PlayerName, PlayerAdmin, Reason ));
+            MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "kickMessageNoPlayer", PlayerName, PlayerAdmin, Reason, "No player with that name online!", true ));
         }
 	}
 }

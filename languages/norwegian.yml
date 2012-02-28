@@ -34,7 +34,7 @@ underMinRep: "Ryktet ditt er under denne serverens minimumskrav!"
 overMaxAlts: ""
 altBanned: ""
 altAccounts: "%PLAYER% har muligens flere kontoer [ %ALTS% ]!" 
-isMCBansMod: "%PLAYER% is an MCBans.com Staff Member!"
+isMCBansMod: "%PLAYER% Er en MCBans medarbeider!"
 youAreMCBansStaff: "You are an MCBans Staff Member!"
 
 newMessage: "Du har %COUNT% ny(e) beskjed(er)!" 

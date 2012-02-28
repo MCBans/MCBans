@@ -4,17 +4,19 @@ import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.pluginInterface.Connect;
 import com.mcbans.firestar.mcbans.pluginInterface.Disconnect;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerListener extends org.bukkit.event.player.PlayerListener {
+public class PlayerListener implements Listener {
 	private BukkitInterface MCBans;
 	public PlayerListener(BukkitInterface plugin) {
         MCBans = plugin;
     }
-	@Override
+	@EventHandler
 	public void onPlayerPreLogin(PlayerPreLoginEvent event) {
 		if (event.getResult() != Result.ALLOWED) {
 			return;
@@ -27,7 +29,7 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener {
 			event.disallow(PlayerPreLoginEvent.Result.KICK_BANNED, result);
 		}
 	}
-	@Override
+	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		String playerName = event.getPlayer().getName();
 		if(MCBans.Settings.getBoolean("onJoinMCBansMessage")){
@@ -39,11 +41,23 @@ public class PlayerListener extends org.bukkit.event.player.PlayerListener {
 			}
 			MCBans.joinMessages.remove(playerName);
         }
+		if(MCBans.altBroadcast.containsKey(playerName)){
+			if(!MCBans.Permissions.isAllow(event.getPlayer(), "alts.hide")){
+				MCBans.broadcastAltView(MCBans.altBroadcast.get(playerName));
+			}
+			MCBans.altBroadcast.remove(playerName);
+		}
 	}
-	@Override
+	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
         String playerName = event.getPlayer().getName();
         Disconnect disconnectHandler = new Disconnect( MCBans, playerName );
         disconnectHandler.start();
+        if(MCBans.altBroadcast.containsKey(playerName)){
+			MCBans.altBroadcast.remove(playerName);
+		}
+        if(MCBans.joinMessages.containsKey(playerName)){
+			MCBans.joinMessages.remove(playerName);
+        }
     }
 }

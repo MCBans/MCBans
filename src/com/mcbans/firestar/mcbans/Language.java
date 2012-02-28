@@ -7,7 +7,6 @@ import java.io.File;
 public class Language{
 	private BukkitInterface MCBans;
 	private YamlConfiguration config;
-	private YamlConfiguration backupConfig;
 	public Language( String filename ){
 		File plugin_settings = new File("plugins/mcbans/language/"+filename+".yml");
 		config = YamlConfiguration.loadConfiguration(plugin_settings);
@@ -45,6 +44,9 @@ public class Language{
 	}
 	public String getFormat( String Message, String PlayerName, String PlayerAdmin, String Reason ){
 		return config.getString( Message, this.errorMessage(Message) ).replaceAll("%PLAYER%", PlayerName).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason);
+	}
+	public String getFormat( String Message, String PlayerName, String PlayerAdmin, String Reason, String defaultMessage, boolean meow){
+		return config.getString( Message, defaultMessage ).replaceAll("%PLAYER%", PlayerName).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason);
 	}
 	public String getFormat( String Message, String PlayerName, String PlayerAdmin, String Reason, String PlayerIP ){
 		return config.getString( Message, this.errorMessage(Message) ).replaceAll("%PLAYER%", PlayerName).replaceAll("%PLAYERIP%", PlayerIP).replaceAll("%ADMIN%", PlayerAdmin).replaceAll("%REASON%", Reason);

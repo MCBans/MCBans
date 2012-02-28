@@ -4,14 +4,12 @@ import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Connect {
 	private BukkitInterface MCBans;
-	private HashMap<String, Integer> responses = new HashMap<String, Integer>();
 	public Connect(BukkitInterface p){
 		MCBans = p;
 	}
@@ -88,7 +86,7 @@ public class Connect {
 								if(Float.valueOf(response.get("altCount").trim()) > MCBans.Settings.getFloat("maxAlts") && MCBans.Settings.getBoolean("enableMaxAlts")) {
 									s = MCBans.Language.getFormat( "overMaxAlts" );
 								} else { 
-									MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
+									MCBans.altBroadcast.put( PlayerName, ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
 								}
 							}
 						}
@@ -124,13 +122,13 @@ public class Connect {
 					break;
 					case B:
 						Boolean blockConnection = false;
-						if(response.containsKey("altList")){
+						if(response.containsKey("altList") && !MCBans.Permissions.isAllow( PlayerName, "alt.hide")){
 							if(!response.get("altList").equals("")){
 								if(Float.valueOf(response.get("altCount").trim()) > MCBans.Settings.getFloat("maxAlts") && MCBans.Settings.getBoolean("enableMaxAlts")) {
 									s = MCBans.Language.getFormat( "overMaxAlts" );
 									blockConnection = true;
 								} else {
-									MCBans.broadcastBanView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
+									MCBans.altBroadcast.put( PlayerName, ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, response.get("altList") ) );
 								}
 							}
 						}
@@ -178,7 +176,6 @@ public class Connect {
 					break;
 				}
 				if(s==null && tempList.size()>0){
-					Player target = MCBans.getServer().getPlayer(PlayerName);
 					MCBans.joinMessages.put( PlayerName, tempList);
                 }
 			}
