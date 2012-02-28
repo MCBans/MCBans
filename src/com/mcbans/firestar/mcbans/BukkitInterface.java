@@ -15,6 +15,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -44,7 +46,6 @@ public class BukkitInterface extends JavaPlugin {
 	public BukkitPermissions Permissions = null;
     public Logger logger = new Logger(this);
 	public HashMap<String, ArrayList<String>> joinMessages = new HashMap<String, ArrayList<String>>();
-	public HashMap<String, String> altBroadcast = new HashMap<String, String>();
 	
 	public void onDisable() {
 		System.out.print("MCBans: Disabled");
@@ -74,43 +75,58 @@ public class BukkitInterface extends JavaPlugin {
         	return;
         }
         
-        // API KEY verification!
-        if (Core.apikey != null) {
-        	this.apiKey = this.Core.apikey;
-        	log("Core loaded successfully!");
-        } else {
-        	log(LogLevels.FATAL, "Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
-        	return;
-        }
-        
         Settings = new Settings(this);
         
         if (Settings.doTerminate) {
 			log(LogLevels.FATAL, "Please download the latest settings.yml from MCBans.com!");
         	return;
 		}
+
+        // Attempt to load the api key from settings.yml
+        apiKey = Settings.getString("apiKey");
         
-        pm.registerEvents(bukkitPlayer, this);
-        
-        String language;
-        
-        if (Core.lang != null) {
-        	language = Core.lang;
-        } else {
-        	log(LogLevels.FATAL, "Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
-        	return;
+        // Fall back to the file included in the jar file
+        if (apiKey == null) {
+            apiKey = Core.apikey;
         }
+        
+        // verify
+        if (apiKey == null) {
+            log(LogLevels.FATAL, "Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
+            return;
+        } else {
+            log("Loaded api key successfully!");
+        }
+        
+		pm.registerEvent( Event.Type.PLAYER_JOIN, bukkitPlayer, Priority.Normal, this );
+        pm.registerEvent( Event.Type.PLAYER_PRELOGIN, bukkitPlayer, Priority.Normal, this );
+        pm.registerEvent( Event.Type.PLAYER_QUIT, bukkitPlayer, Priority.Normal, this );
+
+        // Attempt to load the locale from settings.yml
+        String language = Settings.getString("lang");
+
+        // Fall back
+        if (language == null) {
+            language = Core.lang;
+        }
+        
+        if (language == null) {
+            log(LogLevels.FATAL, "Invalid MCBans.jar! Please re-download at http://myserver.mcbans.com.");
+            return;
+        }
+
+        Core.lang = language;
         log(LogLevels.INFO, "Loading language file: "+language);
         
         File languageFile = new File("plugins/mcbans/language/"+language+".yml");
         if(!languageFile.exists()){
-        	if (Core.lang != null) {
-        		log(LogLevels.INFO, "Contacting Master server for language file " + Core.lang + ".yml");
+        	if (language != null) {
+        		log(LogLevels.INFO, "Contacting Master server for language file " + language + ".yml");
         		Downloader getLanguage = new Downloader();
-        		getLanguage.Download("http://72.10.39.172/getLanguage/" + Core.lang + ".yml", "plugins/mcbans/language/" + Core.lang + ".yml");
-        		languageFile = new File("plugins/mcbans/language/" + Core.lang + ".yml");
+        		getLanguage.Download("http://myserver.mcbans.com/languages/" + language + ".yml", "plugins/mcbans/language/" + language + ".yml");
+        		languageFile = new File("plugins/mcbans/language/" + language + ".yml");
         		if (!languageFile.exists()) {
-        			log(LogLevels.FATAL, Core.lang + " does not exist on Master server.");
+        			log(LogLevels.FATAL, language + " does not exist on Master server.");
                     return;
         		}
         	} else {
@@ -118,6 +134,9 @@ public class BukkitInterface extends JavaPlugin {
         		return;
         	}
         }
+
+        // Load language
+        Language = new Language(language);
         
         if(Settings.getBoolean("logEnable")){
         	log(LogLevels.INFO, "Starting to save to log file!");
@@ -129,6 +148,7 @@ public class BukkitInterface extends JavaPlugin {
         
         Permissions = new BukkitPermissions( Settings, this );
         commandHandle = new CommandHandler( Settings, this );
+        Permissions.setupPermissions();
         
         log("Fetching backup.");
         Backup = new Backup( Settings.getBoolean("isDebug"), this.getApiKey() );
@@ -140,11 +160,7 @@ public class BukkitInterface extends JavaPlugin {
         
         callbackThread = new MainCallBack( this );
         callbackThread.start();
-        if (Core.lang != null) {
-        	Language = new Language(Core.lang);
-        } else {
-        	Language = new Language(Settings.getString("language"));
-        }
+        Language = new Language(language);
         
         
         if (Settings.getBoolean("throttleUsers")) {
@@ -189,22 +205,7 @@ public class BukkitInterface extends JavaPlugin {
 	
 	public void broadcastBanView(String msg){
 		for( Player player: this.getServer().getOnlinePlayers() ){
-			if( Permissions.isAllow( player.getName(), "ban.view" ) ){
-				player.sendMessage( Settings.getPrefix() + " " + msg );
-			}
-		}
-	}
-	public void broadcastAltView(String msg){
-		for( Player player: this.getServer().getOnlinePlayers() ){
-			if( Permissions.isAllow( player.getName(), "alts.view" ) ){
-				player.sendMessage( Settings.getPrefix() + " " + msg );
-			}
-		}
-	}
-	
-	public void broadcastKickView(String msg){
-		for( Player player: this.getServer().getOnlinePlayers() ){
-			if( Permissions.isAllow( player.getName(), "kick.view" ) ){
+			if( Permissions.isAllow( player.getWorld().getName(), player.getName(), "ban.view" ) ){
 				player.sendMessage( Settings.getPrefix() + " " + msg );
 			}
 		}
