@@ -45,6 +45,11 @@ public class Lookup extends Thread {
 	        		MCBans.broadcastPlayer( PlayerAdmin, result.getJSONArray("local").getString(v) );
 	        	}
 	        }
+	        if (result.getJSONArray("other").length() > 0) {
+				for (int v = 0; v < result.getJSONArray("other").length(); v++) {
+					MCBans.broadcastPlayer( PlayerAdmin, result.getJSONArray("other").getString(v) );
+				}
+	        }
         } catch (JSONException e) {
             if (result.toString().contains("error")) {
 			    if (result.toString().contains("Server Disabled")) {
