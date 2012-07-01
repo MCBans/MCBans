@@ -5,7 +5,7 @@ import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 import java.util.HashMap;
 
-public class Disconnect extends Thread {
+public class Disconnect implements Runnable {
 	private BukkitInterface MCBans;
 	private String PlayerName;
 	
@@ -15,6 +15,13 @@ public class Disconnect extends Thread {
 	}
 	@Override
 	public void run() {
+		while(MCBans.notSelectedServer){
+			//waiting for server select
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+		}
 		MCBans.log( PlayerName + " has disconnected!" );
 		JsonHandler webhandle = new JsonHandler( MCBans );
 		HashMap<String, String> url_items = new HashMap<String, String>();

@@ -3,38 +3,56 @@ package com.mcbans.firestar.mcbans;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class Settings{
-	private BukkitInterface MCBans;
 	private YamlConfiguration config;
-	private YamlConfiguration backupConfig;
-	public boolean doTerminate = false;
-	private String NFe = null;
+	public boolean exists = false;
 	
-	public Settings( BukkitInterface p ){
-		MCBans = p;
+	public Settings(){
 		File plugin_settings = new File("plugins/mcbans/settings.yml");
+		YamlConfiguration configTest = null;
 		if (!plugin_settings.exists()) {
-			System.out.print("MCBans: settings.yml not found, downloading default..");
-			Downloader download = new Downloader();
-			download.Download("http://72.10.39.172/getSettings/" + MCBans.getApiKey(), "plugins/mcbans/settings.yml");
+			System.out.print("MCBans: settings.yml not found, generating default..");
+			this.generate();
 			plugin_settings = new File("plugins/mcbans/settings.yml");
-			if (!plugin_settings.exists()) {
-				System.out.print("MCBans: Unable to download settings.yml!");
-				this.doTerminate = true;
-			} else {
-				config = YamlConfiguration.loadConfiguration(plugin_settings);
-			}
+			configTest = YamlConfiguration.loadConfiguration(plugin_settings);
 		} else {
-			config = YamlConfiguration.loadConfiguration(plugin_settings);
+			configTest = YamlConfiguration.loadConfiguration(plugin_settings);
 		}		
-		String verify = verifyIntegrity();
+		String verify = verifyIntegrity(configTest);
 		if (verify != "OK") {
-			System.out.print("MCBans: settings.yml is corrupted! One or more variables are missing/invalid! (" + verify + ")");
-			if (NFe != null) {
-				System.out.print("MCBans: " + NFe);
+			System.out.print("[FATAL][MCBans] settings.yml is corrupted! One or more variables are missing/invalid! (" + verify + ")");
+			this.exists = true;
+		}else{
+			config = configTest;
+		}
+	}
+	public void generate(){
+		InputStream in = null;
+		try {
+			in = Settings.class.getClassLoader().getResourceAsStream("defaults/settings.yml");
+			File file = new File("plugins/mcbans/");
+			if(!file.exists()){
+				file.mkdir();
 			}
-			this.doTerminate = true;
+			file = new File("plugins/mcbans/settings.yml");
+			OutputStream out = new FileOutputStream(file);
+			int read = 0;
+			byte[] bytes = new byte[1024];
+		 
+			while ((read = in.read(bytes)) != -1) {
+				out.write(bytes, 0, read);
+			}
+			in.close();
+			out.flush();
+			out.close();
+		}
+		catch(IOException e) {
+			System.err.println("Error writing settings file.");
 		}
 	}
 	public Integer reload() {
@@ -42,68 +60,48 @@ public class Settings{
 		if (!plugin_settings.exists()) {
 			return -2;
 		} else {
-			backupConfig = config;
-			config = YamlConfiguration.loadConfiguration(plugin_settings);
-			String verify = verifyIntegrity();
+			YamlConfiguration configTest = YamlConfiguration.loadConfiguration(plugin_settings);
+			String verify = verifyIntegrity(configTest);
 			if (verify == "OK") {
+				config = configTest;
 				return 1;
 			} else {
-				config = backupConfig;
 				return -1;
 			}
 		}
 	}
-	private String verifyIntegrity () {
-		if (getPrefix() == "") {
+	private String verifyIntegrity (YamlConfiguration test) {
+		if (test.getString( "prefix", "" ).equals("")) {
 			return "prefix";
-		} else if (!config.isString("defaultLocal")) {
+		} else if (!test.isString("defaultLocal")) {
 			return "defaultLocal";
-		} else if (!config.isString("defaultTemp")) {
+		} else if (!test.isString("defaultTemp")) {
 			return "defaultTemp";
-		} else if (!config.isString("defaultKick")) {
+		} else if (!test.isString("defaultKick")) {
 			return "defaultKick";
-		} else if (!config.isString("offlineReason")) {
+		} else if (!test.isString("offlineReason")) {
 			return "offlineReason";
-		} else if (!config.isString("userLockoutMsg")) {
-			return "userLockoutMsg";
-		} else if (!config.isString("allLockoutMsg")) {
-			return "allLockoutMsg";
-		} else if (!config.isString("logFile")) {
+		} else if (!test.isString("logFile")) {
 			return "logFile";
-		} else if (!config.isBoolean("onJoinMCBansMessage")) {
+		} else if (!test.isString("apiKey")) {
+			return "apiKey";
+		} else if (!test.isString("language")) {
+			return "language";
+		} else if (!test.isBoolean("onJoinMCBansMessage")) {
 			return "onJoinMCBansMessage";
-		} else if (!config.isBoolean("enableMaxAlts")) {
+		} else if (!test.isBoolean("enableMaxAlts")) { 
 			return "enableMaxAlts";
-		} else if (!config.isBoolean("throttleUsers")) {
-			return "throttleUsers";
-		} else if (!config.isBoolean("throttleAll")) { 
-			return "throttleAll";
-		} else if (!config.isBoolean("isDebug")) { 
+		} else if (!test.isBoolean("isDebug")) { 
 			return "isDebug";
-		} else if (!config.isBoolean("logEnable")) {
+		} else if (!test.isBoolean("logEnable")) {
 			return "logEnable";
-		} else {
-			try {
-				Integer.parseInt(getInteger("minRep").toString());
-				Integer.parseInt(getInteger("callBackInterval").toString());
-				Integer.parseInt(getInteger("maxAlts").toString());
-				Integer.parseInt(getInteger("userConnectionTime").toString());
-				Integer.parseInt(getInteger("userConnectionLimit").toString());
-				Integer.parseInt(getInteger("userLockoutTime").toString());
-				Integer.parseInt(getInteger("allConnectionTime").toString());
-				Integer.parseInt(getInteger("allConnectionLimit").toString());
-				Integer.parseInt(getInteger("allLockoutTime").toString());
-			} catch (NumberFormatException nFE) {
-				NFe = nFE.toString();
-				return "numberError";
-			}
 		}
 		return "OK";
 	}
 	public String getString( String variable ){
 		return config.getString( variable, "" );
 	}
-	public String getPrefix () {
+	public String getPrefix ( ) {
 		return config.get("prefix", "").toString();
 	}
 	public Integer getInteger( String variable ){

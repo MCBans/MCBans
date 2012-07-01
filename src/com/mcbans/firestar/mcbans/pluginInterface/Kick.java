@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("unused")
-public class Kick extends Thread {
+public class Kick implements Runnable {
 	private Settings Config;
 	private BukkitInterface MCBans;
 	private String PlayerName = null;
@@ -21,6 +21,13 @@ public class Kick extends Thread {
 	}
 	@Override
 	public void run( ){
+		while(MCBans.notSelectedServer){
+			//waiting for server select
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+			}
+		}
 		final Player player = MCBans.getServer().getPlayer(PlayerName);
 		if (player != null) {
 			MCBans.log( PlayerAdmin + " has kicked " + player.getName() + " [" + Reason + "]" );

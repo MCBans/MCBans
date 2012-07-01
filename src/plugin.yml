@@ -1,7 +1,7 @@
 name: mcbans
 main: com.mcbans.firestar.mcbans.BukkitInterface
-version: 3.7
-author: Firestar and Crashdoom
+version: 3.8
+author: Firestar
 commands:
   kick:
     description: kicks a user
@@ -20,11 +20,14 @@ commands:
     aliases: [lup]
     usage: /<command> <playername>
   mcbans:
-    description: player set
-    usage: /<command> <playername>
+    description: mcbans functions
+    usage: /<command> <function>
 permissions:
   mcbans.kick.view:
     description: Display kick message to anyone with this permission
+    default: op
+  mcbans.join.view:
+    description: Join messages
     default: op
   mcbans.alts.hide:
     description: Hide notification of alts on connect
@@ -62,6 +65,7 @@ permissions:
       mcbans.ban.view: true
       mcbans.alts.hide: true
       mcbans.alts.view: true
+      mcbans.join.view: true
       mcbans.ban.global: true
       mcbans.ban.local: true
       mcbans.ban.temp: true

@@ -71,7 +71,43 @@ public class JsonHandler {
 			if(debug){
 				MCBans.log(LogLevels.INFO, "Sending request!");
 			}
-			URL url = new URL("http://72.10.39.172/v2/"+this.apiKey);
+			URL url = new URL("http://"+MCBans.apiServer+"/v2/"+this.apiKey);
+    	    URLConnection conn = url.openConnection();
+    	    conn.setConnectTimeout(5000);
+    	    conn.setReadTimeout(5000);
+    	    conn.setDoOutput(true);
+    	    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+    	    wr.write(data);
+    	    wr.flush();
+    	    StringBuilder buf = new StringBuilder();
+    	    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+    	    String line;
+    	    while ((line = rd.readLine()) != null) {
+    	    	buf.append(line);
+    	    }
+    	    String result = buf.toString();
+    	    if(debug){
+    	    	MCBans.log(LogLevels.INFO, result);
+    	    }
+    	    wr.close();
+    	    rd.close();
+			return result;
+		} catch (Exception e) {
+			if(debug){
+				if(MCBans!=null){
+					MCBans.log(LogLevels.SEVERE, "Fetch Data Error");
+				}
+				e.printStackTrace();
+			}
+			return "";
+    	}
+	}
+	public String request_from_api(String data, String Server){
+		try {
+			if(debug){
+				MCBans.log(LogLevels.INFO, "Sending request!");
+			}
+			URL url = new URL("http://"+Server+"/v2/"+this.apiKey);
     	    URLConnection conn = url.openConnection();
     	    conn.setConnectTimeout(5000);
     	    conn.setReadTimeout(5000);

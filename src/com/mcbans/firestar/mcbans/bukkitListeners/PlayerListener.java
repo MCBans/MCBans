@@ -1,13 +1,21 @@
 package com.mcbans.firestar.mcbans.bukkitListeners;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLEncoder;
+
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.pluginInterface.Connect;
 import com.mcbans.firestar.mcbans.pluginInterface.Disconnect;
-import org.bukkit.ChatColor;
+
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -16,48 +24,61 @@ public class PlayerListener implements Listener {
 	public PlayerListener(BukkitInterface plugin) {
         MCBans = plugin;
     }
-	@EventHandler
-	public void onPlayerPreLogin(PlayerPreLoginEvent event) {
-		if (event.getResult() != Result.ALLOWED) {
-			return;
-		}
-		String playerIP = event.getAddress().getHostAddress();
-        String playerName = event.getName();
-		Connect playerConnect = new Connect( MCBans );
-		String result = playerConnect.exec( playerName, playerIP );
-		if( result != null ){
-			event.disallow(PlayerPreLoginEvent.Result.KICK_BANNED, result);
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onAsyncPlayerPreLoginEvent(AsyncPlayerPreLoginEvent event){
+		try {
+			while(MCBans.notSelectedServer){
+				//waiting for server select
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+				}
+			}
+			URL urlMCBans = new URL("http://"+MCBans.apiServer+"/v2/"+MCBans.getApiKey()+"/login/" + URLEncoder.encode(event.getName(), "UTF-8") + "/" +URLEncoder.encode(String.valueOf(event.getAddress().getHostAddress()), "UTF-8"));
+			BufferedReader bufferedreaderMCBans = new BufferedReader(new InputStreamReader(urlMCBans.openStream()));
+	        String s2 = bufferedreaderMCBans.readLine();
+	        System.out.println(s2);
+			bufferedreaderMCBans.close();
+			if(s2!=null){
+		        String[] s3 = s2.split(";");
+		        double repMin = MCBans.Settings.getDouble("minRep");
+		        int maxAlts = MCBans.Settings.getInteger("maxAlts");
+		        if(s3.length == 4){
+		             if(s3[0].equals("l") || s3[0].equals("g") || s3[0].equals("t") || s3[0].equals("i") || s3[0].equals("s")){
+		                 event.disallow(Result.KICK_BANNED, s3[1]);
+		                 return;
+		             }else if(repMin>Double.valueOf(s3[2])){
+		                 event.disallow(Result.KICK_BANNED, "Reputation too low!");
+		                 return;
+		             }else if(maxAlts<Integer.valueOf(s3[3])){
+		                 event.disallow(Result.KICK_BANNED, "You have too many alternate accounts!");
+		                 return;
+		             }
+		             if(MCBans.Settings.getBoolean("isDebug")){
+		            	 System.out.println("[MCBans] "+event.getName()+" authenticated with "+s3[2]+" rep");
+		             }
+		        }
+			}
+		} catch (IOException e) {
 		}
 	}
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		String playerName = event.getPlayer().getName();
-		if(MCBans.Settings.getBoolean("onJoinMCBansMessage")){
-			MCBans.broadcastPlayer( event.getPlayer(), ChatColor.DARK_GREEN + "Server secured by MCBans!" );
-		}
-		if(MCBans.joinMessages.containsKey(playerName)){
-			for(String message : MCBans.joinMessages.get(playerName)){
-				MCBans.broadcastPlayer( event.getPlayer(),  message );
-			}
-			MCBans.joinMessages.remove(playerName);
-        }
-		if(MCBans.altBroadcast.containsKey(playerName)){
-			if(!MCBans.Permissions.isAllow(event.getPlayer(), "alts.hide")){
-				MCBans.broadcastAltView(MCBans.altBroadcast.get(playerName));
-			}
-			MCBans.altBroadcast.remove(playerName);
-		}
+		String playerIP = event.getPlayer().getAddress().getAddress().getHostAddress();
+        Player player = event.getPlayer();
+        MCBans.Permissions.playerConnect(player);
+		Connect playerConnect = new Connect();
+		playerConnect.ConnectSet( MCBans, player.getName(), playerIP );
+		Thread triggerThread = new Thread(playerConnect);
+		triggerThread.start();
 	}
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerQuit(PlayerQuitEvent event) {
-        String playerName = event.getPlayer().getName();
+		Player player = event.getPlayer();
+		MCBans.Permissions.playerDisconnect(player.getName());
+        String playerName = player.getName();
         Disconnect disconnectHandler = new Disconnect( MCBans, playerName );
-        disconnectHandler.start();
-        if(MCBans.altBroadcast.containsKey(playerName)){
-			MCBans.altBroadcast.remove(playerName);
-		}
-        if(MCBans.joinMessages.containsKey(playerName)){
-			MCBans.joinMessages.remove(playerName);
-        }
+        Thread triggerThread = new Thread(disconnectHandler);
+		triggerThread.start();
     }
 }

@@ -2,14 +2,25 @@ package com.mcbans.firestar.mcbans;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Language{
 	private BukkitInterface MCBans;
 	private YamlConfiguration config;
-	public Language( String filename ){
-		File plugin_settings = new File("plugins/mcbans/language/"+filename+".yml");
-		config = YamlConfiguration.loadConfiguration(plugin_settings);
+	public Language( BukkitInterface mcbans){
+		MCBans = mcbans;
+		InputStream in = null;
+		try {
+			in = Language.class.getClassLoader().getResourceAsStream("languages/"+MCBans.Settings.getString("language")+".yml");
+		} catch (NullPointerException ex) {
+		}
+		config = YamlConfiguration.loadConfiguration(in);
+		try {
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	private String errorMessage ( String Message ) {
 		if (Message == null) {
@@ -19,13 +30,19 @@ public class Language{
 		}
 	}
 	public boolean reload () {
-		File languageFile = new File("plugins/mcbans/language/" + MCBans.Core.lang + ".yml");
-		if (!languageFile.exists()) {
+		InputStream in;
+		try {
+			in = Language.class.getClassLoader().getResourceAsStream("languages/"+MCBans.Settings.getString("language")+".yml");
+		} catch (NullPointerException ex) {
 			return false;
-		} else {
-			config = YamlConfiguration.loadConfiguration(languageFile);
-			return true;
 		}
+		config = YamlConfiguration.loadConfiguration(in);
+		try {
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 	public String getFormat( String Message ){
 		return config.getString( Message, this.errorMessage(Message) );

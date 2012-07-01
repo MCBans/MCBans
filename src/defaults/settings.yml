@@ -1,0 +1,118 @@
+##
+# Main Configuration Settings
+##
+
+# prefix:
+#	Prefix used for MCBans plugin messages to users on the server
+#	DEFAULT: [mcbans]
+prefix: [mcbans] 
+
+# apiKey:
+#       Your servers apiKey can be found in your account dashboard http://my.mcbans.com/servers
+apiKey: 
+
+# language:
+#       Language you want to have displayed to the players
+#       DEFAULT: en-us
+language: en-us
+
+# syncBans:
+#       Allow sync to banned-players.txt
+#       DEFAULT: true
+syncBans: true
+
+# syncInterval:
+#       sync every "syncInterval" and grab/delete bans in minutes
+#       DEFAULT: 3
+syncInterval: 5
+
+# defaultLocal:
+#	Default reason for users being locally banned from the server, if
+#	no reason is provided.
+#	DEFAULT: "You have been banned!"
+defaultLocal: "You have been banned!" 
+
+# defaultTemp:
+#	Default reason for users being temporarily banned from the server,
+#	if no reason is provided.
+#	DEFAULT: "You have been temporarily banned!"
+defaultTemp: "You have been temporarily banned!" 
+
+# defaultKick:
+#	Default reason for users being kicked from the server, if no reason
+#	is provided.
+#	DEFAULT: "You have been kicked!"
+defaultKick: "You have been kicked!" 
+
+##
+# Loging and Debug
+#	Debugging and MCBans message logging settings
+##
+
+# isDebug:
+#	Enable additional debug messages throughout the plugin
+#	DEFAULT: false
+isDebug: false
+
+# logEnable:
+#	Enable logging MCBans actions and information to a file
+#	DEFAULT: false
+logEnable: false
+
+# logFile:
+#	Location and name of the file to log MCBans plugin data into
+#	DEFAULT: plugins/mcbans/actions.log
+logFile: plugins/mcbans/actions.log
+
+##
+# Miscellaneous Settings
+#	Settings that don't have a part of any other sections
+##
+
+# offlineReason:
+#	Message displayed to users that are banned from the server, if the
+#	MCBans Master Server is unavailable.
+offlineReason: "You are banned!" 
+
+# onJoinMCBansMessage:
+#	Display "Server protected by MCBans.com" advertisement notice to
+#	users upon connection.
+#	DEFAULT: false
+#	RECOMMENDED: true
+onJoinMCBansMessage: false 
+
+# minRep:
+#	Minimum reputation a user may have before being disallowed access
+#	to the server.
+#	DEFAULT: 3
+#	-1 to disable.
+minRep: 3
+
+# callBackInterval:
+#	Time (in minutes) between callbacks to the MCBans Master Server
+#	(Excluding the API connections on userConnect)
+#	DEFAULT: 15 (15 Minutes)
+callBackInterval: 15
+
+##
+# Alternate Account Limiting
+#	Limits the how alternate accounts affect connectability to the server
+##
+
+# enableMaxAlts:
+#	Activate limiting maximum number of alt accounts (true/false)
+#	Limits the maximum number of alt accounts a user may have before
+#	being denied access to the server.
+#	DEFAULT: false
+enableMaxAlts: false
+
+# maxAlts:
+#	Maximum number of alternate accounts allowed before denying user
+#	DEFAULT: 2
+maxAlts: 2
+
+##
+# MCBans Default Config
+# 	Please REMOVE this section after you have finished configuring MCBans
+##
+mcbansUnconfigured: true

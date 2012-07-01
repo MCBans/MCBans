@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 
-public class Lookup extends Thread {
+public class Lookup implements Runnable {
 	private BukkitInterface MCBans;
 	private String PlayerName;
 	private String PlayerAdmin;
@@ -20,9 +20,12 @@ public class Lookup extends Thread {
 	}
 	@Override
 	public void run(){
-		if(MCBans.getMode()){
-			MCBans.broadcastPlayer( PlayerAdmin, "MCBans is currently in " + ChatColor.DARK_RED + "OFFLINE" + ChatColor.WHITE + " mode." );
-			return;
+		while(MCBans.notSelectedServer){
+			//waiting for server select
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
 		}
 		MCBans.log(PlayerAdmin + " has looked up the " + PlayerName + "!");
 		HashMap<String, String> url_items = new HashMap<String, String>();
@@ -46,9 +49,9 @@ public class Lookup extends Thread {
 	        	}
 	        }
 	        if (result.getJSONArray("other").length() > 0) {
-				for (int v = 0; v < result.getJSONArray("other").length(); v++) {
-					MCBans.broadcastPlayer( PlayerAdmin, result.getJSONArray("other").getString(v) );
-				}
+	        	for (int v = 0; v < result.getJSONArray("other").length(); v++) {
+	        		MCBans.broadcastPlayer( PlayerAdmin, result.getJSONArray("other").getString(v) );	
+	        	}
 	        }
         } catch (JSONException e) {
             if (result.toString().contains("error")) {

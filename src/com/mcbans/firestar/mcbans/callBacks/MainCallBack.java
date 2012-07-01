@@ -9,19 +9,29 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 
-public class MainCallBack extends Thread {
+public class MainCallBack implements Runnable {
 	private final BukkitInterface MCBans;
+	public long last_req=0;
 	public MainCallBack(BukkitInterface p){
 		MCBans = p;
 	}
 	@Override
 	public void run(){
-		int callBackInterval = MCBans.Settings.getInteger("callBackInterval");
-		if(callBackInterval<600000){
-			callBackInterval=600000;
+		int callBackInterval = ((60*1000)*MCBans.Settings.getInteger("callBackInterval"));
+		if(callBackInterval<((60*1000)*30)){
+			callBackInterval=((60*1000)*30);
 		}
+		
 		while(true){
+			while(MCBans.notSelectedServer){
+				//waiting for server select
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+				}
+			}
 			this.mainRequest();
+			MCBans.lastCallBack = System.currentTimeMillis()/1000;
 			try {
 				Thread.sleep(callBackInterval);
 			} catch (InterruptedException e) {
@@ -39,33 +49,6 @@ public class MainCallBack extends Thread {
 		url_items.put( "version", MCBans.getDescription().getVersion() );
 		url_items.put( "exec", "callBack" );
 		HashMap<String, String> response = webHandle.mainRequest(url_items);
-		if(response.containsKey("oldVersion")){
-            String oldVersion = response.get("oldVersion");
-			if(!oldVersion.equals("")){
-				// Version replies can be:
-				// 3.3imp, 3.3
-				// The former being the update is important and should be downloaded ASAP, the latter is that the update does not contain a critical fix/patch
-				if (oldVersion.endsWith("imp")) {
-					oldVersion = oldVersion.replace("imp", "");
-					MCBans.broadcastBanView( ChatColor.BLUE + "A newer version of MCBans (" + oldVersion + ") is now available!");
-					MCBans.broadcastBanView( ChatColor.RED + "This is an important/critical update.");
-                    MCBans.log(LogLevels.INFO, "A newer version of MCBans (" + oldVersion + ") is now available!");
-                    MCBans.log(LogLevels.WARNING, "This is an important/critical update.");
-				} else {
-					MCBans.broadcastBanView( ChatColor.BLUE + "A newer version of MCBans (" + oldVersion + ") is now available!");
-                    MCBans.log(LogLevels.INFO, "A newer version of MCBans (" + oldVersion + ") is now available!");
-				}
-                if (response.containsKey("patchNotes")) {
-                    String patchNotes = response.get("patchNotes");
-                    if(!patchNotes.equals("")){
-                        MCBans.broadcastBanView( ChatColor.BLUE + "Patch Notes v" + oldVersion);
-                        MCBans.broadcastBanView(patchNotes);
-                        MCBans.log(LogLevels.INFO, "Patch Notes v" + oldVersion);
-                        MCBans.log(LogLevels.INFO, patchNotes);
-                    }
-                }
-			}
-		}
         if(response.containsKey("hasNotices")) {
             for(String cb : response.keySet()) {
                 if (cb.contains("notice")) {
@@ -74,16 +57,6 @@ public class MainCallBack extends Thread {
                 }
             }
         }
-		MCBans.hasErrored(response);
-		/*if(response.containsKey("newMessages")){
-			if(!response.get("newMessages").equals("")){
-				String[] Players = response.get("newMessages").split(",");
-				for( String player: Players ){
-					String[] params = player.split(":");
-					MCBans.broadcastPlayer(params[0], ChatColor.GOLD + MCBans.Language.getFormatCount( "newMessage", params[1]) );
-				}
-			}
-		}*/
 	}
 	private String playerList(){
 		StringBuilder playerList=new StringBuilder();
