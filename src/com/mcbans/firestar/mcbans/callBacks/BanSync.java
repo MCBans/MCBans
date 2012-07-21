@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -29,8 +28,8 @@ public class BanSync implements Runnable {
 	@Override
 	public void run(){
 		int syncInterval = ((60*1000)*MCBans.Settings.getInteger("syncInterval"));
-		if(syncInterval<((60*1000)*5)){
-			syncInterval=((60*1000)*5);
+		if(syncInterval<((60*1000))){
+			syncInterval=((60*1000));
 		}
 		while(true){
 			while(MCBans.notSelectedServer){
@@ -105,7 +104,13 @@ public class BanSync implements Runnable {
 					goNext = false;
 				}
 			} catch (JSONException e) {
-				e.printStackTrace();
+				if(MCBans.Settings.getBoolean("isDebug")){
+					e.printStackTrace();
+				}
+			} catch (NullPointerException e) {
+				if(MCBans.Settings.getBoolean("isDebug")){
+					e.printStackTrace();
+				}
 			}
 		}
 		MCBans.syncRunning = false;
@@ -151,8 +156,14 @@ public class BanSync implements Runnable {
 				}else{
 					goNext = false;
 				}
+			} catch (NullPointerException e) {
+				if(MCBans.Settings.getBoolean("isDebug")){
+					e.printStackTrace();
+				}
 			} catch (JSONException e) {
-				e.printStackTrace();
+				if(MCBans.Settings.getBoolean("isDebug")){
+					e.printStackTrace();
+				}
 			}
 		}
 		MCBans.syncRunning = false;
@@ -166,7 +177,9 @@ public class BanSync implements Runnable {
 			fout.close();
 			writer.close();
 	    } catch (Exception e) {
-	    	e.printStackTrace();
+	    	if(MCBans.Settings.getBoolean("isDebug")){
+				e.printStackTrace();
+			}
 	    }
 	}
 	public void load(){
@@ -185,10 +198,10 @@ public class BanSync implements Runnable {
 		    }
 		    i.close();
 		    MCBans.lastID=Integer.valueOf(strLine);
-	    } catch (IOException e) {
-	    	e.printStackTrace();
 	    } catch (Exception e) {
-	    	e.printStackTrace();
+	    	if(MCBans.Settings.getBoolean("isDebug")){
+				e.printStackTrace();
+			}
 	    }
 	}
 }

@@ -30,9 +30,9 @@ public class Ping implements Runnable {
 		String urlReq = webHandle.urlparse(items);
 		String jsonText = webHandle.request_from_api(urlReq);
 		if(jsonText.equals("up")){
-			MCBans.broadcastPlayer(commandSend, ChatColor.GREEN + " API Server response time "+((System.currentTimeMillis())-pingTime)+" milliseconds!" );
+			MCBans.broadcastPlayer(commandSend, ChatColor.GREEN + "API Server response time "+((System.currentTimeMillis())-pingTime)+" milliseconds!" );
 		}else{
-			MCBans.broadcastPlayer(commandSend, ChatColor.RED + " API appears to be down!" );
+			MCBans.broadcastPlayer(commandSend, ChatColor.RED + "API appears to be down!" );
 		}
 		
 	}

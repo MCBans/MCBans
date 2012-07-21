@@ -22,7 +22,7 @@ public class Settings{
 			configTest = YamlConfiguration.loadConfiguration(plugin_settings);
 		} else {
 			configTest = YamlConfiguration.loadConfiguration(plugin_settings);
-		}		
+		}
 		String verify = verifyIntegrity(configTest);
 		if (verify != "OK") {
 			System.out.print("[FATAL][MCBans] settings.yml is corrupted! One or more variables are missing/invalid! (" + verify + ")");
@@ -43,7 +43,6 @@ public class Settings{
 			OutputStream out = new FileOutputStream(file);
 			int read = 0;
 			byte[] bytes = new byte[1024];
-		 
 			while ((read = in.read(bytes)) != -1) {
 				out.write(bytes, 0, read);
 			}
@@ -79,8 +78,6 @@ public class Settings{
 			return "defaultTemp";
 		} else if (!test.isString("defaultKick")) {
 			return "defaultKick";
-		} else if (!test.isString("offlineReason")) {
-			return "offlineReason";
 		} else if (!test.isString("logFile")) {
 			return "logFile";
 		} else if (!test.isString("apiKey")) {

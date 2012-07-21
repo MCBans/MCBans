@@ -60,6 +60,8 @@ public class PlayerListener implements Listener {
 		        }
 			}
 		} catch (IOException e) {
+		} catch (NullPointerException e) {
+			//e.printStackTrace();
 		}
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -69,8 +71,7 @@ public class PlayerListener implements Listener {
         MCBans.Permissions.playerConnect(player);
 		Connect playerConnect = new Connect();
 		playerConnect.ConnectSet( MCBans, player.getName(), playerIP );
-		Thread triggerThread = new Thread(playerConnect);
-		triggerThread.start();
+		(new Thread(playerConnect)).start();
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerQuit(PlayerQuitEvent event) {
@@ -78,7 +79,6 @@ public class PlayerListener implements Listener {
 		MCBans.Permissions.playerDisconnect(player.getName());
         String playerName = player.getName();
         Disconnect disconnectHandler = new Disconnect( MCBans, playerName );
-        Thread triggerThread = new Thread(disconnectHandler);
-		triggerThread.start();
+		(new Thread(disconnectHandler)).start();
     }
 }

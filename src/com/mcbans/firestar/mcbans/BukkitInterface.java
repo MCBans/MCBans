@@ -8,8 +8,9 @@ import com.mcbans.firestar.mcbans.commands.CommandHandler;
 import com.mcbans.firestar.mcbans.log.ActionLog;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.log.Logger;
-import de.diddiz.LogBlock.Consumer;
 import de.diddiz.LogBlock.LogBlock;
+import fr.neatmonster.nocheatplus.NoCheatPlus;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -33,9 +34,10 @@ public class BukkitInterface extends JavaPlugin {
 	public boolean syncRunning = false;
 	public long lastID = 0;
 	public ActionLog actionLog = null;
-	public Consumer lbconsumer = null;
+	public LogBlock logblock = null;
 	public long lastCallBack=0;
 	public long lastSync=0;
+	public NoCheatPlus noCheatPlus = null;
 	public boolean notSelectedServer = true;
 	public String apiServers = "72.10.39.172,108.174.52.149,api02.cluster.mcbans.com,api02.cluster.mcbans.com,api03.cluster.mcbans.com,api.mcbans.com";
 	public String apiServer = "";
@@ -106,10 +108,14 @@ public class BukkitInterface extends JavaPlugin {
         
         Plugin logBlock = pm.getPlugin("LogBlock");
         if (logBlock != null) {
-        	lbconsumer = ((LogBlock)logBlock).getConsumer();
+        	logblock = (LogBlock)logBlock;
         	log(LogLevels.INFO, "Enabling LogBlock integration");
         }
-
+        Plugin NoCheat = pm.getPlugin("NoCheatPlus");
+        if (NoCheat != null) {
+        	noCheatPlus = ((NoCheatPlus)NoCheat);
+        	log(LogLevels.INFO, "Enabling NoCheatPlus integration");
+        }
         log(LogLevels.INFO, "Started up successfully!");
         
 	}

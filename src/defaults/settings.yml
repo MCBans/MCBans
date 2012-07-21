@@ -1,11 +1,13 @@
-##
+#########################################################
 # Main Configuration Settings
+# MCBans 3.8 R2 (Firestar)
+# http://mcbans.com
 ##
 
 # prefix:
 #	Prefix used for MCBans plugin messages to users on the server
 #	DEFAULT: [mcbans]
-prefix: [mcbans] 
+prefix: "[mcbans] "
 
 # apiKey:
 #       Your servers apiKey can be found in your account dashboard http://my.mcbans.com/servers
@@ -15,16 +17,6 @@ apiKey:
 #       Language you want to have displayed to the players
 #       DEFAULT: en-us
 language: en-us
-
-# syncBans:
-#       Allow sync to banned-players.txt
-#       DEFAULT: true
-syncBans: true
-
-# syncInterval:
-#       sync every "syncInterval" and grab/delete bans in minutes
-#       DEFAULT: 3
-syncInterval: 5
 
 # defaultLocal:
 #	Default reason for users being locally banned from the server, if
@@ -44,7 +36,7 @@ defaultTemp: "You have been temporarily banned!"
 #	DEFAULT: "You have been kicked!"
 defaultKick: "You have been kicked!" 
 
-##
+#########################################################
 # Loging and Debug
 #	Debugging and MCBans message logging settings
 ##
@@ -62,39 +54,9 @@ logEnable: false
 # logFile:
 #	Location and name of the file to log MCBans plugin data into
 #	DEFAULT: plugins/mcbans/actions.log
-logFile: plugins/mcbans/actions.log
+logFile: "plugins/mcbans/actions.log"
 
-##
-# Miscellaneous Settings
-#	Settings that don't have a part of any other sections
-##
-
-# offlineReason:
-#	Message displayed to users that are banned from the server, if the
-#	MCBans Master Server is unavailable.
-offlineReason: "You are banned!" 
-
-# onJoinMCBansMessage:
-#	Display "Server protected by MCBans.com" advertisement notice to
-#	users upon connection.
-#	DEFAULT: false
-#	RECOMMENDED: true
-onJoinMCBansMessage: false 
-
-# minRep:
-#	Minimum reputation a user may have before being disallowed access
-#	to the server.
-#	DEFAULT: 3
-#	-1 to disable.
-minRep: 3
-
-# callBackInterval:
-#	Time (in minutes) between callbacks to the MCBans Master Server
-#	(Excluding the API connections on userConnect)
-#	DEFAULT: 15 (15 Minutes)
-callBackInterval: 15
-
-##
+#########################################################
 # Alternate Account Limiting
 #	Limits the how alternate accounts affect connectability to the server
 ##
@@ -111,7 +73,82 @@ enableMaxAlts: false
 #	DEFAULT: 2
 maxAlts: 2
 
+#########################################################
+# LogBLock Integration
+#	For rollbacks and proof sending to MCBans
 ##
+
+# rollbackOnBan:
+# 	Rolls back changes made by the player, with logblock
+#   LOGBLOCK ONLY!
+#   DEFAULT: false
+rollbackOnBan: false
+
+# enableTempBanRollback:
+# 	Allows temp bans to rollback when applicable
+#   LOGBLOCK ONLY!
+#   DEFAULT: false
+enableTempBanRollback: false
+
+# affectedWorlds:
+# 	Worlds to issue log data or rollback
+#   LOGBLOCK ONLY!
+#   DEFAULT: world
+#   Multiple worlds: world,nether,3rdworld (no spaces)
+affectedWorlds: world
+
+# backDaysAgo:
+# 	days ago to roll back a player
+#   LOGBLOCK ONLY!
+#   DEFAULT: 20
+backDaysAgo: 20
+
+#########################################################
+# MCBans syncing!
+#	syncing for bans made into the banned-players.txt
+##
+
+# syncBans:
+#       Allow sync to banned-players.txt
+#       DEFAULT: true
+syncBans: true
+
+# syncInterval:
+#       sync every "syncInterval" and grab/delete bans in minutes
+#       DEFAULT: 1
+syncInterval: 1
+
+#########################################################
+# Miscellaneous Settings
+#	Settings that don't have a part of any other sections
+##
+
+# onJoinMCBansMessage:
+#	Display "Server protected by MCBans.com" advertisement notice to
+#	users upon connection.
+#	DEFAULT: false
+#	RECOMMENDED: true
+onJoinMCBansMessage: false
+
+# minRep:
+#	Minimum reputation a user may have before being disallowed access
+#	to the server.
+#	DEFAULT: 3
+#	-1 to disable.
+minRep: 3
+
+# callBackInterval:
+#	Time (in minutes) between callbacks to the MCBans Master Server
+#	(Excluding the API connections on userConnect)
+#	DEFAULT: 15 (15 Minutes)
+callBackInterval: 15
+
+# onConnectGlobals:
+# 	Show global bans on join
+#   DEFAULT: true
+onConnectGlobals: true
+
+#########################################################
 # MCBans Default Config
 # 	Please REMOVE this section after you have finished configuring MCBans
 ##

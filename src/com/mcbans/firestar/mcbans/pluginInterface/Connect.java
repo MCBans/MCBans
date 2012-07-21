@@ -68,7 +68,7 @@ public class Connect implements Runnable {
 						//MCBans.broadcastJoinView( ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", PlayerName ) );
 						MCBans.log( PlayerName + " has connected!" );
 						String[] out = null;
-						if(response.getJSONArray("globalBans").length()>0){
+						if(response.getJSONArray("globalBans").length()>0 && MCBans.Settings.getBoolean("onConnectGlobals")){
 							MCBans.broadcastJoinView( "Player " + ChatColor.DARK_AQUA + PlayerName + ChatColor.WHITE + " has " + ChatColor.DARK_RED + response.getString("totalBans") + " ban(s)" + ChatColor.WHITE + " and " + ChatColor.BLUE + response.getString("playerRep") + " REP" + ChatColor.WHITE + "." );
 							MCBans.broadcastJoinView( "--------------------------" );
 							if (response.getJSONArray("globalBans").length() > 0) {
@@ -123,7 +123,7 @@ public class Connect implements Runnable {
         	    MCBans.log(LogLevels.SEVERE, "JSON error while trying to parse join data!");
             }
 		} catch (NullPointerException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 }

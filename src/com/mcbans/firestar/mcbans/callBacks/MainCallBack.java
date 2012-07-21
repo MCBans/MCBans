@@ -18,8 +18,8 @@ public class MainCallBack implements Runnable {
 	@Override
 	public void run(){
 		int callBackInterval = ((60*1000)*MCBans.Settings.getInteger("callBackInterval"));
-		if(callBackInterval<((60*1000)*30)){
-			callBackInterval=((60*1000)*30);
+		if(callBackInterval<((60*1000)*15)){
+			callBackInterval=((60*1000)*15);
 		}
 		
 		while(true){
@@ -49,14 +49,20 @@ public class MainCallBack implements Runnable {
 		url_items.put( "version", MCBans.getDescription().getVersion() );
 		url_items.put( "exec", "callBack" );
 		HashMap<String, String> response = webHandle.mainRequest(url_items);
-        if(response.containsKey("hasNotices")) {
-            for(String cb : response.keySet()) {
-                if (cb.contains("notice")) {
-                    MCBans.broadcastBanView( ChatColor.GOLD + "Notice: " + ChatColor.WHITE + response.get(cb));
-                    MCBans.log(LogLevels.INFO, "MCBans Notice: " + response.get(cb));
-                }
-            }
-        }
+		try {
+	        if(response.containsKey("hasNotices")) {
+	            for(String cb : response.keySet()) {
+	                if (cb.contains("notice")) {
+	                    MCBans.broadcastBanView( ChatColor.GOLD + "Notice: " + ChatColor.WHITE + response.get(cb));
+	                    MCBans.log(LogLevels.INFO, "MCBans Notice: " + response.get(cb));
+	                }
+	            }
+	        }
+		} catch (NullPointerException e) {
+			if(MCBans.Settings.getBoolean("isDebug")){
+				e.printStackTrace();
+			}
+		}
 	}
 	private String playerList(){
 		StringBuilder playerList=new StringBuilder();

@@ -1,6 +1,7 @@
 name: mcbans
 main: com.mcbans.firestar.mcbans.BukkitInterface
 version: 3.8
+description: A global banning solution (http://mcbans.com)
 author: Firestar
 commands:
   kick:
@@ -8,12 +9,19 @@ commands:
     usage: /<command> <playername> [reason]
   ban:
     description: ban a user
-    usage: /<command> <playername> [g/reason] [reason]
+    usage: /<command> <playername> [g/t/reason] [reason]
+  gban:
+    description: global bans a user
+    usage: /<command> <playername> [reason]
+  rban:
+    description: roll back bans
+    usage: /<command> <playername> [g/t/reason] [reason]
   unban:
     description: unban a user
     usage: /<command> <playername>
   tempban:
     description: temporary ban user
+    aliases: [tban]
     usage: /<command> <playername> <duration> <m(minutes) or h(hours) or d(days)> [reason]
   lookup:
     description: lookup a player
@@ -23,6 +31,9 @@ commands:
     description: mcbans functions
     usage: /<command> <function>
 permissions:
+  mcbans.admin:
+    description: Admin priveleges to mcbans, onconnect globals visible
+    default: op
   mcbans.kick.view:
     description: Display kick message to anyone with this permission
     default: op
@@ -43,6 +54,9 @@ permissions:
     default: op
   mcbans.ban.local:
     description: Give local bans
+    default: op
+  mcbans.ban.rollback:
+    description: Gives rban commands
     default: op
   mcbans.ban.temp:
     description: Give temp bans
@@ -71,6 +85,7 @@ permissions:
       mcbans.ban.temp: true
       mcbans.unban: true
       mcbans.lookup: true
+      mcbans.admin: true
       mcbans.kick: true
       mcbans.kick.view: true
       mcbans.mode: true
