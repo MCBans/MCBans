@@ -1,16 +1,49 @@
 MCBans Server Plugin
+Author: Firestarthe
 ====================
 
-MCBans is a global ban system for the game Minecraft.
-More information can be found on the [MCBans website](http://www.mcbans.com/) or [wiki](http://wiki.mcbans.com/).
+Welcome to MCBans
+--------
+
+MCBans is a global banning solution for Minecraft, provided through the Bukkit plugin. The aim of the plugin is to provide server owners with a method of assisting in the prevention of griefers on their own and other's servers, using both local and global bans.
+
+Helpful Information
+--------
+Main Site: http://mcbans.com
+Support Desk: http://support.mcbans.com
+Community: http://forums.mcbans.com
+
+Expectations
+--------
+
+Please remember the following things while using our plugin!
+
+* MCBans is maintained constantly by a team of staff, but we're not miracle workers! Like everyone, we need time to perform our tasks and can't do everything on demand.
+* MCBans isn't always 100% clear from invalid bans - but, we're well on our way. Your help is always thanked in removing invalid bans and we try our hardest to monitor everything.
+* MCBans has a small dedicated development team - We do only have a few dedicated developers, but they do have other commitments as well.
+* MCBans staff don't always have good memories! Email: support@mcbans.com
 
 Commands
 --------
 
-Below is a list of commands supported by MCBans v3.0 "lite"
+Local Ban Variations
+* /ban <playername> <reason> - bans the player
+* /rban <playername> <reason> - rollback and ban
+*** E.G. /ban Firestarthe breaking my sign ***
 
-* /lookup <playername>
-* /kick <playername> [reason]
-* /ban <playername> [g/reason] [reason]
-* /unban <playername>
-* /tempban <playername> <duration> <m(minutes) or h(hours) or d(days)> [reason]
+Global Ban Variations
+* /ban g <playername> <reason> - global ban
+* /gban <playername> <reason> - global ban
+* /rban g <playername> <reason> - rollback and global ban
+*** E.G. /ban g Firestarthe griefing ***
+
+Temporary Ban Variations
+* /ban <playername> t <int> <m/h/d> <reason> - temp bans a player
+* /tban <playername> <int> <m/h/d> <reason> - temp bans a player
+* /rban <playername> t <int> <m/h/d> <reason> - temp bans a player and rolls them back
+*** E.G. /tban Firestarthe 15 m you are banned for 15 minutes ***
+
+Misc Commands
+* /lookup <playername> - checks players ban history (local/global bans)
+* /kick <playername> [reason] - kicks a player from the game
+* /unban <playername> - unbans the player from your server
