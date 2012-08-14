@@ -26,12 +26,12 @@ public class BanSync implements Runnable {
 		this.load();
 	}
 	@Override
-	public void run(){
-		int syncInterval = ((60*1000)*MCBans.Settings.getInteger("syncInterval"));
-		if(syncInterval<((60*1000))){
-			syncInterval=((60*1000));
-		}
+	public void run(){		
 		while(true){
+			int syncInterval = ((60*1000)*MCBans.Settings.getInteger("syncInterval"));
+			if(syncInterval<((60*1000))){
+				syncInterval=((60*1000));
+			}
 			while(MCBans.notSelectedServer){
 				//waiting for server select
 				try {
@@ -65,12 +65,14 @@ public class BanSync implements Runnable {
 		}
 		MCBans.syncRunning = true;
 		boolean goNext = true;
+		int f = 1;
 		while(goNext){
+			long startID = MCBans.lastID;
 			JsonHandler webHandle = new JsonHandler( MCBans );
 			HashMap<String, String> url_items = new HashMap<String, String>();
 			url_items.put( "latestSync", String.valueOf(MCBans.lastID) );
 			url_items.put( "timeRecieved", String.valueOf(timeRecieved) );
-			url_items.put( "exec", "banSyncInitial" );
+			url_items.put( "exec", "banSyncInitialNew" );
 			JSONObject response = webHandle.hdl_jobj(url_items);
 			try {
 				if(response.has("banned")){
@@ -112,6 +114,14 @@ public class BanSync implements Runnable {
 					e.printStackTrace();
 				}
 			}
+			if(MCBans.lastID == startID){
+				f++;
+			}else{
+				f=1;
+			}
+			if(f>5){
+				goNext = false;
+			}
 		}
 		MCBans.syncRunning = false;
 	}
@@ -121,11 +131,13 @@ public class BanSync implements Runnable {
 		}
 		MCBans.syncRunning = true;
 		boolean goNext = true;
+		int f =1;
 		while(goNext){
+			long startID = MCBans.lastID;
 			JsonHandler webHandle = new JsonHandler( MCBans );
 			HashMap<String, String> url_items = new HashMap<String, String>();
 			url_items.put( "latestSync", String.valueOf(MCBans.lastID) );
-			url_items.put( "exec", "banSync" );
+			url_items.put( "exec", "banSyncNew" );
 			JSONObject response = webHandle.hdl_jobj(url_items);
 			try {
 				if(response.has("banned")){
@@ -164,6 +176,14 @@ public class BanSync implements Runnable {
 				if(MCBans.Settings.getBoolean("isDebug")){
 					e.printStackTrace();
 				}
+			}
+			if(MCBans.lastID == startID){
+				f++;
+			}else{
+				f=1;
+			}
+			if(f>5){
+				goNext = false;
 			}
 		}
 		MCBans.syncRunning = false;

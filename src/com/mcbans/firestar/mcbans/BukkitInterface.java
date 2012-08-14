@@ -39,7 +39,7 @@ public class BukkitInterface extends JavaPlugin {
 	public long lastSync=0;
 	public NoCheatPlus noCheatPlus = null;
 	public boolean notSelectedServer = true;
-	public String apiServers = "72.10.39.172,108.174.52.149,api02.cluster.mcbans.com,api02.cluster.mcbans.com,api03.cluster.mcbans.com,api.mcbans.com";
+	public String apiServers = "api01.cluster.mcbans.com,api02.cluster.mcbans.com,api03.cluster.mcbans.com,api.mcbans.com";
 	public String apiServer = "";
 	private String apiKey = "";
 	public BukkitPermissions Permissions = null;
