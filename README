@@ -32,9 +32,9 @@ Local Ban Variations
 *** E.G. /ban Firestarthe breaking my sign ***
 
 Global Ban Variations
-* /ban g <playername> <reason> - global ban
+* /ban <playername> g <reason> - global ban
 * /gban <playername> <reason> - global ban
-* /rban g <playername> <reason> - rollback and global ban
+* /rban <playername> g <reason> - rollback and global ban
 *** E.G. /ban g Firestarthe griefing ***
 
 Temporary Ban Variations
