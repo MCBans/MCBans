@@ -187,9 +187,10 @@ public class Ban implements Runnable {
 			if(!response.containsKey("result")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + " MCBans down, adding local ban, unban with /pardon");
 				OfflinePlayer d = MCBans.getServer().getOfflinePlayer(PlayerName);
-				if(d.isBanned()){
+				if(!d.isBanned()){
 					d.setBanned(true);
 				}
+				this.kickPlayer(PlayerName,MCBans.Language.getFormat( "localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 				//MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "localBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 				return;
 			}
@@ -207,6 +208,12 @@ public class Ban implements Runnable {
 			}
 			MCBans.log( PlayerAdmin + " has tried to ban " + PlayerName + " with a local type ban ["+Reason+"]!" );
 		} catch (NullPointerException e) {
+			MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + " MCBans down, adding local ban, unban with /pardon");
+			OfflinePlayer d = MCBans.getServer().getOfflinePlayer(PlayerName);
+			if(!d.isBanned()){
+				d.setBanned(true);
+			}
+			this.kickPlayer(PlayerName,MCBans.Language.getFormat( "localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 			if(MCBans.Settings.getBoolean("isDebug")){
 				e.printStackTrace();
 			}
@@ -336,9 +343,10 @@ public class Ban implements Runnable {
 			if(!response.containsKey("result")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + " MCBans down, adding local ban, unban with /pardon");
 				OfflinePlayer d = MCBans.getServer().getOfflinePlayer(PlayerName);
-				if(d.isBanned()){
+				if(!d.isBanned()){
 					d.setBanned(true);
 				}
+				this.kickPlayer(PlayerName,MCBans.Language.getFormat( "localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 				//MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "globalBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 				return;
 			}
@@ -361,9 +369,10 @@ public class Ban implements Runnable {
 		} catch (NullPointerException e) {
 			MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + " MCBans down, adding local ban, unban with /pardon");
 			OfflinePlayer d = MCBans.getServer().getOfflinePlayer(PlayerName);
-			if(d.isBanned()){
+			if(!d.isBanned()){
 				d.setBanned(true);
 			}
+			this.kickPlayer(PlayerName,MCBans.Language.getFormat( "localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 			if(MCBans.Settings.getBoolean("isDebug")){
 				e.printStackTrace();
 			}
@@ -392,9 +401,10 @@ public class Ban implements Runnable {
 			if(!response.containsKey("result")){
 				MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + " MCBans down, adding local ban, unban with /pardon");
 				OfflinePlayer d = MCBans.getServer().getOfflinePlayer(PlayerName);
-				if(d.isBanned()){
+				if(!d.isBanned()){
 					d.setBanned(true);
 				}
+				this.kickPlayer(PlayerName,MCBans.Language.getFormat( "localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 				//MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat( "tempBanMessageError", PlayerName, PlayerAdmin, Reason, PlayerIP ) );
 				return;
 			}
@@ -414,9 +424,10 @@ public class Ban implements Runnable {
 		} catch (NullPointerException e) {
 			MCBans.broadcastPlayer( PlayerAdmin, ChatColor.DARK_RED + " MCBans down, adding local ban, unban with /pardon");
 			OfflinePlayer d = MCBans.getServer().getOfflinePlayer(PlayerName);
-			if(d.isBanned()){
+			if(!d.isBanned()){
 				d.setBanned(true);
 			}
+			this.kickPlayer(PlayerName,MCBans.Language.getFormat( "localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP ));
 			if(MCBans.Settings.getBoolean("isDebug")){
 				e.printStackTrace();
 			}
