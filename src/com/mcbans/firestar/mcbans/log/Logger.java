@@ -5,15 +5,15 @@ import com.mcbans.firestar.mcbans.BukkitInterface;
 public class Logger {
     private BukkitInterface MCBans = null;
 
-    public Logger (BukkitInterface p) {
+    public Logger(BukkitInterface p) {
         MCBans = p;
     }
 
-    public void log (String message) {
+    public void log(String message) {
         log(LogLevels.NONE, message);
     }
 
-    public void log (LogLevels type, String message) {
+    public void log(LogLevels type, String message) {
         switch (type) {
             case INFO:
                 System.out.print("[MCBans] [INFO] " + message);
