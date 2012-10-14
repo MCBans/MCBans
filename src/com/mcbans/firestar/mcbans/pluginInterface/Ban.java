@@ -1,6 +1,13 @@
 package com.mcbans.firestar.mcbans.pluginInterface;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.events.PlayerBanEvent;
+import com.mcbans.firestar.mcbans.events.PlayerBannedEvent;
+import com.mcbans.firestar.mcbans.events.PlayerGlobalBanEvent;
+import com.mcbans.firestar.mcbans.events.PlayerLocalBanEvent;
+import com.mcbans.firestar.mcbans.events.PlayerTempBanEvent;
+import com.mcbans.firestar.mcbans.events.PlayerUnbanEvent;
+import com.mcbans.firestar.mcbans.events.PlayerUnbannedEvent;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
@@ -21,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.regex.*;
 
-
 public class Ban implements Runnable {
     private BukkitInterface MCBans;
     private String PlayerName = null;
@@ -36,6 +42,7 @@ public class Ban implements Runnable {
     private String Badword = null;
     private JSONObject ActionData = new JSONObject();
     private HashMap<String, Integer> responses = new HashMap<String, Integer>();
+    private int action_id;
 
     public Ban(BukkitInterface p, String action, String playerName, String playerIP, String playerAdmin, String reason, String duration,
             String measure) {
@@ -117,7 +124,23 @@ public class Ban implements Runnable {
         }
         try {
             if (responses.containsKey(Action)) {
-                switch (responses.get(Action)) {
+                action_id = responses.get(Action);
+
+                // Call BanEvent
+                if (action_id != 3){
+                    PlayerBanEvent banEvent = new PlayerBanEvent(PlayerName, PlayerIP, PlayerAdmin, Reason, action_id, Duration, Measure);
+                    MCBans.getServer().getPluginManager().callEvent(banEvent);
+                    if (banEvent.isCancelled()){
+                        return;
+                    }
+                    PlayerAdmin = banEvent.getSenderName();
+                    Reason = banEvent.getReason();
+                    action_id = banEvent.getActionID();
+                    Duration = banEvent.getDuration();
+                    Measure = banEvent.getMeasure();
+                }
+
+                switch (action_id) {
                     case 0:
                         globalBan();
                         break;
@@ -142,6 +165,14 @@ public class Ban implements Runnable {
     }
 
     public void unBan() {
+        // Call PlayerUnbanEvent
+        PlayerUnbanEvent unBanEvent = new PlayerUnbanEvent(PlayerName, PlayerAdmin);
+        MCBans.getServer().getPluginManager().callEvent(unBanEvent);
+        if (unBanEvent.isCancelled()){
+            return;
+        }
+        PlayerAdmin = unBanEvent.getSenderName();
+
         JsonHandler webHandle = new JsonHandler(MCBans);
         HashMap<String, String> url_items = new HashMap<String, String>();
         url_items.put("player", PlayerName);
@@ -160,6 +191,7 @@ public class Ban implements Runnable {
                 }
                 MCBans.log(PlayerAdmin + " unbanned " + PlayerName + "!");
                 MCBans.broadcastPlayer(PlayerAdmin, ChatColor.GREEN + MCBans.Language.getFormat("unBanMessageSuccess", PlayerName, PlayerAdmin));
+                MCBans.getServer().getPluginManager().callEvent(new PlayerUnbannedEvent(PlayerName, PlayerAdmin));
                 return;
             } else if (response.get("result").equals("e")) {
                 MCBans.broadcastPlayer(PlayerAdmin, ChatColor.DARK_RED + MCBans.Language.getFormat("unBanMessageError", PlayerName, PlayerAdmin));
@@ -177,6 +209,15 @@ public class Ban implements Runnable {
     }
 
     public void localBan() {
+        // Call PlayerLocalBanEvent
+        PlayerLocalBanEvent lBanEvent = new PlayerLocalBanEvent(PlayerName, PlayerIP, PlayerAdmin, Reason);
+        MCBans.getServer().getPluginManager().callEvent(lBanEvent);
+        if (lBanEvent.isCancelled()){
+            return;
+        }
+        PlayerAdmin = lBanEvent.getSenderName();
+        Reason = lBanEvent.getReason();
+
         JsonHandler webHandle = new JsonHandler(MCBans);
         HashMap<String, String> url_items = new HashMap<String, String>();
         url_items.put("player", PlayerName);
@@ -210,6 +251,7 @@ public class Ban implements Runnable {
                 MCBans.log(PlayerName + " has been banned with a local type ban [" + Reason + "] [" + PlayerAdmin + "]!");
                 this.kickPlayer(PlayerName, MCBans.Language.getFormat("localBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP));
                 MCBans.broadcastAll(ChatColor.GREEN + MCBans.Language.getFormat("localBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP));
+                MCBans.getServer().getPluginManager().callEvent(new PlayerBannedEvent(PlayerName, PlayerIP, PlayerAdmin, Reason, action_id, Duration, Measure));
                 return;
             } else if (response.get("result").equals("e")) {
                 MCBans.broadcastPlayer(PlayerAdmin,
@@ -236,6 +278,15 @@ public class Ban implements Runnable {
     }
 
     public void globalBan() {
+        // Call PlayerGlobalBanEvent
+        PlayerGlobalBanEvent gBanEvent = new PlayerGlobalBanEvent(PlayerName, PlayerIP, PlayerAdmin, Reason);
+        MCBans.getServer().getPluginManager().callEvent(gBanEvent);
+        if (gBanEvent.isCancelled()){
+            return;
+        }
+        PlayerAdmin = gBanEvent.getSenderName();
+        Reason = gBanEvent.getReason();
+
         JsonHandler webHandle = new JsonHandler(MCBans);
         HashMap<String, String> url_items = new HashMap<String, String>();
         url_items.put("player", PlayerName);
@@ -371,6 +422,7 @@ public class Ban implements Runnable {
                 MCBans.log(PlayerName + " has been banned with a global type ban [" + Reason + "] [" + PlayerAdmin + "]!");
                 this.kickPlayer(PlayerName, MCBans.Language.getFormat("globalBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP));
                 MCBans.broadcastAll(ChatColor.GREEN + MCBans.Language.getFormat("globalBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP));
+                MCBans.getServer().getPluginManager().callEvent(new PlayerBannedEvent(PlayerName, PlayerIP, PlayerAdmin, Reason, action_id, Duration, Measure));
                 return;
             } else if (response.get("result").equals("e")) {
                 MCBans.broadcastPlayer(PlayerAdmin,
@@ -401,6 +453,17 @@ public class Ban implements Runnable {
     }
 
     public void tempBan() {
+        // Call PlayerTempBanEvent
+        PlayerTempBanEvent tBanEvent = new PlayerTempBanEvent(PlayerName, PlayerIP, PlayerAdmin, Reason, Duration, Measure);
+        MCBans.getServer().getPluginManager().callEvent(tBanEvent);
+        if (tBanEvent.isCancelled()){
+            return;
+        }
+        PlayerAdmin = tBanEvent.getSenderName();
+        Reason = tBanEvent.getReason();
+        Duration = tBanEvent.getDuration();
+        Measure = tBanEvent.getMeasure();
+
         JsonHandler webHandle = new JsonHandler(MCBans);
         HashMap<String, String> url_items = new HashMap<String, String>();
         url_items.put("player", PlayerName);
@@ -436,6 +499,7 @@ public class Ban implements Runnable {
                 MCBans.log(PlayerName + " has been banned with a temp type ban [" + Reason + "] [" + PlayerAdmin + "]!");
                 this.kickPlayer(PlayerName, MCBans.Language.getFormat("tempBanMessagePlayer", PlayerName, PlayerAdmin, Reason, PlayerIP));
                 MCBans.broadcastAll(ChatColor.GREEN + MCBans.Language.getFormat("tempBanMessageSuccess", PlayerName, PlayerAdmin, Reason, PlayerIP));
+                MCBans.getServer().getPluginManager().callEvent(new PlayerBannedEvent(PlayerName, PlayerIP, PlayerAdmin, Reason, action_id, Duration, Measure));
                 return;
             } else if (response.get("result").equals("e")) {
                 MCBans.broadcastPlayer(PlayerAdmin,
