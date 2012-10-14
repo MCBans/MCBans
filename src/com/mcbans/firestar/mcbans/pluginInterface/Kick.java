@@ -2,6 +2,8 @@ package com.mcbans.firestar.mcbans.pluginInterface;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.Settings;
+import com.mcbans.firestar.mcbans.events.PlayerKickEvent;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -32,6 +34,14 @@ public class Kick implements Runnable {
         }
         final Player player = MCBans.getServer().getPlayer(PlayerName);
         if (player != null) {
+            // Call PlayerKickEvent
+            PlayerKickEvent kickEvent = new PlayerKickEvent(PlayerName, PlayerAdmin, Reason);
+            MCBans.getServer().getPluginManager().callEvent(kickEvent);
+            if (kickEvent.isCancelled()){
+                return;
+            }
+            Reason = kickEvent.getReason();
+
             MCBans.log(PlayerAdmin + " has kicked " + player.getName() + " [" + Reason + "]");
             MCBans.getServer().getScheduler().scheduleSyncDelayedTask(MCBans, new Runnable() {
                 public void run() {
