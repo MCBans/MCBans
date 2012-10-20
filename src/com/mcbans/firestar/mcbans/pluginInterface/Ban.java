@@ -224,10 +224,8 @@ public class Ban implements Runnable {
         url_items.put("playerip", PlayerIP);
         url_items.put("reason", Reason);
         url_items.put("admin", PlayerAdmin);
-        if (MCBans.logblock != null) {
-            if (Rollback) {
-                rollback();
-            }
+        if (Rollback) {
+            MCBans.getRbHandler().rollback(PlayerAdmin, PlayerName);
         }
         if (ActionData != null) {
             url_items.put("actionData", ActionData.toString());
@@ -293,8 +291,8 @@ public class Ban implements Runnable {
         url_items.put("playerip", PlayerIP);
         url_items.put("reason", Reason);
         url_items.put("admin", PlayerAdmin);
-        if (MCBans.logblock != null && Rollback) {
-            rollback();
+        if (Rollback) {
+            MCBans.getRbHandler().rollback(PlayerAdmin, PlayerName);
         }
         if (ActionData.length() > 0) {
             url_items.put("actionData", ActionData.toString());
@@ -368,10 +366,8 @@ public class Ban implements Runnable {
         url_items.put("admin", PlayerAdmin);
         url_items.put("duration", Duration);
         url_items.put("measure", Measure);
-        if (MCBans.logblock != null && MCBans.Settings.getBoolean("enableTempBanRollback")) {
-            if (Rollback) {
-                rollback();
-            }
+        if (MCBans.Settings.getBoolean("enableTempBanRollback")) {
+            MCBans.getRbHandler().rollback(PlayerAdmin, PlayerName);
         }
         if (ActionData != null) {
             url_items.put("actionData", ActionData.toString());
@@ -422,31 +418,6 @@ public class Ban implements Runnable {
     }
 
     public void rollback() {
-        String[] worlds = MCBans.Settings.getString("affectedWorlds").split(",");
-        Player h = MCBans.getServer().getPlayer(PlayerAdmin);
-        if (h == null) {
-            h = MCBans.getServer().getPlayer(PlayerName);
-        }
-        if (h != null) {
-            for (String world : worlds) {
-                QueryParams params = new QueryParams(MCBans.logblock);
-                params.setPlayer(PlayerName);
-                params.since = (rollbackTime * MCBans.Settings.getInteger("backDaysAgo"));
-                params.world = MCBans.getServer().getWorld(world);
-                params.silent = false;
-                try {
-                    MCBans.logblock.getCommandsHandler().new CommandRollback(h, params, true);
-                    MCBans.broadcastPlayer(PlayerAdmin, ChatColor.GREEN + "Rollback successful!");
-                } catch (Exception e) {
-                    MCBans.broadcastPlayer(PlayerAdmin, ChatColor.RED + "Unable to rollback player!");
-                    if (MCBans.Settings.getBoolean("isDebug")) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } else {
-            MCBans.log(PlayerAdmin + " has tried to rollback " + PlayerName
-                    + " but neither were online, so rollback was ignored (run this command seperately!)!");
-        }
+
     }
 }
