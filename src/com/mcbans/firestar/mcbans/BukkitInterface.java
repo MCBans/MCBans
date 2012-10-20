@@ -48,7 +48,7 @@ public class BukkitInterface extends JavaPlugin {
     private String apiKey = "";
     public BukkitPermissions Permissions = null;
     public Logger logger = new Logger(this);
-    private RollbackHandler rbHandler;
+    private RollbackHandler rbHandler = null;
 
     @Override
     public void onDisable() {
