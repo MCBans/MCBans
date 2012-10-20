@@ -16,9 +16,9 @@ public abstract class BaseRollback {
         worlds = plugin.Settings.getString("affectedWorlds").split(",");
     }
 
-    public abstract boolean rollback(final CommandSender sender, final String admin, final String target, final int time);
+    public abstract boolean rollback(final CommandSender sender, final String admin, final String target);
 
-    public boolean setPlugin(Plugin plugin){
+    public boolean setPlugin(final Plugin plugin){
         return true;
     }
 }

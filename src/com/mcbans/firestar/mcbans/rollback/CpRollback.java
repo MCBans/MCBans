@@ -17,7 +17,7 @@ public class CpRollback extends BaseRollback{
     private CoreProtectAPI cpAPI;
 
     @Override
-    public boolean rollback(CommandSender sender, String admin, String target, int time) {
+    public boolean rollback(CommandSender sender, String admin, String target) {
         if (cpAPI == null) return false;
 
         try {

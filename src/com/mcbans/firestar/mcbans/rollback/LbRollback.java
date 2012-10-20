@@ -17,7 +17,7 @@ public class LbRollback extends BaseRollback{
     private LogBlock logblock;
 
     @Override
-    public boolean rollback(CommandSender sender, String admin, String target, int time) {
+    public boolean rollback(CommandSender sender, String admin, String target) {
         if (logblock == null) return false;
 
         plugin.broadcastPlayer(admin, ChatColor.GREEN + "Starting rollback..");

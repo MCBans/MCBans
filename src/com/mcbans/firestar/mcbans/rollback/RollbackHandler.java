@@ -71,7 +71,7 @@ public class RollbackHandler {
     /**
      * Rollback with detected rollback method
      */
-    public boolean rollback(final String admin, final String target, final int time){
+    public boolean rollback(final String admin, final String target){
         if (method == null){
             return false;
         }
@@ -82,6 +82,6 @@ public class RollbackHandler {
         if (sender == null) sender = plugin.getServer().getPlayer(target);
         if (sender == null) sender = plugin.getServer().getConsoleSender();
 
-        return method.rollback(sender, admin, target, time);
+        return method.rollback(sender, admin, target);
     }
 }

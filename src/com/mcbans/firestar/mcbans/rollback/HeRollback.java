@@ -26,7 +26,7 @@ public class HeRollback extends BaseRollback{
     }
 
     @Override
-    public boolean rollback(CommandSender sender, String admin, String target, int time) {
+    public boolean rollback(CommandSender sender, String admin, String target) {
         PlayerSession session = SessionManager.getSession(sender);
 
         // Check if player already has a rollback processing

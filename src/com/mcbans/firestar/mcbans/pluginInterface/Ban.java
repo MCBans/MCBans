@@ -225,7 +225,7 @@ public class Ban implements Runnable {
         url_items.put("reason", Reason);
         url_items.put("admin", PlayerAdmin);
         if (Rollback) {
-            MCBans.getRbHandler().rollback(PlayerAdmin, PlayerName, rollbackTime);
+            MCBans.getRbHandler().rollback(PlayerAdmin, PlayerName);
         }
         if (ActionData != null) {
             url_items.put("actionData", ActionData.toString());
@@ -292,7 +292,7 @@ public class Ban implements Runnable {
         url_items.put("reason", Reason);
         url_items.put("admin", PlayerAdmin);
         if (Rollback) {
-            MCBans.getRbHandler().rollback(PlayerAdmin, PlayerName, rollbackTime);
+            MCBans.getRbHandler().rollback(PlayerAdmin, PlayerName);
         }
         if (ActionData.length() > 0) {
             url_items.put("actionData", ActionData.toString());
@@ -367,7 +367,7 @@ public class Ban implements Runnable {
         url_items.put("duration", Duration);
         url_items.put("measure", Measure);
         if (MCBans.Settings.getBoolean("enableTempBanRollback")) {
-            MCBans.getRbHandler().rollback(PlayerAdmin, PlayerName, rollbackTime);
+            MCBans.getRbHandler().rollback(PlayerAdmin, PlayerName);
         }
         if (ActionData != null) {
             url_items.put("actionData", ActionData.toString());
