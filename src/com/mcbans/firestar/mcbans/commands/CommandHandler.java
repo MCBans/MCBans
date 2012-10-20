@@ -190,13 +190,13 @@ public class CommandHandler {
                                 String r = this.timeRemain( (MCBans.lastSync+syncInterval) - (System.currentTimeMillis()/1000) );
                                 MCBans.broadcastPlayer( CommandSend, ChatColor.GOLD + r + " until next sync." );
                             }
-                        }else if(args[0].equalsIgnoreCase("sync")){
-                            if(args[1].equalsIgnoreCase("all")){
-                                MCBans.broadcastPlayer(CommandSend, ChatColor.GREEN + " Re-Sync has started!");
-                                ManualResync manualSyncBanRunner = new ManualResync( MCBans, CommandSend );
-                                (new Thread(manualSyncBanRunner)).start();
-                                return true;
-                            }
+                        }
+                    }else if(args[0].equalsIgnoreCase("sync")){
+                        if(args[1].equalsIgnoreCase("all")){
+                            MCBans.broadcastPlayer(CommandSend, ChatColor.GREEN + " Re-Sync has started!");
+                            ManualResync manualSyncBanRunner = new ManualResync( MCBans, CommandSend );
+                            (new Thread(manualSyncBanRunner)).start();
+                            return true;
                         }
                     }
                 } else {
