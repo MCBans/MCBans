@@ -1,5 +1,8 @@
 package com.mcbans.firestar.mcbans.rollback;
 
+import net.coreprotect.CoreProtect;
+import net.coreprotect.CoreProtectAPI;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -36,6 +39,20 @@ public class RollbackHandler {
             method = new HeRollback(plugin);
             plugin.log(LogLevels.INFO, "HawkEye plugin found. Using this for rollback.");
             return true;
+        }
+
+        // Check CoreProtect
+        Plugin checkCp = pm.getPlugin("CoreProtect");
+        if (checkCp != null && checkCp.isEnabled()) {
+            CoreProtectAPI cpAPI = ((CoreProtect) checkCp).getAPI();
+            if (cpAPI.isEnabled()){
+                method = new CpRollback(plugin);
+                plugin.log(LogLevels.INFO, "CoreProtect plugin found. Using this for rollback.");
+                return true;
+            }else{
+                plugin.log(LogLevels.INFO, "CoreProtect plugin found but disabled API.");
+                plugin.log(LogLevels.INFO, "Change 'api-enabled' value of CoreProtect config.yml and restart server!");
+            }
         }
 
         plugin.log(LogLevels.INFO, "Rollback plugin not found!");
