@@ -11,7 +11,7 @@ prefix: "[mcbans] "
 
 # apiKey:
 #       Your servers apiKey can be found in your account dashboard http://my.mcbans.com/servers
-apiKey: 
+apiKey:
 
 # language:
 #       Language you want to have displayed to the players
@@ -22,19 +22,19 @@ language: en-us
 #	Default reason for users being locally banned from the server, if
 #	no reason is provided.
 #	DEFAULT: "You have been banned!"
-defaultLocal: "You have been banned!" 
+defaultLocal: "You have been banned!"
 
 # defaultTemp:
 #	Default reason for users being temporarily banned from the server,
 #	if no reason is provided.
 #	DEFAULT: "You have been temporarily banned!"
-defaultTemp: "You have been temporarily banned!" 
+defaultTemp: "You have been temporarily banned!"
 
 # defaultKick:
 #	Default reason for users being kicked from the server, if no reason
 #	is provided.
 #	DEFAULT: "You have been kicked!"
-defaultKick: "You have been kicked!" 
+defaultKick: "You have been kicked!"
 
 #########################################################
 # Loging and Debug
@@ -74,32 +74,29 @@ enableMaxAlts: false
 maxAlts: 2
 
 #########################################################
-# LogBLock Integration
-#	For rollbacks and proof sending to MCBans
+# Block logger plugin integration
+#	Support LogBlock, HawkEye, CoreProtect plugin!
 ##
 
 # rollbackOnBan:
-# 	Rolls back changes made by the player, with logblock
-#   LOGBLOCK ONLY!
+# 	Rolls back changes made by the banned player
 #   DEFAULT: false
 rollbackOnBan: false
 
 # enableTempBanRollback:
 # 	Allows temp bans to rollback when applicable
-#   LOGBLOCK ONLY!
 #   DEFAULT: false
 enableTempBanRollback: false
 
 # affectedWorlds:
 # 	Worlds to issue log data or rollback
-#   LOGBLOCK ONLY!
+#   LogBlock and HawkEye Only! CoreProtect not supported this parameter ;(
 #   DEFAULT: world
-#   Multiple worlds: world,nether,3rdworld (no spaces)
+#   Multiple worlds: world,world_nether,3rdworld (no spaces)
 affectedWorlds: world
 
 # backDaysAgo:
 # 	days ago to roll back a player
-#   LOGBLOCK ONLY!
 #   DEFAULT: 20
 backDaysAgo: 20
 

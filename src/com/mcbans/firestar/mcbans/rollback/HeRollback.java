@@ -20,15 +20,9 @@ import uk.co.oliwali.HawkEye.database.SearchQuery.SearchDir;
 import com.mcbans.firestar.mcbans.BukkitInterface;
 
 public class HeRollback extends BaseRollback{
-    private HawkEye hawkeye;
 
     public HeRollback(BukkitInterface plugin) {
         super(plugin);
-
-        Plugin he = plugin.getServer().getPluginManager().getPlugin("HawkEye");
-        if (he != null){
-            hawkeye = (HawkEye) he;
-        }
     }
 
     @Override
@@ -55,8 +49,7 @@ public class HeRollback extends BaseRollback{
             // Create new SearchQuery
             plugin.broadcastPlayer(admin, ChatColor.GREEN + "Starting rollback..");
 
-            BaseCallback callback = new RollbackCallback(session, RollbackType.GLOBAL);
-            new SearchQuery(callback, parser, SearchDir.DESC);
+            new SearchQuery(new RollbackCallback(session, RollbackType.GLOBAL), parser, SearchDir.DESC); // async rollback
             //HawkEyeAPI.performSearch(callback, parser, SearchDir.DESC);
         }catch (Exception e){
             plugin.broadcastPlayer(admin, ChatColor.RED + "Unable to rollback player!");

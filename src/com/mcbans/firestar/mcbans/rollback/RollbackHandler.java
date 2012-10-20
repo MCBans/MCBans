@@ -7,8 +7,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+import uk.co.oliwali.HawkEye.HawkEye;
+
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.log.LogLevels;
+
+import de.diddiz.LogBlock.LogBlock;
 
 public class RollbackHandler {
     private final BukkitInterface plugin;
@@ -26,27 +30,30 @@ public class RollbackHandler {
         PluginManager pm = plugin.getServer().getPluginManager();
 
         // Check LogBlock
-        Plugin checkLb = pm.getPlugin("LogBlock");
-        if (checkLb != null && checkLb.isEnabled()) {
+        Plugin check = pm.getPlugin("LogBlock");
+        if (check != null && check instanceof LogBlock && check.isEnabled()) {
             method = new LbRollback(plugin);
-            plugin.log(LogLevels.INFO, "LogBlock plugin found. Using this for rollback.");
-            return true;
+            if (method.setPlugin(check)){
+                plugin.log(LogLevels.INFO, "LogBlock plugin found. Using this for rollback.");
+                return true;
+            }
         }
 
         // Check HawkEye
-        Plugin checkHe = pm.getPlugin("HawkEye");
-        if (checkHe != null && checkHe.isEnabled()) {
+        check = pm.getPlugin("HawkEye");
+        if (check != null && check instanceof HawkEye && check.isEnabled()) {
             method = new HeRollback(plugin);
             plugin.log(LogLevels.INFO, "HawkEye plugin found. Using this for rollback.");
             return true;
         }
 
         // Check CoreProtect
-        Plugin checkCp = pm.getPlugin("CoreProtect");
-        if (checkCp != null && checkCp.isEnabled()) {
-            CoreProtectAPI cpAPI = ((CoreProtect) checkCp).getAPI();
+        check = pm.getPlugin("CoreProtect");
+        if (check != null && check instanceof CoreProtect && check.isEnabled()) {
+            CoreProtectAPI cpAPI = ((CoreProtect) check).getAPI();
             if (cpAPI.isEnabled()){
                 method = new CpRollback(plugin);
+                method.setPlugin(check);
                 plugin.log(LogLevels.INFO, "CoreProtect plugin found. Using this for rollback.");
                 return true;
             }else{

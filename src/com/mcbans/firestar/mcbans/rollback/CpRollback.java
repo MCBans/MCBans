@@ -1,8 +1,5 @@
 package com.mcbans.firestar.mcbans.rollback;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 
@@ -13,27 +10,22 @@ import org.bukkit.plugin.Plugin;
 import com.mcbans.firestar.mcbans.BukkitInterface;
 
 public class CpRollback extends BaseRollback{
-    private CoreProtect coreProtect;
-    private CoreProtectAPI cpAPI;
-
     public CpRollback(BukkitInterface plugin) {
         super(plugin);
-
-        Plugin cp = plugin.getServer().getPluginManager().getPlugin("CoreProtect");
-        if (cp != null){
-            coreProtect = (CoreProtect) cp;
-            cpAPI = coreProtect.getAPI();
-        }
     }
+
+    private CoreProtectAPI cpAPI;
 
     @Override
     public boolean rollback(CommandSender sender, String admin, String target, int time) {
+        if (cpAPI == null) return false;
+
         try {
+            // TODO: check async? maybe not
             cpAPI.performRollback(
                     target,
                     86400 * plugin.Settings.getInteger("backDaysAgo"),
                     0, null, null, null);
-            plugin.broadcastPlayer(admin, ChatColor.GREEN + "Rollback successful!");
         }catch (Exception e){
             plugin.broadcastPlayer(admin, ChatColor.RED + "Unable to rollback player!");
             if (plugin.Settings.getBoolean("isDebug")) {
@@ -42,6 +34,19 @@ public class CpRollback extends BaseRollback{
             return false;
         }
 
+        plugin.broadcastPlayer(admin, ChatColor.GREEN + "Rollback successful!");
         return true;
+    }
+
+    @Override
+    public boolean setPlugin(Plugin plugin){
+        if (plugin == null) return false;
+
+        if (plugin instanceof CoreProtect){
+            this.cpAPI = ((CoreProtect) plugin).getAPI();
+            return (cpAPI != null);
+        }
+
+        return false;
     }
 }
