@@ -25,7 +25,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 
 /**
  * JSONWriter provides a quick and convenient way of producing JSON text.
@@ -158,7 +158,7 @@ public class JSONWriter {
     private JSONWriter end(char mode, char c) throws JSONException {
         if (this.mode != mode) {
             throw new JSONException(mode == 'a' ? "Misplaced endArray." : 
-            		"Misplaced endObject.");
+                    "Misplaced endObject.");
         }
         this.pop(mode);
         try {
@@ -260,7 +260,7 @@ public class JSONWriter {
         }
         this.top -= 1;
         this.mode = this.top == 0 ? 
-        		'd' : this.stack[this.top - 1] == null ? 'a' : 'k';
+                'd' : this.stack[this.top - 1] == null ? 'a' : 'k';
     }
 
     /**

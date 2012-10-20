@@ -22,7 +22,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 
 import java.util.Iterator;
 
@@ -76,7 +76,7 @@ public class HTTP {
         token = x.nextToken();
         if (token.toUpperCase().startsWith("HTTP")) {
 
-// Response
+            // Response
 
             jo.put("HTTP-Version", token);
             jo.put("Status-Code", x.nextToken());
@@ -85,14 +85,14 @@ public class HTTP {
 
         } else {
 
-// Request
+            // Request
 
             jo.put("Method", token);
             jo.put("Request-URI", x.nextToken());
             jo.put("HTTP-Version", x.nextToken());
         }
 
-// Fields
+        // Fields
 
         while (x.more()) {
             String name = x.nextTo(':');
@@ -126,7 +126,7 @@ public class HTTP {
      */
     public static String toString(JSONObject jo) throws JSONException {
         @SuppressWarnings("rawtypes")
-		Iterator     keys = jo.keys();
+        Iterator     keys = jo.keys();
         String       string;
         StringBuffer sb = new StringBuffer();
         if (jo.has("Status-Code") && jo.has("Reason-Phrase")) {

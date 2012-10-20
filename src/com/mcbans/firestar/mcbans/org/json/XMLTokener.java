@@ -22,7 +22,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 
 /**
  * The XMLTokener extends the JSONTokener to provide additional methods
@@ -34,19 +34,19 @@ SOFTWARE.
 public class XMLTokener extends JSONTokener {
 
 
-   /** The table of entity values. It initially contains Character values for
-    * amp, apos, gt, lt, quot.
-    */
-   public static final java.util.HashMap entity;
+    /** The table of entity values. It initially contains Character values for
+     * amp, apos, gt, lt, quot.
+     */
+    public static final java.util.HashMap entity;
 
-   static {
-       entity = new java.util.HashMap(8);
-       entity.put("amp",  XML.AMP);
-       entity.put("apos", XML.APOS);
-       entity.put("gt",   XML.GT);
-       entity.put("lt",   XML.LT);
-       entity.put("quot", XML.QUOT);
-   }
+    static {
+        entity = new java.util.HashMap(8);
+        entity.put("amp",  XML.AMP);
+        entity.put("apos", XML.APOS);
+        entity.put("gt",   XML.GT);
+        entity.put("lt",   XML.LT);
+        entity.put("quot", XML.QUOT);
+    }
 
     /**
      * Construct an XMLTokener from a string.
@@ -73,7 +73,7 @@ public class XMLTokener extends JSONTokener {
             sb.append(c);
             i = sb.length() - 3;
             if (i >= 0 && sb.charAt(i) == ']' &&
-                          sb.charAt(i + 1) == ']' && sb.charAt(i + 2) == '>') {
+                    sb.charAt(i + 1) == ']' && sb.charAt(i + 2) == '>') {
                 sb.setLength(i);
                 return sb.toString();
             }
@@ -240,7 +240,7 @@ public class XMLTokener extends JSONTokener {
         case '?':
             return XML.QUEST;
 
-// Quoted string
+            // Quoted string
 
         case '"':
         case '\'':
@@ -262,7 +262,7 @@ public class XMLTokener extends JSONTokener {
             }
         default:
 
-// Name
+            // Name
 
             sb = new StringBuffer();
             for (;;) {
@@ -273,7 +273,7 @@ public class XMLTokener extends JSONTokener {
                 }
                 switch (c) {
                 case 0:
-                	return sb.toString();
+                    return sb.toString();
                 case '>':
                 case '/':
                 case '=':
@@ -291,8 +291,8 @@ public class XMLTokener extends JSONTokener {
             }
         }
     }
-    
-    
+
+
     /**
      * Skip characters until past the requested string.
      * If it is not found, we are left at the end of the source with a result of false.
@@ -300,67 +300,67 @@ public class XMLTokener extends JSONTokener {
      * @throws JSONException
      */
     public boolean skipPast(String to) throws JSONException {
-    	boolean b;
-    	char c;
-    	int i;
-    	int j;
-    	int offset = 0;
-    	int length = to.length();
+        boolean b;
+        char c;
+        int i;
+        int j;
+        int offset = 0;
+        int length = to.length();
         char[] circle = new char[length];
-        
+
         /*
          * First fill the circle buffer with as many characters as are in the
          * to string. If we reach an early end, bail.
          */
-        
-    	for (i = 0; i < length; i += 1) {
-    		c = next();
-    		if (c == 0) {
-    			return false;
-    		}
-    		circle[i] = c;
-    	}
-    	/*
-    	 * We will loop, possibly for all of the remaining characters.
-    	 */
-    	for (;;) {
-    		j = offset;
-    		b = true;
-    		/*
-    		 * Compare the circle buffer with the to string. 
-    		 */
-    		for (i = 0; i < length; i += 1) {
-    			if (circle[j] != to.charAt(i)) {
-    				b = false;
-    				break;
-    			}
-    			j += 1;
-    			if (j >= length) {
-    				j -= length;
-    			}
-    		}
-    		/*
-    		 * If we exit the loop with b intact, then victory is ours.
-    		 */
-    		if (b) {
-    			return true;
-    		}
-    		/*
-    		 * Get the next character. If there isn't one, then defeat is ours.
-    		 */
-    		c = next();
-    		if (c == 0) {
-    			return false;
-    		}
-    		/*
-    		 * Shove the character in the circle buffer and advance the 
-    		 * circle offset. The offset is mod n.
-    		 */
-    		circle[offset] = c;
-    		offset += 1;
-    		if (offset >= length) {
-    			offset -= length;
-    		}
-    	}
+
+        for (i = 0; i < length; i += 1) {
+            c = next();
+            if (c == 0) {
+                return false;
+            }
+            circle[i] = c;
+        }
+        /*
+         * We will loop, possibly for all of the remaining characters.
+         */
+        for (;;) {
+            j = offset;
+            b = true;
+            /*
+             * Compare the circle buffer with the to string. 
+             */
+            for (i = 0; i < length; i += 1) {
+                if (circle[j] != to.charAt(i)) {
+                    b = false;
+                    break;
+                }
+                j += 1;
+                if (j >= length) {
+                    j -= length;
+                }
+            }
+            /*
+             * If we exit the loop with b intact, then victory is ours.
+             */
+            if (b) {
+                return true;
+            }
+            /*
+             * Get the next character. If there isn't one, then defeat is ours.
+             */
+            c = next();
+            if (c == 0) {
+                return false;
+            }
+            /*
+             * Shove the character in the circle buffer and advance the 
+             * circle offset. The offset is mod n.
+             */
+            circle[offset] = c;
+            offset += 1;
+            if (offset >= length) {
+                offset -= length;
+            }
+        }
     }
 }

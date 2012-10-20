@@ -2,9 +2,6 @@ package com.mcbans.firestar.mcbans.pluginInterface;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.log.LogLevels;
-import com.mcbans.firestar.mcbans.org.json.JSONException;
-import com.mcbans.firestar.mcbans.org.json.JSONObject;
-import com.mcbans.firestar.mcbans.request.JsonHandler;
 import org.bukkit.ChatColor;
 
 import java.util.HashMap;
@@ -20,8 +17,26 @@ public class Connect implements Runnable {
         PlayerName = pn;
     }
 
+    @Override
     public void run() {
-        while (MCBans.notSelectedServer) {
+        HashMap<String,String> pcache = MCBans.playerCache.get(PlayerName);
+        MCBans.playerCache.remove(PlayerName);
+        if(pcache.containsKey("b")){
+            MCBans.broadcastPlayer(PlayerName, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )" );
+            MCBans.broadcastJoinView( ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", PlayerName ) );
+        }
+        if(pcache.containsKey("d")){
+            MCBans.broadcastPlayer(PlayerName, ChatColor.DARK_RED + pcache.get("d") + " open disputes!" );
+        }
+        if(pcache.containsKey("a")){
+            MCBans.broadcastAltView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", PlayerName, pcache.get("al").toString() ));
+        }
+        if(pcache.containsKey("m")){
+            MCBans.log( LogLevels.INFO, PlayerName + " is a MCBans.com Staff member");
+            MCBans.broadcastJoinView( ChatColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", PlayerName ), PlayerName);
+            MCBans.broadcastPlayer(PlayerName, ChatColor.AQUA + MCBans.Language.getFormat ("youAreMCBansStaff"));
+        }
+        /*while (MCBans.notSelectedServer) {
             // waiting for server select
             try {
                 Thread.sleep(1000);
@@ -41,82 +56,82 @@ public class Connect implements Runnable {
                     MCBans.broadcastPlayer(PlayerName, ChatColor.DARK_GREEN + "Server secured by MCBans!");
                 }
                 switch (ConnectStatus.valueOf(response.get("banStatus").toString().toUpperCase())) {
-                    case N:
-                        if (response.has("is_mcbans_mod")) {
-                            if (response.get("is_mcbans_mod").equals("y")) {
-                                MCBans.log(LogLevels.INFO, PlayerName + " is an MCBans.com Staff member");
-                                MCBans.broadcastJoinView(ChatColor.AQUA + MCBans.Language.getFormat("isMCBansMod", PlayerName), PlayerName);
-                                MCBans.broadcastPlayer(PlayerName, ChatColor.AQUA + MCBans.Language.getFormat("youAreMCBansStaff"));
-                            }
+                case N:
+                    if (response.has("is_mcbans_mod")) {
+                        if (response.get("is_mcbans_mod").equals("y")) {
+                            MCBans.log(LogLevels.INFO, PlayerName + " is an MCBans.com Staff member");
+                            MCBans.broadcastJoinView(ChatColor.AQUA + MCBans.Language.getFormat("isMCBansMod", PlayerName), PlayerName);
+                            MCBans.broadcastPlayer(PlayerName, ChatColor.AQUA + MCBans.Language.getFormat("youAreMCBansStaff"));
                         }
-                        if (response.has("disputeCount")) {
-                            if (!response.get("disputeCount").equals("")) {
-                                MCBans.broadcastPlayer(PlayerName, ChatColor.DARK_RED + response.get("disputeCount").toString() + " open disputes!");
-                            }
+                    }
+                    if (response.has("disputeCount")) {
+                        if (!response.get("disputeCount").equals("")) {
+                            MCBans.broadcastPlayer(PlayerName, ChatColor.DARK_RED + response.get("disputeCount").toString() + " open disputes!");
                         }
-                        if (response.has("connectMessage")) {
-                            if (!response.get("connectMessage").equals("")) {
-                                MCBans.broadcastPlayer(PlayerName, ChatColor.AQUA + response.get("connectMessage").toString());
-                            }
+                    }
+                    if (response.has("connectMessage")) {
+                        if (!response.get("connectMessage").equals("")) {
+                            MCBans.broadcastPlayer(PlayerName, ChatColor.AQUA + response.get("connectMessage").toString());
                         }
-                        if (response.has("altList") && !MCBans.Permissions.isAllow(PlayerName, "alt.hide")) {
-                            if (!response.get("altList").equals("")) {
-                                MCBans.broadcastAltView(ChatColor.DARK_PURPLE
-                                        + MCBans.Language.getFormatAlts("altAccounts", PlayerName, response.get("altList").toString()));
-                            }
+                    }
+                    if (response.has("altList") && !MCBans.Permissions.isAllow(PlayerName, "alt.hide")) {
+                        if (!response.get("altList").equals("")) {
+                            MCBans.broadcastAltView(ChatColor.DARK_PURPLE
+                                    + MCBans.Language.getFormatAlts("altAccounts", PlayerName, response.get("altList").toString()));
                         }
-                        MCBans.log(PlayerName + " has connected!");
-                        break;
-                    case B:
-                        // MCBans.broadcastJoinView( ChatColor.DARK_RED +
-                        // MCBans.Language.getFormat( "previousBans", PlayerName
-                        // ) );
-                        MCBans.log(PlayerName + " has connected!");
-                        String[] out = null;
-                        if (response.getJSONArray("globalBans").length() > 0 && MCBans.Settings.getBoolean("onConnectGlobals")) {
-                            MCBans.broadcastJoinView("Player " + ChatColor.DARK_AQUA + PlayerName + ChatColor.WHITE + " has " + ChatColor.DARK_RED
-                                    + response.getString("totalBans") + " ban(s)" + ChatColor.WHITE + " and " + ChatColor.BLUE
-                                    + response.getString("playerRep") + " REP" + ChatColor.WHITE + ".");
-                            MCBans.broadcastJoinView("--------------------------");
-                            if (response.getJSONArray("globalBans").length() > 0) {
-                                for (int v = 0; v < response.getJSONArray("globalBans").length(); v++) {
-                                    out = response.getJSONArray("globalBans").getString(v).split(" .:. ");
-                                    if (out.length == 2) {
-                                        MCBans.broadcastJoinView(ChatColor.LIGHT_PURPLE + out[0]);
-                                        MCBans.broadcastJoinView("\\---\"" + ChatColor.DARK_PURPLE + out[1] + "\"");
-                                    }
+                    }
+                    MCBans.log(PlayerName + " has connected!");
+                    break;
+                case B:
+                    // MCBans.broadcastJoinView( ChatColor.DARK_RED +
+                    // MCBans.Language.getFormat( "previousBans", PlayerName
+                    // ) );
+                    MCBans.log(PlayerName + " has connected!");
+                    String[] out = null;
+                    if (response.getJSONArray("globalBans").length() > 0 && MCBans.Settings.getBoolean("onConnectGlobals")) {
+                        MCBans.broadcastJoinView("Player " + ChatColor.DARK_AQUA + PlayerName + ChatColor.WHITE + " has " + ChatColor.DARK_RED
+                                + response.getString("totalBans") + " ban(s)" + ChatColor.WHITE + " and " + ChatColor.BLUE
+                                + response.getString("playerRep") + " REP" + ChatColor.WHITE + ".");
+                        MCBans.broadcastJoinView("--------------------------");
+                        if (response.getJSONArray("globalBans").length() > 0) {
+                            for (int v = 0; v < response.getJSONArray("globalBans").length(); v++) {
+                                out = response.getJSONArray("globalBans").getString(v).split(" .:. ");
+                                if (out.length == 2) {
+                                    MCBans.broadcastJoinView(ChatColor.LIGHT_PURPLE + out[0]);
+                                    MCBans.broadcastJoinView("\\---\"" + ChatColor.DARK_PURPLE + out[1] + "\"");
                                 }
                             }
-                            MCBans.broadcastJoinView("--------------------------");
                         }
-                        if (response.has("altList") && !MCBans.Permissions.isAllow(PlayerName, "alt.hide")) {
-                            if (!response.get("altList").equals("")) {
-                                MCBans.broadcastAltView(ChatColor.DARK_PURPLE
-                                        + MCBans.Language.getFormatAlts("altAccounts", PlayerName, response.get("altList").toString()));
-                            }
+                        MCBans.broadcastJoinView("--------------------------");
+                    }
+                    if (response.has("altList") && !MCBans.Permissions.isAllow(PlayerName, "alt.hide")) {
+                        if (!response.get("altList").equals("")) {
+                            MCBans.broadcastAltView(ChatColor.DARK_PURPLE
+                                    + MCBans.Language.getFormatAlts("altAccounts", PlayerName, response.get("altList").toString()));
                         }
-                        if (response.has("disputeCount")) {
-                            if (!response.get("disputeCount").equals("")) {
-                                MCBans.broadcastPlayer(PlayerName, ChatColor.DARK_RED + response.get("disputeCount").toString() + " open disputes!");
-                            }
+                    }
+                    if (response.has("disputeCount")) {
+                        if (!response.get("disputeCount").equals("")) {
+                            MCBans.broadcastPlayer(PlayerName, ChatColor.DARK_RED + response.get("disputeCount").toString() + " open disputes!");
                         }
-                        if (response.has("connectMessage")) {
-                            if (!response.get("connectMessage").equals("")) {
-                                MCBans.broadcastPlayer(PlayerName, ChatColor.AQUA + response.get("connectMessage").toString());
-                            }
+                    }
+                    if (response.has("connectMessage")) {
+                        if (!response.get("connectMessage").equals("")) {
+                            MCBans.broadcastPlayer(PlayerName, ChatColor.AQUA + response.get("connectMessage").toString());
                         }
-                        MCBans.broadcastPlayer(PlayerName, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )");
-                        if (MCBans.Settings.getBoolean("isDebug")) {
-                            System.out.print("Player Rep: " + Float.parseFloat(response.get("playerRep").toString()));
+                    }
+                    MCBans.broadcastPlayer(PlayerName, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )");
+                    if (MCBans.Settings.getBoolean("isDebug")) {
+                        System.out.print("Player Rep: " + Float.parseFloat(response.get("playerRep").toString()));
+                    }
+                    if (response.has("is_mcbans_mod")) {
+                        if (response.get("is_mcbans_mod").equals("y")) {
+                            MCBans.log(LogLevels.INFO, PlayerName + " is an MCBans.com Staff member");
+                            MCBans.broadcastBanView(ChatColor.AQUA + MCBans.Language.getFormat("isMCBansMod", PlayerName));
+                            MCBans.broadcastPlayer(PlayerName, ChatColor.AQUA + MCBans.Language.getFormat("youAreMCBansStaff"));
                         }
-                        if (response.has("is_mcbans_mod")) {
-                            if (response.get("is_mcbans_mod").equals("y")) {
-                                MCBans.log(LogLevels.INFO, PlayerName + " is an MCBans.com Staff member");
-                                MCBans.broadcastBanView(ChatColor.AQUA + MCBans.Language.getFormat("isMCBansMod", PlayerName));
-                                MCBans.broadcastPlayer(PlayerName, ChatColor.AQUA + MCBans.Language.getFormat("youAreMCBansStaff"));
-                            }
-                        }
-                        break;
+                    }
+                    break;
                 }
             }
         } catch (JSONException e) {
@@ -132,6 +147,6 @@ public class Connect implements Runnable {
             }
         } catch (NullPointerException e) {
             // e.printStackTrace();
-        }
+        }*/
     }
 }

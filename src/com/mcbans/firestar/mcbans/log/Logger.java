@@ -15,22 +15,22 @@ public class Logger {
 
     public void log(LogLevels type, String message) {
         switch (type) {
-            case INFO:
-                System.out.print("[MCBans] [INFO] " + message);
-                break;
-            case WARNING:
-                System.out.print("[MCBans] [WARNING] " + message);
-                break;
-            case SEVERE:
-                System.out.print("[MCBans] [SEVERE] " + message);
-                break;
-            case FATAL:
-                System.out.print("[MCBans] [FATAL] " + message);
-                MCBans.getServer().getPluginManager().disablePlugin(MCBans.pluginInterface("mcbans"));
-                break;
-            default:
-                System.out.print("[MCBans] " + message);
-                break;
+        case INFO:
+            System.out.print("[MCBans] [INFO] " + message);
+            break;
+        case WARNING:
+            System.out.print("[MCBans] [WARNING] " + message);
+            break;
+        case SEVERE:
+            System.out.print("[MCBans] [SEVERE] " + message);
+            break;
+        case FATAL:
+            System.out.print("[MCBans] [FATAL] " + message);
+            MCBans.getServer().getPluginManager().disablePlugin(MCBans.pluginInterface("mcbans"));
+            break;
+        default:
+            System.out.print("[MCBans] " + message);
+            break;
         }
     }
 }

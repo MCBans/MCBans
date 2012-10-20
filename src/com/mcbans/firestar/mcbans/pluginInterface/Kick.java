@@ -44,6 +44,7 @@ public class Kick implements Runnable {
 
             MCBans.log(PlayerAdmin + " has kicked " + player.getName() + " [" + Reason + "]");
             MCBans.getServer().getScheduler().scheduleSyncDelayedTask(MCBans, new Runnable() {
+                @Override
                 public void run() {
                     player.kickPlayer(MCBans.Language.getFormat("kickMessagePlayer", player.getName(), PlayerAdmin, Reason));
                 }
@@ -55,8 +56,8 @@ public class Kick implements Runnable {
             MCBans.broadcastPlayer(
                     PlayerAdmin,
                     ChatColor.DARK_RED
-                            + MCBans.Language.getFormat("kickMessageNoPlayer", PlayerName, PlayerAdmin, Reason, "No player with that name online!",
-                                    true));
+                    + MCBans.Language.getFormat("kickMessageNoPlayer", PlayerName, PlayerAdmin, Reason, "No player with that name online!",
+                            true));
         }
     }
 }

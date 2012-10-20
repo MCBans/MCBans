@@ -27,8 +27,11 @@ public class BukkitInterface extends JavaPlugin {
     private PlayerListener bukkitPlayer = new PlayerListener(this);
     public int taskID = 0;
     public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
+    public HashMap<String, HashMap<String, String>> playerCache = new HashMap<String, HashMap<String, String>>();
     public HashMap<String, Long> resetTime = new HashMap<String, Long>();
     public Settings Settings;
+    public long last_req = 0;
+    public long timeRecieved = 0;
     public Language Language = null;
     public Thread callbackThread = null;
     public Thread syncBan = null;
@@ -46,6 +49,7 @@ public class BukkitInterface extends JavaPlugin {
     public BukkitPermissions Permissions = null;
     public Logger logger = new Logger(this);
 
+    @Override
     public void onDisable() {
         if (callbackThread != null) {
             if (callbackThread.isAlive()) {
@@ -60,6 +64,7 @@ public class BukkitInterface extends JavaPlugin {
         log(LogLevels.INFO, "MCBans Disabled");
     }
 
+    @Override
     public void onEnable() {
 
         PluginManager pm = getServer().getPluginManager();
@@ -110,11 +115,6 @@ public class BukkitInterface extends JavaPlugin {
         if (logBlock != null) {
             logblock = (LogBlock) logBlock;
             log(LogLevels.INFO, "Enabling LogBlock integration");
-        }
-        Plugin NoCheat = pm.getPlugin("NoCheatPlus");
-        if (NoCheat != null) {
-            noCheatPlus = ((NoCheatPlus) NoCheat);
-            log(LogLevels.INFO, "Enabling NoCheatPlus integration");
         }
         log(LogLevels.INFO, "Started up successfully!");
 

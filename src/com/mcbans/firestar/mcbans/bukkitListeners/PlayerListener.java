@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.pluginInterface.Connect;
@@ -53,7 +54,7 @@ public class PlayerListener implements Listener {
                     String[] s3 = s2.split(";");
                     double repMin = MCBans.Settings.getDouble("minRep");
                     int maxAlts = MCBans.Settings.getInteger("maxAlts");
-                    if (s3.length == 4) {
+                    if (s3.length >= 4) {
                         if (s3[0].equals("l") || s3[0].equals("g") || s3[0].equals("t") || s3[0].equals("i") || s3[0].equals("s")) {
                             event.disallow(Result.KICK_BANNED, s3[1]);
                             return;
@@ -63,6 +64,22 @@ public class PlayerListener implements Listener {
                         } else if (maxAlts < Integer.valueOf(s3[3])) {
                             event.disallow(Result.KICK_BANNED, "You have too many alternate accounts!");
                             return;
+                        }else{
+                            HashMap<String, String> tmp = new HashMap<String, String>();
+                            if(s3[0].equals("b")){
+                                tmp.put("b", "y");
+                            }
+                            if(Integer.parseInt(s3[3])>0){
+                                tmp.put("a", s3[3]);
+                                tmp.put("al", s3[6]);
+                            }
+                            if(s3[4].equals("y")){
+                                tmp.put("m", "y");
+                            }
+                            if(Integer.parseInt(s3[5])>0){
+                                tmp.put("d", s3[5]);
+                            }
+                            MCBans.playerCache.put(event.getName(),tmp);
                         }
                         if (MCBans.Settings.getBoolean("isDebug")) {
                             System.out.println("[MCBans] " + event.getName() + " authenticated with " + s3[2] + " rep");

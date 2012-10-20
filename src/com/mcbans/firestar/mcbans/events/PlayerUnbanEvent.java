@@ -28,14 +28,17 @@ public class PlayerUnbanEvent extends Event implements Cancellable {
         this.sender = senderName;
     }
 
+    @Override
     public boolean isCancelled() {
         return this.isCancelled;
     }
 
+    @Override
     public void setCancelled(boolean cancelled) {
         this.isCancelled = cancelled;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }

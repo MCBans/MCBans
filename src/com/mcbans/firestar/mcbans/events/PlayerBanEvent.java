@@ -94,14 +94,17 @@ public class PlayerBanEvent extends Event implements Cancellable {
         return this.action_id;
     }
 
+    @Override
     public boolean isCancelled() {
         return this.isCancelled;
     }
 
+    @Override
     public void setCancelled(boolean cancelled) {
         this.isCancelled = cancelled;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }

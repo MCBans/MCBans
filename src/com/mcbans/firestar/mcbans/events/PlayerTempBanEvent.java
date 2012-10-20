@@ -64,14 +64,17 @@ public class PlayerTempBanEvent extends Event implements Cancellable {
         this.measure = measure;
     }
 
+    @Override
     public boolean isCancelled() {
         return this.isCancelled;
     }
 
+    @Override
     public void setCancelled(boolean cancelled) {
         this.isCancelled = cancelled;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }

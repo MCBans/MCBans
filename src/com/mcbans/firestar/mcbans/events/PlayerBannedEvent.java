@@ -60,6 +60,7 @@ public class PlayerBannedEvent extends Event {
         return (this.action_id == 2);
     }
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }

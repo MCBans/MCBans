@@ -16,7 +16,6 @@ import de.diddiz.LogBlock.BlockChange;
 import de.diddiz.LogBlock.QueryParams;
 import de.diddiz.LogBlock.QueryParams.BlockChangeType;
 
-import fr.neatmonster.nocheatplus.players.NCPPlayer;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -25,7 +24,6 @@ import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.regex.*;
 
 public class Ban implements Runnable {
@@ -104,6 +102,7 @@ public class Ban implements Runnable {
         final Player target = MCBans.getServer().getPlayer(playerToKick);
         if (target != null) {
             MCBans.getServer().getScheduler().scheduleSyncDelayedTask(MCBans, new Runnable() {
+                @Override
                 public void run() {
                     target.kickPlayer(kickString);
                 }
@@ -111,6 +110,7 @@ public class Ban implements Runnable {
         }
     }
 
+    @Override
     public void run() {
         while (MCBans.notSelectedServer) {
             // waiting for server select
@@ -141,18 +141,18 @@ public class Ban implements Runnable {
                 }
 
                 switch (action_id) {
-                    case 0:
-                        globalBan();
-                        break;
-                    case 1:
-                        localBan();
-                        break;
-                    case 2:
-                        tempBan();
-                        break;
-                    case 3:
-                        unBan();
-                        break;
+                case 0:
+                    globalBan();
+                    break;
+                case 1:
+                    localBan();
+                    break;
+                case 2:
+                    tempBan();
+                    break;
+                case 3:
+                    unBan();
+                    break;
                 }
             } else {
                 MCBans.log("Error, caught invalid action! Another plugin using mcbans improperly?");
@@ -293,29 +293,6 @@ public class Ban implements Runnable {
         url_items.put("playerip", PlayerIP);
         url_items.put("reason", Reason);
         url_items.put("admin", PlayerAdmin);
-        if (MCBans.noCheatPlus != null) {
-            boolean foundMatch = false;
-            try {
-                Pattern regex = Pattern.compile("(fly|hack|nodus|glitch|exploit|NC)");
-                Matcher regexMatcher = regex.matcher(Reason);
-                foundMatch = regexMatcher.find();
-            } catch (PatternSyntaxException ex) {
-            }
-            if (MCBans.getServer().getPlayer(PlayerName) != null && foundMatch == true) {
-                JSONObject tmp = new JSONObject();
-                final NCPPlayer player = NCPPlayer.getPlayer(MCBans.getServer().getPlayer(PlayerName));
-                try {
-                    for (Entry<String, Object> s : player.collectData().entrySet()) {
-                        tmp.put(s.getKey(), s.getValue());
-                    }
-                    ActionData.put("nocheatplus", tmp);
-                } catch (JSONException e) {
-                    if (MCBans.Settings.getBoolean("isDebug")) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
         if (MCBans.logblock != null) {
             boolean foundMatch = false;
             try {
@@ -539,7 +516,7 @@ public class Ban implements Runnable {
                 params.world = MCBans.getServer().getWorld(world);
                 params.silent = false;
                 try {
-                    MCBans.logblock.getCommandsHandler().new CommandRollback((CommandSender) h, params, true);
+                    MCBans.logblock.getCommandsHandler().new CommandRollback(h, params, true);
                     MCBans.broadcastPlayer(PlayerAdmin, ChatColor.GREEN + "Rollback successful!");
                 } catch (Exception e) {
                     MCBans.broadcastPlayer(PlayerAdmin, ChatColor.RED + "Unable to rollback player!");

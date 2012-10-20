@@ -1,6 +1,6 @@
 name: mcbans
 main: com.mcbans.firestar.mcbans.BukkitInterface
-version: 3.8
+version: 3.9
 description: A global banning solution (http://mcbans.com)
 author: Firestar
 commands:

@@ -22,6 +22,7 @@ public class PlayerUnbannedEvent extends Event {
         return this.sender;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }
