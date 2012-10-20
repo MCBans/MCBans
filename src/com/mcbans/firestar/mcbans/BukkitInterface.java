@@ -8,6 +8,7 @@ import com.mcbans.firestar.mcbans.commands.CommandHandler;
 import com.mcbans.firestar.mcbans.log.ActionLog;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.log.Logger;
+import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 
 import de.diddiz.LogBlock.LogBlock;
 
@@ -38,7 +39,6 @@ public class BukkitInterface extends JavaPlugin {
     public boolean syncRunning = false;
     public long lastID = 0;
     public ActionLog actionLog = null;
-    public LogBlock logblock = null;
     public long lastCallBack = 0;
     public long lastSync = 0;
     public NoCheatPlus noCheatPlus = null;
@@ -48,6 +48,7 @@ public class BukkitInterface extends JavaPlugin {
     private String apiKey = "";
     public BukkitPermissions Permissions = null;
     public Logger logger = new Logger(this);
+    private RollbackHandler rbHandler;
 
     @Override
     public void onDisable() {
@@ -111,11 +112,9 @@ public class BukkitInterface extends JavaPlugin {
         serverChoose serverChooser = new serverChoose(this);
         (new Thread(serverChooser)).start();
 
-        Plugin logBlock = pm.getPlugin("LogBlock");
-        if (logBlock != null) {
-            logblock = (LogBlock) logBlock;
-            log(LogLevels.INFO, "Enabling LogBlock integration");
-        }
+        rbHandler = new RollbackHandler(this);
+        rbHandler.setupHandler();
+
         log(LogLevels.INFO, "Started up successfully!");
 
     }
@@ -185,6 +184,10 @@ public class BukkitInterface extends JavaPlugin {
 
     public String getApiKey() {
         return this.apiKey;
+    }
+
+    public RollbackHandler getRbHandler(){
+        return this.rbHandler;
     }
 
     public void broadcastPlayer(Player target, String msg) {
