@@ -101,6 +101,7 @@ public class PlayerListener implements Listener {
 
         String playerName = event.getPlayer().getName();
         HashMap<String,String> pcache = MCBans.playerCache.remove(playerName);
+        if(pcache == null) return;
 
         if(pcache.containsKey("b")){
             MCBans.broadcastPlayer(playerName, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )" );
