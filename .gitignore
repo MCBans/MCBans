@@ -2,6 +2,7 @@
 .classpath
 .project
 .settings
+.settings/
 
 # Mac filesystem dust
 .DS_Store
