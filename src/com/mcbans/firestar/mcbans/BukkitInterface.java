@@ -11,6 +11,7 @@ import com.mcbans.firestar.mcbans.log.Logger;
 import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 
 import de.diddiz.LogBlock.LogBlock;
+import fr.neatmonster.nocheatplus.NoCheatPlus;
 
 
 import org.bukkit.command.Command;
@@ -47,6 +48,7 @@ public class BukkitInterface extends JavaPlugin {
     public BukkitPermissions Permissions = null;
     public Logger logger = new Logger(this);
     private RollbackHandler rbHandler = null;
+    private boolean ncpEnabled = false;
 
     @Override
     public void onDisable() {
@@ -113,13 +115,26 @@ public class BukkitInterface extends JavaPlugin {
         rbHandler = new RollbackHandler(this);
         rbHandler.setupHandler();
 
-        log(LogLevels.INFO, "Started up successfully!");
+        checkNCP();
+        if (ncpEnabled){
+            log(LogLevels.INFO, "NoCheatPlus plugin found! Enabled this integration!");
+        }
 
+        log(LogLevels.INFO, "Started up successfully!");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
         return commandHandle.execCommand(command.getName(), args, sender);
+    }
+
+    public void checkNCP(){
+        Plugin check = getServer().getPluginManager().getPlugin("NoCheatPlus");
+        if (check != null && check instanceof NoCheatPlus && check.isEnabled()){
+            this.ncpEnabled = true;
+        }else{
+            this.ncpEnabled = false;
+        }
     }
 
     public void log(String message) {
@@ -182,6 +197,10 @@ public class BukkitInterface extends JavaPlugin {
 
     public String getApiKey() {
         return this.apiKey;
+    }
+
+    public boolean isEnabledNCP(){
+        return this.ncpEnabled;
     }
 
     public RollbackHandler getRbHandler(){

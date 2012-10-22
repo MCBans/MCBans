@@ -15,6 +15,8 @@ import com.mcbans.firestar.mcbans.request.JsonHandler;
 import de.diddiz.LogBlock.BlockChange;
 import de.diddiz.LogBlock.QueryParams;
 import de.diddiz.LogBlock.QueryParams.BlockChangeType;
+import fr.neatmonster.nocheatplus.checks.ViolationHistory;
+import fr.neatmonster.nocheatplus.checks.ViolationHistory.ViolationLevel;
 
 
 import org.bukkit.ChatColor;
@@ -267,6 +269,38 @@ public class Ban implements Runnable {
         url_items.put("playerip", PlayerIP);
         url_items.put("reason", Reason);
         url_items.put("admin", PlayerAdmin);
+
+        // Put NoCheatPlus proof
+        if (MCBans.isEnabledNCP()) {
+            boolean foundMatch = false;
+            // No catch PatternSyntaxException. This exception thrown when compiling invalid regex.
+            // In this case, regex is constant string. Next line is wrong if throw this. So should output full exception message.
+            Pattern regex = Pattern.compile("(fly|hack|nodus|glitch|exploit|NC)");
+            foundMatch = regex.matcher(Reason).find();
+
+            if (foundMatch) {
+                Player p = MCBans.getServer().getPlayerExact(PlayerName);
+                if (p != null) PlayerName = p.getName();
+                ViolationHistory history = ViolationHistory.getHistory(PlayerName, false);
+                
+                if (history != null){
+                    // found player history
+                    final ViolationLevel[] violations = history.getViolationLevels();
+                    JSONObject tmp = new JSONObject();
+                    try {
+                        for (ViolationLevel vl : violations){
+                            tmp.put(vl.check, String.valueOf(Math.round(vl.sumVL)));
+                        }
+                        ActionData.put("nocheatplus", tmp);
+                    }catch (JSONException ex){
+                        if (MCBans.Settings.getBoolean("isDebug")) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
         if (Rollback) {
             MCBans.getRbHandler().rollback(PlayerAdmin, PlayerName);
         }
