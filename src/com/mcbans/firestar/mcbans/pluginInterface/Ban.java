@@ -33,32 +33,13 @@ public class Ban implements Runnable {
     private String PlayerAdmin = null;
     private String Reason = null;
     private String Action = null;
-    private int rollbackTime = 20;
     private String Duration = null;
     private String Measure = null;
     private boolean Rollback = false;
     private String Badword = null;
-    private JSONObject ActionData = new JSONObject();
+    private JSONObject ActionData = null;
     private HashMap<String, Integer> responses = new HashMap<String, Integer>();
     private int action_id;
-
-    public Ban(BukkitInterface p, String action, String playerName, String playerIP, String playerAdmin, String reason, String duration,
-            String measure) {
-        MCBans = p;
-        PlayerName = playerName;
-        PlayerIP = playerIP;
-        PlayerAdmin = playerAdmin;
-        Reason = reason;
-        Duration = duration;
-        Rollback = MCBans.Settings.getBoolean("rollbackOnBan");
-        rollbackTime = MCBans.Settings.getInteger("backDaysAgo");
-        Measure = measure;
-        Action = action;
-        responses.put("globalBan", 0);
-        responses.put("localBan", 1);
-        responses.put("tempBan", 2);
-        responses.put("unBan", 3);
-    }
 
     public Ban(BukkitInterface p, String action, String playerName, String playerIP, String playerAdmin, String reason, String duration,
             String measure, JSONObject actionData, boolean rollback) {
@@ -68,11 +49,11 @@ public class Ban implements Runnable {
         PlayerAdmin = playerAdmin;
         Reason = reason;
         Rollback = rollback;
-        rollbackTime = MCBans.Settings.getInteger("backDaysAgo");
         Duration = duration;
         Measure = measure;
         Action = action;
-        ActionData = actionData;
+        ActionData = (actionData != null) ? actionData : new JSONObject();
+
         responses.put("globalBan", 0);
         responses.put("localBan", 1);
         responses.put("tempBan", 2);
@@ -80,22 +61,17 @@ public class Ban implements Runnable {
     }
 
     public Ban(BukkitInterface p, String action, String playerName, String playerIP, String playerAdmin, String reason, String duration,
-            String measure, JSONObject actionData, int rollback) {
-        MCBans = p;
-        PlayerName = playerName;
-        PlayerIP = playerIP;
-        PlayerAdmin = playerAdmin;
-        Reason = reason;
-        Rollback = true;
-        rollbackTime = rollback;
-        Duration = duration;
-        Measure = measure;
-        Action = action;
-        ActionData = actionData;
-        responses.put("globalBan", 0);
-        responses.put("localBan", 1);
-        responses.put("tempBan", 2);
-        responses.put("unBan", 3);
+            String measure) {
+        this (p, action, playerName, playerIP, playerAdmin, reason, duration, measure, null, false);
+    }
+
+    /**
+     * @deprecated Use another constructor. This constructor will be removed on future release.
+     */
+    @Deprecated
+    public Ban(BukkitInterface p, String action, String playerName, String playerIP, String playerAdmin, String reason, String duration,
+            String measure, JSONObject actionData, int rollback_dummy) {
+        this (p, action, playerName, playerIP, playerAdmin, reason, duration, measure, actionData, true);
     }
 
     public void kickPlayer(String playerToKick, final String kickString) {
@@ -415,9 +391,5 @@ public class Ban implements Runnable {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void rollback() {
-
     }
 }
