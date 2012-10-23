@@ -7,6 +7,7 @@ import com.mcbans.firestar.mcbans.callBacks.ManualSync;
 import com.mcbans.firestar.mcbans.callBacks.Ping;
 import com.mcbans.firestar.mcbans.callBacks.serverChoose;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
+import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.pluginInterface.Ban;
 import com.mcbans.firestar.mcbans.pluginInterface.Kick;
 import com.mcbans.firestar.mcbans.pluginInterface.Lookup;
@@ -70,7 +71,7 @@ public class CommandHandler {
             break;
         case RBAN:
             // Check if Global or Local
-            if (MCBans.Permissions.isAllow(CommandSend, "ban.rollback") || !isPlayer) {
+            if (Perms.BAN_ROLLBACK.has(from)) {
                 if (args.length < 1) {
                     MCBans.broadcastPlayer(CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat("formatError"));
                     return true;
@@ -111,7 +112,7 @@ public class CommandHandler {
             }
             break;
         case UNBAN:
-            if (MCBans.Permissions.isAllow(CommandSend, "unban") || !isPlayer) {
+            if (Perms.UNBAN.has(from)) {
                 if (args.length < 1) {
                     MCBans.broadcastPlayer(CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat("formatError"));
                     return true;
@@ -126,7 +127,7 @@ public class CommandHandler {
             commandSet = true;
             break;
         case KICK:
-            if (MCBans.Permissions.isAllow(CommandSend, "kick") || !isPlayer) {
+            if (Perms.KICK.has(from)) {
                 if (args.length < 1) {
                     MCBans.broadcastPlayer(CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat("formatError"));
                     return true;
@@ -147,7 +148,7 @@ public class CommandHandler {
             break;
         case LOOKUP:
         case LUP:
-            if (MCBans.Permissions.isAllow(CommandSend, "lookup") || !isPlayer) {
+            if (Perms.LOOKUP.has(from)) {
                 if (args.length < 1) {
                     MCBans.broadcastPlayer(CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat("formatError"));
                     return true;
@@ -171,7 +172,7 @@ public class CommandHandler {
                 MCBans.broadcastPlayer(CommandSend, ChatColor.WHITE + "/mcbans sync" + ChatColor.BLUE + " Force a sync to occur");
                 MCBans.broadcastPlayer(CommandSend, ChatColor.WHITE + "/mcbans user" + ChatColor.BLUE + " Help with user management commands");
             } else if (args.length > 1) {
-                if (MCBans.Permissions.isAllow(CommandSend, "admin") || !isPlayer) {
+                if (Perms.ADMIN.has(from)) {
                     if (args[0].equalsIgnoreCase("get")) {
                         if(args[0].equalsIgnoreCase("get")){
                             if(args[1].equalsIgnoreCase("call")){
@@ -221,7 +222,7 @@ public class CommandHandler {
                             + " Lookup the reputation information");
                     MCBans.broadcastPlayer(CommandSend, ChatColor.WHITE + "/kick <name> <reason>" + ChatColor.BLUE + " Kick user from the server");
                 } else if (args[0].equalsIgnoreCase("ping")) {
-                    if (MCBans.Permissions.isAllow(CommandSend, "admin") || !isPlayer) {
+                    if (Perms.ADMIN.has(from)) {
                         Ping manualPingCheck = new Ping(MCBans, CommandSend);
                         (new Thread(manualPingCheck)).start();
                     } else {
@@ -229,7 +230,7 @@ public class CommandHandler {
                         MCBans.log(CommandSend + " has tried the command [" + command + "]!");
                     }
                 } else if (args[0].equalsIgnoreCase("sync")) {
-                    if (MCBans.Permissions.isAllow(CommandSend, "admin") || !isPlayer) {
+                    if (Perms.ADMIN.has(from)) {
                         long syncInterval = MCBans.Settings.getInteger("syncInterval");
                         if(syncInterval<((60)*5)){
                             syncInterval=((60)*5);
@@ -251,7 +252,7 @@ public class CommandHandler {
                             + " Time until callback thread sends data.");
                     MCBans.broadcastPlayer(CommandSend, ChatColor.WHITE + "/mcbans get sync" + ChatColor.BLUE + " Time until next sync.");
                 } else if (args[0].equalsIgnoreCase("reload")) {
-                    if (MCBans.Permissions.isAllow(CommandSend, "admin") || !isPlayer) {
+                    if (Perms.ADMIN.has(from)) {
                         MCBans.broadcastPlayer(CommandSend, ChatColor.AQUA + "Reloading Settings..");
                         Integer reloadSettings = MCBans.Settings.reload();
                         if (reloadSettings == -2) {
@@ -334,7 +335,7 @@ public class CommandHandler {
 
     private boolean handleGlobal(String command, String[] args, String CommandSend, boolean isPlayer, String PlayerIP, int reasonOffset, int minVars,
             boolean setRollback, int setRollbackTime) {
-        if (MCBans.Permissions.isAllow(CommandSend, "ban.global") || !isPlayer) {
+        if (!isPlayer || Perms.BAN_GLOBAL.has(CommandSend)) {
             if (args.length < minVars) {
                 MCBans.broadcastPlayer(CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat("formatError"));
                 return true;
@@ -359,7 +360,7 @@ public class CommandHandler {
 
     public boolean handleTemp(String command, String[] args, String CommandSend, boolean isPlayer, String PlayerIP, int reasonOffset, int minVars,
             boolean setRollback, int setRollbackTime, int tempBanDuration, int tempBanMeasure) {
-        if (MCBans.Permissions.isAllow(CommandSend, "ban.temp") || !isPlayer) {
+        if (!isPlayer || Perms.BAN_TEMP.has(CommandSend)) {
             if (args.length < minVars) {
                 MCBans.broadcastPlayer(CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat("formatError"));
                 return true;
@@ -391,7 +392,7 @@ public class CommandHandler {
 
     public boolean handleLocal(String command, String[] args, String CommandSend, boolean isPlayer, String PlayerIP, int reasonOffset, int minVars,
             boolean setRollback, int setRollbackTime) {
-        if (MCBans.Permissions.isAllow(CommandSend, "ban.local") || !isPlayer) {
+        if (!isPlayer || Perms.BAN_LOCAL.has(CommandSend)) {
             if (args.length < minVars) {
                 MCBans.broadcastPlayer(CommandSend, ChatColor.DARK_RED + MCBans.Language.getFormat("formatError"));
                 return true;

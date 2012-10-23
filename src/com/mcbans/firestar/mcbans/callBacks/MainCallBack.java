@@ -2,6 +2,7 @@ package com.mcbans.firestar.mcbans.callBacks;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.log.LogLevels;
+import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 import org.bukkit.ChatColor;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class MainCallBack implements Runnable {
             if(response.containsKey("hasNotices")) {
                 for(String cb : response.keySet()) {
                     if (cb.contains("notice")) {
-                        MCBans.broadcastBanView( ChatColor.GOLD + "Notice: " + ChatColor.WHITE + response.get(cb));
+                        Perms.VIEW_BANS.message(ChatColor.GOLD + "Notice: " + ChatColor.WHITE + response.get(cb));
                         MCBans.log(LogLevels.INFO, "MCBans Notice: " + response.get(cb));
                     }
                 }

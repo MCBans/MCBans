@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.log.LogLevels;
+import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.pluginInterface.Disconnect;
 
 import org.bukkit.ChatColor;
@@ -97,35 +98,30 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        MCBans.Permissions.playerConnect(event.getPlayer());
-
         String playerName = event.getPlayer().getName();
         HashMap<String,String> pcache = MCBans.playerCache.remove(playerName);
         if(pcache == null) return;
 
         if(pcache.containsKey("b")){
             MCBans.broadcastPlayer(playerName, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )" );
-            MCBans.broadcastJoinView( ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", playerName ) );
+            Perms.VIEW_BANS.message(ChatColor.DARK_RED + MCBans.Language.getFormat( "previousBans", playerName ));
         }
         if(pcache.containsKey("d")){
-            MCBans.broadcastPlayer(playerName, ChatColor.DARK_RED + pcache.get("d") + " open disputes!" );
+            MCBans.broadcastPlayer(playerName, ChatColor.DARK_RED + pcache.get("d") + " open disputes!");
         }
         if(pcache.containsKey("a")){
-            MCBans.broadcastAltView( ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts( "altAccounts", playerName, pcache.get("al").toString() ));
+            Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + MCBans.Language.getFormatAlts("altAccounts", playerName, pcache.get("al").toString()));
         }
         if(pcache.containsKey("m")){
             MCBans.log( LogLevels.INFO, playerName + " is a MCBans.com Staff member");
-            MCBans.broadcastJoinView( ChatColor.AQUA + MCBans.Language.getFormat( "isMCBansMod", playerName ), playerName);
+            MCBans.broadcastAll(ChatColor.AQUA + MCBans.Language.getFormat("isMCBansMod", playerName));
             MCBans.broadcastPlayer(playerName, ChatColor.AQUA + MCBans.Language.getFormat ("youAreMCBansStaff"));
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        MCBans.Permissions.playerDisconnect(player.getName());
-        String playerName = player.getName();
-        Disconnect disconnectHandler = new Disconnect(MCBans, playerName);
+        Disconnect disconnectHandler = new Disconnect(MCBans, event.getPlayer().getName());
         (new Thread(disconnectHandler)).start();
     }
 }

@@ -4,6 +4,7 @@ import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
+import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 import org.bukkit.ChatColor;
 
@@ -60,8 +61,8 @@ public class Lookup implements Runnable {
         } catch (JSONException e) {
             if (result.toString().contains("error")) {
                 if (result.toString().contains("Server Disabled")) {
-                    MCBans.broadcastBanView(ChatColor.RED + "Server Disabled by an MCBans Admin");
-                    MCBans.broadcastBanView("MCBans is running in reduced functionality mode. Only local bans can be used at this time.");
+                    Perms.VIEW_BANS.message(ChatColor.RED + "Server Disabled by an MCBans Admin");
+                    Perms.VIEW_BANS.message("MCBans is running in reduced functionality mode. Only local bans can be used at this time.");
                     MCBans.log(LogLevels.SEVERE, "The server API key has been disabled by an MCBans Administrator");
                     MCBans.log(LogLevels.SEVERE, "To appeal this decision, please contact an administrator");
                 }

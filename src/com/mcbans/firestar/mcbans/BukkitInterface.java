@@ -8,6 +8,7 @@ import com.mcbans.firestar.mcbans.commands.CommandHandler;
 import com.mcbans.firestar.mcbans.log.ActionLog;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.log.Logger;
+import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 
 import de.diddiz.LogBlock.LogBlock;
@@ -49,7 +50,6 @@ public class BukkitInterface extends JavaPlugin {
     public String apiServers = "api01.cluster.mcbans.com,api02.cluster.mcbans.com,api03.cluster.mcbans.com,api.mcbans.com";
     public String apiServer = "";
     private String apiKey = "";
-    public BukkitPermissions Permissions = null;
     public Logger logger = new Logger(this);
     private RollbackHandler rbHandler = null;
     private boolean ncpEnabled = false;
@@ -73,29 +73,33 @@ public class BukkitInterface extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(bukkitPlayer, this);
 
+        // check online-mode
         if (!this.getServer().getOnlineMode()) {
             logger.log(LogLevels.FATAL, "MCBans: Your server is not in online mode!");
             pm.disablePlugin(pluginInterface("mcbans"));
             return;
         }
 
+
+        pm.registerEvents(bukkitPlayer, this);
+
+        // load configuration
         Settings = new Settings();
         if (Settings.exists) {
             pm.disablePlugin(pluginInterface("mcbans"));
             return;
         }
-
         this.apiKey = Settings.getString("apiKey");
 
+        // load language
         String language;
         language = Settings.getString("language");
         log(LogLevels.INFO, "Loading language file: " + language);
         Language = new Language(this);
 
+        // Setup logging
         if (Settings.getBoolean("logEnable")) {
             log(LogLevels.INFO, "Starting to save to log file!");
             actionLog = new ActionLog(this, Settings.getString("logFile"));
@@ -104,13 +108,18 @@ public class BukkitInterface extends JavaPlugin {
             log(LogLevels.INFO, "Log file disabled!");
         }
 
-        Permissions = new BukkitPermissions(Settings, this);
+        // setup permissions
+        //Permissions = new BukkitPermissions(Settings, this);
+        Perms.setupPermissionHandler();
+
+        // regist commands
         commandHandle = new CommandHandler(Settings, this);
 
         MainCallBack thisThread = new MainCallBack(this);
         callbackThread = new Thread(thisThread);
         callbackThread.start();
 
+        // ban sync
         BanSync syncBanRunner = new BanSync(this);
         syncBan = new Thread(syncBanRunner);
         syncBan.start();
@@ -118,9 +127,11 @@ public class BukkitInterface extends JavaPlugin {
         serverChoose serverChooser = new serverChoose(this);
         (new Thread(serverChooser)).start();
 
+        // rollback handler
         rbHandler = new RollbackHandler(this);
         rbHandler.setupHandler();
 
+        // hookup integration plugin
         checkPlugin(true);
         if (ncpEnabled) log(LogLevels.INFO, "NoCheatPlus plugin found! Enabled this integration!");
         if (acEnabled) log(LogLevels.INFO, "AntiCheat plugin found! Enabled this integration!");
@@ -156,38 +167,6 @@ public class BukkitInterface extends JavaPlugin {
             actionLog.write(message);
         }
         logger.log(type, message);
-    }
-
-    public void broadcastBanView(String msg) {
-        for (String player : Permissions.getPlayersBan()) {
-            this.getServer().getPlayer(player).sendMessage(Settings.getPrefix() + " " + msg);
-        }
-    }
-
-    public void broadcastJoinView(String msg) {
-        for (String player : Permissions.getPlayersJoin()) {
-            this.getServer().getPlayer(player).sendMessage(Settings.getPrefix() + " " + msg);
-        }
-    }
-
-    public void broadcastJoinView(String msg, String playername) {
-        for (String player : Permissions.getPlayersJoin()) {
-            if (playername != player) {
-                this.getServer().getPlayer(player).sendMessage(Settings.getPrefix() + " " + msg);
-            }
-        }
-    }
-
-    public void broadcastAltView(String msg) {
-        for (String player : Permissions.getPlayersAlts()) {
-            this.getServer().getPlayer(player).sendMessage(Settings.getPrefix() + " " + msg);
-        }
-    }
-
-    public void broadcastKickView(String msg) {
-        for (String player : Permissions.getPlayersKick()) {
-            this.getServer().getPlayer(player).sendMessage(Settings.getPrefix() + " " + msg);
-        }
     }
 
     public void broadcastAll(String msg) {

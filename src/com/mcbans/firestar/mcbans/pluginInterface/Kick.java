@@ -49,7 +49,7 @@ public class Kick implements Runnable {
                     player.kickPlayer(MCBans.Language.getFormat("kickMessagePlayer", player.getName(), PlayerAdmin, Reason));
                 }
             }, 1L);
-            MCBans.broadcastKickView(ChatColor.GREEN
+            MCBans.broadcastAll(ChatColor.GREEN
                     + MCBans.Language.getFormat("kickMessageBroadcast", PlayerName, PlayerAdmin, Reason, "%ADMIN% has kicked %PLAYER% [%REASON%]",
                             true));
         } else {
