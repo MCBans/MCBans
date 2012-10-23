@@ -13,8 +13,8 @@ public enum Perms {
     ADMIN           ("admin"),
 
     // Ban permissions
-    BAN_LOCAL       ("ban.local"),
     BAN_GLOBAL      ("ban.global"),
+    BAN_LOCAL       ("ban.local"),
     BAN_TEMP        ("ban.temp"),
     BAN_ROLLBACK    ("ban.rollback"),
 
@@ -28,7 +28,7 @@ public enum Perms {
     VIEW_BANS       ("view.bans"),
 
     // Hide permissions
-    HIDE_ALTS       ("hide.alts"),
+    HIDE_ALTS       ("hide.alts"), // TODO:not used
 
     // Others
     KICK            ("kick"),

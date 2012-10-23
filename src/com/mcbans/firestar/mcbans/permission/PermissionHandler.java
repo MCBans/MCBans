@@ -49,15 +49,20 @@ public class PermissionHandler {
      */
     public void setupPermissions(final boolean silent){
         final String selected = plugin.Settings.getString("permission").trim();
+        boolean found = true;
 
         if ("vault".equalsIgnoreCase(selected)){
             if (setupVaultPermission()){
                 permType = PermType.VAULT;
+            }else{
+                plugin.logger.log(LogLevels.WARNING, "Selected Vault for permission control, but NOT found this plugin!");
             }
         }
         else if ("pex".equalsIgnoreCase(selected) || "permissionsex".equalsIgnoreCase(selected)){
             if (setupPEXPermission()){
                 permType = PermType.PEX;
+            }else{
+                plugin.logger.log(LogLevels.WARNING, "Selected PermissionsEx for permission control, but NOT found this plugin!");
             }
         }
         else if ("superperms".equalsIgnoreCase(selected)){
@@ -66,18 +71,19 @@ public class PermissionHandler {
         else if ("ops".equalsIgnoreCase(selected)){
             permType = PermType.OPS;
         }
+        else{
+            found = false;
+        }
 
         // Invalid configuration, Use default SuperPerms
         if (permType == null){
             permType = PermType.SUPERPERMS;
-            if (!silent){
-                plugin.logger.log(LogLevels.WARNING, "Valid permissions name not selected! Using SuperPerms for permission control.");
-            }
+            if (!found) plugin.logger.log(LogLevels.WARNING, "Valid permissions name not selected!");
         }
 
         // Display result
         if (!silent){
-            plugin.logger.log(LogLevels.INFO, "Using " + getPermTypeString() + " for permissions");
+            plugin.logger.log(LogLevels.INFO, "Using " + getPermTypeString() + " for permission control.");
         }
     }
     public void setupPermissions(){
