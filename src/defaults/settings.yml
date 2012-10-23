@@ -18,6 +18,11 @@ apiKey:
 #       DEFAULT: en-us
 language: en-us
 
+# permission:
+#	Choose permission controller: Vault, PermissionsEx, SuperPerms (default), OPs
+#	DEFAULT: SuperPerms
+permission: SuperPerms
+
 # defaultLocal:
 #	Default reason for users being locally banned from the server, if
 #	no reason is provided.

@@ -26,6 +26,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashMap;
 
 public class BukkitInterface extends JavaPlugin {
+    private static BukkitInterface instance;
+
     private CommandHandler commandHandle;
     private PlayerListener bukkitPlayer = new PlayerListener(this);
     public int taskID = 0;
@@ -70,6 +72,7 @@ public class BukkitInterface extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(bukkitPlayer, this);
@@ -224,5 +227,9 @@ public class BukkitInterface extends JavaPlugin {
 
     public Plugin pluginInterface(String pluginName) {
         return this.getServer().getPluginManager().getPlugin(pluginName);
+    }
+
+    public static BukkitInterface getInstance(){
+        return instance;
     }
 }
