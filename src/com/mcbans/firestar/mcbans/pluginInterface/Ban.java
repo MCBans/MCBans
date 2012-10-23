@@ -25,7 +25,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.*;
 
 public class Ban implements Runnable {
@@ -270,34 +273,14 @@ public class Ban implements Runnable {
         url_items.put("reason", Reason);
         url_items.put("admin", PlayerAdmin);
 
-        // Put NoCheatPlus proof
-        if (MCBans.isEnabledNCP()) {
-            boolean foundMatch = false;
-            // No catch PatternSyntaxException. This exception thrown when compiling invalid regex.
-            // In this case, regex is constant string. Next line is wrong if throw this. So should output full exception message.
-            Pattern regex = Pattern.compile("(fly|hack|nodus|glitch|exploit|NC)");
-            foundMatch = regex.matcher(Reason).find();
-
-            if (foundMatch) {
-                Player p = MCBans.getServer().getPlayerExact(PlayerName);
-                if (p != null) PlayerName = p.getName();
-                ViolationHistory history = ViolationHistory.getHistory(PlayerName, false);
-                
-                if (history != null){
-                    // found player history
-                    final ViolationLevel[] violations = history.getViolationLevels();
-                    JSONObject tmp = new JSONObject();
-                    try {
-                        for (ViolationLevel vl : violations){
-                            tmp.put(vl.check, String.valueOf(Math.round(vl.sumVL)));
-                        }
-                        ActionData.put("nocheatplus", tmp);
-                    }catch (JSONException ex){
-                        if (MCBans.Settings.getBoolean("isDebug")) {
-                            ex.printStackTrace();
-                        }
-                    }
-                }
+        // Put proof
+        try{
+            for (Map.Entry<String, JSONObject> proof : getProof().entrySet()){
+                ActionData.put(proof.getKey(), proof.getValue());
+            }
+        }catch (JSONException ex){
+            if (MCBans.Settings.getBoolean("isDebug")) {
+                ex.printStackTrace();
             }
         }
 
@@ -425,5 +408,37 @@ public class Ban implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    private Map<String, JSONObject> getProof() throws JSONException{
+        HashMap<String, JSONObject> ret = new HashMap<String, JSONObject>();
+
+        // Hacked client
+        if (MCBans.isEnabledNCP()) {
+            boolean foundMatch = false;
+            // No catch PatternSyntaxException. This exception thrown when compiling invalid regex.
+            // In this case, regex is constant string. Next line is wrong if throw this. So should output full exception message.
+            Pattern regex = Pattern.compile("(fly|hack|nodus|glitch|exploit|NC)");
+            foundMatch = regex.matcher(Reason).find();
+
+            if (foundMatch) {                
+                Player p = MCBans.getServer().getPlayerExact(PlayerName);
+                if (p != null) PlayerName = p.getName();
+                ViolationHistory history = ViolationHistory.getHistory(PlayerName, false);
+
+                if (history != null){
+                    // found player history
+                    final ViolationLevel[] violations = history.getViolationLevels();
+                    JSONObject tmp = new JSONObject();
+                    for (ViolationLevel vl : violations){
+                        tmp.put(vl.check, String.valueOf(Math.round(vl.sumVL)));
+                    }
+                    ret.put("nocheatplus", tmp);
+                    //ActionData.put("nocheatplus", tmp); // don't put directly
+                }
+            }
+        }
+
+        return ret;
     }
 }
