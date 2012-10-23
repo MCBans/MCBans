@@ -19,6 +19,8 @@ import fr.neatmonster.nocheatplus.checks.ViolationHistory;
 import fr.neatmonster.nocheatplus.checks.ViolationHistory.ViolationLevel;
 
 
+import net.h31ix.anticheat.api.AnticheatAPI;
+
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -413,19 +415,18 @@ public class Ban implements Runnable {
     private Map<String, JSONObject> getProof() throws JSONException{
         HashMap<String, JSONObject> ret = new HashMap<String, JSONObject>();
 
-        // Hacked client
-        if (MCBans.isEnabledNCP()) {
-            boolean foundMatch = false;
-            // No catch PatternSyntaxException. This exception thrown when compiling invalid regex.
-            // In this case, regex is constant string. Next line is wrong if throw this. So should output full exception message.
-            Pattern regex = Pattern.compile("(fly|hack|nodus|glitch|exploit|NC)");
-            foundMatch = regex.matcher(Reason).find();
+        /* Hacked client */
+        // No catch PatternSyntaxException. This exception thrown when compiling invalid regex.
+        // In this case, regex is constant string. Next line is wrong if throw this. So should output full exception message.
+        Pattern regex = Pattern.compile("(fly|hack|nodus|glitch|exploit|NC)");
+        boolean foundMatch = regex.matcher(Reason).find();
 
-            if (foundMatch) {                
-                Player p = MCBans.getServer().getPlayerExact(PlayerName);
-                if (p != null) PlayerName = p.getName();
+        if (foundMatch) {
+            Player p = MCBans.getServer().getPlayerExact(PlayerName);
+            if (p != null) PlayerName = p.getName();
+            // NoCheatPlus
+            if (MCBans.isEnabledNCP()) {
                 ViolationHistory history = ViolationHistory.getHistory(PlayerName, false);
-
                 if (history != null){
                     // found player history
                     final ViolationLevel[] violations = history.getViolationLevels();
@@ -436,6 +437,15 @@ public class Ban implements Runnable {
                     ret.put("nocheatplus", tmp);
                     //ActionData.put("nocheatplus", tmp); // don't put directly
                 }
+            }
+            // AntiCheat
+            if (MCBans.isEnabledAC() && p.getPlayer() != null) {
+                JSONObject tmp = new JSONObject();
+                final int level = AnticheatAPI.getLevel(p);
+                final boolean xray = AnticheatAPI.isXrayer(p);
+                if (level > 0) tmp.put("hack level", String.valueOf(level));
+                if (xray) tmp.put("detected x-ray", "true");
+                if (tmp.length() > 0) ret.put("anticheat", tmp);
             }
         }
 

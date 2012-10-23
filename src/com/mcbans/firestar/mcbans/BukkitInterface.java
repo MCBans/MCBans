@@ -14,6 +14,8 @@ import de.diddiz.LogBlock.LogBlock;
 import fr.neatmonster.nocheatplus.NoCheatPlus;
 
 
+import net.h31ix.anticheat.Anticheat;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -49,6 +51,7 @@ public class BukkitInterface extends JavaPlugin {
     public Logger logger = new Logger(this);
     private RollbackHandler rbHandler = null;
     private boolean ncpEnabled = false;
+    private boolean acEnabled = false;
 
     @Override
     public void onDisable() {
@@ -115,10 +118,9 @@ public class BukkitInterface extends JavaPlugin {
         rbHandler = new RollbackHandler(this);
         rbHandler.setupHandler();
 
-        checkNCP();
-        if (ncpEnabled){
-            log(LogLevels.INFO, "NoCheatPlus plugin found! Enabled this integration!");
-        }
+        checkPlugin(true);
+        if (ncpEnabled) log(LogLevels.INFO, "NoCheatPlus plugin found! Enabled this integration!");
+        if (acEnabled) log(LogLevels.INFO, "AntiCheat plugin found! Enabled this integration!");
 
         log(LogLevels.INFO, "Started up successfully!");
     }
@@ -128,12 +130,17 @@ public class BukkitInterface extends JavaPlugin {
         return commandHandle.execCommand(command.getName(), args, sender);
     }
 
-    public void checkNCP(){
-        Plugin check = getServer().getPluginManager().getPlugin("NoCheatPlus");
-        if (check != null && check instanceof NoCheatPlus && check.isEnabled()){
-            this.ncpEnabled = true;
-        }else{
-            this.ncpEnabled = false;
+    public void checkPlugin(boolean startup){
+        // Check NoCheatPlus
+        Plugin checkNCP = getServer().getPluginManager().getPlugin("NoCheatPlus");
+        this.ncpEnabled = (checkNCP != null && checkNCP instanceof NoCheatPlus);
+        // Check AntiCheat
+        Plugin checkAC = getServer().getPluginManager().getPlugin("AntiCheat");
+        this.acEnabled = (checkAC != null && checkAC instanceof Anticheat);
+
+        if (!startup){
+            if (ncpEnabled) ncpEnabled = (checkNCP.isEnabled());
+            if (acEnabled) acEnabled = (checkAC.isEnabled());
         }
     }
 
@@ -201,6 +208,10 @@ public class BukkitInterface extends JavaPlugin {
 
     public boolean isEnabledNCP(){
         return this.ncpEnabled;
+    }
+
+    public boolean isEnabledAC(){
+        return this.acEnabled;
     }
 
     public RollbackHandler getRbHandler(){
