@@ -4,7 +4,7 @@ main: com.mcbans.firestar.mcbans.BukkitInterface
 version: 3.9
 description: A global banning solution
 website: http://mcbans.com/
-softdepend: [NoCheatPlus, AntiCheat, LogBlock, HawkEye, CoreProtect]
+softdepend: [NoCheatPlus, AntiCheat, LogBlock, HawkEye, CoreProtect, Vault, PermissionsEx]
 author: Firestar, Syamn
 commands:
   kick:
@@ -35,60 +35,35 @@ commands:
     usage: /<command> <function>
 permissions:
   mcbans.admin:
-    description: Admin priveleges to mcbans, onconnect globals visible
-    default: op
-  mcbans.kick.view:
-    description: Display kick message to anyone with this permission
-    default: op
-  mcbans.join.view:
-    description: Join messages
-    default: op
-  mcbans.alts.hide:
-    description: Hide notification of alts on connect
-    default: op
-  mcbans.alts.view:
-    description: show notification of a players alts on connect
-    default: op
-  mcbans.ban.view:
-    description: View ban information on user joining
+    description: Admin privileges to mcbans, access to admin commands
     default: op
   mcbans.ban.global:
-    description: Give global bans
+    description: Permission to use global ban command
     default: op
   mcbans.ban.local:
-    description: Give local bans
+    description: Permission to use local ban command
+    default: op
+  mcbans.ban.temp:
+    description: Permission to use temp ban command
     default: op
   mcbans.ban.rollback:
     description: Gives rban commands
     default: op
-  mcbans.ban.temp:
-    description: Give temp bans
-    default: op
   mcbans.unban:
-    description: Unban users
+    description: Permission to use unban command
     default: op
-  mcbans.lookup:
-    description: Lookup ban history on command
+  mcbans.view.bans:
+    description: View ban information on user joining
+    default: op
+  mcbans.view.alts:
+    description: show notification of a players alts on connect
+    default: op
+  mcbans.alts.hide:
+    description: Hide notification of alts on connect
     default: op
   mcbans.kick:
-    description: Kick users
+    description: Permission to use kick command
     default: op
-  mcbans.mode:
-    description: Change between online and offline modes
+  mcbans.lookup:
+    description: Permission to use lookup command
     default: op
-  mcbans.all:
-    description: All permissions
-    children:
-      mcbans.ban.view: true
-      mcbans.alts.hide: true
-      mcbans.alts.view: true
-      mcbans.join.view: true
-      mcbans.ban.global: true
-      mcbans.ban.local: true
-      mcbans.ban.temp: true
-      mcbans.unban: true
-      mcbans.lookup: true
-      mcbans.admin: true
-      mcbans.kick: true
-      mcbans.kick.view: true
-      mcbans.mode: true
