@@ -56,7 +56,7 @@ public class PlayerListener implements Listener {
                     String[] s3 = s2.split(";");
                     double repMin = MCBans.Settings.getDouble("minRep");
                     int maxAlts = MCBans.Settings.getInteger("maxAlts");
-                    if (s3.length >= 4) {
+                    if (s3.length == 6) {
                         if (s3[0].equals("l") || s3[0].equals("g") || s3[0].equals("t") || s3[0].equals("i") || s3[0].equals("s")) {
                             event.disallow(Result.KICK_BANNED, s3[1]);
                             return;
@@ -86,6 +86,8 @@ public class PlayerListener implements Listener {
                         if (MCBans.Settings.getBoolean("isDebug")) {
                             System.out.println("[MCBans] " + event.getName() + " authenticated with " + s3[2] + " rep");
                         }
+                    }else{
+                        MCBans.log( LogLevels.WARNING, "Invalid response! (Player: " + event.getName() + ")");
                     }
                 }
             }
