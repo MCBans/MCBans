@@ -217,7 +217,7 @@ public class Ban implements Runnable {
         HashMap<String, String> response = webHandle.mainRequest(url_items);
         try {
             if (!response.containsKey("result")) {
-                MCBans.broadcastPlayer(PlayerAdmin, ChatColor.DARK_RED + " MCBans down, adding local ban, unban with /pardon");
+                MCBans.broadcastPlayer(PlayerAdmin, ChatColor.DARK_RED + " MCBans API Servers down, adding local ban, unban with /pardon or /unban (essentials)");
                 OfflinePlayer d = MCBans.getServer().getOfflinePlayer(PlayerName);
                 if (!d.isBanned()) {
                     d.setBanned(true);
@@ -329,7 +329,7 @@ public class Ban implements Runnable {
             }
             MCBans.log(PlayerAdmin + " has tried to ban " + PlayerName + " with a global type ban [" + Reason + "]!");
         } catch (NullPointerException e) {
-            MCBans.broadcastPlayer(PlayerAdmin, ChatColor.DARK_RED + " MCBans down, adding local ban, unban with /pardon");
+            MCBans.broadcastPlayer(PlayerAdmin, ChatColor.DARK_RED + " MCBans API Servers down, adding local ban, unban with /pardon or /unban");
             OfflinePlayer d = MCBans.getServer().getOfflinePlayer(PlayerName);
             if (!d.isBanned()) {
                 d.setBanned(true);
