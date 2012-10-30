@@ -1,6 +1,8 @@
 package com.mcbans.firestar.mcbans;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import net.h31ix.anticheat.Anticheat;
 
@@ -15,7 +17,8 @@ import com.mcbans.firestar.mcbans.bukkitListeners.PlayerListener;
 import com.mcbans.firestar.mcbans.callBacks.BanSync;
 import com.mcbans.firestar.mcbans.callBacks.MainCallBack;
 import com.mcbans.firestar.mcbans.callBacks.serverChoose;
-import com.mcbans.firestar.mcbans.commands.CommandHandler;
+import com.mcbans.firestar.mcbans.commands.BaseCommand;
+import com.mcbans.firestar.mcbans.commands.MCBansCommandHandler;
 import com.mcbans.firestar.mcbans.log.ActionLog;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.log.Logger;
@@ -27,7 +30,7 @@ import fr.neatmonster.nocheatplus.NoCheatPlus;
 public class BukkitInterface extends JavaPlugin {
     private static BukkitInterface instance;
 
-    private CommandHandler commandHandle;
+    private MCBansCommandHandler commandHandler;
     private PlayerListener bukkitPlayer = new PlayerListener(this);
     public int taskID = 0;
     public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
@@ -111,7 +114,8 @@ public class BukkitInterface extends JavaPlugin {
         Perms.setupPermissionHandler();
 
         // regist commands
-        commandHandle = new CommandHandler(Settings, this);
+        commandHandler = new MCBansCommandHandler(this, Settings);
+        registerCommands();
 
         MainCallBack thisThread = new MainCallBack(this);
         callbackThread = new Thread(thisThread);
@@ -138,8 +142,22 @@ public class BukkitInterface extends JavaPlugin {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-        return commandHandle.execCommand(command.getName(), args, sender);
+    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args){
+        return commandHandler.onCommand(sender, command, label, args);
+    }
+
+    @Override
+    public List<String> onTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args){
+        return commandHandler.onTabComplete(sender, command, alias, args);
+    }
+
+    private void registerCommands(){
+        List<BaseCommand> cmds = new ArrayList<BaseCommand>();
+        // TODO: add commands here
+
+        for (final BaseCommand cmd : cmds){
+            commandHandler.registerCommand(cmd);
+        }
     }
 
     public void checkPlugin(boolean startup){
