@@ -1,5 +1,16 @@
 package com.mcbans.firestar.mcbans;
 
+import java.util.HashMap;
+
+import net.h31ix.anticheat.Anticheat;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.mcbans.firestar.mcbans.bukkitListeners.PlayerListener;
 import com.mcbans.firestar.mcbans.callBacks.BanSync;
 import com.mcbans.firestar.mcbans.callBacks.MainCallBack;
@@ -11,20 +22,7 @@ import com.mcbans.firestar.mcbans.log.Logger;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 
-import de.diddiz.LogBlock.LogBlock;
 import fr.neatmonster.nocheatplus.NoCheatPlus;
-
-
-import net.h31ix.anticheat.Anticheat;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.HashMap;
 
 public class BukkitInterface extends JavaPlugin {
     private static BukkitInterface instance;
@@ -175,12 +173,24 @@ public class BukkitInterface extends JavaPlugin {
         }
     }
 
-    public void broadcastPlayer(String Player, String msg) {
-        Player target = this.getServer().getPlayer(Player);
+    public void broadcastPlayer(final String playerName, String msg) {
+        final Player target = this.getServer().getPlayer(playerName);
         if (target != null) {
             target.sendMessage(Settings.getPrefix() + " " + msg);
         } else {
             System.out.print(Settings.getPrefix() + " " + msg);
+        }
+    }
+
+    public void broadcastPlayer(final Player target, String msg) {
+        if (target != null && msg != null){
+            target.sendMessage(Settings.getPrefix() + " " + msg);
+        }
+    }
+
+    public void broadcastPlayer(final CommandSender target, String msg) {
+        if (target != null && msg != null){
+            target.sendMessage(Settings.getPrefix() + " " + msg);
         }
     }
 
@@ -198,10 +208,6 @@ public class BukkitInterface extends JavaPlugin {
 
     public RollbackHandler getRbHandler(){
         return this.rbHandler;
-    }
-
-    public void broadcastPlayer(Player target, String msg) {
-        target.sendMessage(Settings.getPrefix() + " " + msg);
     }
 
     public Plugin pluginInterface(String pluginName) {
