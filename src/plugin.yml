@@ -1,11 +1,11 @@
 ##  Plugin Information  ##
-name: mcbans
+name: MCBans
 main: com.mcbans.firestar.mcbans.BukkitInterface
 version: 3.9
 description: A global banning solution
 website: http://mcbans.com/
 softdepend: [NoCheatPlus, AntiCheat, LogBlock, HawkEye, CoreProtect, Vault, PermissionsEx]
-author: Firestar, Syamn
+author: Firestar, Syamn, bands96
 commands:
   kick:
     description: kicks a user
