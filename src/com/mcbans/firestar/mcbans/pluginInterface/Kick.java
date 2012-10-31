@@ -46,7 +46,7 @@ public class Kick implements Runnable {
             MCBans.getServer().getScheduler().scheduleSyncDelayedTask(MCBans, new Runnable() {
                 @Override
                 public void run() {
-                    player.kickPlayer(MCBans.Language.getFormat("kickMessagePlayer", player.getName(), PlayerAdmin, Reason));
+                    player.kickPlayer(MCBans.Language.getFormat(ChatColor.GREEN + "kickMessagePlayer", player.getName(), PlayerAdmin, Reason));
                 }
             }, 1L);
             MCBans.broadcastAll(ChatColor.GREEN

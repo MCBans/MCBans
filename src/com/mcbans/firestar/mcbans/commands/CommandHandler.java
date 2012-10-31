@@ -171,6 +171,8 @@ public class CommandHandler {
                 MCBans.broadcastPlayer(CommandSend, ChatColor.WHITE + "/mcbans reload" + ChatColor.BLUE + " Reload settings and language file");
                 MCBans.broadcastPlayer(CommandSend, ChatColor.WHITE + "/mcbans sync" + ChatColor.BLUE + " Force a sync to occur");
                 MCBans.broadcastPlayer(CommandSend, ChatColor.WHITE + "/mcbans user" + ChatColor.BLUE + " Help with user management commands");
+                MCBans.broadcastPlayer(CommandSend, ChatColor.WHITE + "/mcbans disputes" + ChatColor.BLUE + " Instructions on How one goes about checking/dealing with disputes against Global bans.");
+                
             } else if (args.length > 1) {
                 if (Perms.ADMIN.has(from)) {
                     if (args[0].equalsIgnoreCase("get")) {
@@ -251,6 +253,9 @@ public class CommandHandler {
                     MCBans.broadcastPlayer(CommandSend, ChatColor.WHITE + "/mcbans get call" + ChatColor.BLUE
                             + " Time until callback thread sends data.");
                     MCBans.broadcastPlayer(CommandSend, ChatColor.WHITE + "/mcbans get sync" + ChatColor.BLUE + " Time until next sync.");
+                } else if (args[0].equalsIgnoreCase("disputes")) {
+                	MCBans.broadcastPlayer(CommandSend, ChatColor.GREEN + " To Dispute you need to go to http://my.mcbans.com and Navigate to your server dashboard.");
+                	
                 } else if (args[0].equalsIgnoreCase("reload")) {
                     if (Perms.ADMIN.has(from)) {
                         MCBans.broadcastPlayer(CommandSend, ChatColor.AQUA + "Reloading Settings..");

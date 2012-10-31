@@ -44,13 +44,15 @@ public class Lookup implements Runnable {
             if (result.getJSONArray("global").length() > 0) {
                 MCBans.broadcastPlayer(PlayerAdmin, ChatColor.DARK_RED + "Global bans");
                 for (int v = 0; v < result.getJSONArray("global").length(); v++) {
-                    MCBans.broadcastPlayer(PlayerAdmin, result.getJSONArray("global").getString(v));
+                    MCBans.broadcastPlayer(ChatColor.YELLOW + PlayerAdmin, result.getJSONArray("global").getString(v));
+                  //TODO: Colour Server Ban Listings
                 }
             }
             if (result.getJSONArray("local").length() > 0) {
                 MCBans.broadcastPlayer(PlayerAdmin, ChatColor.GOLD + "Local bans");
                 for (int v = 0; v < result.getJSONArray("local").length(); v++) {
-                    MCBans.broadcastPlayer(PlayerAdmin, result.getJSONArray("local").getString(v));
+                    MCBans.broadcastPlayer(ChatColor.YELLOW + PlayerAdmin, result.getJSONArray("local").getString(v));
+                    //TODO: Colour Server Ban Listings
                 }
             }
             if (result.getJSONArray("other").length() > 0) {
