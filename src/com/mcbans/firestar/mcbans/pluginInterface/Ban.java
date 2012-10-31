@@ -1,5 +1,15 @@
 package com.mcbans.firestar.mcbans.pluginInterface;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import net.h31ix.anticheat.api.AnticheatAPI;
+
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.events.PlayerBanEvent;
 import com.mcbans.firestar.mcbans.events.PlayerBannedEvent;
@@ -12,26 +22,8 @@ import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
-import de.diddiz.LogBlock.BlockChange;
-import de.diddiz.LogBlock.QueryParams;
-import de.diddiz.LogBlock.QueryParams.BlockChangeType;
 import fr.neatmonster.nocheatplus.checks.ViolationHistory;
 import fr.neatmonster.nocheatplus.checks.ViolationHistory.ViolationLevel;
-
-
-import net.h31ix.anticheat.api.AnticheatAPI;
-
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.*;
 
 public class Ban implements Runnable {
     private BukkitInterface MCBans;

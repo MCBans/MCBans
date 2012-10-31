@@ -1,11 +1,11 @@
 package com.mcbans.firestar.mcbans.pluginInterface;
 
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.Settings;
 import com.mcbans.firestar.mcbans.events.PlayerKickEvent;
-
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 @SuppressWarnings("unused")
 public class Kick implements Runnable {

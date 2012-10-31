@@ -3,14 +3,11 @@ package com.mcbans.firestar.mcbans.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import com.mcbans.firestar.mcbans.BanType;
 import com.mcbans.firestar.mcbans.callBacks.ManualResync;
 import com.mcbans.firestar.mcbans.callBacks.ManualSync;
 import com.mcbans.firestar.mcbans.callBacks.Ping;
 import com.mcbans.firestar.mcbans.callBacks.serverChoose;
 import com.mcbans.firestar.mcbans.permission.Perms;
-import com.mcbans.firestar.mcbans.pluginInterface.Ban;
-import com.mcbans.firestar.mcbans.util.Util;
 
 public class CommandMcbans extends BaseCommand{
     public CommandMcbans(){
@@ -23,6 +20,7 @@ public class CommandMcbans extends BaseCommand{
 
     @Override
     public void execute() {
+        /* General Help */
         if (args.size() == 0){
             send(ChatColor.BLUE + "MCBans Help");
             send(ChatColor.WHITE + "/mcbans banning" + ChatColor.BLUE + " Help with banning/unban command");
@@ -34,7 +32,8 @@ public class CommandMcbans extends BaseCommand{
             return;
         }
 
-        String first = args.remove(0);
+        final String first = args.remove(0);
+        /* Banning Help */
         if (first.equalsIgnoreCase("banning")){
             send(ChatColor.WHITE + "/ban <name> <reason>" + ChatColor.BLUE + " Local ban user");
             send(ChatColor.WHITE + "/ban <name> g <reason>" + ChatColor.BLUE + " Global ban user");
@@ -46,11 +45,13 @@ public class CommandMcbans extends BaseCommand{
             send(ChatColor.WHITE + "/rban <name> t <time> <m or h or d> <reason>" + ChatColor.BLUE + " Rollback and temporarily ban");
             return;
         }
+        /* User Help */
         if (first.equalsIgnoreCase("user")){
             send(ChatColor.WHITE + "/lookup <name>" + ChatColor.BLUE + " Lookup the reputation information");
             send(ChatColor.WHITE + "/kick <name> <reason>" + ChatColor.BLUE + " Kick user from the server");
             return;
         }
+        /* Check response time */
         if (first.equalsIgnoreCase("ping")){
             if (!Perms.ADMIN.has(sender)){
                 send(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
@@ -60,6 +61,7 @@ public class CommandMcbans extends BaseCommand{
             (new Thread(manualPingCheck)).start();
             return;
         }
+        /* Sync banned-players.txt */
         if (first.equalsIgnoreCase("sync")){
             if (!Perms.ADMIN.has(sender)){
                 send(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
@@ -73,8 +75,8 @@ public class CommandMcbans extends BaseCommand{
                 (new Thread(manualSyncBanRunner)).start();
             }else{
                 long syncInterval = config.getInteger("syncInterval");
-                if(syncInterval<((60)*5)){
-                    syncInterval=((60)*5);
+                if(syncInterval < (60 * 5)){ // minimum 5 minutes
+                    syncInterval = 60 * 5;
                 }
                 long ht = (plugin.lastSync+syncInterval) - (System.currentTimeMillis()/1000);
                 if (ht > 10) {
@@ -87,34 +89,38 @@ public class CommandMcbans extends BaseCommand{
             }
             return;
         }
+        /* Get next scheduling time */
         if (first.equalsIgnoreCase("get")){
             if (args.size() > 0 && args.get(0).equalsIgnoreCase("call")){
                 long callBackInterval = 0;
-                callBackInterval = (60)*config.getInteger("callBackInterval");
-                if(callBackInterval<((60)*15)){
-                    callBackInterval=((60)*15);
+                callBackInterval = 60 * config.getInteger("callBackInterval");
+                if(callBackInterval < (60 * 15)){
+                    callBackInterval = (60 * 15);
                 }
-                String r = this.timeRemain( (plugin.lastCallBack+callBackInterval) - (System.currentTimeMillis()/1000) );
+                String r = this.timeRemain( (plugin.lastCallBack + callBackInterval) - (System.currentTimeMillis() / 1000) );
                 send(ChatColor.GOLD + r + " until next callback request.");
             }
             else if (args.size() > 0 && args.get(0).equalsIgnoreCase("sync")){
                 long syncInterval = config.getInteger("syncInterval");
-                if(syncInterval<((60)*5)){
-                    syncInterval=((60)*5);
+                if(syncInterval < (60 * 5)){
+                    syncInterval = (60 * 5);
                 }
-                String r = this.timeRemain( (plugin.lastSync+syncInterval) - (System.currentTimeMillis()/1000) );
+                String r = this.timeRemain( (plugin.lastSync + syncInterval) - (System.currentTimeMillis() / 1000) );
                 send(ChatColor.GOLD + r + " until next sync.");
-            }else{
+            }
+            else{
                 send(ChatColor.WHITE + "/mcbans get call" + ChatColor.BLUE + " Time until callback thread sends data.");
                 send(ChatColor.WHITE + "/mcbans get sync" + ChatColor.BLUE + " Time until next sync.");
             }
             return;
         }
+        /* Reload plugin */
         if (first.equalsIgnoreCase("reload")){
             if (!Perms.ADMIN.has(sender)){
                 send(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
                 return;
             }
+
             send(ChatColor.AQUA + "Reloading Settings..");
             Integer reloadSettings = plugin.Settings.reload();
             if (reloadSettings == -2) {

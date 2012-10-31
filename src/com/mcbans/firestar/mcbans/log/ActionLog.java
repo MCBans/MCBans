@@ -4,13 +4,13 @@ package com.mcbans.firestar.mcbans.log;
  * Utilities log (FROM: http://www.rgagnon.com)
  */
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
-
 import java.io.FileWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.mcbans.firestar.mcbans.BukkitInterface;
 
 public class ActionLog {
     private static String logFile = "";

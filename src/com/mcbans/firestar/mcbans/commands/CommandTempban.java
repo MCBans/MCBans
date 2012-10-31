@@ -1,6 +1,5 @@
 package com.mcbans.firestar.mcbans.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.mcbans.firestar.mcbans.BanType;
@@ -37,5 +36,4 @@ public class CommandTempban extends BaseCommand{
     public boolean permission(CommandSender sender) {
         return BanType.TEMP.getPermission().has(sender);
     }
-
 }

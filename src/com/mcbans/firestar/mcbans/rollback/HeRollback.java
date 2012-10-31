@@ -5,14 +5,11 @@ import java.util.Calendar;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 
-import uk.co.oliwali.HawkEye.HawkEye;
 import uk.co.oliwali.HawkEye.PlayerSession;
+import uk.co.oliwali.HawkEye.Rollback.RollbackType;
 import uk.co.oliwali.HawkEye.SearchParser;
 import uk.co.oliwali.HawkEye.SessionManager;
-import uk.co.oliwali.HawkEye.Rollback.RollbackType;
-import uk.co.oliwali.HawkEye.callbacks.BaseCallback;
 import uk.co.oliwali.HawkEye.callbacks.RollbackCallback;
 import uk.co.oliwali.HawkEye.database.SearchQuery;
 import uk.co.oliwali.HawkEye.database.SearchQuery.SearchDir;

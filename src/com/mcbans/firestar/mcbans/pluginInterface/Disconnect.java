@@ -1,9 +1,9 @@
 package com.mcbans.firestar.mcbans.pluginInterface;
 
+import java.util.HashMap;
+
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
-
-import java.util.HashMap;
 
 public class Disconnect implements Runnable {
     private BukkitInterface MCBans;

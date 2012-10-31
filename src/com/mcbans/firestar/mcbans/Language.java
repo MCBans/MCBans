@@ -1,9 +1,9 @@
 package com.mcbans.firestar.mcbans;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Language {
     private BukkitInterface MCBans;

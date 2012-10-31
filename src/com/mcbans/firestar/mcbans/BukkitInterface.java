@@ -18,7 +18,15 @@ import com.mcbans.firestar.mcbans.callBacks.BanSync;
 import com.mcbans.firestar.mcbans.callBacks.MainCallBack;
 import com.mcbans.firestar.mcbans.callBacks.serverChoose;
 import com.mcbans.firestar.mcbans.commands.BaseCommand;
-import com.mcbans.firestar.mcbans.commands.*;
+import com.mcbans.firestar.mcbans.commands.CommandBan;
+import com.mcbans.firestar.mcbans.commands.CommandGban;
+import com.mcbans.firestar.mcbans.commands.CommandKick;
+import com.mcbans.firestar.mcbans.commands.CommandLookup;
+import com.mcbans.firestar.mcbans.commands.CommandMcbans;
+import com.mcbans.firestar.mcbans.commands.CommandRban;
+import com.mcbans.firestar.mcbans.commands.CommandTempban;
+import com.mcbans.firestar.mcbans.commands.CommandUnban;
+import com.mcbans.firestar.mcbans.commands.MCBansCommandHandler;
 import com.mcbans.firestar.mcbans.log.ActionLog;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.log.Logger;
@@ -114,7 +122,7 @@ public class BukkitInterface extends JavaPlugin {
         Perms.setupPermissionHandler();
 
         // regist commands
-        commandHandler = new MCBansCommandHandler(this, Settings);
+        commandHandler = new MCBansCommandHandler(this);
         registerCommands();
 
         MainCallBack thisThread = new MainCallBack(this);

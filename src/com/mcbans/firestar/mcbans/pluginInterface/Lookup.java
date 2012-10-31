@@ -1,14 +1,15 @@
 package com.mcbans.firestar.mcbans.pluginInterface;
 
+import java.util.HashMap;
+
+import org.bukkit.ChatColor;
+
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
-import org.bukkit.ChatColor;
-
-import java.util.HashMap;
 
 public class Lookup implements Runnable {
     private BukkitInterface MCBans;
