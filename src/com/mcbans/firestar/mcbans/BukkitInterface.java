@@ -18,7 +18,7 @@ import com.mcbans.firestar.mcbans.callBacks.BanSync;
 import com.mcbans.firestar.mcbans.callBacks.MainCallBack;
 import com.mcbans.firestar.mcbans.callBacks.serverChoose;
 import com.mcbans.firestar.mcbans.commands.BaseCommand;
-import com.mcbans.firestar.mcbans.commands.MCBansCommandHandler;
+import com.mcbans.firestar.mcbans.commands.*;
 import com.mcbans.firestar.mcbans.log.ActionLog;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.log.Logger;
@@ -153,7 +153,19 @@ public class BukkitInterface extends JavaPlugin {
 
     private void registerCommands(){
         List<BaseCommand> cmds = new ArrayList<BaseCommand>();
-        // TODO: add commands here
+        // Banning Commands
+        cmds.add(new CommandBan());
+        cmds.add(new CommandGban());
+        cmds.add(new CommandTempban());
+        cmds.add(new CommandRban());
+
+        // Other action commands
+        cmds.add(new CommandUnban());
+        cmds.add(new CommandKick());
+
+        // Other commands
+        cmds.add(new CommandLookup());
+        cmds.add(new CommandMcbans());
 
         for (final BaseCommand cmd : cmds){
             commandHandler.registerCommand(cmd);
@@ -226,6 +238,10 @@ public class BukkitInterface extends JavaPlugin {
 
     public RollbackHandler getRbHandler(){
         return this.rbHandler;
+    }
+
+    public MCBansCommandHandler getCmdHandler(){
+        return this.commandHandler;
     }
 
     public Plugin pluginInterface(String pluginName) {
