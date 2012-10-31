@@ -1,0 +1,72 @@
+3.9 R2 [Next Release]:
+- Add NoCheatPlus, AntiCheat data sending to mcbans
+- Add support Vault provides other permission plugin
+- Rewrite permission structure and permission node
+- Rewrite command structure
+- Fixed minor exception while player joining the server
+
+3.9 R1 DIAMOND:
+- Added Rollback for; CoreProtect, Hawkeye, LogBlock.
+- Added "/mcbans sync all" to force a resync
+- Added throttling to syncing/callback
+- Added Events for plugin actions
+- Removed second call to mcbans API (performance increase)
+- Removed NoCheatPlus data sending to mcbans (may return)
+- Removed Logblock data sent to mcbans
+- Fixed mcbans get call/sync to proper times to next action
+
+3.8 R3:
+- Sync race condition fixed
+- (Alpha) Banning when MCBans is down
+- Fixed async login
+
+3.8 R2:
+- Added sync system ( uses banned-players.txt )
+- Added new mcbans commands
+- Added API Server selecter (no longer multiple jars)
+- Added response time checks
+- Added proper threading on login ( Thank you Bukkit team !!! )
+- Added IP locks ( MCBans donators/premium users )
+- Added session protection ( MCBans donators/premium users )
+- Added bans viewable on login ( Global only )
+- Added caching on certain permissions
+- Added mcbans.ban.rollback
+- Added NoCheatPlus integration
+- Added Rollback bans /rban
+- Added rollback on every ban (default: disabled)
+- Added tempban to /ban
+- Added /tban, /gban
+- Fixed sync and callback threads
+- Fixed Åg/mcbans get callÅh showing negative time.
+- Fixed Åg/mcbans syncÅh to the permission Ågmcbans.adminÅh
+- Fixed Åg/mcbans get call/syncÅh to the permission Ågmcbans.adminÅh
+- Removed backup system
+- Removed Connection Throttle
+- Removed core.yml
+- Removed language files from mcbans folder
+- Removed downloader (used to grab settings files and language files)
+- Removed ban flags
+
+3.8 R1:
+- Added sync system ( uses banned-players.txt )
+- Added new mcbans commands
+- Added API Server selecter (no longer multiple jars)
+- Added response time checks
+- Added proper threading on login ( Thank you Bukkit team !!! )
+- Added IP locks ( MCBans donators/premium users )
+- Added session protection ( MCBans donators/premium users )
+- Added bans viewable on login ( Global only )
+- Added caching on certain permissions
+- Removed backup system
+- Removed Connection Throttle
+- Removed core.yml
+- Removed language files from mcbans folder
+- Removed downloader (used to grab settings files and language files)
+
+3.7 Stable:
+Fixed Threading
+Fixed Settings Download + Language
+Added mcbans.kick.view (Node allows players (or group) to see when an admin kicks a player)
+Added mcbans.alts.view (Node allows players (or group) to see alts of a player when they join)
+Added mcbans.alts.hide (Node adds players (or group) to "ignore" alt account list viewing when this they join the server).
+R4-R5+ compatible
