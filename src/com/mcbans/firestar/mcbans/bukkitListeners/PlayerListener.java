@@ -24,12 +24,12 @@ import com.mcbans.firestar.mcbans.pluginInterface.Disconnect;
 public class PlayerListener implements Listener {
     private BukkitInterface MCBans;
 
-    public PlayerListener(BukkitInterface plugin) {
+    public PlayerListener(final BukkitInterface plugin) {
         MCBans = plugin;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onAsyncPlayerPreLoginEvent(AsyncPlayerPreLoginEvent event) {
+    public void onAsyncPlayerPreLoginEvent(final AsyncPlayerPreLoginEvent event) {
         try {
             int check = 1;
             while (MCBans.notSelectedServer) {
@@ -98,7 +98,7 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(final PlayerJoinEvent event) {
         String playerName = event.getPlayer().getName();
         HashMap<String,String> pcache = MCBans.playerCache.remove(playerName);
         if(pcache == null) return;
@@ -121,7 +121,7 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerQuit(PlayerQuitEvent event) {
+    public void onPlayerQuit(final PlayerQuitEvent event) {
         Disconnect disconnectHandler = new Disconnect(MCBans, event.getPlayer().getName());
         (new Thread(disconnectHandler)).start();
     }

@@ -76,6 +76,7 @@ public class BukkitInterface extends JavaPlugin {
                 syncBan.interrupt();
             }
         }
+
         log(LogLevels.INFO, "MCBans Disabled");
     }
 
@@ -87,7 +88,7 @@ public class BukkitInterface extends JavaPlugin {
         // check online-mode
         if (!this.getServer().getOnlineMode()) {
             logger.log(LogLevels.FATAL, "MCBans: Your server is not in online mode!");
-            pm.disablePlugin(pluginInterface("mcbans"));
+            pm.disablePlugin(this);
             return;
         }
 
@@ -97,7 +98,7 @@ public class BukkitInterface extends JavaPlugin {
         // load configuration
         Settings = new Settings();
         if (Settings.exists) {
-            pm.disablePlugin(pluginInterface("mcbans"));
+            pm.disablePlugin(this);
             return;
         }
         this.apiKey = Settings.getString("apiKey");
@@ -180,7 +181,7 @@ public class BukkitInterface extends JavaPlugin {
         }
     }
 
-    public void checkPlugin(boolean startup){
+    public void checkPlugin(final boolean startup){
         // Check NoCheatPlus
         Plugin checkNCP = getServer().getPluginManager().getPlugin("NoCheatPlus");
         this.ncpEnabled = (checkNCP != null && checkNCP instanceof NoCheatPlus);
@@ -246,14 +247,6 @@ public class BukkitInterface extends JavaPlugin {
 
     public RollbackHandler getRbHandler(){
         return this.rbHandler;
-    }
-
-    public MCBansCommandHandler getCmdHandler(){
-        return this.commandHandler;
-    }
-
-    public Plugin pluginInterface(String pluginName) {
-        return this.getServer().getPluginManager().getPlugin(pluginName);
     }
 
     public static BukkitInterface getInstance(){
