@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.mcbans.firestar.mcbans.BanType;
+import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.pluginInterface.Ban;
 import com.mcbans.firestar.mcbans.util.Util;
 
@@ -17,7 +18,7 @@ public class CommandBan extends BaseCommand{
     }
 
     @Override
-    public void execute() {
+    public void execute() throws CommandException {
         args.remove(0); //remove target
 
         // check BanType
@@ -35,8 +36,7 @@ public class CommandBan extends BaseCommand{
 
         // check permission
         if (!type.getPermission().has(sender)){
-            plugin.broadcastPlayer(sender, ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
-            return;
+            throw new CommandException(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
         }
 
         String reason = null;

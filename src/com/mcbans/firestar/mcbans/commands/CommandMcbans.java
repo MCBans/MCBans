@@ -7,6 +7,7 @@ import com.mcbans.firestar.mcbans.callBacks.ManualResync;
 import com.mcbans.firestar.mcbans.callBacks.ManualSync;
 import com.mcbans.firestar.mcbans.callBacks.Ping;
 import com.mcbans.firestar.mcbans.callBacks.serverChoose;
+import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.permission.Perms;
 
 public class CommandMcbans extends BaseCommand{
@@ -19,7 +20,7 @@ public class CommandMcbans extends BaseCommand{
     }
 
     @Override
-    public void execute() {
+    public void execute() throws CommandException {
         /* General Help */
         if (args.size() == 0){
             send(ChatColor.BLUE + "MCBans Help");
@@ -54,8 +55,7 @@ public class CommandMcbans extends BaseCommand{
         /* Check response time */
         if (first.equalsIgnoreCase("ping")){
             if (!Perms.ADMIN.has(sender)){
-                send(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
-                return;
+                throw new CommandException(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
             }
             Ping manualPingCheck = new Ping(plugin, senderName);
             (new Thread(manualPingCheck)).start();
@@ -64,8 +64,7 @@ public class CommandMcbans extends BaseCommand{
         /* Sync banned-players.txt */
         if (first.equalsIgnoreCase("sync")){
             if (!Perms.ADMIN.has(sender)){
-                send(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
-                return;
+                throw new CommandException(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
             }
 
             // Check if all sync
@@ -78,13 +77,13 @@ public class CommandMcbans extends BaseCommand{
                 if(syncInterval < (60 * 5)){ // minimum 5 minutes
                     syncInterval = 60 * 5;
                 }
-                long ht = (plugin.lastSync+syncInterval) - (System.currentTimeMillis()/1000);
+                long ht = (plugin.lastSync + syncInterval) - (System.currentTimeMillis() / 1000);
                 if (ht > 10) {
                     send(ChatColor.GREEN + " Sync has started!");
                     ManualSync manualSyncBanRunner = new ManualSync(plugin, senderName);
                     (new Thread(manualSyncBanRunner)).start();
                 } else {
-                    send(ChatColor.RED + "[Unable] Sync will occur in less than 10 seconds!");
+                    throw new CommandException(ChatColor.RED + "[Unable] Sync will occur in less than 10 seconds!");
                 }
             }
             return;
@@ -117,8 +116,7 @@ public class CommandMcbans extends BaseCommand{
         /* Reload plugin */
         if (first.equalsIgnoreCase("reload")){
             if (!Perms.ADMIN.has(sender)){
-                send(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
-                return;
+                throw new CommandException(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
             }
 
             send(ChatColor.AQUA + "Reloading Settings..");
@@ -143,7 +141,7 @@ public class CommandMcbans extends BaseCommand{
         }
 
         // Format error
-        send(ChatColor.DARK_RED + plugin.Language.getFormat("formatError"));
+        throw new CommandException(ChatColor.DARK_RED + plugin.Language.getFormat("formatError"));
     }
 
     private void send(final String msg){

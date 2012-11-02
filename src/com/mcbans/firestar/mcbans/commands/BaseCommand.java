@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.Settings;
+import com.mcbans.firestar.mcbans.exception.CommandException;
 
 public abstract class BaseCommand {
     // Set this class
@@ -89,15 +90,12 @@ public abstract class BaseCommand {
         try {
             execute();
         }
-        catch (Exception ex) {
+        catch (CommandException ex) {
             Throwable error = ex;
-            /*
-            TODO: change this
             while (error instanceof Exception){
-                Actions.message(sender, null, error.getMessage());
+                plugin.broadcastPlayer(sender, error.getMessage());
                 error = error.getCause();
             }
-            */
         }
 
         return true;
@@ -106,7 +104,7 @@ public abstract class BaseCommand {
     /**
      * Execute command
      */
-    public abstract void execute();
+    public abstract void execute() throws CommandException;
 
     /**
      * TabComplete
