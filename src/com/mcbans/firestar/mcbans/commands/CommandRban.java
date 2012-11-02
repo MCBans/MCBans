@@ -38,7 +38,7 @@ public class CommandRban extends BaseCommand{
 
         // check permission
         if (!type.getPermission().has(sender)){
-            throw new CommandException(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
+            throw new CommandException(ChatColor.DARK_RED + plugin.language.getFormat("permissionDenied"));
         }
 
         String reason = null;
@@ -54,7 +54,7 @@ public class CommandRban extends BaseCommand{
 
             case GLOBAL:
                 if (args.size() == 0){
-                    plugin.broadcastPlayer(sender, ChatColor.DARK_RED + plugin.Language.getFormat("formatError"));
+                    plugin.broadcastPlayer(sender, ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
                     return;
                 }
                 reason = Util.join(args, " ");
@@ -63,7 +63,7 @@ public class CommandRban extends BaseCommand{
 
             case TEMP:
                 if (args.size() <= 2){
-                    plugin.broadcastPlayer(sender, ChatColor.DARK_RED + plugin.Language.getFormat("formatError"));
+                    plugin.broadcastPlayer(sender, ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
                     return;
                 }
                 final String duration = args.remove(0);

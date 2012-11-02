@@ -3,10 +3,10 @@ package com.mcbans.firestar.mcbans.log;
 import com.mcbans.firestar.mcbans.BukkitInterface;
 
 public class Logger {
-    private BukkitInterface MCBans = null;
+    private BukkitInterface plugin = null;
 
-    public Logger(final BukkitInterface p) {
-        MCBans = p;
+    public Logger(final BukkitInterface plugin) {
+        this.plugin = plugin;
     }
 
     public void log(final String message) {
@@ -26,7 +26,7 @@ public class Logger {
             break;
         case FATAL:
             System.out.print("[MCBans] [FATAL] " + message);
-            MCBans.getServer().getPluginManager().disablePlugin(MCBans);
+            plugin.getServer().getPluginManager().disablePlugin(plugin);
             break;
         default:
             System.out.print("[MCBans] " + message);

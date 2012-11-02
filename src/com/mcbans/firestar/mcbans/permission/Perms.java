@@ -87,7 +87,7 @@ public enum Perms {
     public void message(final String message){
         for (Player player : Bukkit.getServer().getOnlinePlayers()){
             if (this.has(player)){
-                player.sendMessage(BukkitInterface.getInstance().Settings.getPrefix() + " " + message);
+                player.sendMessage(BukkitInterface.getInstance().settings.getPrefix() + " " + message);
             }
         }
     }

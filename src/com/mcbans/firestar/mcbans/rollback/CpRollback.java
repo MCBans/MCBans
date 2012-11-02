@@ -17,24 +17,24 @@ public class CpRollback extends BaseRollback{
     private CoreProtectAPI cpAPI;
 
     @Override
-    public boolean rollback(CommandSender sender, String admin, String target) {
+    public boolean rollback(CommandSender sender, String senderName, String target) {
         if (cpAPI == null) return false;
 
         try {
             // TODO: check async? maybe not
             cpAPI.performRollback(
                     target,
-                    86400 * plugin.Settings.getInteger("backDaysAgo"),
+                    86400 * plugin.settings.getInteger("backDaysAgo"),
                     0, null, null, null);
         }catch (Exception e){
-            plugin.broadcastPlayer(admin, ChatColor.RED + "Unable to rollback player!");
-            if (plugin.Settings.getBoolean("isDebug")) {
+            plugin.broadcastPlayer(senderName, ChatColor.RED + "Unable to rollback player!");
+            if (plugin.settings.getBoolean("isDebug")) {
                 e.printStackTrace();
             }
             return false;
         }
 
-        plugin.broadcastPlayer(admin, ChatColor.GREEN + "Rollback successful!");
+        plugin.broadcastPlayer(senderName, ChatColor.GREEN + "Rollback successful!");
         return true;
     }
 

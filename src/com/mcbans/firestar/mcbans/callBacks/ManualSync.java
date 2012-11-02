@@ -11,19 +11,19 @@ import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 public class ManualSync implements Runnable {
-    private final BukkitInterface MCBans;
+    private final BukkitInterface plugin;
     private String commandSend = "";
-    public ManualSync(BukkitInterface p, String player){
-        MCBans = p;
-        commandSend = player;
+    public ManualSync(BukkitInterface plugin, String sender){
+        this.plugin = plugin;
+        this.commandSend = sender;
     }
     @Override
     public void run() {
-        if(MCBans.syncRunning==true){
-            MCBans.broadcastPlayer(commandSend, ChatColor.GREEN + " Sync already in progress!" );
+        if(plugin.syncRunning==true){
+            plugin.broadcastPlayer(commandSend, ChatColor.GREEN + " Sync already in progress!" );
             return;
         }
-        while(MCBans.notSelectedServer){
+        while(plugin.notSelectedServer){
             //waiting for server select
             try {
                 Thread.sleep(1000);
@@ -31,12 +31,12 @@ public class ManualSync implements Runnable {
             }
         }
         int fre = 0;
-        MCBans.syncRunning = true;
+        plugin.syncRunning = true;
         boolean goNext = true;
         while(goNext){
-            JsonHandler webHandle = new JsonHandler( MCBans );
+            JsonHandler webHandle = new JsonHandler( plugin );
             HashMap<String, String> url_items = new HashMap<String, String>();
-            url_items.put( "latestSync", String.valueOf(MCBans.lastID) );
+            url_items.put( "latestSync", String.valueOf(plugin.lastID) );
             url_items.put( "exec", "banSync" );
             JSONObject response = webHandle.hdl_jobj(url_items);
             try {
@@ -45,7 +45,7 @@ public class ManualSync implements Runnable {
                     if (response.getJSONArray("banned").length() > 0) {
                         for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
                             String[] plyer = response.getJSONArray("banned").getString(v).split(";");
-                            OfflinePlayer d = MCBans.getServer().getOfflinePlayer(plyer[0]);
+                            OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
                             if(d.isBanned()){
                                 if(plyer[1].equals("u")){
                                     d.setBanned(false);
@@ -61,7 +61,7 @@ public class ManualSync implements Runnable {
                 if(response.has("lastid")){
                     long h = response.getLong("lastid");
                     if(h != 0){
-                        MCBans.lastID = h;
+                        plugin.lastID = h;
                     }
                 }
                 if(response.has("more")){
@@ -77,8 +77,8 @@ public class ManualSync implements Runnable {
             } catch (InterruptedException e) {
             }
         }
-        MCBans.syncRunning = false;
-        MCBans.broadcastPlayer(commandSend, ChatColor.GREEN + " Sync finished, "+fre+" actions!" );
+        plugin.syncRunning = false;
+        plugin.broadcastPlayer(commandSend, ChatColor.GREEN + " Sync finished, "+fre+" actions!" );
     }
 
 }

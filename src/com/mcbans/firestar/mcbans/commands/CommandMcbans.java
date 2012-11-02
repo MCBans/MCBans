@@ -55,7 +55,7 @@ public class CommandMcbans extends BaseCommand{
         /* Check response time */
         if (first.equalsIgnoreCase("ping")){
             if (!Perms.ADMIN.has(sender)){
-                throw new CommandException(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
+                throw new CommandException(ChatColor.DARK_RED + plugin.language.getFormat("permissionDenied"));
             }
             Ping manualPingCheck = new Ping(plugin, senderName);
             (new Thread(manualPingCheck)).start();
@@ -64,7 +64,7 @@ public class CommandMcbans extends BaseCommand{
         /* Sync banned-players.txt */
         if (first.equalsIgnoreCase("sync")){
             if (!Perms.ADMIN.has(sender)){
-                throw new CommandException(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
+                throw new CommandException(ChatColor.DARK_RED + plugin.language.getFormat("permissionDenied"));
             }
 
             // Check if all sync
@@ -116,11 +116,11 @@ public class CommandMcbans extends BaseCommand{
         /* Reload plugin */
         if (first.equalsIgnoreCase("reload")){
             if (!Perms.ADMIN.has(sender)){
-                throw new CommandException(ChatColor.DARK_RED + plugin.Language.getFormat("permissionDenied"));
+                throw new CommandException(ChatColor.DARK_RED + plugin.language.getFormat("permissionDenied"));
             }
 
             send(ChatColor.AQUA + "Reloading Settings..");
-            Integer reloadSettings = plugin.Settings.reload();
+            Integer reloadSettings = plugin.settings.reload();
             if (reloadSettings == -2) {
                 send(ChatColor.RED + "Reload failed - File missing!");
             } else if (reloadSettings == -1) {
@@ -129,7 +129,7 @@ public class CommandMcbans extends BaseCommand{
                 send(ChatColor.GREEN + "Reload completed!");
             }
             send(ChatColor.AQUA + "Reloading Language File..");
-            boolean reloadLanguage = plugin.Language.reload();
+            boolean reloadLanguage = plugin.language.reload();
             if (!reloadLanguage) {
                 send(ChatColor.RED + "Reload failed - File missing!");
             } else {
@@ -141,7 +141,7 @@ public class CommandMcbans extends BaseCommand{
         }
 
         // Format error
-        throw new CommandException(ChatColor.DARK_RED + plugin.Language.getFormat("formatError"));
+        throw new CommandException(ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
     }
 
     private void send(final String msg){

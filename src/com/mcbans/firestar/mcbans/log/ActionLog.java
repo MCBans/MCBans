@@ -14,25 +14,25 @@ import com.mcbans.firestar.mcbans.BukkitInterface;
 
 public class ActionLog {
     private static String logFile = "";
-    private static BukkitInterface MCBans = null;
+    private static BukkitInterface plugin = null;
     private final static DateFormat df = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss ");
 
     public ActionLog(BukkitInterface p, String logfile) {
         logFile = logfile;
-        MCBans = p;
+        plugin = p;
     }
 
     public void write(String msg) {
-        if (MCBans.Settings.getBoolean("logEnable")) {
+        if (plugin.settings.getBoolean("logEnable")) {
             write(logFile, msg);
         }
     }
 
     public void write(Exception e) {
-        if (MCBans.Settings.getBoolean("logEnable")) {
+        if (plugin.settings.getBoolean("logEnable")) {
             write(logFile, stack2string(e));
         }
-        MCBans.log(stack2string(e));
+        plugin.log(stack2string(e));
     }
 
     public static void write(String file, String msg) {
@@ -45,7 +45,7 @@ public class ActionLog {
             aWriter.flush();
             aWriter.close();
         } catch (Exception e) {
-            MCBans.log(LogLevels.WARNING, stack2string(e));
+            plugin.log(LogLevels.WARNING, stack2string(e));
         }
     }
 

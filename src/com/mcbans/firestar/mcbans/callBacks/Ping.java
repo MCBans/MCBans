@@ -8,17 +8,17 @@ import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 public class Ping implements Runnable {
-    private final BukkitInterface MCBans;
+    private final BukkitInterface plugin;
     private String commandSend = "";
 
-    public Ping(BukkitInterface p, String player) {
-        MCBans = p;
-        commandSend = player;
+    public Ping(BukkitInterface plugin, String sender) {
+        this.plugin = plugin;
+        this.commandSend = sender;
     }
 
     @Override
     public void run() {
-        while (MCBans.notSelectedServer) {
+        while (plugin.notSelectedServer) {
             // waiting for server select
             try {
                 Thread.sleep(1000);
@@ -26,16 +26,16 @@ public class Ping implements Runnable {
             }
         }
         long pingTime = (System.currentTimeMillis());
-        JsonHandler webHandle = new JsonHandler(MCBans);
+        JsonHandler webHandle = new JsonHandler(plugin);
         HashMap<String, String> items = new HashMap<String, String>();
         items.put("exec", "check");
         String urlReq = webHandle.urlparse(items);
         String jsonText = webHandle.request_from_api(urlReq);
         if (jsonText.equals("up")) {
-            MCBans.broadcastPlayer(commandSend, ChatColor.GREEN + "API Server response time " + ((System.currentTimeMillis()) - pingTime)
+            plugin.broadcastPlayer(commandSend, ChatColor.GREEN + "API Server response time " + ((System.currentTimeMillis()) - pingTime)
                     + " milliseconds!");
         } else {
-            MCBans.broadcastPlayer(commandSend, ChatColor.RED + "API appears to be down!");
+            plugin.broadcastPlayer(commandSend, ChatColor.RED + "API appears to be down!");
         }
 
     }

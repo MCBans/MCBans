@@ -15,30 +15,30 @@ import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 public class ManualResync implements Runnable {
-    private final BukkitInterface MCBans;
+    private final BukkitInterface plugin;
     private String commandSend = "";
-    public ManualResync(BukkitInterface p, String player){
-        MCBans = p;
-        commandSend = player;
+    public ManualResync(BukkitInterface plugin, String sender){
+        this.plugin = plugin;
+        this.commandSend = sender;
     }
     @Override
     public void run() {
-        if(MCBans.syncRunning==true){
-            MCBans.broadcastPlayer(commandSend, ChatColor.GREEN + " Sync already in progress!" );
+        if(plugin.syncRunning==true){
+            plugin.broadcastPlayer(commandSend, ChatColor.GREEN + " Sync already in progress!" );
             return;
         }
-        MCBans.syncRunning = true;
+        plugin.syncRunning = true;
         boolean goNext = true;
         int f = 1;
-        MCBans.last_req=0;
-        MCBans.lastID = 0;
-        MCBans.timeRecieved = 0;
+        plugin.last_req=0;
+        plugin.lastID = 0;
+        plugin.timeRecieved = 0;
         while(goNext){
-            long startID = MCBans.lastID;
-            JsonHandler webHandle = new JsonHandler( MCBans );
+            long startID = plugin.lastID;
+            JsonHandler webHandle = new JsonHandler( plugin );
             HashMap<String, String> url_items = new HashMap<String, String>();
-            url_items.put( "latestSync", String.valueOf(MCBans.lastID) );
-            url_items.put( "timeRecieved", String.valueOf(MCBans.timeRecieved) );
+            url_items.put( "latestSync", String.valueOf(plugin.lastID) );
+            url_items.put( "timeRecieved", String.valueOf(plugin.timeRecieved) );
             url_items.put( "exec", "banSyncInitialNew" );
             JSONObject response = webHandle.hdl_jobj(url_items);
             try {
@@ -46,7 +46,7 @@ public class ManualResync implements Runnable {
                     if (response.getJSONArray("banned").length() > 0) {
                         for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
                             String[] plyer = response.getJSONArray("banned").getString(v).split(";");
-                            OfflinePlayer d = MCBans.getServer().getOfflinePlayer(plyer[0]);
+                            OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
                             if(d.isBanned()){
                                 if(plyer[1].equals("u")){
                                     d.setBanned(false);
@@ -59,13 +59,13 @@ public class ManualResync implements Runnable {
                         }
                     }
                 }
-                if(MCBans.lastID == 0){
+                if(plugin.lastID == 0){
                     if(response.has("timerecieved")){
-                        MCBans.timeRecieved = response.getLong("timerecieved");
+                        plugin.timeRecieved = response.getLong("timerecieved");
                     }
                 }
                 if(response.has("lastid")){
-                    MCBans.lastID = response.getLong("lastid");
+                    plugin.lastID = response.getLong("lastid");
                 }
                 if(response.has("more")){
                     goNext = true;
@@ -73,15 +73,15 @@ public class ManualResync implements Runnable {
                     goNext = false;
                 }
             } catch (JSONException e) {
-                if(MCBans.Settings.getBoolean("isDebug")){
+                if(plugin.settings.getBoolean("isDebug")){
                     e.printStackTrace();
                 }
             } catch (NullPointerException e) {
-                if(MCBans.Settings.getBoolean("isDebug")){
+                if(plugin.settings.getBoolean("isDebug")){
                     e.printStackTrace();
                 }
             }
-            if(MCBans.lastID == startID){
+            if(plugin.lastID == startID){
                 f++;
             }else{
                 f=1;
@@ -94,8 +94,8 @@ public class ManualResync implements Runnable {
             } catch (InterruptedException e) {
             }
         }
-        MCBans.syncRunning = false;
-        MCBans.broadcastPlayer(commandSend, ChatColor.GREEN + " Sync finished" );
+        plugin.syncRunning = false;
+        plugin.broadcastPlayer(commandSend, ChatColor.GREEN + " Sync finished" );
         this.save();
     }
     public void save(){
@@ -103,11 +103,11 @@ public class ManualResync implements Runnable {
             Writer writer = new OutputStreamWriter(
                     new FileOutputStream("plugins/mcbans/sync.last"), "UTF-8");
             BufferedWriter fout = new BufferedWriter(writer);
-            fout.write(String.valueOf(MCBans.lastID));
+            fout.write(String.valueOf(plugin.lastID));
             fout.close();
             writer.close();
         } catch (Exception e) {
-            if(MCBans.Settings.getBoolean("isDebug")){
+            if(plugin.settings.getBoolean("isDebug")){
                 e.printStackTrace();
             }
         }

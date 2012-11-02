@@ -9,54 +9,54 @@ import com.mcbans.firestar.mcbans.events.PlayerKickEvent;
 
 @SuppressWarnings("unused")
 public class Kick implements Runnable {
-    private Settings Config;
-    private BukkitInterface MCBans;
-    private String PlayerName = null;
-    private String PlayerAdmin = null;
-    private String Reason = null;
+    private Settings settings;
+    private BukkitInterface plugin;
+    private String playerName = null;
+    private String senderName = null;
+    private String reason = null;
 
-    public Kick(Settings cf, BukkitInterface p, String playerName, String playerAdmin, String reason) {
-        Config = cf;
-        MCBans = p;
-        PlayerName = playerName;
-        PlayerAdmin = playerAdmin;
-        Reason = reason;
+    public Kick(Settings settings, BukkitInterface plugin, String playerName, String senderName, String reason) {
+        this.settings = settings;
+        this.plugin = plugin;
+        this.playerName = playerName;
+        this.senderName = senderName;
+        this.reason = reason;
     }
 
     @Override
     public void run() {
-        while (MCBans.notSelectedServer) {
+        while (plugin.notSelectedServer) {
             // waiting for server select
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
             }
         }
-        final Player player = MCBans.getServer().getPlayer(PlayerName);
+        final Player player = plugin.getServer().getPlayer(playerName);
         if (player != null) {
             // Call PlayerKickEvent
-            PlayerKickEvent kickEvent = new PlayerKickEvent(PlayerName, PlayerAdmin, Reason);
-            MCBans.getServer().getPluginManager().callEvent(kickEvent);
+            PlayerKickEvent kickEvent = new PlayerKickEvent(playerName, senderName, reason);
+            plugin.getServer().getPluginManager().callEvent(kickEvent);
             if (kickEvent.isCancelled()){
                 return;
             }
-            Reason = kickEvent.getReason();
+            reason = kickEvent.getReason();
 
-            MCBans.log(PlayerAdmin + " has kicked " + player.getName() + " [" + Reason + "]");
-            MCBans.getServer().getScheduler().scheduleSyncDelayedTask(MCBans, new Runnable() {
+            plugin.log(senderName + " has kicked " + player.getName() + " [" + reason + "]");
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    player.kickPlayer(MCBans.Language.getFormat("kickMessagePlayer", player.getName(), PlayerAdmin, Reason));
+                    player.kickPlayer(plugin.language.getFormat("kickMessagePlayer", player.getName(), senderName, reason));
                 }
             }, 1L);
-            MCBans.broadcastAll(ChatColor.GREEN
-                    + MCBans.Language.getFormat("kickMessageBroadcast", PlayerName, PlayerAdmin, Reason, "%ADMIN% has kicked %PLAYER% [%REASON%]",
+            plugin.broadcastAll(ChatColor.GREEN
+                    + plugin.language.getFormat("kickMessageBroadcast", playerName, senderName, reason, "%ADMIN% has kicked %PLAYER% [%REASON%]",
                             true));
         } else {
-            MCBans.broadcastPlayer(
-                    PlayerAdmin,
+            plugin.broadcastPlayer(
+                    senderName,
                     ChatColor.DARK_RED
-                    + MCBans.Language.getFormat("kickMessageNoPlayer", PlayerName, PlayerAdmin, Reason, "No player with that name online!",
+                    + plugin.language.getFormat("kickMessageNoPlayer", playerName, senderName, reason, "No player with that name online!",
                             true));
         }
     }

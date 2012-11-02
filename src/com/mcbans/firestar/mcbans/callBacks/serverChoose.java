@@ -6,21 +6,21 @@ import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 public class serverChoose implements Runnable {
-    private final BukkitInterface MCBans;
+    private final BukkitInterface plugin;
 
-    public serverChoose(BukkitInterface p) {
-        MCBans = p;
+    public serverChoose(BukkitInterface plugin) {
+        this.plugin = plugin;
     }
 
     @Override
     public void run() {
-        MCBans.notSelectedServer = true;
-        MCBans.log("Looking for fastest api server!");
+        plugin.notSelectedServer = true;
+        plugin.log("Looking for fastest api server!");
         long d = 99999;
-        for (String server : MCBans.apiServers.split(",")) {
+        for (String server : plugin.apiServers.split(",")) {
             try {
                 long pingTime = (System.currentTimeMillis());
-                JsonHandler webHandle = new JsonHandler(MCBans);
+                JsonHandler webHandle = new JsonHandler(plugin);
                 HashMap<String, String> items = new HashMap<String, String>();
                 items.put("exec", "check");
                 String urlReq = webHandle.urlparse(items);
@@ -29,15 +29,15 @@ public class serverChoose implements Runnable {
                     long ft = ((System.currentTimeMillis()) - pingTime);
                     if (d > ft) {
                         d = ft;
-                        MCBans.apiServer = server;
-                        MCBans.log("API Server found: " + server + " :: response time: " + ft);
+                        plugin.apiServer = server;
+                        plugin.log("API Server found: " + server + " :: response time: " + ft);
                     }
                 }
             } catch (IllegalArgumentException e) {
             } catch (NullPointerException e) {
             }
         }
-        MCBans.log("Fastest server selected: " + MCBans.apiServer + " :: response time: " + d);
-        MCBans.notSelectedServer = false;
+        plugin.log("Fastest server selected: " + plugin.apiServer + " :: response time: " + d);
+        plugin.notSelectedServer = false;
     }
 }

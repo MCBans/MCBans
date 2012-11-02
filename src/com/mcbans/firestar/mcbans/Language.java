@@ -6,14 +6,14 @@ import java.io.InputStream;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Language {
-    private BukkitInterface MCBans;
+    private BukkitInterface plugin;
     private YamlConfiguration config;
 
     public Language(BukkitInterface mcbans) {
-        MCBans = mcbans;
+        plugin = mcbans;
         InputStream in = null;
         try {
-            in = Language.class.getClassLoader().getResourceAsStream("languages/" + MCBans.Settings.getString("language") + ".yml");
+            in = Language.class.getClassLoader().getResourceAsStream("languages/" + plugin.settings.getString("language") + ".yml");
         } catch (NullPointerException ex) {
         }
         config = YamlConfiguration.loadConfiguration(in);
@@ -35,7 +35,7 @@ public class Language {
     public boolean reload() {
         InputStream in;
         try {
-            in = Language.class.getClassLoader().getResourceAsStream("languages/" + MCBans.Settings.getString("language") + ".yml");
+            in = Language.class.getClassLoader().getResourceAsStream("languages/" + plugin.settings.getString("language") + ".yml");
         } catch (NullPointerException ex) {
             return false;
         }

@@ -13,10 +13,10 @@ public abstract class BaseRollback {
 
     public BaseRollback(final BukkitInterface plugin){
         this.plugin = plugin;
-        worlds = plugin.Settings.getString("affectedWorlds").split(",");
+        worlds = plugin.settings.getString("affectedWorlds").split(",");
     }
 
-    public abstract boolean rollback(final CommandSender sender, final String admin, final String target);
+    public abstract boolean rollback(final CommandSender sender, final String senderName, final String target);
 
     public boolean setPlugin(final Plugin plugin){
         return true;

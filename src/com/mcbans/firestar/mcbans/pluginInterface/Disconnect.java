@@ -6,27 +6,27 @@ import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 public class Disconnect implements Runnable {
-    private BukkitInterface MCBans;
-    private String PlayerName;
+    private BukkitInterface plugin;
+    private String playerName;
 
-    public Disconnect(BukkitInterface p, String Player) {
-        MCBans = p;
-        PlayerName = Player;
+    public Disconnect(BukkitInterface plugin, String playerName) {
+        this.plugin = plugin;
+        this.playerName = playerName;
     }
 
     @Override
     public void run() {
-        while (MCBans.notSelectedServer) {
+        while (plugin.notSelectedServer) {
             // waiting for server select
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
             }
         }
-        MCBans.log(PlayerName + " has disconnected!");
-        JsonHandler webhandle = new JsonHandler(MCBans);
+        plugin.log(playerName + " has disconnected!");
+        JsonHandler webhandle = new JsonHandler(plugin);
         HashMap<String, String> url_items = new HashMap<String, String>();
-        url_items.put("player", PlayerName);
+        url_items.put("player", playerName);
         url_items.put("exec", "playerDisconnect");
         webhandle.mainRequest(url_items);
     }

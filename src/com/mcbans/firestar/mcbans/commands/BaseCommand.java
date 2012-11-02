@@ -40,7 +40,7 @@ public abstract class BaseCommand {
         }
 
         this.plugin = plugin;
-        this.config = plugin.Settings;
+        this.config = plugin.settings;
         this.sender = sender;
         this.command = cmd;
 
@@ -52,7 +52,7 @@ public abstract class BaseCommand {
         // Check args size
         if (argLength > args.size()){
             //sendUsage();
-            plugin.broadcastPlayer(sender, ChatColor.DARK_RED + plugin.Language.getFormat("formatError"));
+            plugin.broadcastPlayer(sender, ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
             return true;
         }
 
@@ -69,7 +69,7 @@ public abstract class BaseCommand {
 
         // Check permission
         if (!permission(sender)){
-            plugin.broadcastPlayer(sender, plugin.Language.getFormat("permissionDenied"));
+            plugin.broadcastPlayer(sender, plugin.language.getFormat("permissionDenied"));
             //plugin.log(senderName + " has tried the command [" + command + "]!"); // maybe not needs command logger. Craftbukkit added this.
             //plugin.broadcastPlayer(sender, "&cYou don't have permission to use this!");
             return true;

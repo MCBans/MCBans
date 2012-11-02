@@ -17,10 +17,10 @@ public class LbRollback extends BaseRollback{
     private LogBlock logblock;
 
     @Override
-    public boolean rollback(CommandSender sender, String admin, String target) {
+    public boolean rollback(CommandSender sender, String senderName, String target) {
         if (logblock == null) return false;
 
-        plugin.broadcastPlayer(admin, ChatColor.GREEN + "Starting rollback..");
+        plugin.broadcastPlayer(senderName, ChatColor.GREEN + "Starting rollback..");
 
         for (String world : worlds) {
             QueryParams params = null;
@@ -28,14 +28,14 @@ public class LbRollback extends BaseRollback{
                 params = new QueryParams(logblock);
                 params.setPlayer(target);
                 //params.since = (time * plugin.Settings.getInteger("backDaysAgo"));
-                params.since = (1440 * plugin.Settings.getInteger("backDaysAgo"));
+                params.since = (1440 * plugin.settings.getInteger("backDaysAgo"));
                 params.world = plugin.getServer().getWorld(world);
                 params.silent = false;
 
                 this.logblock.getCommandsHandler().new CommandRollback(sender, params, true);
             } catch (Exception e) {
-                plugin.broadcastPlayer(admin, ChatColor.RED + "Unable to rollback player!");
-                if (plugin.Settings.getBoolean("isDebug")) {
+                plugin.broadcastPlayer(senderName, ChatColor.RED + "Unable to rollback player!");
+                if (plugin.settings.getBoolean("isDebug")) {
                     e.printStackTrace();
                 }
                 return false;

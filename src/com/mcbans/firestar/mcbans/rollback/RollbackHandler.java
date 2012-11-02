@@ -71,17 +71,17 @@ public class RollbackHandler {
     /**
      * Rollback with detected rollback method
      */
-    public boolean rollback(final String admin, final String target){
+    public boolean rollback(final String senderName, final String target){
         if (method == null){
             return false;
         }
 
         //worlds = plugin.Settings.getString("affectedWorlds").split(",");
 
-        CommandSender sender = plugin.getServer().getPlayer(admin);
+        CommandSender sender = plugin.getServer().getPlayer(senderName);
         if (sender == null) sender = plugin.getServer().getPlayer(target);
         if (sender == null) sender = plugin.getServer().getConsoleSender();
 
-        return method.rollback(sender, admin, target);
+        return method.rollback(sender, senderName, target);
     }
 }

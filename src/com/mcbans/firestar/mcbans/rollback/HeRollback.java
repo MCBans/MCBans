@@ -23,12 +23,12 @@ public class HeRollback extends BaseRollback{
     }
 
     @Override
-    public boolean rollback(CommandSender sender, String admin, String target) {
+    public boolean rollback(CommandSender sender, String senderName, String target) {
         PlayerSession session = SessionManager.getSession(sender);
 
         // Check if player already has a rollback processing
         if (session.doingRollback()){
-            plugin.broadcastPlayer(admin, ChatColor.RED + "Unable to rollback player! You already have a rollback processing!");
+            plugin.broadcastPlayer(senderName, ChatColor.RED + "Unable to rollback player! You already have a rollback processing!");
             return false;
         }
 
@@ -40,17 +40,17 @@ public class HeRollback extends BaseRollback{
             parser.worlds = worlds;
 
             Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DAY_OF_MONTH, -1 * plugin.Settings.getInteger("backDaysAgo"));
+            cal.add(Calendar.DAY_OF_MONTH, -1 * plugin.settings.getInteger("backDaysAgo"));
             parser.dateFrom = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(cal.getTime());
 
             // Create new SearchQuery
-            plugin.broadcastPlayer(admin, ChatColor.GREEN + "Starting rollback..");
+            plugin.broadcastPlayer(senderName, ChatColor.GREEN + "Starting rollback..");
 
             new SearchQuery(new RollbackCallback(session, RollbackType.GLOBAL), parser, SearchDir.DESC); // async rollback
             //HawkEyeAPI.performSearch(callback, parser, SearchDir.DESC);
         }catch (Exception e){
-            plugin.broadcastPlayer(admin, ChatColor.RED + "Unable to rollback player!");
-            if (plugin.Settings.getBoolean("isDebug")) {
+            plugin.broadcastPlayer(senderName, ChatColor.RED + "Unable to rollback player!");
+            if (plugin.settings.getBoolean("isDebug")) {
                 e.printStackTrace();
             }
             return false;
