@@ -16,17 +16,20 @@ public abstract class BaseCommand {
     // Set this class
     protected BukkitInterface plugin;
     protected Settings config;
-    protected String command;
-    protected List<String> args = new ArrayList<String>();
     protected CommandSender sender;
-    protected String senderName = "Console";
+    protected String command;
+
+    // Needs init
+    protected List<String> args = new ArrayList<String>();
+    protected String senderName;
     protected Player player;
-    protected boolean isPlayer = false;
-    // Set this class if banning
+    protected boolean isPlayer;
+
+    // Set this class if banning (needs init)
     protected String target = "";
     protected String targetIP = "";
 
-    // Set extend class constructor
+    // Set extend class constructor (Command property)
     protected String name;
     protected int argLength = 0;
     protected String usage;
@@ -39,13 +42,16 @@ public abstract class BaseCommand {
             return true;
         }
 
+        // init command
+        init();
+
         this.plugin = plugin;
         this.config = plugin.settings;
         this.sender = sender;
         this.command = cmd;
 
         // Sort args
-        args.clear();
+
         for (String arg : preArgs)
             args.add(arg);
 
@@ -99,6 +105,19 @@ public abstract class BaseCommand {
         }
 
         return true;
+    }
+
+    /**
+     * Initialize command
+     */
+    private void init(){
+        this.args.clear();
+        this.player = null;
+        this.isPlayer = false;
+        this.senderName = "Console";
+
+        this.target = "";
+        this.targetIP = "";
     }
 
     /**
