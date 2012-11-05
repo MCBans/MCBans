@@ -9,6 +9,7 @@ import com.mcbans.firestar.mcbans.callBacks.Ping;
 import com.mcbans.firestar.mcbans.callBacks.serverChoose;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.permission.Perms;
+import com.mcbans.firestar.mcbans.util.Util;
 
 public class CommandMcbans extends BaseCommand{
     public CommandMcbans(){
@@ -145,7 +146,7 @@ public class CommandMcbans extends BaseCommand{
     }
 
     private void send(final String msg){
-        plugin.broadcastPlayer(sender, msg);
+        Util.message(sender, msg);
     }
 
     private String timeRemain(long remain) {

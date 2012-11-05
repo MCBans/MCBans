@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.util.Util;
 
 public class CpRollback extends BaseRollback{
     public CpRollback(BukkitInterface plugin) {
@@ -27,14 +28,14 @@ public class CpRollback extends BaseRollback{
                     86400 * plugin.settings.getInteger("backDaysAgo"),
                     0, null, null, null);
         }catch (Exception e){
-            plugin.broadcastPlayer(senderName, ChatColor.RED + "Unable to rollback player!");
+            Util.message(senderName, ChatColor.RED + "Unable to rollback player!");
             if (plugin.settings.getBoolean("isDebug")) {
                 e.printStackTrace();
             }
             return false;
         }
 
-        plugin.broadcastPlayer(senderName, ChatColor.GREEN + "Rollback successful!");
+        Util.message(senderName, ChatColor.GREEN + "Rollback successful!");
         return true;
     }
 

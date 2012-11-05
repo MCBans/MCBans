@@ -3,7 +3,65 @@ package com.mcbans.firestar.mcbans.util;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import com.mcbans.firestar.mcbans.BukkitInterface;
+
 public class Util {
+    /****************************************/
+    // Messaging
+    /****************************************/
+    /**
+     * Send message to player
+     * @param target target Player
+     * @param msg send message, non prefix
+     */
+    public static void message(final Player target, String msg) {
+        if (target != null && msg != null){
+            target.sendMessage(BukkitInterface.getPrefix() + " " + msg);
+        }
+    }
+
+    /**
+     * Send message to player
+     * @param target target CommandSender
+     * @param msg send message, non prefix
+     */
+    public static void message(final CommandSender target, String msg) {
+        if (target != null && msg != null){
+            target.sendMessage(BukkitInterface.getPrefix() + " " + msg);
+        }
+    }
+
+    /**
+     * Send message to player
+     * @param playerName target player name
+     * @param msg send message, non prefix
+     */
+    public static void message(final String playerName, String msg) {
+        final Player target = Bukkit.getServer().getPlayer(playerName);
+        if (target != null) {
+            target.sendMessage(BukkitInterface.getPrefix() + " " + msg);
+        } else {
+            System.out.print(BukkitInterface.getPrefix() + " " + msg);
+        }
+    }
+
+    /**
+     * Broadcast online players
+     * @param msg send message, non prefix
+     */
+    public static void broadcastMessage(String msg) {
+        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+            player.sendMessage(BukkitInterface.getPrefix() + " " + msg);
+        }
+    }
+
+    /****************************************/
+    // Etc utils
+    /****************************************/
     /**
      * Same function of PHP join(array, delimiter)
      * @param s Collection

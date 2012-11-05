@@ -12,6 +12,7 @@ import org.bukkit.command.TabExecutor;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.log.LogLevels;
+import com.mcbans.firestar.mcbans.util.Util;
 
 public class MCBansCommandHandler implements TabExecutor{
     private final BukkitInterface plugin;
@@ -31,7 +32,7 @@ public class MCBansCommandHandler implements TabExecutor{
         final String commandName = command.getName().toLowerCase(Locale.ENGLISH);
         final BaseCommand cmd = commands.get(commandName);
         if (cmd == null){
-            plugin.broadcastPlayer(sender, ChatColor.RED + "This command not loaded properly!");
+            Util.message(sender, ChatColor.RED + "This command not loaded properly!");
             return true;
         }
 

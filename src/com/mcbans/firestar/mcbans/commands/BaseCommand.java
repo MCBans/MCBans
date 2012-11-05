@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.Settings;
 import com.mcbans.firestar.mcbans.exception.CommandException;
+import com.mcbans.firestar.mcbans.util.Util;
 
 public abstract class BaseCommand {
     // Set this class
@@ -38,7 +39,7 @@ public abstract class BaseCommand {
 
     public boolean run(final BukkitInterface plugin, final CommandSender sender, final String cmd, final String[] preArgs) {
         if (name == null){
-            plugin.broadcastPlayer(sender, "&cThis command not loaded properly!");
+            Util.message(sender, "&cThis command not loaded properly!");
             return true;
         }
 
@@ -58,13 +59,13 @@ public abstract class BaseCommand {
         // Check args size
         if (argLength > args.size()){
             //sendUsage();
-            plugin.broadcastPlayer(sender, ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
+            Util.message(sender, ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
             return true;
         }
 
         // Check sender is player
         if (bePlayer && !(sender instanceof Player)){
-            plugin.broadcastPlayer(sender, "&cThis command cannot run from Console!");
+            Util.message(sender, "&cThis command cannot run from Console!");
             return true;
         }
         if (sender instanceof Player){
@@ -75,7 +76,7 @@ public abstract class BaseCommand {
 
         // Check permission
         if (!permission(sender)){
-            plugin.broadcastPlayer(sender, plugin.language.getFormat("permissionDenied"));
+            Util.message(sender, plugin.language.getFormat("permissionDenied"));
             //plugin.log(senderName + " has tried the command [" + command + "]!"); // maybe not needs command logger. Craftbukkit added this.
             //plugin.broadcastPlayer(sender, "&cYou don't have permission to use this!");
             return true;
@@ -99,7 +100,7 @@ public abstract class BaseCommand {
         catch (CommandException ex) {
             Throwable error = ex;
             while (error instanceof Exception){
-                plugin.broadcastPlayer(sender, error.getMessage());
+                Util.message(sender, error.getMessage());
                 error = error.getCause();
             }
         }

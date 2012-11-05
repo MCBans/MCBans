@@ -15,6 +15,7 @@ import uk.co.oliwali.HawkEye.database.SearchQuery;
 import uk.co.oliwali.HawkEye.database.SearchQuery.SearchDir;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.util.Util;
 
 public class HeRollback extends BaseRollback{
 
@@ -28,7 +29,7 @@ public class HeRollback extends BaseRollback{
 
         // Check if player already has a rollback processing
         if (session.doingRollback()){
-            plugin.broadcastPlayer(senderName, ChatColor.RED + "Unable to rollback player! You already have a rollback processing!");
+            Util.message(senderName, ChatColor.RED + "Unable to rollback player! You already have a rollback processing!");
             return false;
         }
 
@@ -44,12 +45,12 @@ public class HeRollback extends BaseRollback{
             parser.dateFrom = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(cal.getTime());
 
             // Create new SearchQuery
-            plugin.broadcastPlayer(senderName, ChatColor.GREEN + "Starting rollback..");
+            Util.message(senderName, ChatColor.GREEN + "Starting rollback..");
 
             new SearchQuery(new RollbackCallback(session, RollbackType.GLOBAL), parser, SearchDir.DESC); // async rollback
             //HawkEyeAPI.performSearch(callback, parser, SearchDir.DESC);
         }catch (Exception e){
-            plugin.broadcastPlayer(senderName, ChatColor.RED + "Unable to rollback player!");
+            Util.message(senderName, ChatColor.RED + "Unable to rollback player!");
             if (plugin.settings.getBoolean("isDebug")) {
                 e.printStackTrace();
             }

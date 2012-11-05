@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.util.Util;
 
 import de.diddiz.LogBlock.LogBlock;
 import de.diddiz.LogBlock.QueryParams;
@@ -20,7 +21,7 @@ public class LbRollback extends BaseRollback{
     public boolean rollback(CommandSender sender, String senderName, String target) {
         if (logblock == null) return false;
 
-        plugin.broadcastPlayer(senderName, ChatColor.GREEN + "Starting rollback..");
+        Util.message(senderName, ChatColor.GREEN + "Starting rollback..");
 
         for (String world : worlds) {
             QueryParams params = null;
@@ -34,7 +35,7 @@ public class LbRollback extends BaseRollback{
 
                 this.logblock.getCommandsHandler().new CommandRollback(sender, params, true);
             } catch (Exception e) {
-                plugin.broadcastPlayer(senderName, ChatColor.RED + "Unable to rollback player!");
+                Util.message(senderName, ChatColor.RED + "Unable to rollback player!");
                 if (plugin.settings.getBoolean("isDebug")) {
                     e.printStackTrace();
                 }

@@ -20,6 +20,7 @@ import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.pluginInterface.Disconnect;
+import com.mcbans.firestar.mcbans.util.Util;
 
 public class PlayerListener implements Listener {
     private BukkitInterface plugin;
@@ -104,19 +105,19 @@ public class PlayerListener implements Listener {
         if(pcache == null) return;
 
         if(pcache.containsKey("b")){
-            plugin.broadcastPlayer(playerName, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )" );
+            Util.message(playerName, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )" );
             Perms.VIEW_BANS.message(ChatColor.DARK_RED + plugin.language.getFormat( "previousBans", playerName ));
         }
         if(pcache.containsKey("d")){
-            plugin.broadcastPlayer(playerName, ChatColor.DARK_RED + pcache.get("d") + " open disputes!");
+            Util.message(playerName, ChatColor.DARK_RED + pcache.get("d") + " open disputes!");
         }
         if(pcache.containsKey("a")){
             Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + plugin.language.getFormatAlts("altAccounts", playerName, pcache.get("al").toString()));
         }
         if(pcache.containsKey("m")){
             plugin.log( LogLevels.INFO, playerName + " is a MCBans.com Staff member");
-            plugin.broadcastAll(ChatColor.AQUA + plugin.language.getFormat("isMCBansMod", playerName));
-            plugin.broadcastPlayer(playerName, ChatColor.AQUA + plugin.language.getFormat ("youAreMCBansStaff"));
+            Util.broadcastMessage(ChatColor.AQUA + plugin.language.getFormat("isMCBansMod", playerName));
+            Util.message(playerName, ChatColor.AQUA + plugin.language.getFormat ("youAreMCBansStaff"));
         }
     }
 

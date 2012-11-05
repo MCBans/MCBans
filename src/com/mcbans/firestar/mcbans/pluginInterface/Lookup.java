@@ -10,6 +10,7 @@ import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
+import com.mcbans.firestar.mcbans.util.Util;
 
 public class Lookup implements Runnable {
     private BukkitInterface plugin;
@@ -39,24 +40,24 @@ public class Lookup implements Runnable {
         url_items.put("exec", "playerLookup");
         JSONObject result = webHandle.hdl_jobj(url_items);
         try {
-            plugin.broadcastPlayer(senderName, "Player " + ChatColor.DARK_AQUA + playerName + ChatColor.WHITE + " has " + ChatColor.DARK_RED
+            Util.message(senderName, "Player " + ChatColor.DARK_AQUA + playerName + ChatColor.WHITE + " has " + ChatColor.DARK_RED
                     + result.getString("total") + " ban(s)" + ChatColor.WHITE + " and " + ChatColor.BLUE + result.getString("reputation") + " REP"
                     + ChatColor.WHITE + ".");
             if (result.getJSONArray("global").length() > 0) {
-                plugin.broadcastPlayer(senderName, ChatColor.DARK_RED + "Global bans");
+                Util.message(senderName, ChatColor.DARK_RED + "Global bans");
                 for (int v = 0; v < result.getJSONArray("global").length(); v++) {
-                    plugin.broadcastPlayer(senderName, result.getJSONArray("global").getString(v));
+                    Util.message(senderName, result.getJSONArray("global").getString(v));
                 }
             }
             if (result.getJSONArray("local").length() > 0) {
-                plugin.broadcastPlayer(senderName, ChatColor.GOLD + "Local bans");
+                Util.message(senderName, ChatColor.GOLD + "Local bans");
                 for (int v = 0; v < result.getJSONArray("local").length(); v++) {
-                    plugin.broadcastPlayer(senderName, result.getJSONArray("local").getString(v));
+                    Util.message(senderName, result.getJSONArray("local").getString(v));
                 }
             }
             if (result.getJSONArray("other").length() > 0) {
                 for (int v = 0; v < result.getJSONArray("other").length(); v++) {
-                    plugin.broadcastPlayer(senderName, result.getJSONArray("other").getString(v));
+                    Util.message(senderName, result.getJSONArray("other").getString(v));
                 }
             }
         } catch (JSONException e) {
@@ -68,11 +69,11 @@ public class Lookup implements Runnable {
                     plugin.log(LogLevels.SEVERE, "To appeal this decision, please contact an administrator");
                 }
             } else {
-                plugin.broadcastPlayer(senderName, ChatColor.RED + "There was an error while parsing the data! [JSON Error]");
+                Util.message(senderName, ChatColor.RED + "There was an error while parsing the data! [JSON Error]");
                 plugin.log(LogLevels.SEVERE, "JSON error while trying to parse lookup data!");
             }
         } catch (NullPointerException e) {
-            plugin.broadcastPlayer(senderName, ChatColor.RED + "There was an error while polling the API!");
+            Util.message(senderName, ChatColor.RED + "There was an error while polling the API!");
             plugin.log(LogLevels.SEVERE, "Unable to reach MCBans Master server!");
         }
     }

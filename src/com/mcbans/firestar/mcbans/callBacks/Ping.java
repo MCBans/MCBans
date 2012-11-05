@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
+import com.mcbans.firestar.mcbans.util.Util;
 
 public class Ping implements Runnable {
     private final BukkitInterface plugin;
@@ -32,10 +33,10 @@ public class Ping implements Runnable {
         String urlReq = webHandle.urlparse(items);
         String jsonText = webHandle.request_from_api(urlReq);
         if (jsonText.equals("up")) {
-            plugin.broadcastPlayer(commandSend, ChatColor.GREEN + "API Server response time " + ((System.currentTimeMillis()) - pingTime)
+            Util.message(commandSend, ChatColor.GREEN + "API Server response time " + ((System.currentTimeMillis()) - pingTime)
                     + " milliseconds!");
         } else {
-            plugin.broadcastPlayer(commandSend, ChatColor.RED + "API appears to be down!");
+            Util.message(commandSend, ChatColor.RED + "API appears to be down!");
         }
 
     }

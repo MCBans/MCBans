@@ -204,33 +204,6 @@ public class BukkitInterface extends JavaPlugin {
         logger.log(type, message);
     }
 
-    public void broadcastAll(String msg) {
-        for (Player player : this.getServer().getOnlinePlayers()) {
-            player.sendMessage(settings.getPrefix() + " " + msg);
-        }
-    }
-
-    public void broadcastPlayer(final String playerName, String msg) {
-        final Player target = this.getServer().getPlayer(playerName);
-        if (target != null) {
-            target.sendMessage(settings.getPrefix() + " " + msg);
-        } else {
-            System.out.print(settings.getPrefix() + " " + msg);
-        }
-    }
-
-    public void broadcastPlayer(final Player target, String msg) {
-        if (target != null && msg != null){
-            target.sendMessage(settings.getPrefix() + " " + msg);
-        }
-    }
-
-    public void broadcastPlayer(final CommandSender target, String msg) {
-        if (target != null && msg != null){
-            target.sendMessage(settings.getPrefix() + " " + msg);
-        }
-    }
-
     public String getApiKey() {
         return this.apiKey;
     }
@@ -245,6 +218,10 @@ public class BukkitInterface extends JavaPlugin {
 
     public RollbackHandler getRbHandler(){
         return this.rbHandler;
+    }
+
+    public static String getPrefix(){
+        return instance.settings.getPrefix();
     }
 
     public static BukkitInterface getInstance(){

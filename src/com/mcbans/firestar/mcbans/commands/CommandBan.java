@@ -52,7 +52,7 @@ public class CommandBan extends BaseCommand{
 
             case GLOBAL:
                 if (args.size() == 0){
-                    plugin.broadcastPlayer(sender, ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
+                    Util.message(sender, ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
                     return;
                 }
                 reason = Util.join(args, " ");
@@ -61,7 +61,7 @@ public class CommandBan extends BaseCommand{
 
             case TEMP:
                 if (args.size() < 2){
-                    plugin.broadcastPlayer(sender, ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
+                    Util.message(sender, ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
                     return;
                 }
                 final String duration = args.remove(0);
@@ -76,7 +76,7 @@ public class CommandBan extends BaseCommand{
 
         // Start
         if (banControl == null){
-            plugin.broadcastPlayer(sender, ChatColor.DARK_RED + "Internal error! Please report console logs!");
+            Util.message(sender, ChatColor.DARK_RED + "Internal error! Please report console logs!");
             throw new RuntimeException("Undefined BanType: " + type.name());
         }
         Thread triggerThread = new Thread(banControl);

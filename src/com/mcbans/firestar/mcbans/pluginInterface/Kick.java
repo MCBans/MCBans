@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import com.mcbans.firestar.mcbans.BukkitInterface;
 import com.mcbans.firestar.mcbans.Settings;
 import com.mcbans.firestar.mcbans.events.PlayerKickEvent;
+import com.mcbans.firestar.mcbans.util.Util;
 
 @SuppressWarnings("unused")
 public class Kick implements Runnable {
@@ -49,11 +50,11 @@ public class Kick implements Runnable {
                     player.kickPlayer(plugin.language.getFormat("kickMessagePlayer", player.getName(), senderName, reason));
                 }
             }, 1L);
-            plugin.broadcastAll(ChatColor.GREEN
+            Util.broadcastMessage(ChatColor.GREEN
                     + plugin.language.getFormat("kickMessageBroadcast", playerName, senderName, reason, "%ADMIN% has kicked %PLAYER% [%REASON%]",
                             true));
         } else {
-            plugin.broadcastPlayer(
+            Util.message(
                     senderName,
                     ChatColor.DARK_RED
                     + plugin.language.getFormat("kickMessageNoPlayer", playerName, senderName, reason, "No player with that name online!",
