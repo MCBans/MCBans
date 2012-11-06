@@ -17,7 +17,7 @@ public class serverChoose implements Runnable {
         plugin.notSelectedServer = true;
         plugin.log("Looking for fastest api server!");
         long d = 99999;
-        for (String server : plugin.apiServers.split(",")) {
+        for (String server : plugin.apiServers) {
             try {
                 long pingTime = (System.currentTimeMillis());
                 JsonHandler webHandle = new JsonHandler(plugin);

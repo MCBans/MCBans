@@ -56,7 +56,14 @@ public class BukkitInterface extends JavaPlugin {
     public long lastCallBack = 0;
     public long lastSync = 0;
     public boolean notSelectedServer = true;
-    public String apiServers = "api01.cluster.mcbans.com,api02.cluster.mcbans.com,api03.cluster.mcbans.com,api.mcbans.com";
+    //public String apiServersStr = "api01.cluster.mcbans.com,api02.cluster.mcbans.com,api03.cluster.mcbans.com,api.mcbans.com";
+    @SuppressWarnings("serial")
+    public List<String> apiServers = new ArrayList<String>(4) {{
+        add("api01.cluster.mcbans.com");
+        add("api02.cluster.mcbans.com");
+        add("api03.cluster.mcbans.com");
+        add("api.mcbans.com");
+    }};
     public String apiServer = "";
     private String apiKey = "";
     public Logger logger = new Logger(this);
