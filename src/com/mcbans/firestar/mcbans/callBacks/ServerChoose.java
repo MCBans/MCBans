@@ -5,10 +5,10 @@ import java.util.HashMap;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
-public class serverChoose implements Runnable {
+public class ServerChoose implements Runnable {
     private final MCBans plugin;
 
-    public serverChoose(MCBans plugin) {
+    public ServerChoose(MCBans plugin) {
         this.plugin = plugin;
     }
 

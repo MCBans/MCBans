@@ -17,7 +17,7 @@ import com.mcbans.firestar.mcbans.api.MCBansAPI;
 import com.mcbans.firestar.mcbans.bukkitListeners.PlayerListener;
 import com.mcbans.firestar.mcbans.callBacks.BanSync;
 import com.mcbans.firestar.mcbans.callBacks.MainCallBack;
-import com.mcbans.firestar.mcbans.callBacks.serverChoose;
+import com.mcbans.firestar.mcbans.callBacks.ServerChoose;
 import com.mcbans.firestar.mcbans.commands.BaseCommand;
 import com.mcbans.firestar.mcbans.commands.CommandBan;
 import com.mcbans.firestar.mcbans.commands.CommandGban;
@@ -142,7 +142,7 @@ public class MCBans extends JavaPlugin {
         syncBan = new Thread(syncBanRunner);
         syncBan.start();
 
-        serverChoose serverChooser = new serverChoose(this);
+        ServerChoose serverChooser = new ServerChoose(this);
         (new Thread(serverChooser)).start();
 
         // rollback handler

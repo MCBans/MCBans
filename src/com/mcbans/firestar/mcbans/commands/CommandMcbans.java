@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import com.mcbans.firestar.mcbans.callBacks.ManualResync;
 import com.mcbans.firestar.mcbans.callBacks.ManualSync;
 import com.mcbans.firestar.mcbans.callBacks.Ping;
-import com.mcbans.firestar.mcbans.callBacks.serverChoose;
+import com.mcbans.firestar.mcbans.callBacks.ServerChoose;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.util.Util;
@@ -136,7 +136,7 @@ public class CommandMcbans extends BaseCommand{
             } else {
                 send(ChatColor.GREEN + "Reload completed!");
             }
-            serverChoose serverChooser = new serverChoose(plugin);
+            ServerChoose serverChooser = new ServerChoose(plugin);
             (new Thread(serverChooser)).start();
             return;
         }
