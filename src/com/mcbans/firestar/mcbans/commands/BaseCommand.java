@@ -9,14 +9,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.Settings;
+import com.mcbans.firestar.mcbans.config.ConfigurationManager;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public abstract class BaseCommand {
     // Set this class
     protected MCBans plugin;
-    protected Settings config;
+    protected ConfigurationManager config;
     protected CommandSender sender;
     protected String command;
 
@@ -47,7 +47,7 @@ public abstract class BaseCommand {
         init();
 
         this.plugin = plugin;
-        this.config = plugin.settings;
+        this.config = plugin.getConfigs();
         this.sender = sender;
         this.command = cmd;
 

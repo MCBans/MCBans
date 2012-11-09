@@ -45,7 +45,7 @@ public class CommandRban extends BaseCommand{
         Ban banControl = null;
         switch (type){
             case LOCAL:
-                reason = config.getString("defaultLocal");
+                reason = config.getDefaultLocal();
                 if (args.size() > 0){
                     reason = Util.join(args, " ");
                 }
@@ -68,7 +68,7 @@ public class CommandRban extends BaseCommand{
                 }
                 final String duration = args.remove(0);
                 final String measure = args.remove(0);
-                reason = config.getString("defaultTemp");
+                reason = config.getDefaultTemp();
                 if (args.size() > 0){
                     reason = Util.join(args, " ");
                 }

@@ -74,7 +74,7 @@ public class CommandMcbans extends BaseCommand{
                 ManualResync manualSyncBanRunner = new ManualResync(plugin, senderName);
                 (new Thread(manualSyncBanRunner)).start();
             }else{
-                long syncInterval = config.getInteger("syncInterval");
+                long syncInterval = config.getSyncInterval();
                 if(syncInterval < (60 * 5)){ // minimum 5 minutes
                     syncInterval = 60 * 5;
                 }
@@ -93,7 +93,7 @@ public class CommandMcbans extends BaseCommand{
         if (first.equalsIgnoreCase("get")){
             if (args.size() > 0 && args.get(0).equalsIgnoreCase("call")){
                 long callBackInterval = 0;
-                callBackInterval = 60 * config.getInteger("callBackInterval");
+                callBackInterval = 60 * config.getCallBackInterval();
                 if(callBackInterval < (60 * 15)){
                     callBackInterval = (60 * 15);
                 }
@@ -101,7 +101,7 @@ public class CommandMcbans extends BaseCommand{
                 send(ChatColor.GOLD + r + " until next callback request.");
             }
             else if (args.size() > 0 && args.get(0).equalsIgnoreCase("sync")){
-                long syncInterval = config.getInteger("syncInterval");
+                long syncInterval = config.getSyncInterval();
                 if(syncInterval < (60 * 5)){
                     syncInterval = (60 * 5);
                 }
@@ -121,13 +121,11 @@ public class CommandMcbans extends BaseCommand{
             }
 
             send(ChatColor.AQUA + "Reloading Settings..");
-            Integer reloadSettings = plugin.settings.reload();
-            if (reloadSettings == -2) {
-                send(ChatColor.RED + "Reload failed - File missing!");
-            } else if (reloadSettings == -1) {
-                send(ChatColor.RED + "Reload failed - File integrity failed!");
-            } else {
+            try{
+                config.loadConfig(false);
                 send(ChatColor.GREEN + "Reload completed!");
+            }catch (Exception ex){
+                send(ChatColor.RED + "An error occured while trying to load the config file.");
             }
             send(ChatColor.AQUA + "Reloading Language File..");
             boolean reloadLanguage = plugin.language.reload();

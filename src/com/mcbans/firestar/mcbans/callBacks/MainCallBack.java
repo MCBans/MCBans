@@ -18,7 +18,7 @@ public class MainCallBack implements Runnable {
     }
     @Override
     public void run(){
-        int callBackInterval = ((60*1000)*plugin.settings.getInteger("callBackInterval"));
+        int callBackInterval = ((60*1000)*plugin.getConfigs().getCallBackInterval());
         if(callBackInterval<((60*1000)*15)){
             callBackInterval=((60*1000)*15);
         }
@@ -60,7 +60,7 @@ public class MainCallBack implements Runnable {
                 }
             }
         } catch (NullPointerException e) {
-            if(plugin.settings.getBoolean("isDebug")){
+            if(plugin.getConfigs().isDebug()){
                 e.printStackTrace();
             }
         }

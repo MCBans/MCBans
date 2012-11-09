@@ -29,14 +29,14 @@ public class LbRollback extends BaseRollback{
                 params = new QueryParams(logblock);
                 params.setPlayer(target);
                 //params.since = (time * plugin.Settings.getInteger("backDaysAgo"));
-                params.since = (1440 * plugin.settings.getInteger("backDaysAgo"));
+                params.since = (1440 * plugin.getConfigs().getBackDaysAgo());
                 params.world = plugin.getServer().getWorld(world);
                 params.silent = false;
 
                 this.logblock.getCommandsHandler().new CommandRollback(sender, params, true);
             } catch (Exception e) {
                 Util.message(senderName, ChatColor.RED + "Unable to rollback player!");
-                if (plugin.settings.getBoolean("isDebug")) {
+                if (plugin.getConfigs().isDebug()) {
                     e.printStackTrace();
                 }
                 return false;

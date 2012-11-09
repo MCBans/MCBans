@@ -93,7 +93,7 @@ public class Ban implements Runnable {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                if (plugin.settings.getBoolean("isDebug")) {
+                if (plugin.getConfigs().isDebug()) {
                     e.printStackTrace();
                 }
             }
@@ -134,7 +134,7 @@ public class Ban implements Runnable {
                 plugin.log("Error, caught invalid action! Another plugin using mcbans improperly?");
             }
         } catch (NullPointerException e) {
-            if (plugin.settings.getBoolean("isDebug")) {
+            if (plugin.getConfigs().isDebug()) {
                 e.printStackTrace();
             }
         }
@@ -178,7 +178,7 @@ public class Ban implements Runnable {
             }
             plugin.log(senderName + " tried to unban " + playerName + "!");
         } catch (NullPointerException e) {
-            if (plugin.settings.getBoolean("isDebug")) {
+            if (plugin.getConfigs().isDebug()) {
                 e.printStackTrace();
             }
         }
@@ -245,7 +245,7 @@ public class Ban implements Runnable {
                 d.setBanned(true);
             }
             this.kickPlayer(playerName, plugin.language.getFormat("localBanMessagePlayer", playerName, senderName, reason, playerIP));
-            if (plugin.settings.getBoolean("isDebug")) {
+            if (plugin.getConfigs().isDebug()) {
                 e.printStackTrace();
             }
         }
@@ -274,7 +274,7 @@ public class Ban implements Runnable {
                 actionData.put(proof.getKey(), proof.getValue());
             }
         }catch (JSONException ex){
-            if (plugin.settings.getBoolean("isDebug")) {
+            if (plugin.getConfigs().isDebug()) {
                 ex.printStackTrace();
             }
         }
@@ -328,7 +328,7 @@ public class Ban implements Runnable {
                 d.setBanned(true);
             }
             this.kickPlayer(playerName, plugin.language.getFormat("localBanMessagePlayer", playerName, senderName, reason, playerIP));
-            if (plugin.settings.getBoolean("isDebug")) {
+            if (plugin.getConfigs().isDebug()) {
                 e.printStackTrace();
             }
         }
@@ -354,7 +354,7 @@ public class Ban implements Runnable {
         url_items.put("admin", senderName);
         url_items.put("duration", duration);
         url_items.put("measure", measure);
-        if (plugin.settings.getBoolean("enableTempBanRollback")) {
+        if (plugin.getConfigs().isEnableRollbackTempBan()) {
             plugin.getRbHandler().rollback(senderName, playerName);
         }
         if (actionData != null) {
@@ -399,7 +399,7 @@ public class Ban implements Runnable {
                 d.setBanned(true);
             }
             this.kickPlayer(playerName, plugin.language.getFormat("localBanMessagePlayer", playerName, senderName, reason, playerIP));
-            if (plugin.settings.getBoolean("isDebug")) {
+            if (plugin.getConfigs().isDebug()) {
                 e.printStackTrace();
             }
         }

@@ -21,7 +21,7 @@ public class CommandTempban extends BaseCommand{
 
         final String duration = args.remove(0);
         final String measure = args.remove(0);
-        String reason = config.getString("defaultTemp");
+        String reason = config.getDefaultTemp();
         if (args.size() > 0){
             reason = Util.join(args, " ");
         }

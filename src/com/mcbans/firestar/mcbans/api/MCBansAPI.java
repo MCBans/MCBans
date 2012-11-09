@@ -39,7 +39,7 @@ public class MCBansAPI {
      * @param reason BAN reason
      */
     public void localBan(String targetName, String senderName, String reason){
-        reason = (reason == null || reason == "") ? plugin.settings.getString("defaultLocal") : reason;
+        reason = (reason == null || reason == "") ? plugin.getConfigs().getDefaultLocal() : reason;
         this.ban(BanType.LOCAL, targetName, senderName, reason, "", "");
     }
 
@@ -63,7 +63,7 @@ public class MCBansAPI {
      * @param measure Banning length measure (m(minute), h(hour), d(day), w(week))
      */
     public void tempBan(String targetName, String senderName, String reason, String duration, String measure){
-        reason = (reason == null || reason == "") ? plugin.settings.getString("defaultTemp") : reason;
+        reason = (reason == null || reason == "") ? plugin.getConfigs().getDefaultTemp() : reason;
         duration = (duration == null) ? "" : duration;
         measure = (measure == null) ? "" : measure;
         this.ban(BanType.TEMP, targetName, senderName, reason, duration, measure);
@@ -85,10 +85,10 @@ public class MCBansAPI {
      * @param reason Kick reason
      */
     public void kick(String targetName, String senderName, String reason){
-        reason = (reason == null || reason == "") ? plugin.settings.getString("defaultKick") : reason;
+        reason = (reason == null || reason == "") ? plugin.getConfigs().getDefaultKick() : reason;
 
         // Start
-        Kick kickPlayer = new Kick(plugin.settings, plugin, targetName, senderName, reason);
+        Kick kickPlayer = new Kick(plugin, targetName, senderName, reason);
         Thread triggerThread = new Thread(kickPlayer);
         triggerThread.start();
     }

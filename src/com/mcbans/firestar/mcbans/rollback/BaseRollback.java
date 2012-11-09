@@ -13,7 +13,7 @@ public abstract class BaseRollback {
 
     public BaseRollback(final MCBans plugin){
         this.plugin = plugin;
-        worlds = plugin.settings.getString("affectedWorlds").split(",");
+        worlds = plugin.getConfigs().getAffectedWorlds().split(",");
     }
 
     public abstract boolean rollback(final CommandSender sender, final String senderName, final String target);

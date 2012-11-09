@@ -20,13 +20,13 @@ public class CommandKick extends BaseCommand{
         String target = args.remove(0).trim();
 
         // build reason
-        String reason = config.getString("defaultKick");
+        String reason = config.getDefaultKick();
         if (args.size() > 0){
             reason = Util.join(args, " ");
         }
 
         // Start
-        Kick kickPlayer = new Kick(config, plugin, target, senderName, reason);
+        Kick kickPlayer = new Kick(plugin, target, senderName, reason);
         Thread triggerThread = new Thread(kickPlayer);
         triggerThread.start();
     }

@@ -13,7 +13,7 @@ public class Language {
         plugin = mcbans;
         InputStream in = null;
         try {
-            in = Language.class.getClassLoader().getResourceAsStream("languages/" + plugin.settings.getString("language") + ".yml");
+            in = Language.class.getClassLoader().getResourceAsStream("languages/" + plugin.getConfigs().getLanguage() + ".yml");
         } catch (NullPointerException ex) {
         }
         config = YamlConfiguration.loadConfiguration(in);
@@ -35,7 +35,7 @@ public class Language {
     public boolean reload() {
         InputStream in;
         try {
-            in = Language.class.getClassLoader().getResourceAsStream("languages/" + plugin.settings.getString("language") + ".yml");
+            in = Language.class.getClassLoader().getResourceAsStream("languages/" + plugin.getConfigs().getLanguage() + ".yml");
         } catch (NullPointerException ex) {
             return false;
         }

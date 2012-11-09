@@ -23,13 +23,13 @@ public class ActionLog {
     }
 
     public void write(String msg) {
-        if (plugin.settings.getBoolean("logEnable")) {
+        if (plugin.getConfigs().isEnableLog()) {
             write(logFile, msg);
         }
     }
 
     public void write(Exception e) {
-        if (plugin.settings.getBoolean("logEnable")) {
+        if (plugin.getConfigs().isEnableLog()) {
             write(logFile, stack2string(e));
         }
         plugin.log(stack2string(e));

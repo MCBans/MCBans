@@ -74,11 +74,11 @@ public class ManualResync implements Runnable {
                     goNext = false;
                 }
             } catch (JSONException e) {
-                if(plugin.settings.getBoolean("isDebug")){
+                if(plugin.getConfigs().isDebug()){
                     e.printStackTrace();
                 }
             } catch (NullPointerException e) {
-                if(plugin.settings.getBoolean("isDebug")){
+                if(plugin.getConfigs().isDebug()){
                     e.printStackTrace();
                 }
             }
@@ -108,7 +108,7 @@ public class ManualResync implements Runnable {
             fout.close();
             writer.close();
         } catch (Exception e) {
-            if(plugin.settings.getBoolean("isDebug")){
+            if(plugin.getConfigs().isDebug()){
                 e.printStackTrace();
             }
         }

@@ -18,21 +18,17 @@ import com.mcbans.firestar.mcbans.org.json.JSONObject;
 
 @SuppressWarnings("unchecked")
 public class JsonHandler {
-    private String apiKey = "";
     private MCBans plugin;
-    private boolean debug = false;
 
     public JsonHandler(MCBans plugin) {
         this.plugin = plugin;
-        this.apiKey = plugin.settings.getString("apiKey");
-        this.debug = plugin.settings.getBoolean("isDebug");
     }
 
     public JSONObject get_data(String json_text) {
         try {
             return new JSONObject(json_text);
         } catch (JSONException e) {
-            if (debug) {
+            if (plugin.getConfigs().isDebug()) {
                 e.printStackTrace();
             }
         }
@@ -53,7 +49,7 @@ public class JsonHandler {
                     try {
                         out.put(next, output.getString(next));
                     } catch (JSONException e) {
-                        if (debug) {
+                        if (plugin.getConfigs().isDebug()) {
                             plugin.log(LogLevels.SEVERE, "JSON Error On Retrieve");
                             e.printStackTrace();
                         }
@@ -72,10 +68,10 @@ public class JsonHandler {
 
     public String request_from_api(String data) {
         try {
-            if (debug) {
+            if (plugin.getConfigs().isDebug()) {
                 plugin.log(LogLevels.INFO, "Sending request!");
             }
-            URL url = new URL("http://" + plugin.apiServer + "/v2/" + this.apiKey);
+            URL url = new URL("http://" + plugin.apiServer + "/v2/" + plugin.getConfigs().getApiKey());
             URLConnection conn = url.openConnection();
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(5000);
@@ -90,14 +86,14 @@ public class JsonHandler {
                 buf.append(line);
             }
             String result = buf.toString();
-            if (debug) {
+            if (plugin.getConfigs().isDebug()) {
                 plugin.log(LogLevels.INFO, result);
             }
             wr.close();
             rd.close();
             return result;
         } catch (Exception e) {
-            if (debug) {
+            if (plugin.getConfigs().isDebug()) {
                 if (plugin != null) {
                     plugin.log(LogLevels.SEVERE, "Fetch Data Error");
                 }
@@ -109,10 +105,10 @@ public class JsonHandler {
 
     public String request_from_api(String data, String server) {
         try {
-            if (debug) {
+            if (plugin.getConfigs().isDebug()) {
                 plugin.log(LogLevels.INFO, "Sending request!");
             }
-            URL url = new URL("http://" + server + "/v2/" + this.apiKey);
+            URL url = new URL("http://" + server + "/v2/" + plugin.getConfigs().getApiKey());
             URLConnection conn = url.openConnection();
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(5000);
@@ -127,14 +123,14 @@ public class JsonHandler {
                 buf.append(line);
             }
             String result = buf.toString();
-            if (debug) {
+            if (plugin.getConfigs().isDebug()) {
                 plugin.log(LogLevels.INFO, result);
             }
             wr.close();
             rd.close();
             return result;
         } catch (Exception e) {
-            if (debug) {
+            if (plugin.getConfigs().isDebug()) {
                 if (plugin != null) {
                     plugin.log(LogLevels.SEVERE, "Fetch Data Error");
                 }
@@ -157,7 +153,7 @@ public class JsonHandler {
                 }
             }
         } catch (UnsupportedEncodingException e) {
-            if (debug) {
+            if (plugin.getConfigs().isDebug()) {
                 e.printStackTrace();
             }
         }

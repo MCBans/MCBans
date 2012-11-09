@@ -48,7 +48,7 @@ public class PermissionHandler {
      * @param silent false if send message to console
      */
     public void setupPermissions(final boolean silent){
-        final String selected = plugin.settings.getString("permission").trim();
+        final String selected = plugin.getConfigs().getPermission().trim();
         boolean found = true;
 
         if ("vault".equalsIgnoreCase(selected)){

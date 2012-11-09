@@ -131,8 +131,8 @@ public class ConfigurationManager {
     public boolean isEnableJoinMessage(){
         return conf.getBoolean("onJoinMCBansMessage", false);
     }
-    public int getMinRep(){
-        return conf.getInt("minRep", 3);
+    public double getMinRep(){
+        return conf.getDouble("minRep", 3.0D);
     }
     public int getCallBackInterval(){
         return conf.getInt("callBackInterval", 15);

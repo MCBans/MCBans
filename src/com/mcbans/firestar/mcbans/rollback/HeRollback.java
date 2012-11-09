@@ -41,7 +41,7 @@ public class HeRollback extends BaseRollback{
             parser.worlds = worlds;
 
             Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DAY_OF_MONTH, -1 * plugin.settings.getInteger("backDaysAgo"));
+            cal.add(Calendar.DAY_OF_MONTH, -1 * plugin.getConfigs().getBackDaysAgo());
             parser.dateFrom = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(cal.getTime());
 
             // Create new SearchQuery
@@ -51,7 +51,7 @@ public class HeRollback extends BaseRollback{
             //HawkEyeAPI.performSearch(callback, parser, SearchDir.DESC);
         }catch (Exception e){
             Util.message(senderName, ChatColor.RED + "Unable to rollback player!");
-            if (plugin.settings.getBoolean("isDebug")) {
+            if (plugin.getConfigs().isDebug()) {
                 e.printStackTrace();
             }
             return false;

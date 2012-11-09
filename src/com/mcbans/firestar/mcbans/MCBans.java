@@ -111,15 +111,15 @@ public class MCBans extends JavaPlugin {
         }
 
         // load language
-        log(LogLevels.INFO, "Loading language file: " + settings.getString("language"));
+        log(LogLevels.INFO, "Loading language file: " + config.getLanguage());
         language = new Language(this);
 
         pm.registerEvents(playerListener, this);
 
         // Setup logging
-        if (settings.getBoolean("logEnable")) {
+        if (config.isEnableLog()) {
             log(LogLevels.INFO, "Starting to save to log file!");
-            actionLog = new ActionLog(this, settings.getString("logFile"));
+            actionLog = new ActionLog(this, config.getLogFile());
             actionLog.write("MCBans Log File Started");
         } else {
             log(LogLevels.INFO, "Log file disabled!");
@@ -232,8 +232,12 @@ public class MCBans extends JavaPlugin {
         return api;
     }
 
+    public ConfigurationManager getConfigs(){
+        return this.config;
+    }
+
     public static String getPrefix(){
-        return instance.settings.getPrefix();
+        return instance.config.getPrefix();
     }
 
     public static MCBans getInstance(){

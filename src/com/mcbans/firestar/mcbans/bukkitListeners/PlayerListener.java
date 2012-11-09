@@ -45,7 +45,7 @@ public class PlayerListener implements Listener {
                 }
             }
             if (check <= 5) {
-                URL urlMCBans = new URL("http://" + plugin.apiServer + "/v2/" + plugin.settings.getString("apiKey") + "/login/"
+                URL urlMCBans = new URL("http://" + plugin.apiServer + "/v2/" + plugin.getConfigs().getApiKey() + "/login/"
                         + URLEncoder.encode(event.getName(), "UTF-8") + "/"
                         + URLEncoder.encode(String.valueOf(event.getAddress().getHostAddress()), "UTF-8"));
                 BufferedReader bufferedreaderMCBans = new BufferedReader(new InputStreamReader(urlMCBans.openStream()));
@@ -54,8 +54,8 @@ public class PlayerListener implements Listener {
                 bufferedreaderMCBans.close();
                 if (s2 != null) {
                     String[] s3 = s2.split(";");
-                    double repMin = plugin.settings.getDouble("minRep");
-                    int maxAlts = plugin.settings.getInteger("maxAlts");
+                    double repMin = plugin.getConfigs().getMinRep();
+                    int maxAlts = plugin.getConfigs().getMaxAlts();
                     if (s3.length == 6) {
                         if (s3[0].equals("l") || s3[0].equals("g") || s3[0].equals("t") || s3[0].equals("i") || s3[0].equals("s")) {
                             event.disallow(Result.KICK_BANNED, s3[1]);
@@ -83,7 +83,7 @@ public class PlayerListener implements Listener {
                             }
                             plugin.playerCache.put(event.getName(),tmp);
                         }
-                        if (plugin.settings.getBoolean("isDebug")) {
+                        if (plugin.getConfigs().isDebug()) {
                             System.out.println("[MCBans] " + event.getName() + " authenticated with " + s3[2] + " rep");
                         }
                     }else{
