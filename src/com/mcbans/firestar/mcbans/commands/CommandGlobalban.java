@@ -7,10 +7,10 @@ import com.mcbans.firestar.mcbans.pluginInterface.Ban;
 import com.mcbans.firestar.mcbans.util.Util;
 
 
-public class CommandGban extends BaseCommand{
-    public CommandGban(){
+public class CommandGlobalban extends BaseCommand{
+    public CommandGlobalban(){
         bePlayer = false;
-        name = "gban";
+        name = "globalban";
         argLength = 2;
         usage = "global ban player";
         banning = true;

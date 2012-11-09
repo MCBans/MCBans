@@ -20,7 +20,7 @@ import com.mcbans.firestar.mcbans.callBacks.MainCallBack;
 import com.mcbans.firestar.mcbans.callBacks.ServerChoose;
 import com.mcbans.firestar.mcbans.commands.BaseCommand;
 import com.mcbans.firestar.mcbans.commands.CommandBan;
-import com.mcbans.firestar.mcbans.commands.CommandGban;
+import com.mcbans.firestar.mcbans.commands.CommandGlobalban;
 import com.mcbans.firestar.mcbans.commands.CommandKick;
 import com.mcbans.firestar.mcbans.commands.CommandLookup;
 import com.mcbans.firestar.mcbans.commands.CommandMcbans;
@@ -174,7 +174,7 @@ public class MCBans extends JavaPlugin {
         List<BaseCommand> cmds = new ArrayList<BaseCommand>();
         // Banning Commands
         cmds.add(new CommandBan());
-        cmds.add(new CommandGban());
+        cmds.add(new CommandGlobalban());
         cmds.add(new CommandTempban());
         cmds.add(new CommandRban());
 

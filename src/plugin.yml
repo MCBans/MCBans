@@ -13,8 +13,9 @@ commands:
   ban:
     description: ban a user
     usage: /<command> <playername> [g/t/reason] [reason]
-  gban:
+  globalban:
     description: global bans a user
+    aliases: [gban]
     usage: /<command> <playername> [reason]
   rban:
     description: roll back bans
