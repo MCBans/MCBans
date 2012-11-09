@@ -1,6 +1,6 @@
 ##  Plugin Information  ##
 name: mcbans
-main: com.mcbans.firestar.mcbans.BukkitInterface
+main: com.mcbans.firestar.mcbans.MCBans
 version: 3.9
 description: A global banning solution
 website: http://mcbans.com/
