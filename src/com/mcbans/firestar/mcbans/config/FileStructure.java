@@ -21,7 +21,7 @@ public class FileStructure {
      * @param dir
      */
     public static void createDir(final File dir){
-        // 既に存在すれば作らない
+        // if already exists, do nothing
         if (dir.isDirectory()){
             return;
         }
