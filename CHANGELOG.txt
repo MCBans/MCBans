@@ -1,5 +1,6 @@
-3.9 R2 [Next Release]:
+4.0 [Next Release]:
 - Add NoCheatPlus, AntiCheat data sending to mcbans
+- Add MCBansAPI class for other plugin integration
 - Add support Vault provides other permission plugin
 - Rewrite permission structure and permission node
 - Rewrite command structure
@@ -37,9 +38,9 @@
 - Added tempban to /ban
 - Added /tban, /gban
 - Fixed sync and callback threads
-- Fixed g/mcbans get callh showing negative time.
-- Fixed g/mcbans synch to the permission gmcbans.adminh
-- Fixed g/mcbans get call/synch to the permission gmcbans.adminh
+- Fixed ï¿½g/mcbans get callï¿½h showing negative time.
+- Fixed ï¿½g/mcbans syncï¿½h to the permission ï¿½gmcbans.adminï¿½h
+- Fixed ï¿½g/mcbans get call/syncï¿½h to the permission ï¿½gmcbans.adminï¿½h
 - Removed backup system
 - Removed Connection Throttle
 - Removed core.yml
@@ -64,9 +65,9 @@
 - Removed downloader (used to grab settings files and language files)
 
 3.7 Stable:
-Fixed Threading
-Fixed Settings Download + Language
-Added mcbans.kick.view (Node allows players (or group) to see when an admin kicks a player)
-Added mcbans.alts.view (Node allows players (or group) to see alts of a player when they join)
-Added mcbans.alts.hide (Node adds players (or group) to "ignore" alt account list viewing when this they join the server).
-R4-R5+ compatible
+- Fixed Threading
+- Fixed Settings Download + Language
+- Added mcbans.kick.view (Node allows players (or group) to see when an admin kicks a player)
+- Added mcbans.alts.view (Node allows players (or group) to see alts of a player when they join)
+- Added mcbans.alts.hide (Node adds players (or group) to "ignore" alt account list viewing when this they join the server).
+- R4-R5+ compatible
