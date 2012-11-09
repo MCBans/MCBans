@@ -40,6 +40,19 @@ public class ConfigurationManager {
         conf = plugin.getConfig();
 
         checkver(conf.getInt("ConfigVersion", 1));
+
+        // check API key
+        if (getApiKey().length() != 40){
+            if (initialLoad){
+                System.out.print("[MCBans] Missing or invalid API Key! Disabling plugin..");
+                System.out.print("[MCBans] Please copy your API key to configuration file.");
+                System.out.print("[MCBans] Don't have API key? Go: http://my.mcbans.com/servers/");
+                plugin.getPluginLoader().disablePlugin(plugin);
+                return;
+            }else{
+                System.out.print("[MCBans] Missing or invalid API Key! Please check config.yml and type /mcbans reload");
+            }
+        }
     }
 
     /**
@@ -72,7 +85,7 @@ public class ConfigurationManager {
         return conf.getString("prefix", "[mcbans]");
     }
     public String getApiKey(){
-        return conf.getString("apiKey", "");
+        return conf.getString("apiKey", "").trim();
     }
     public String getLanguage(){
         return conf.getString("language", "en-us");
