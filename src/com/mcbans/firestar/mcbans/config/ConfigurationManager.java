@@ -76,7 +76,10 @@ public class ConfigurationManager {
             FileStructure.extractResource("/config.yml", pluginDir, true, false);
             //Language.extractLanguageFile(true);
 
-            System.out.print("[MCBans] Copied existing configuration file and generate a new one!");
+            plugin.reloadConfig();
+            conf = plugin.getConfig();
+
+            System.out.print("[MCBans] Deleted existing configuration file and generate a new one!");
         }
     }
 
