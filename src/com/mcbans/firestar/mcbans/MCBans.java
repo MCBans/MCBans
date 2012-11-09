@@ -109,6 +109,9 @@ public class MCBans extends JavaPlugin {
             log(LogLevels.INFO, "an error occured while trying to load the config file.");
             ex.printStackTrace();
         }
+        if (!pm.isPluginEnabled(this)){
+            return;
+        }
 
         // load language
         log(LogLevels.INFO, "Loading language file: " + config.getLanguage());

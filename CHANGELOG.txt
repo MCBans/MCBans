@@ -1,9 +1,11 @@
 4.0 [Next Release]:
-- Add NoCheatPlus, AntiCheat data sending to mcbans
-- Add MCBansAPI class for other plugin integration
-- Add support Vault provides other permission plugin
-- Rewrite permission structure and permission node
-- Rewrite command structure
+- Added NoCheatPlus, AntiCheat data sending to mcbans
+- Added MCBansAPI class for other plugin integration
+- Added support Vault provides other permission plugin
+- Added API key valid check
+- Rewrited permission structure and permission node
+- Rewrited command structure
+- Rewrited configuration structure (Change settings.yml to config.yml)
 - Fixed minor exception while player joining the server
 
 3.9 R1 DIAMOND:
