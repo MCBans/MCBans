@@ -1,10 +1,11 @@
-package com.mcbans.firestar.mcbans.config;
+package com.mcbans.firestar.mcbans;
 
 import java.io.File;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
-import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.util.FileStructure;
+
 
 public class ConfigurationManager {
     private final int latestVersion = 1;

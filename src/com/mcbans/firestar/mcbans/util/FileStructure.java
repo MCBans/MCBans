@@ -1,4 +1,4 @@
-package com.mcbans.firestar.mcbans.config;
+package com.mcbans.firestar.mcbans.util;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -14,6 +14,7 @@ import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 
 import com.mcbans.firestar.mcbans.MCBans;
+
 
 public class FileStructure {
     /**
@@ -57,7 +58,7 @@ public class FileStructure {
      * @param force if true, override exist file
      * @param lang if true, extract with another method
      */
-    static void extractResource(String from, File to, boolean force, boolean lang){
+    public static void extractResource(String from, File to, boolean force, boolean lang){
         File of = to;
 
         // if to path is directory, cast to File. return if not file or directory

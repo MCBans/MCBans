@@ -28,7 +28,6 @@ import com.mcbans.firestar.mcbans.commands.CommandRban;
 import com.mcbans.firestar.mcbans.commands.CommandTempban;
 import com.mcbans.firestar.mcbans.commands.CommandUnban;
 import com.mcbans.firestar.mcbans.commands.MCBansCommandHandler;
-import com.mcbans.firestar.mcbans.config.ConfigurationManager;
 import com.mcbans.firestar.mcbans.log.ActionLog;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.log.Logger;
