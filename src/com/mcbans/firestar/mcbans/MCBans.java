@@ -28,6 +28,7 @@ import com.mcbans.firestar.mcbans.commands.CommandRban;
 import com.mcbans.firestar.mcbans.commands.CommandTempban;
 import com.mcbans.firestar.mcbans.commands.CommandUnban;
 import com.mcbans.firestar.mcbans.commands.MCBansCommandHandler;
+import com.mcbans.firestar.mcbans.config.ConfigurationManager;
 import com.mcbans.firestar.mcbans.log.ActionLog;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.log.Logger;
@@ -45,7 +46,6 @@ public class MCBans extends JavaPlugin {
     public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
     public HashMap<String, HashMap<String, String>> playerCache = new HashMap<String, HashMap<String, String>>();
     public HashMap<String, Long> resetTime = new HashMap<String, Long>();
-    public Settings settings;
     public long last_req = 0;
     public long timeRecieved = 0;
     public Language language = null;
@@ -71,6 +71,7 @@ public class MCBans extends JavaPlugin {
     private boolean ncpEnabled = false;
     private boolean acEnabled = false;
     private MCBansAPI api;
+    private ConfigurationManager config;
 
     @Override
     public void onDisable() {
@@ -100,19 +101,20 @@ public class MCBans extends JavaPlugin {
             return;
         }
 
-
-        pm.registerEvents(playerListener, this);
-
         // load configuration
-        settings = new Settings();
-        if (settings.exists) {
-            pm.disablePlugin(this);
-            return;
+        config = new ConfigurationManager(this);
+        try{
+            config.loadConfig(true);
+        }catch (Exception ex){
+            log(LogLevels.INFO, "an error occured while trying to load the config file.");
+            ex.printStackTrace();
         }
 
         // load language
         log(LogLevels.INFO, "Loading language file: " + settings.getString("language"));
         language = new Language(this);
+
+        pm.registerEvents(playerListener, this);
 
         // Setup logging
         if (settings.getBoolean("logEnable")) {
