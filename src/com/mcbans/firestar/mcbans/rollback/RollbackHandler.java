@@ -9,16 +9,16 @@ import org.bukkit.plugin.PluginManager;
 
 import uk.co.oliwali.HawkEye.HawkEye;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 
 import de.diddiz.LogBlock.LogBlock;
 
 public class RollbackHandler {
-    private final BukkitInterface plugin;
+    private final MCBans plugin;
     private BaseRollback method = null;
 
-    public RollbackHandler(final BukkitInterface plugin){
+    public RollbackHandler(final MCBans plugin){
         this.plugin = plugin;
     }
 

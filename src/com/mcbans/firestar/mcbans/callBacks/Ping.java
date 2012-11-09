@@ -4,15 +4,15 @@ import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class Ping implements Runnable {
-    private final BukkitInterface plugin;
+    private final MCBans plugin;
     private String commandSend = "";
 
-    public Ping(BukkitInterface plugin, String sender) {
+    public Ping(MCBans plugin, String sender) {
         this.plugin = plugin;
         this.commandSend = sender;
     }

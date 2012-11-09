@@ -5,16 +5,16 @@ import java.util.HashMap;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class ManualSync implements Runnable {
-    private final BukkitInterface plugin;
+    private final MCBans plugin;
     private String commandSend = "";
-    public ManualSync(BukkitInterface plugin, String sender){
+    public ManualSync(MCBans plugin, String sender){
         this.plugin = plugin;
         this.commandSend = sender;
     }

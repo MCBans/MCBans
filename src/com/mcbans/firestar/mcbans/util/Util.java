@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 
 public class Util {
     /****************************************/
@@ -20,7 +20,7 @@ public class Util {
      */
     public static void message(final Player target, String msg) {
         if (target != null && msg != null){
-            target.sendMessage(BukkitInterface.getPrefix() + " " + msg);
+            target.sendMessage(MCBans.getPrefix() + " " + msg);
         }
     }
 
@@ -31,7 +31,7 @@ public class Util {
      */
     public static void message(final CommandSender target, String msg) {
         if (target != null && msg != null){
-            target.sendMessage(BukkitInterface.getPrefix() + " " + msg);
+            target.sendMessage(MCBans.getPrefix() + " " + msg);
         }
     }
 
@@ -43,9 +43,9 @@ public class Util {
     public static void message(final String playerName, String msg) {
         final Player target = Bukkit.getServer().getPlayer(playerName);
         if (target != null) {
-            target.sendMessage(BukkitInterface.getPrefix() + " " + msg);
+            target.sendMessage(MCBans.getPrefix() + " " + msg);
         } else {
-            System.out.print(BukkitInterface.getPrefix() + " " + msg);
+            System.out.print(MCBans.getPrefix() + " " + msg);
         }
     }
 
@@ -55,7 +55,7 @@ public class Util {
      */
     public static void broadcastMessage(String msg) {
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            player.sendMessage(BukkitInterface.getPrefix() + " " + msg);
+            player.sendMessage(MCBans.getPrefix() + " " + msg);
         }
     }
 

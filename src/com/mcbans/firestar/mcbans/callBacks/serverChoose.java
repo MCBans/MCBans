@@ -2,13 +2,13 @@ package com.mcbans.firestar.mcbans.callBacks;
 
 import java.util.HashMap;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 public class serverChoose implements Runnable {
-    private final BukkitInterface plugin;
+    private final MCBans plugin;
 
-    public serverChoose(BukkitInterface plugin) {
+    public serverChoose(MCBans plugin) {
         this.plugin = plugin;
     }
 

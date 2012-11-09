@@ -4,16 +4,16 @@ import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 
 public class MainCallBack implements Runnable {
-    private final BukkitInterface plugin;
+    private final MCBans plugin;
     public long last_req=0;
-    public MainCallBack(BukkitInterface plugin){
+    public MainCallBack(MCBans plugin){
         this.plugin = plugin;
     }
     @Override

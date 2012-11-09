@@ -2,14 +2,14 @@ package com.mcbans.firestar.mcbans.pluginInterface;
 
 import java.util.HashMap;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 public class Disconnect implements Runnable {
-    private BukkitInterface plugin;
+    private MCBans plugin;
     private String playerName;
 
-    public Disconnect(BukkitInterface plugin, String playerName) {
+    public Disconnect(MCBans plugin, String playerName) {
         this.plugin = plugin;
         this.playerName = playerName;
     }

@@ -12,7 +12,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 
 public class PermissionHandler {
@@ -27,7 +27,7 @@ public class PermissionHandler {
     // instance
     private static PermissionHandler instance;
 
-    private final BukkitInterface plugin;
+    private final MCBans plugin;
     private PermType permType = null;
 
     // permission plugin
@@ -36,9 +36,9 @@ public class PermissionHandler {
 
     /**
      * Constructor
-     * @param plugin BukkitInterface instance
+     * @param plugin MCBans instance
      */
-    private PermissionHandler(final BukkitInterface plugin){
+    private PermissionHandler(final MCBans plugin){
         this.plugin = plugin;
         instance = this;
     }
@@ -249,7 +249,7 @@ public class PermissionHandler {
         if (instance == null){
             synchronized (PermissionHandler.class){
                 if (instance == null){
-                    instance = new PermissionHandler(BukkitInterface.getInstance());
+                    instance = new PermissionHandler(MCBans.getInstance());
                 }
             }
         }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
@@ -13,11 +13,11 @@ import com.mcbans.firestar.mcbans.request.JsonHandler;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class Lookup implements Runnable {
-    private BukkitInterface plugin;
+    private MCBans plugin;
     private String playerName;
     private String senderName;
 
-    public Lookup(BukkitInterface plugin, String playerName, String senderName) {
+    public Lookup(MCBans plugin, String playerName, String senderName) {
         this.plugin = plugin;
         this.playerName = playerName;
         this.senderName = senderName;

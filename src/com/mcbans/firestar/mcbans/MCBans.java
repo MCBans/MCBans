@@ -36,8 +36,8 @@ import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 
 import fr.neatmonster.nocheatplus.NoCheatPlus;
 
-public class BukkitInterface extends JavaPlugin {
-    private static BukkitInterface instance;
+public class MCBans extends JavaPlugin {
+    private static MCBans instance;
 
     private MCBansCommandHandler commandHandler;
     private PlayerListener playerListener = new PlayerListener(this);
@@ -240,7 +240,7 @@ public class BukkitInterface extends JavaPlugin {
         return instance.settings.getPrefix();
     }
 
-    public static BukkitInterface getInstance(){
+    public static MCBans getInstance(){
         return instance;
     }
 }

@@ -4,14 +4,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.util.Util;
 
 import de.diddiz.LogBlock.LogBlock;
 import de.diddiz.LogBlock.QueryParams;
 
 public class LbRollback extends BaseRollback{
-    public LbRollback(BukkitInterface plugin) {
+    public LbRollback(MCBans plugin) {
         super(plugin);
     }
 

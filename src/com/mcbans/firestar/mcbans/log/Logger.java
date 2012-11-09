@@ -1,11 +1,11 @@
 package com.mcbans.firestar.mcbans.log;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 
 public class Logger {
-    private BukkitInterface plugin = null;
+    private MCBans plugin = null;
 
-    public Logger(final BukkitInterface plugin) {
+    public Logger(final MCBans plugin) {
         this.plugin = plugin;
     }
 

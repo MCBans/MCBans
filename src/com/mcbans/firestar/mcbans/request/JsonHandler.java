@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
@@ -19,10 +19,10 @@ import com.mcbans.firestar.mcbans.org.json.JSONObject;
 @SuppressWarnings("unchecked")
 public class JsonHandler {
     private String apiKey = "";
-    private BukkitInterface plugin;
+    private MCBans plugin;
     private boolean debug = false;
 
-    public JsonHandler(BukkitInterface plugin) {
+    public JsonHandler(MCBans plugin) {
         this.plugin = plugin;
         this.apiKey = plugin.getApiKey();
         this.debug = plugin.settings.getBoolean("isDebug");

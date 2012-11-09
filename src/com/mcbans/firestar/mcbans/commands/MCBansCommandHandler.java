@@ -10,12 +10,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class MCBansCommandHandler implements TabExecutor{
-    private final BukkitInterface plugin;
+    private final MCBans plugin;
 
     // command map
     private Map<String, BaseCommand> commands = new HashMap<String, BaseCommand>();
@@ -23,7 +23,7 @@ public class MCBansCommandHandler implements TabExecutor{
     /**
      * Constructor
      */
-    public MCBansCommandHandler(final BukkitInterface plugin){
+    public MCBansCommandHandler(final MCBans plugin){
         this.plugin = plugin;
     }
 

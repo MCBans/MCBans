@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 
 public enum Perms {
     /* Permission Nodes */
@@ -66,7 +66,7 @@ public enum Perms {
      */
     public boolean has(final String playerName){
         if (playerName == null) return false;
-        return has(BukkitInterface.getInstance().getServer().getPlayer(playerName));
+        return has(MCBans.getInstance().getServer().getPlayer(playerName));
     }
 
     /**
@@ -87,7 +87,7 @@ public enum Perms {
     public void message(final String message){
         for (Player player : Bukkit.getServer().getOnlinePlayers()){
             if (this.has(player)){
-                player.sendMessage(BukkitInterface.getInstance().settings.getPrefix() + " " + message);
+                player.sendMessage(MCBans.getInstance().settings.getPrefix() + " " + message);
             }
         }
     }

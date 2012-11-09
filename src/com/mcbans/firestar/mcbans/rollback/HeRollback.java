@@ -14,12 +14,12 @@ import uk.co.oliwali.HawkEye.callbacks.RollbackCallback;
 import uk.co.oliwali.HawkEye.database.SearchQuery;
 import uk.co.oliwali.HawkEye.database.SearchQuery.SearchDir;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class HeRollback extends BaseRollback{
 
-    public HeRollback(BukkitInterface plugin) {
+    public HeRollback(MCBans plugin) {
         super(plugin);
     }
 

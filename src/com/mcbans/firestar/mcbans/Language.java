@@ -6,10 +6,10 @@ import java.io.InputStream;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Language {
-    private BukkitInterface plugin;
+    private MCBans plugin;
     private YamlConfiguration config;
 
-    public Language(BukkitInterface mcbans) {
+    public Language(MCBans mcbans) {
         plugin = mcbans;
         InputStream in = null;
         try {

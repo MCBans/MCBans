@@ -16,16 +16,16 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.pluginInterface.Disconnect;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class PlayerListener implements Listener {
-    private BukkitInterface plugin;
+    private MCBans plugin;
 
-    public PlayerListener(final BukkitInterface plugin) {
+    public PlayerListener(final MCBans plugin) {
         this.plugin = plugin;
     }
 

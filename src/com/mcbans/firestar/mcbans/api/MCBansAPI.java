@@ -4,14 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.mcbans.firestar.mcbans.BanType;
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.pluginInterface.Ban;
 import com.mcbans.firestar.mcbans.pluginInterface.Kick;
 
 public class MCBansAPI {
-    private final BukkitInterface plugin;
+    private final MCBans plugin;
 
-    public MCBansAPI(final BukkitInterface plugin) {
+    public MCBansAPI(final MCBans plugin) {
         this.plugin = plugin;
     }
 

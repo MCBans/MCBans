@@ -8,14 +8,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.Settings;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public abstract class BaseCommand {
     // Set this class
-    protected BukkitInterface plugin;
+    protected MCBans plugin;
     protected Settings config;
     protected CommandSender sender;
     protected String command;
@@ -37,7 +37,7 @@ public abstract class BaseCommand {
     protected boolean bePlayer = false;
     protected boolean banning = false;
 
-    public boolean run(final BukkitInterface plugin, final CommandSender sender, final String cmd, final String[] preArgs) {
+    public boolean run(final MCBans plugin, final CommandSender sender, final String cmd, final String[] preArgs) {
         if (name == null){
             Util.message(sender, "&cThis command not loaded properly!");
             return true;
@@ -129,7 +129,7 @@ public abstract class BaseCommand {
     /**
      * TabComplete
      */
-    protected List<String> tabComplete(final BukkitInterface plugin, final CommandSender sender, final String cmd, final String[] preArgs){
+    protected List<String> tabComplete(final MCBans plugin, final CommandSender sender, final String cmd, final String[] preArgs){
         return null;
     }
 

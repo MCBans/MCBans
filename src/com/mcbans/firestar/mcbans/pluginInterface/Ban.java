@@ -10,7 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.events.PlayerBanEvent;
 import com.mcbans.firestar.mcbans.events.PlayerBannedEvent;
 import com.mcbans.firestar.mcbans.events.PlayerGlobalBanEvent;
@@ -27,7 +27,7 @@ import fr.neatmonster.nocheatplus.checks.ViolationHistory;
 import fr.neatmonster.nocheatplus.checks.ViolationHistory.ViolationLevel;
 
 public class Ban implements Runnable {
-    private BukkitInterface plugin;
+    private MCBans plugin;
     private String playerName = null;
     private String playerIP = null;
     private String senderName = null;
@@ -41,7 +41,7 @@ public class Ban implements Runnable {
     private HashMap<String, Integer> responses = new HashMap<String, Integer>();
     private int action_id;
 
-    public Ban(BukkitInterface plugin, String action, String playerName, String playerIP, String senderName, String reason, String duration,
+    public Ban(MCBans plugin, String action, String playerName, String playerIP, String senderName, String reason, String duration,
             String measure, JSONObject actionData, boolean rollback) {
         this.plugin = plugin;
         this.playerName = playerName;
@@ -60,7 +60,7 @@ public class Ban implements Runnable {
         responses.put("unBan", 3);
     }
 
-    public Ban(BukkitInterface plugin, String action, String playerName, String playerIP, String senderName, String reason, String duration,
+    public Ban(MCBans plugin, String action, String playerName, String playerIP, String senderName, String reason, String duration,
             String measure) {
         this (plugin, action, playerName, playerIP, senderName, reason, duration, measure, null, false);
     }
@@ -69,7 +69,7 @@ public class Ban implements Runnable {
      * @deprecated Use another constructor. This constructor will be removed on future release.
      */
     @Deprecated
-    public Ban(BukkitInterface plugin, String action, String playerName, String playerIP, String senderName, String reason, String duration,
+    public Ban(MCBans plugin, String action, String playerName, String playerIP, String senderName, String reason, String duration,
             String measure, JSONObject actionData, int rollback_dummy) {
         this (plugin, action, playerName, playerIP, senderName, reason, duration, measure, actionData, true);
     }

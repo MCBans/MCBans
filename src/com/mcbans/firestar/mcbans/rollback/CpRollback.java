@@ -7,11 +7,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class CpRollback extends BaseRollback{
-    public CpRollback(BukkitInterface plugin) {
+    public CpRollback(MCBans plugin) {
         super(plugin);
     }
 

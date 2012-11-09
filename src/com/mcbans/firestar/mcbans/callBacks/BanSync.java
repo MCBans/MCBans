@@ -12,15 +12,15 @@ import java.util.HashMap;
 
 import org.bukkit.OfflinePlayer;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 public class BanSync implements Runnable {
-    private final BukkitInterface plugin;
+    private final MCBans plugin;
 
-    public BanSync(BukkitInterface plugin){
+    public BanSync(MCBans plugin){
         this.plugin = plugin;
         this.load();
     }

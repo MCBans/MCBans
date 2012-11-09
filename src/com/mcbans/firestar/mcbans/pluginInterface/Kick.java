@@ -3,7 +3,7 @@ package com.mcbans.firestar.mcbans.pluginInterface;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.mcbans.firestar.mcbans.BukkitInterface;
+import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.Settings;
 import com.mcbans.firestar.mcbans.events.PlayerKickEvent;
 import com.mcbans.firestar.mcbans.util.Util;
@@ -11,12 +11,12 @@ import com.mcbans.firestar.mcbans.util.Util;
 @SuppressWarnings("unused")
 public class Kick implements Runnable {
     private Settings settings;
-    private BukkitInterface plugin;
+    private MCBans plugin;
     private String playerName = null;
     private String senderName = null;
     private String reason = null;
 
-    public Kick(Settings settings, BukkitInterface plugin, String playerName, String senderName, String reason) {
+    public Kick(Settings settings, MCBans plugin, String playerName, String senderName, String reason) {
         this.settings = settings;
         this.plugin = plugin;
         this.playerName = playerName;
