@@ -32,16 +32,36 @@ public class MCBansAPI {
         triggerThread.start();
     }
 
+    /**
+     * Add Locally BAN
+     * @param targetName BAN target player's name
+     * @param senderName BAN issued admin's name
+     * @param reason BAN reason
+     */
     public void localBan(String targetName, String senderName, String reason){
         reason = (reason == null || reason == "") ? plugin.settings.getString("defaultLocal") : reason;
         this.ban(BanType.LOCAL, targetName, senderName, reason, "", "");
     }
 
+    /**
+     * Add Globally BAN
+     * @param targetName BAN target player's name
+     * @param senderName BAN issued admin's name
+     * @param reason BAN reason
+     */
     public void globalBan(String targetName, String senderName, String reason){
         if (reason == null || reason == "") return;
         this.ban(BanType.GLOBAL, targetName, senderName, reason, "", "");
     }
 
+    /**
+     * Add Temporary BAN
+     * @param targetName BAN target player's name
+     * @param senderName BAN issued admin's name
+     * @param reason BAN reason
+     * @param duration Banning length duration (intValue)
+     * @param measure Banning length measure (m(minute), h(hour), d(day), w(week))
+     */
     public void tempBan(String targetName, String senderName, String reason, String duration, String measure){
         reason = (reason == null || reason == "") ? plugin.settings.getString("defaultTemp") : reason;
         duration = (duration == null) ? "" : duration;
@@ -49,10 +69,21 @@ public class MCBansAPI {
         this.ban(BanType.TEMP, targetName, senderName, reason, duration, measure);
     }
 
+    /**
+     * Remove BAN
+     * @param targetName UnBan target player's name
+     * @param senderName UnBan issued admin's name
+     */
     public void unBan(String targetName, String senderName){
         this.ban(BanType.UNBAN, targetName, senderName, "", "", "");
     }
 
+    /**
+     * Kick Player
+     * @param targetName Kick target player's name
+     * @param senderName Kick issued admin's name
+     * @param reason Kick reason
+     */
     public void kick(String targetName, String senderName, String reason){
         reason = (reason == null || reason == "") ? plugin.settings.getString("defaultKick") : reason;
 
