@@ -151,7 +151,7 @@ callBackInterval: 15
 onConnectGlobals: true
 
 #########################################################
-# MCBans Default Config
-# 	Please REMOVE this section after you have finished configuring MCBans
+# DO NOT TOUCH
+# 	Do not touch this option! It is a check if you are running the recent configuration version
 ##
-mcbansUnconfigured: true
+ConfigVersion: 1
