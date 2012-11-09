@@ -45,7 +45,7 @@ public class PlayerListener implements Listener {
                 }
             }
             if (check <= 5) {
-                URL urlMCBans = new URL("http://" + plugin.apiServer + "/v2/" + plugin.getApiKey() + "/login/"
+                URL urlMCBans = new URL("http://" + plugin.apiServer + "/v2/" + plugin.settings.getString("apiKey") + "/login/"
                         + URLEncoder.encode(event.getName(), "UTF-8") + "/"
                         + URLEncoder.encode(String.valueOf(event.getAddress().getHostAddress()), "UTF-8"));
                 BufferedReader bufferedreaderMCBans = new BufferedReader(new InputStreamReader(urlMCBans.openStream()));

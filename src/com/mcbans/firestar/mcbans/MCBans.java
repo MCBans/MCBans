@@ -66,7 +66,6 @@ public class MCBans extends JavaPlugin {
         add("api.mcbans.com");
     }};
     public String apiServer = "";
-    private String apiKey = "";
     public Logger logger = new Logger(this);
     private RollbackHandler rbHandler = null;
     private boolean ncpEnabled = false;
@@ -110,7 +109,6 @@ public class MCBans extends JavaPlugin {
             pm.disablePlugin(this);
             return;
         }
-        this.apiKey = settings.getString("apiKey");
 
         // load language
         log(LogLevels.INFO, "Loading language file: " + settings.getString("language"));
@@ -214,10 +212,6 @@ public class MCBans extends JavaPlugin {
             actionLog.write(message);
         }
         logger.log(type, message);
-    }
-
-    public String getApiKey() {
-        return this.apiKey;
     }
 
     public boolean isEnabledNCP(){

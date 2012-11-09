@@ -24,7 +24,7 @@ public class JsonHandler {
 
     public JsonHandler(MCBans plugin) {
         this.plugin = plugin;
-        this.apiKey = plugin.getApiKey();
+        this.apiKey = plugin.settings.getString("apiKey");
         this.debug = plugin.settings.getBoolean("isDebug");
     }
 
