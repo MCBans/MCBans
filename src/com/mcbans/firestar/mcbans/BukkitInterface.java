@@ -13,6 +13,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.mcbans.firestar.mcbans.api.MCBansAPI;
 import com.mcbans.firestar.mcbans.bukkitListeners.PlayerListener;
 import com.mcbans.firestar.mcbans.callBacks.BanSync;
 import com.mcbans.firestar.mcbans.callBacks.MainCallBack;
@@ -70,6 +71,7 @@ public class BukkitInterface extends JavaPlugin {
     private RollbackHandler rbHandler = null;
     private boolean ncpEnabled = false;
     private boolean acEnabled = false;
+    private MCBansAPI api;
 
     @Override
     public void onDisable() {
@@ -152,6 +154,9 @@ public class BukkitInterface extends JavaPlugin {
         if (ncpEnabled) log(LogLevels.INFO, "NoCheatPlus plugin found! Enabled this integration!");
         if (acEnabled) log(LogLevels.INFO, "AntiCheat plugin found! Enabled this integration!");
 
+        // enabling MCBansAPI
+        api = new MCBansAPI(this);
+
         log(LogLevels.INFO, "Started up successfully!");
     }
 
@@ -225,6 +230,10 @@ public class BukkitInterface extends JavaPlugin {
 
     public RollbackHandler getRbHandler(){
         return this.rbHandler;
+    }
+
+    public MCBansAPI getAPI(){
+        return api;
     }
 
     public static String getPrefix(){
