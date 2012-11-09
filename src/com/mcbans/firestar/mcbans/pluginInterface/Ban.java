@@ -156,6 +156,10 @@ public class Ban implements Runnable {
         url_items.put("exec", "unBan");
         HashMap<String, String> response = webHandle.mainRequest(url_items);
         try {
+            if (response.containsKey("error")){
+                Util.message(senderName, ChatColor.DARK_RED + "Error: " + response.get("error"));
+                return;
+            }
             if (!response.containsKey("result")) {
                 Util.message(senderName, ChatColor.DARK_RED + plugin.language.getFormat("unBanMessageError", playerName, senderName));
                 return;
@@ -209,6 +213,10 @@ public class Ban implements Runnable {
         url_items.put("exec", "localBan");
         HashMap<String, String> response = webHandle.mainRequest(url_items);
         try {
+            if (response.containsKey("error")){
+                Util.message(senderName, ChatColor.DARK_RED + "Error: " + response.get("error"));
+                return;
+            }
             if (!response.containsKey("result")) {
                 Util.message(senderName, ChatColor.DARK_RED + " MCBans down, adding local ban, unban with /pardon");
                 OfflinePlayer d = plugin.getServer().getOfflinePlayer(playerName);
@@ -288,6 +296,10 @@ public class Ban implements Runnable {
         url_items.put("exec", "globalBan");
         HashMap<String, String> response = webHandle.mainRequest(url_items);
         try {
+            if (response.containsKey("error")){
+                Util.message(senderName, ChatColor.DARK_RED + "Error: " + response.get("error"));
+                return;
+            }
             if (!response.containsKey("result")) {
                 Util.message(senderName, ChatColor.DARK_RED + " MCBans down, adding local ban, unban with /pardon");
                 OfflinePlayer d = plugin.getServer().getOfflinePlayer(playerName);
@@ -363,6 +375,10 @@ public class Ban implements Runnable {
         url_items.put("exec", "tempBan");
         HashMap<String, String> response = webHandle.mainRequest(url_items);
         try {
+            if (response.containsKey("error")){
+                Util.message(senderName, ChatColor.DARK_RED + "Error: " + response.get("error"));
+                return;
+            }
             if (!response.containsKey("result")) {
                 Util.message(senderName, ChatColor.DARK_RED + " MCBans down, adding local ban, unban with /pardon");
                 OfflinePlayer d = plugin.getServer().getOfflinePlayer(playerName);
