@@ -17,10 +17,12 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.pluginInterface.Disconnect;
 import com.mcbans.firestar.mcbans.util.Util;
+import static com.mcbans.firestar.mcbans.I18n._;
 
 public class PlayerListener implements Listener {
     private MCBans plugin;
@@ -106,18 +108,18 @@ public class PlayerListener implements Listener {
 
         if(pcache.containsKey("b")){
             Util.message(playerName, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )" );
-            Perms.VIEW_BANS.message(ChatColor.DARK_RED + plugin.language.getFormat( "previousBans", playerName ));
+            Perms.VIEW_BANS.message(ChatColor.DARK_RED + _("previousBans").replaceAll(I18n.PLAYER, playerName));
         }
         if(pcache.containsKey("d")){
             Util.message(playerName, ChatColor.DARK_RED + pcache.get("d") + " open disputes!");
         }
         if(pcache.containsKey("a")){
-            Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + plugin.language.getFormatAlts("altAccounts", playerName, pcache.get("al").toString()));
+            Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + _("altAccounts").replaceAll(I18n.PLAYER, playerName).replaceAll(I18n.ALTS, pcache.get("al").toString()));
         }
         if(pcache.containsKey("m")){
             plugin.log( LogLevels.INFO, playerName + " is a MCBans.com Staff member");
-            Util.broadcastMessage(ChatColor.AQUA + plugin.language.getFormat("isMCBansMod", playerName));
-            Util.message(playerName, ChatColor.AQUA + plugin.language.getFormat ("youAreMCBansStaff"));
+            Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod").replaceAll(I18n.PLAYER, playerName));
+            Util.message(playerName, ChatColor.AQUA + _("youAreMCBansStaff"));
         }
     }
 

@@ -47,7 +47,6 @@ public class MCBans extends JavaPlugin {
     public HashMap<String, Long> resetTime = new HashMap<String, Long>();
     public long last_req = 0;
     public long timeRecieved = 0;
-    public Language language = null;
     public Thread callbackThread = null;
     public Thread syncBan = null;
     public boolean syncRunning = false;
@@ -114,7 +113,7 @@ public class MCBans extends JavaPlugin {
 
         // load language
         log(LogLevels.INFO, "Loading language file: " + config.getLanguage());
-        language = new Language(this);
+        I18n.init(config.getLanguage());
 
         pm.registerEvents(playerListener, this);
 

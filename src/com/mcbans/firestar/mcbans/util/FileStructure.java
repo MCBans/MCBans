@@ -128,4 +128,8 @@ public class FileStructure {
             }catch (Exception ex){}
         }
     }
+
+    public static File getPluginDir(){
+        return MCBans.getInstance().getDataFolder();
+    }
 }
