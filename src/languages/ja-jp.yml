@@ -1,4 +1,5 @@
 # Japanese MCBans File, Translated By: syamn
+
 unBanMessageSuccess: "%PLAYER% のBANを解除しました！"
 unBanMessageError: "%PLAYER% のBAN解除中にエラーが発生しました！"
 unBanMessageGroup: "%PLAYER% は、あなたが所属しているグループの他サーバからBANされています！"
@@ -26,6 +27,7 @@ tempBanMessageAlready: "%PLAYER% は既にこのサーバーでBANされてい�
 kickMessagePlayer: "%REASON%"
 kickMessageSuccess: "%PLAYER% はkickされました！"
 kickMessageNoPlayer: "%PLAYER% はオフラインです！"
+kickMessageBroadcast: "%ADMIN% は %PLAYER% をkickしました[%REASON%]"
 
 formatError: "引数がおかしいです！"
 permissionDenied: "権限がありません！"

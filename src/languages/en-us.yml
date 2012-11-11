@@ -1,4 +1,5 @@
 # English MCBans File, Translated By: __
+
 unBanMessageSuccess: "%PLAYER% has been unbanned!"
 unBanMessageError: "Error removing the ban for %PLAYER%!"
 unBanMessageGroup: "%PLAYER% banned from a server in the same group as you!"
@@ -26,7 +27,6 @@ tempBanMessageAlready: "%PLAYER% is already banned from this server!"
 kickMessagePlayer: "%REASON%"
 kickMessageSuccess: "%PLAYER% has been kicked!"
 kickMessageNoPlayer: "%PLAYER% is not online!"
-
 kickMessageBroadcast: "%ADMIN% has kicked %PLAYER% [%REASON%]"
 
 formatError: "Incorrect parameters!"

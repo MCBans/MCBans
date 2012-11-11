@@ -55,10 +55,8 @@ public class I18n {
         locales.add("dutch");
         locales.add("french");
         locales.add("german");
-        locales.add("italian");
         locales.add("ja-jp");
         locales.add("norwegian");
-        locales.add("polish");
         locales.add("portuguese");
         locales.add("spanish");
         locales.add("sv-se");

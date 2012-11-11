@@ -1,18 +1,15 @@
 # English MCBans File, Translated By: dragondeth48, Updated by: Crashdoom
 
-
 unBanMessageSuccess: "¡levantar la prohibición de %PLAYER%!"
 unBanMessageError: "%PLAYER% es prohibido aún"
 unBanMessageGroup: "¡%PLAYER% es prohibido de un servidora en el mismo grupo como tú!"
 unBanMessageNot: "¡%PLAYER% no es brohibido!"
-
 
 localBanMessagePlayer: "Usted se prohibieron, Usted consulte MCBans.com"
 localBanMessageSuccess: "%PLAYER% ha sido prohibido [%REASON%]"
 localBanMessageError: "¡Problema dando la prohibición de %PLAYER%!"
 localBanMessageGroup: "¡%PLAYER% prohibió desde un servidor en el mismo grupo como tú!"
 localBanMessageAlready: "¡%PLAYER% ya está prohibido desde el servidor!"
-
 
 globalBanMessagePlayer: "Usted se prohibieron, Usted consulte MCBans.com"
 globalBanMessageSuccess: "%PLAYER% ha sido prohibido [%REASON%]"
@@ -21,17 +18,16 @@ globalBanMessageWarning: "¡Problema dando la prohibición de %PLAYER%! Palabra 
 globalBanMessageGroup: "¡%PLAYER% prohibió desde un servidor en el mismo grupo como tú!"
 globalBanMessageAlready: "¡%PLAYER% ya está prohibido desde el servidor!"
 
-
 tempBanMessagePlayer: "%REASON%"
 tempBanMessageSuccess: "%PLAYER% ha prohibido temporalmente [%REASON%]"
 tempBanMessageError: "¡Problema dando la prohibición de %PLAYER%!"
 tempBanMessageGroup: "¡%PLAYER% es prohibido de un servidora en el mismo grupo como tú!"
 tempBanMessageAlready: "¡%PLAYER% ya está prohibido desde el servidor!"
 
-
 kickMessagePlayer: "%REASON%"
 kickMessageSuccess: "¡%PLAYER% fue expulsado!"
-
+kickMessageNoPlayer: ""
+kickMessageBroadcast: ""
 
 formatError: "¡Parámetros incorrectos!"
 permissionDenied: "¡Permiso denegado!"
@@ -43,20 +39,13 @@ altAccounts: "¡%PLAYER% Tiene cuentas otros [ %ALTS% ]!"
 isMCBansMod: "¡%PLAYER% es un miembro del personal para MCBans.com!"
 youAreMCBansStaff: "¡Usted es un miembro del personal para MCBans.com!"
 
-
 newMessage: "¡Tienes %COUNT% mensaje(s) nuevas!"
-
-
 inboxEmpty: "¡Su Correo electronico es vacío!"
 InboxHeader: "¡Su correo electronico!"
-
-
 messageNone: "¡No Mensajes!"
 messageView: "[%DATE%] %SENDER%: %MESSAGE%"
 messageError: "¡Error al enviar el mensaje!"
 messageSent: "¡Mensaje enviado!"
-
-
 blockNot: "¡Está bloqueado!"
 blockAlready: "¡Él ya está bloqueado!"
 unBlockSuccess: "¡Inutilizas %PLAYER%!"
