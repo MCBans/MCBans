@@ -64,7 +64,7 @@ public class I18n {
         extractLanguageFile("sv-se", langDir, force);
     }
     private static void extractLanguageFile(final String locale, final File langDir, final boolean force){
-        FileStructure.extractResource("/languages/" + locale, langDir, force, true);
+        FileStructure.extractResource("/languages/" + locale + ".yml", langDir, force, true);
     }
 
     // Load methods
