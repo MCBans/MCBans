@@ -90,7 +90,7 @@ public class I18n {
             for (String key : fallbackMessages.getKeys(true)){
                 if (!conf.contains(key) && !fallbackMessages.isConfigurationSection(key)){
                     conf.set(key, fallbackMessages.get(key));
-                    System.out.print("[MCBans] Missing message key on " + file + ".yml: " + key);
+                    System.out.print("[MCBans] Missing message key on " + locale + ".yml: " + key);
                 }
             }
         }
