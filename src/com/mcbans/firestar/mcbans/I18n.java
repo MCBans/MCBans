@@ -14,8 +14,6 @@ import com.google.common.base.Joiner;
 import com.mcbans.firestar.mcbans.util.FileStructure;
 
 public class I18n {
-    //private final MCBans plugin;
-
     private static final String languageDirName = "languages";
 
     private static Configuration fallbackMessages;
@@ -51,20 +49,23 @@ public class I18n {
         FileStructure.createDir(langDir);
 
         // extract resources
-        extractLanguageFile("en-us", langDir, force);
-        extractLanguageFile("dutch", langDir, force);
-        extractLanguageFile("french", langDir, force);
-        extractLanguageFile("german", langDir, force);
-        extractLanguageFile("italian", langDir, force);
-        extractLanguageFile("ja-jp", langDir, force);
-        extractLanguageFile("norwegian", langDir, force);
-        extractLanguageFile("polish", langDir, force);
-        extractLanguageFile("portuguese", langDir, force);
-        extractLanguageFile("spanish", langDir, force);
-        extractLanguageFile("sv-se", langDir, force);
-    }
-    private static void extractLanguageFile(final String locale, final File langDir, final boolean force){
-        FileStructure.extractResource("/languages/" + locale + ".yml", langDir, force, true);
+        List<String> locales = new ArrayList<String>();
+
+        locales.add("en-us");
+        locales.add("dutch");
+        locales.add("french");
+        locales.add("german");
+        locales.add("italian");
+        locales.add("ja-jp");
+        locales.add("norwegian");
+        locales.add("polish");
+        locales.add("portuguese");
+        locales.add("spanish");
+        locales.add("sv-se");
+
+        for (String locale : locales){
+            FileStructure.extractResource("/languages/" + locale + ".yml", langDir, force, true);
+        }
     }
 
     // Load methods
@@ -96,6 +97,15 @@ public class I18n {
         return conf;
     }
 
+    /* ***** Begin Replace methods ***** */
+    public static final String PLAYER = "%PLAYER%";
+    public static final String SENDER = "%ADMIN%";
+    public static final String REASON = "%REASON%";
+    public static final String BADWORD = "%BADWORD%";
+    public static final String ALTS = "%ALTS%";
+    public static final String PLAYERIP = "%PLAYERIP%";
+    /* ***** End Replace methods ******* */
+
     public static String _(final String key){
         // message file not proper loaded
         if (messages == null){
@@ -116,15 +126,6 @@ public class I18n {
 
         return msg;
     }
-
-    /* ***** Begin Replace methods ***** */
-    public static final String PLAYER = "%PLAYER%";
-    public static final String SENDER = "%ADMIN%";
-    public static final String REASON = "%REASON%";
-    public static final String BADWORD = "%BADWORD%";
-    public static final String ALTS = "%ALTS%";
-    public static final String PLAYERIP = "%PLAYERIP%";
-    /* ***** End Replace methods ******* */
 
     private static String getString(final Configuration conf, final String key){
         String s = null;
