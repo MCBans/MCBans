@@ -115,13 +115,10 @@ public class I18n {
 
         String msg = getString(messages, key);
 
-        if (msg == null){
-            System.out.print("[MCBans] Missing message key '" + key + "'");
-            // missing key, try to load from default language file
+        if (msg == null || msg.length() == 0){
+            if (msg == null) System.out.print("[MCBans] Missing message key '" + key + "'");
             msg = getString(fallbackMessages, key);
-            if (msg == null){
-                msg = "!" + key + "!";
-            }
+            if (msg == null || msg.length() == 0) msg = "!" + key + "!";
         }
 
         return msg;
