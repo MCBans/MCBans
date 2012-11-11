@@ -86,19 +86,11 @@ public class I18n {
         // check all messages available
         if (fallbackMessages != null && conf.getKeys(true).size() != fallbackMessages.getKeys(true).size()){
             // collect missing message keys
-            List<String> missing = new ArrayList<String>();
             for (String key : fallbackMessages.getKeys(true)){
                 if (!conf.contains(key) && !fallbackMessages.isConfigurationSection(key)){
                     conf.set(key, fallbackMessages.get(key));
-                    missing.add(key);
+                    System.out.print("[MCBans] Missing message key on " + file + ".yml: " + key);
                 }
-            }
-            // add missing keys on end of file
-            conf.set("_NEEDS_TRANSLATION_", missing);
-            try{
-                conf.save(file);
-            }catch (IOException ex){
-                System.out.print("Could not write " + file + ": " + ex.getMessage());
             }
         }
         return conf;
