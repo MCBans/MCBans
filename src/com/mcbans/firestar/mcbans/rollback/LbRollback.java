@@ -29,7 +29,9 @@ public class LbRollback extends BaseRollback{
                 params = new QueryParams(logblock);
                 params.setPlayer(target);
                 //params.since = (time * plugin.Settings.getInteger("backDaysAgo"));
-                params.since = (1440 * plugin.getConfigs().getBackDaysAgo());
+                if (plugin.getConfigs().getBackDaysAgo() > 0){
+                    params.since = (1440 * plugin.getConfigs().getBackDaysAgo());
+                }
                 params.world = plugin.getServer().getWorld(world);
                 params.silent = false;
 

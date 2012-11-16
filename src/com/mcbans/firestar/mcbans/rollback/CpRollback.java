@@ -21,11 +21,12 @@ public class CpRollback extends BaseRollback{
     public boolean rollback(CommandSender sender, String senderName, String target) {
         if (cpAPI == null) return false;
 
+        final int time = (plugin.getConfigs().getBackDaysAgo() > 0) ? 86400 * plugin.getConfigs().getBackDaysAgo() : 0;
         try {
             // TODO: check async? maybe not
             cpAPI.performRollback(
                     target,
-                    86400 * plugin.getConfigs().getBackDaysAgo(),
+                    time,
                     0, null, null, null);
         }catch (Exception e){
             Util.message(senderName, ChatColor.RED + "Unable to rollback player!");

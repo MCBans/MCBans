@@ -93,6 +93,7 @@ affectedWorlds: world
 # backDaysAgo:
 # 	days ago to roll back a player
 #   DEFAULT: 20
+#	0 (<=0) to infinite.
 backDaysAgo: 20
 
 #########################################################

@@ -40,9 +40,11 @@ public class HeRollback extends BaseRollback{
             parser.players.add(target);
             parser.worlds = worlds;
 
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DAY_OF_MONTH, -1 * plugin.getConfigs().getBackDaysAgo());
-            parser.dateFrom = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(cal.getTime());
+            if (plugin.getConfigs().getBackDaysAgo() > 0){
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.DAY_OF_MONTH, -1 * plugin.getConfigs().getBackDaysAgo());
+                parser.dateFrom = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(cal.getTime());
+            }
 
             // Create new SearchQuery
             Util.message(senderName, ChatColor.GREEN + "Starting rollback..");
