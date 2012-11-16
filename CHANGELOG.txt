@@ -10,6 +10,7 @@
 - Rewrited localize structure
 - Rewrited logging structure
 - Rewrited configuration structure (Change settings.yml to config.yml)
+- Fixed enableMaxAlts configuration not working
 - Fixed minor exception while player joining the server
 
 3.9 R1 DIAMOND:

@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.mcbans.firestar.mcbans.ActionLog;
+import com.mcbans.firestar.mcbans.ConfigurationManager;
 import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.permission.Perms;
@@ -28,10 +29,12 @@ import com.mcbans.firestar.mcbans.util.Util;
 public class PlayerListener implements Listener {
     private final MCBans plugin;
     private final ActionLog log;
+    private final ConfigurationManager config;
 
     public PlayerListener(final MCBans plugin) {
         this.plugin = plugin;
         this.log = plugin.getLog();
+        this.config = plugin.getConfigs();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -51,7 +54,7 @@ public class PlayerListener implements Listener {
             }
 
             // get player information
-            final URL urlMCBans = new URL("http://" + plugin.apiServer + "/v2/" + plugin.getConfigs().getApiKey() + "/login/"
+            final URL urlMCBans = new URL("http://" + plugin.apiServer + "/v2/" + config.getApiKey() + "/login/"
                     + URLEncoder.encode(event.getName(), "UTF-8") + "/"
                     + URLEncoder.encode(String.valueOf(event.getAddress().getHostAddress()), "UTF-8"));
             BufferedReader br = null;
@@ -76,12 +79,12 @@ public class PlayerListener implements Listener {
                     return;
                 }
                 // check reputation
-                else if (plugin.getConfigs().getMinRep() > Double.valueOf(s[2])) {
+                else if (config.getMinRep() > Double.valueOf(s[2])) {
                     event.disallow(Result.KICK_BANNED, "Reputation too low!");
                     return;
                 }
                 // check alternate accounts
-                else if (plugin.getConfigs().getMaxAlts() < Integer.valueOf(s[3])) {
+                else if (config.isEnableMaxAlts() && config.getMaxAlts() < Integer.valueOf(s[3])) {
                     event.disallow(Result.KICK_BANNED, "You have too many alternate accounts!");
                     return;
                 }
