@@ -1,7 +1,6 @@
 package com.mcbans.firestar.mcbans;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +11,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import uk.co.oliwali.HawkEye.util.Util;
 
-import com.google.common.base.Joiner;
 import com.mcbans.firestar.mcbans.util.FileStructure;
 
 public class I18n {

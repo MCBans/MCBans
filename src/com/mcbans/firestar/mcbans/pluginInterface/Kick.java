@@ -1,5 +1,7 @@
 package com.mcbans.firestar.mcbans.pluginInterface;
 
+import static com.mcbans.firestar.mcbans.I18n._;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -7,14 +9,13 @@ import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.events.PlayerKickEvent;
 import com.mcbans.firestar.mcbans.util.Util;
-import static com.mcbans.firestar.mcbans.I18n._;
 
-@SuppressWarnings("unused")
 public class Kick implements Runnable {
-    private MCBans plugin;
-    private String playerName = null;
-    private String senderName = null;
-    private String reason = null;
+    private final MCBans plugin;
+
+    private final String playerName;
+    private final String senderName;
+    private String reason;
 
     public Kick(MCBans plugin, String playerName, String senderName, String reason) {
         this.plugin = plugin;
@@ -28,9 +29,8 @@ public class Kick implements Runnable {
         while (plugin.notSelectedServer) {
             // waiting for server select
             try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-            }
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {}
         }
         final Player player = plugin.getServer().getPlayer(playerName);
         if (player != null) {
@@ -49,8 +49,7 @@ public class Kick implements Runnable {
                     player.kickPlayer(_("kickMessagePlayer", I18n.PLAYER, player.getName(), I18n.SENDER, senderName, I18n.REASON, reason));
                 }
             }, 1L);
-            Util.broadcastMessage(ChatColor.GREEN
-                    + _("kickMessageBroadcast", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason));
+            Util.broadcastMessage(ChatColor.GREEN + _("kickMessageBroadcast", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason));
         } else {
             Util.message(senderName, ChatColor.DARK_RED + _("kickMessageNoPlayer", I18n.PLAYER, playerName));
         }

@@ -24,33 +24,34 @@ public class BanSync implements Runnable {
         this.plugin = plugin;
         this.load();
     }
+
     @Override
     public void run(){
         while(true){
-            int syncInterval = ((60*1000)*plugin.getConfigs().getSyncInterval());
-            if(syncInterval<((60*1000)*5)){
-                syncInterval=((60*1000)*5);
+            int syncInterval = ((60 * 1000) * plugin.getConfigs().getSyncInterval());
+            if(syncInterval < ((60 * 1000) * 5)){
+                syncInterval = ((60 * 1000) * 5);
             }
             while(plugin.notSelectedServer){
                 //waiting for server select
                 try {
                     Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                }
+                } catch (InterruptedException e) {}
             }
             this.mainRequest();
-            plugin.lastSync = System.currentTimeMillis()/1000;
+            plugin.lastSync = System.currentTimeMillis() / 1000;
             try {
                 Thread.sleep(syncInterval);
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
         }
     }
+
     public void goRequest() {
         this.mainRequest();
     }
+
     private void mainRequest(){
-        if(plugin.lastID==0){
+        if(plugin.lastID == 0){
             this.initialSync();
             this.save();
         }else{
@@ -58,6 +59,7 @@ public class BanSync implements Runnable {
             this.save();
         }
     }
+
     public void initialSync(){
         if(plugin.syncRunning==true){
             return;
@@ -118,23 +120,23 @@ public class BanSync implements Runnable {
             }else{
                 f=1;
             }
-            if(f>5){
+            if(f > 5){
                 goNext = false;
             }
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
         }
         plugin.syncRunning = false;
     }
+
     public void startSync(){
-        if(plugin.syncRunning==true){
+        if(plugin.syncRunning){
             return;
         }
         plugin.syncRunning = true;
         boolean goNext = true;
-        int f =1;
+        int f = 1;
         while(goNext){
             long startID = plugin.lastID;
             JsonHandler webHandle = new JsonHandler( plugin );
@@ -185,7 +187,7 @@ public class BanSync implements Runnable {
             }else{
                 f=1;
             }
-            if(f>5){
+            if(f > 5){
                 goNext = false;
             }
             try {

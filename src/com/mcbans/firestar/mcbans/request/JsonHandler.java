@@ -16,7 +16,6 @@ import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 
-@SuppressWarnings("unchecked")
 public class JsonHandler {
     private final MCBans plugin;
     private final ActionLog log;
@@ -37,6 +36,7 @@ public class JsonHandler {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     public HashMap<String, String> mainRequest(HashMap<String, String> items) {
         HashMap<String, String> out = new HashMap<String, String>();
         String url_req = this.urlparse(items);

@@ -20,7 +20,7 @@ public class ManualSync implements Runnable {
     }
     @Override
     public void run() {
-        if(plugin.syncRunning==true){
+        if(plugin.syncRunning){
             Util.message(commandSend, ChatColor.GREEN + " Sync already in progress!" );
             return;
         }
@@ -28,8 +28,7 @@ public class ManualSync implements Runnable {
             //waiting for server select
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
         }
         int fre = 0;
         plugin.syncRunning = true;
@@ -75,11 +74,9 @@ public class ManualSync implements Runnable {
             }
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
         }
         plugin.syncRunning = false;
         Util.message(commandSend, ChatColor.GREEN + " Sync finished, "+fre+" actions!" );
     }
-
 }

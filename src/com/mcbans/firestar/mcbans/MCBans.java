@@ -8,7 +8,6 @@ import net.h31ix.anticheat.Anticheat;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -180,6 +179,12 @@ public class MCBans extends JavaPlugin {
 
         for (final BaseCommand cmd : cmds){
             commandHandler.registerCommand(cmd);
+        }
+    }
+
+    public void debug(final String message){
+        if (getConfigs().isDebug()){
+            getLog().info(message);
         }
     }
 

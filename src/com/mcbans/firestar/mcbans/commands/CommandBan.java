@@ -1,5 +1,7 @@
 package com.mcbans.firestar.mcbans.commands;
 
+import static com.mcbans.firestar.mcbans.I18n._;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -7,7 +9,6 @@ import com.mcbans.firestar.mcbans.BanType;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.pluginInterface.Ban;
 import com.mcbans.firestar.mcbans.util.Util;
-import static com.mcbans.firestar.mcbans.I18n._;
 
 public class CommandBan extends BaseCommand{
     public CommandBan(){

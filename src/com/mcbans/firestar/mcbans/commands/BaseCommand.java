@@ -1,5 +1,7 @@
 package com.mcbans.firestar.mcbans.commands;
 
+import static com.mcbans.firestar.mcbans.I18n._;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,6 @@ import com.mcbans.firestar.mcbans.ConfigurationManager;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.util.Util;
-import static com.mcbans.firestar.mcbans.I18n._;
 
 public abstract class BaseCommand {
     // Set this class

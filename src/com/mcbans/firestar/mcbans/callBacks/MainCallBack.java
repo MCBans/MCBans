@@ -21,9 +21,9 @@ public class MainCallBack implements Runnable {
 
     @Override
     public void run(){
-        int callBackInterval = ((60*1000)*plugin.getConfigs().getCallBackInterval());
-        if(callBackInterval<((60*1000)*15)){
-            callBackInterval=((60*1000)*15);
+        int callBackInterval = ((60 * 1000) * plugin.getConfigs().getCallBackInterval());
+        if(callBackInterval < ((60 * 1000) * 15)){
+            callBackInterval = ((60 * 1000) * 15);
         }
 
         while(true){
@@ -31,20 +31,20 @@ public class MainCallBack implements Runnable {
                 //waiting for server select
                 try {
                     Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                }
+                } catch (InterruptedException e) {}
             }
             this.mainRequest();
-            plugin.lastCallBack = System.currentTimeMillis()/1000;
+            plugin.lastCallBack = System.currentTimeMillis() / 1000;
             try {
                 Thread.sleep(callBackInterval);
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
         }
     }
+
     public void goRequest() {
         mainRequest();
     }
+
     private void mainRequest(){
         JsonHandler webHandle = new JsonHandler( plugin );
         HashMap<String, String> url_items = new HashMap<String, String>();

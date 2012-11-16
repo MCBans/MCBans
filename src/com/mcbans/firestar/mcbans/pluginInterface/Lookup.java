@@ -16,8 +16,8 @@ public class Lookup implements Runnable {
     private final MCBans plugin;
     private final ActionLog log;
 
-    private String playerName;
-    private String senderName;
+    private final String playerName;
+    private final String senderName;
 
     public Lookup(MCBans plugin, String playerName, String senderName) {
         this.plugin = plugin;
@@ -33,8 +33,7 @@ public class Lookup implements Runnable {
             // waiting for server select
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
         }
         log.info(senderName + " has looked up the " + playerName + "!");
         HashMap<String, String> url_items = new HashMap<String, String>();

@@ -85,20 +85,20 @@ public class ManualResync implements Runnable {
             if(plugin.lastID == startID){
                 f++;
             }else{
-                f=1;
+                f = 1;
             }
-            if(f>5){
+            if(f > 5){
                 goNext = false;
             }
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
         }
         plugin.syncRunning = false;
         Util.message(commandSend, ChatColor.GREEN + " Sync finished" );
         this.save();
     }
+
     public void save(){
         try {
             Writer writer = new OutputStreamWriter(

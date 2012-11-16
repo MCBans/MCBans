@@ -23,8 +23,7 @@ public class Ping implements Runnable {
             // waiting for server select
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
         }
         long pingTime = (System.currentTimeMillis());
         JsonHandler webHandle = new JsonHandler(plugin);
@@ -38,7 +37,5 @@ public class Ping implements Runnable {
         } else {
             Util.message(commandSend, ChatColor.RED + "API appears to be down!");
         }
-
     }
-
 }

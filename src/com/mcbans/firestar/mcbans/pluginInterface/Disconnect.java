@@ -6,8 +6,8 @@ import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 public class Disconnect implements Runnable {
-    private MCBans plugin;
-    private String playerName;
+    private final MCBans plugin;
+    private final String playerName;
 
     public Disconnect(MCBans plugin, String playerName) {
         this.plugin = plugin;
@@ -20,8 +20,7 @@ public class Disconnect implements Runnable {
             // waiting for server select
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) {}
         }
         plugin.getLog().info(playerName + " has disconnected!");
         JsonHandler webhandle = new JsonHandler(plugin);
