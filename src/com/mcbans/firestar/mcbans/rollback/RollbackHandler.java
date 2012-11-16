@@ -87,4 +87,12 @@ public class RollbackHandler {
 
         return method.rollback(sender, senderName, target);
     }
+
+    /**
+     * Check has rollback method
+     * @return true if enabled any rollback method
+     */
+    public boolean hasRollbackMethod(){
+        return (method != null);
+    }
 }

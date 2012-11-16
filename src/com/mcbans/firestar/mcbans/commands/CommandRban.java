@@ -43,6 +43,11 @@ public class CommandRban extends BaseCommand{
             throw new CommandException(ChatColor.DARK_RED + _("permissionDenied"));
         }
 
+        // check hasRollbackMethod
+        if (!plugin.getRbHandler().hasRollbackMethod()){
+            throw new CommandException(ChatColor.DARK_RED + _("rbMethodNotFound"));
+        }
+
         String reason = null;
         Ban banControl = null;
         switch (type){
