@@ -38,7 +38,6 @@ overMaxAlts: "Du har for mange alternative kontoer"
 altBanned: "Du har en utestengt alternative konto her"
 altAccounts: "%PLAYER% talvez tenha contas alternativas [ %ALTS% ]!"
 isMCBansMod: "%PLAYER% er en MCBans.com medarbeider!"
-youAreMCBansStaff: "You are an MCBans Staff Member!"
 
 newMessage: "Você tem %COUNT% nova(s) mensagem(s)!"
 inboxEmpty: "Sua caixa de entrada está vazia!"

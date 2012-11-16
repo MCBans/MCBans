@@ -38,7 +38,6 @@ overMaxAlts: "Du har fler alt-konton �n vad denna server till�ter!"
 altBanned: "Du har ett alt-konto som �r bannad fr�n denna server!"
 altAccounts: "%PLAYER% kan ha alt-konton [ %ALTS% ]!"
 isMCBansMod: "%PLAYER% �r en MCBans.com Staff Medlem!"
-youAreMCBansStaff: "Du �r en MCBans.com Staff Medlem!"
 
 newMessage: "Du har %COUNT% nya meddelanden(s)!"
 inboxEmpty: "Din inkorg �r tom!"

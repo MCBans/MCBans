@@ -38,7 +38,6 @@ overMaxAlts: ""
 altBanned: ""
 altAccounts: "%PLAYER% har muligens flere kontoer [ %ALTS% ]!"
 isMCBansMod: "%PLAYER% Er en MCBans medarbeider!"
-youAreMCBansStaff: "You are an MCBans Staff Member!"
 
 newMessage: "Du har %COUNT% ny(e) beskjed(er)!"
 inboxEmpty: "postkassen din er tom!"

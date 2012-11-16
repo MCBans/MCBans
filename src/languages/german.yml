@@ -38,7 +38,6 @@ overMaxAlts: "Du hast mehr Zweitaccounts, als dieser Server erlaubt!"
 altBanned: "Du hast einen Zweitaccount, der von diesem Server gebannt ist!"
 altAccounts: "%PLAYER% hat möglicherweise Zweitaccounts [ %ALTS% ]!"
 isMCBansMod: "%PLAYER% ist ein MCBans.com Teammitglied!"
-youAreMCBansStaff: "Du bist ein MCBans.com Teammitglied!"
 
 newMessage: "Du hast %COUNT% neue Nachricht(en)!"
 inboxEmpty: "Dein Posteingang ist leer!"

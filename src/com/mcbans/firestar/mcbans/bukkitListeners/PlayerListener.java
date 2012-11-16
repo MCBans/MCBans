@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -115,24 +116,25 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        String playerName = event.getPlayer().getName();
-        HashMap<String,String> pcache = plugin.playerCache.remove(playerName);
+        final Player player = event.getPlayer();
+
+        final HashMap<String,String> pcache = plugin.playerCache.remove(player.getName());
         if(pcache == null) return;
 
         if(pcache.containsKey("b")){
-            Util.message(playerName, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )" );
-            Perms.VIEW_BANS.message(ChatColor.DARK_RED + _("previousBans", I18n.PLAYER, playerName));
+            Util.message(player, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )" );
+            Perms.VIEW_BANS.message(ChatColor.DARK_RED + _("previousBans", I18n.PLAYER, player.getName()));
         }
         if(pcache.containsKey("d")){
-            Util.message(playerName, ChatColor.DARK_RED + pcache.get("d") + " open disputes!");
+            Util.message(player, ChatColor.DARK_RED + pcache.get("d") + " open disputes!");
         }
         if(pcache.containsKey("a")){
-            Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + _("altAccounts", I18n.PLAYER, playerName, I18n.ALTS, pcache.get("al")));
+            Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + _("altAccounts", I18n.PLAYER, player.getName(), I18n.ALTS, pcache.get("al")));
         }
         if(pcache.containsKey("m")){
-            log.info(playerName + " is a MCBans.com Staff member");
-            Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, playerName));
-            Util.message(playerName, ChatColor.AQUA + _("youAreMCBansStaff"));
+            log.info(player.getName() + " is a MCBans Staff member");
+            Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
+            Util.message(player, ChatColor.AQUA + "You are a MCBans Staff Member! (ver " + plugin.getDescription().getVersion() + ")");
         }
     }
 

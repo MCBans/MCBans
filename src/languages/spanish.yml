@@ -38,7 +38,6 @@ overMaxAlts: "Usted tiene más cuentas de lo permitido!"
 altBanned: "Usted tiene una cuenta prohibida aquí!"
 altAccounts: "¡%PLAYER% Tiene cuentas otros [ %ALTS% ]!"
 isMCBansMod: "¡%PLAYER% es un miembro del personal para MCBans.com!"
-youAreMCBansStaff: "¡Usted es un miembro del personal para MCBans.com!"
 
 newMessage: "¡Tienes %COUNT% mensaje(s) nuevas!"
 inboxEmpty: "¡Su Correo electronico es vacío!"

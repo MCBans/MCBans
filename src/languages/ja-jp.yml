@@ -38,7 +38,6 @@ overMaxAlts: "あなたはこのサーバーで許可されている数より多
 altBanned: "あなたはこのサーバーでBANされている他のアカウントを持っています！"
 altAccounts: "%PLAYER% は以下のアカウントを持っている可能性があります：[ %ALTS% ]!"
 isMCBansMod: "%PLAYER% は MCBans.com のスタッフメンバーです！"
-youAreMCBansStaff: "あなたは MCBans.com のスタッフメンバーです！"
 
 newMessage: "あなたに%COUNT%件の新規メッセージがあります！"
 inboxEmpty: "あなたの受信箱は空です！"

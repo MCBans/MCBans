@@ -38,7 +38,6 @@ altAccounts: "%PLAYER% pourrait avoir des comptes ALT: [ %ALTS% ]!"
 altBanned: "Vous avez un compte alt banni de ce serveur!"
 overMaxAlts: "Vous avez des comptes alt plus que le serveur autorise!"
 isMCBansMod: "%PLAYER% est un membre du personnel de MCBans.com"
-youAreMCBansStaff: "Tu es le membre du personnel MCBans.com!"
 
 newMessage: "Vous avez %COUNT% nouveau(x) message(s)!"
 inboxEmpty: "Vous n’avez aucun nouveau message!"
