@@ -3,6 +3,8 @@
 - Added MCBansAPI class for other plugin integration
 - Added support Vault provides other permission plugin
 - Added API key valid check
+- Added player name valid check
+- Added config version check (Auto recreate config.yml as necessary)
 - Rewrited permission structure and permission node
 - Rewrited command structure
 - Rewrited localize structure
