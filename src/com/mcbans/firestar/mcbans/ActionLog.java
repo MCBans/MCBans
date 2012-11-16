@@ -11,9 +11,12 @@ import java.util.logging.Logger;
 public class ActionLog {
     private final Logger logger = Logger.getLogger("Minecraft");
     private final String logPrefix = "[MCBans] ";
+
     private final MCBans plugin;
+    private static ActionLog instance;
 
     public ActionLog(final MCBans plugin){
+        instance = this;
         this.plugin = plugin;
     }
 
@@ -66,5 +69,9 @@ public class ActionLog {
                 outputStream.close();
             }
         }
+    }
+
+    public static ActionLog getInstance(){
+        return instance;
     }
 }

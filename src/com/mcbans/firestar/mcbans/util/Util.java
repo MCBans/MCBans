@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
 
 public class Util {
@@ -45,7 +46,7 @@ public class Util {
         if (target != null) {
             target.sendMessage(MCBans.getPrefix() + " " + msg);
         } else {
-            System.out.print(MCBans.getPrefix() + " " + msg);
+            ActionLog.getInstance().info(msg);
         }
     }
 

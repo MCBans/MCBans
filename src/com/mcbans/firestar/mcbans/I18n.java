@@ -31,14 +31,14 @@ public class I18n {
         try{
             fallbackMessages = loadLanguageFile("en-us");
         }catch (Exception ex){
-            System.out.print("Could not load default(en-us.yml) messages file!");
+            ActionLog.getInstance().warning("Could not load default(en-us.yml) messages file!");
         }
 
         // load custom language
         try{
             setCurrentLanguage(locale);
         }catch (Exception ex){
-            System.out.print("Could not load messages for " + locale + ": using en-us.yml");
+            ActionLog.getInstance().warning("Could not load messages for " + locale + ": using en-us.yml");
             messages = fallbackMessages;
         }
     }
@@ -76,7 +76,7 @@ public class I18n {
 
         // check file available
         if (file == null || !file.isFile() || !file.canRead()){
-            System.out.print("Unknown language file: " + locale);
+            ActionLog.getInstance().warning("Unknown language file: " + locale);
             return null;
         }
 
@@ -88,7 +88,7 @@ public class I18n {
             for (String key : fallbackMessages.getKeys(true)){
                 if (!conf.contains(key) && !fallbackMessages.isConfigurationSection(key)){
                     conf.set(key, fallbackMessages.get(key));
-                    System.out.print("[MCBans] Missing message key on " + locale + ".yml: " + key);
+                    ActionLog.getInstance().warning("Missing message key on " + locale + ".yml: " + key);
                 }
             }
         }
@@ -107,14 +107,14 @@ public class I18n {
     public static String _(final String key){
         // message file not proper loaded
         if (messages == null){
-            System.out.print("[MCBans] Localized messages file is NOT loaded..");
+            ActionLog.getInstance().warning("Localized messages file is NOT loaded..");
             return "!" + key + "!";
         }
 
         String msg = getString(messages, key);
 
         if (msg == null || msg.length() == 0){
-            if (msg == null) System.out.print("[MCBans] Missing message key '" + key + "'");
+            if (msg == null) ActionLog.getInstance().warning("Missing message key '" + key + "'");
             msg = getString(fallbackMessages, key);
             if (msg == null || msg.length() == 0) msg = "!" + key + "!";
         }

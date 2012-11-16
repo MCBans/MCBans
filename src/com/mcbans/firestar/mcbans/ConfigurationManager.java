@@ -13,6 +13,7 @@ public class ConfigurationManager {
     private final int latestVersion = 1;
 
     private final MCBans plugin;
+    private final ActionLog log;
 
     //private YamlConfiguration conf;
     private FileConfiguration conf;
@@ -23,6 +24,8 @@ public class ConfigurationManager {
      */
     public ConfigurationManager(final MCBans plugin){
         this.plugin = plugin;
+        this.log = plugin.getLog();
+
         this.pluginDir = this.plugin.getDataFolder();
     }
 
@@ -37,7 +40,7 @@ public class ConfigurationManager {
         File file = new File(pluginDir, "config.yml");
         if (!file.exists()){
             FileStructure.extractResource("/config.yml", pluginDir, false, false);
-            System.out.print("[MCBans] config.yml is not found! Created default config.yml!");
+            log.info("config.yml is not found! Created default config.yml!");
         }
 
         plugin.reloadConfig();
@@ -48,13 +51,13 @@ public class ConfigurationManager {
         // check API key
         if (getApiKey().length() != 40){
             if (initialLoad){
-                System.out.print("[MCBans] Missing or invalid API Key! Disabling plugin..");
-                System.out.print("[MCBans] Please copy your API key to configuration file.");
-                System.out.print("[MCBans] Don't have API key? Go: http://my.mcbans.com/servers/");
+                log.severe("Missing or invalid API Key! Disabling plugin..");
+                log.severe("Please copy your API key to configuration file.");
+                log.severe("Don't have API key? Go: http://my.mcbans.com/servers/");
                 plugin.getPluginLoader().disablePlugin(plugin);
                 return;
             }else{
-                System.out.print("[MCBans] Missing or invalid API Key! Please check config.yml and type /mcbans reload");
+                log.severe("Missing or invalid API Key! Please check config.yml and type /mcbans reload");
             }
         }
 
@@ -64,7 +67,7 @@ public class ConfigurationManager {
                 try{
                     new File(getLogFile()).createNewFile();
                 } catch (IOException ex){
-                    System.out.print("[MCBans] Could not create log file! " + getLogFile());
+                    log.warning("Could not create log file! " + getLogFile());
                 }
             }
         }
@@ -82,9 +85,9 @@ public class ConfigurationManager {
             String destPath = new File(pluginDir, destName).getPath();
             try{
                 FileStructure.copyTransfer(srcPath, destPath);
-                System.out.print("[MCBans] Copied old config.yml to "+destName+"!");
+                log.info("Copied old config.yml to "+destName+"!");
             }catch(Exception ex){
-                System.out.print("[MCBans] Failed to copy old config.yml!");
+                log.warning("Failed to copy old config.yml!");
             }
 
             // force copy config.yml and languages
@@ -94,7 +97,7 @@ public class ConfigurationManager {
             plugin.reloadConfig();
             conf = plugin.getConfig();
 
-            System.out.print("[MCBans] Deleted existing configuration file and generate a new one!");
+            log.info("Deleted existing configuration file and generate a new one!");
         }
     }
 

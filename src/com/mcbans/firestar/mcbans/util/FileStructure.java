@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 
+import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
 
 
@@ -27,7 +28,7 @@ public class FileStructure {
             return;
         }
         if (!dir.mkdir()){
-            System.out.print("[MCBans] Can't create directory: " + dir.getName());
+            ActionLog.getInstance().warning("Can't create directory: " + dir.getName());
         }
     }
 
@@ -66,7 +67,7 @@ public class FileStructure {
             String filename = new File(from).getName();
             of = new File(to, filename);
         }else if(!of.isFile()){
-            System.out.print("[MCBans] not a file:" + of);
+            ActionLog.getInstance().warning("Not a file:" + of);
             return;
         }
 
@@ -84,7 +85,7 @@ public class FileStructure {
             // get inside jar resource uri
             URL res = MCBans.class.getResource(from);
             if (res == null){
-                System.out.print("[MCBans] Can't find "+ from +" in plugin Jar file");
+                ActionLog.getInstance().warning("Can't find "+ from +" in plugin Jar file");
                 return;
             }
             URLConnection resConn = res.openConnection();
@@ -92,7 +93,7 @@ public class FileStructure {
             in = resConn.getInputStream();
 
             if (in == null){
-                System.out.print("[MCBans] Can't get input stream from " + res);
+                ActionLog.getInstance().warning("Can't get input stream from " + res);
             }else{
                 // write file
                 if (lang){

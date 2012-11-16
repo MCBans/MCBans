@@ -54,7 +54,7 @@ public class PlayerListener implements Listener {
                         + URLEncoder.encode(String.valueOf(event.getAddress().getHostAddress()), "UTF-8"));
                 BufferedReader bufferedreaderMCBans = new BufferedReader(new InputStreamReader(urlMCBans.openStream()));
                 String s2 = bufferedreaderMCBans.readLine();
-                System.out.println(s2);
+                log.info(s2);
                 bufferedreaderMCBans.close();
                 if (s2 != null) {
                     String[] s3 = s2.split(";");
@@ -88,7 +88,7 @@ public class PlayerListener implements Listener {
                             plugin.playerCache.put(event.getName(),tmp);
                         }
                         if (plugin.getConfigs().isDebug()) {
-                            System.out.println("[MCBans] " + event.getName() + " authenticated with " + s3[2] + " rep");
+                            log.info(event.getName() + " authenticated with " + s3[2] + " rep");
                         }
                     }else{
                         log.warning("Invalid response! (Player: " + event.getName() + ")");
