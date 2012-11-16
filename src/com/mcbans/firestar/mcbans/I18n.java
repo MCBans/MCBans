@@ -3,7 +3,9 @@ package com.mcbans.firestar.mcbans;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -104,7 +106,7 @@ public class I18n {
     public static final String PLAYERIP = "%PLAYERIP%";
     /* ***** End Replace methods ******* */
 
-    public static String _(final String key){
+    public static String _(final String key, final Object... args){
         // message file not proper loaded
         if (messages == null){
             ActionLog.getInstance().warning("Localized messages file is NOT loaded..");
@@ -113,13 +115,41 @@ public class I18n {
 
         String msg = getString(messages, key);
 
+        // missing key
         if (msg == null || msg.length() == 0){
             if (msg == null) ActionLog.getInstance().warning("Missing message key '" + key + "'");
             msg = getString(fallbackMessages, key);
             if (msg == null || msg.length() == 0) msg = "!" + key + "!";
         }
+        else{
+            // build replaces
+            Map<String, Object> binds = buildBinds(args);
+            for (String bindKey : binds.keySet()){
+                if (bindKey == null) continue;
+                final Object obj = binds.get(bindKey);
+                msg = msg.replace(bindKey, ((obj != null) ? obj.toString() : ""));
+            }
+        }
 
         return msg;
+    }
+
+    private static Map<String, Object> buildBinds(final Object... args){
+        Map<String, Object> bind = new HashMap<String, Object>(args.length / 2);
+
+        if (args == null || args.length < 2){
+            return bind;
+        }
+
+        for(int i = 0; i < args.length; i += 2){
+            if ((i + 2) > args.length){
+                break;
+            }
+
+            bind.put(args[i].toString(), args[i + 1]);
+        }
+
+        return bind;
     }
 
     private static String getString(final Configuration conf, final String key){

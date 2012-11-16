@@ -46,13 +46,13 @@ public class Kick implements Runnable {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    player.kickPlayer(_("kickMessagePlayer").replaceAll(I18n.PLAYER, player.getName()).replaceAll(I18n.SENDER, senderName).replaceAll(I18n.REASON, reason));
+                    player.kickPlayer(_("kickMessagePlayer", I18n.PLAYER, player.getName(), I18n.SENDER, senderName, I18n.REASON, reason));
                 }
             }, 1L);
             Util.broadcastMessage(ChatColor.GREEN
-                    + _("kickMessageBroadcast").replaceAll(I18n.PLAYER, playerName).replaceAll(I18n.SENDER, senderName).replaceAll(I18n.REASON, reason));
+                    + _("kickMessageBroadcast", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason));
         } else {
-            Util.message(senderName, ChatColor.DARK_RED + _("kickMessageNoPlayer").replaceAll(I18n.PLAYER, playerName));
+            Util.message(senderName, ChatColor.DARK_RED + _("kickMessageNoPlayer", I18n.PLAYER, playerName));
         }
     }
 }

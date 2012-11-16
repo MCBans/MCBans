@@ -110,17 +110,17 @@ public class PlayerListener implements Listener {
 
         if(pcache.containsKey("b")){
             Util.message(playerName, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )" );
-            Perms.VIEW_BANS.message(ChatColor.DARK_RED + _("previousBans").replaceAll(I18n.PLAYER, playerName));
+            Perms.VIEW_BANS.message(ChatColor.DARK_RED + _("previousBans", I18n.PLAYER, playerName));
         }
         if(pcache.containsKey("d")){
             Util.message(playerName, ChatColor.DARK_RED + pcache.get("d") + " open disputes!");
         }
         if(pcache.containsKey("a")){
-            Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + _("altAccounts").replaceAll(I18n.PLAYER, playerName).replaceAll(I18n.ALTS, pcache.get("al").toString()));
+            Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + _("altAccounts", I18n.PLAYER, playerName, I18n.ALTS, pcache.get("al")));
         }
         if(pcache.containsKey("m")){
             log.info(playerName + " is a MCBans.com Staff member");
-            Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod").replaceAll(I18n.PLAYER, playerName));
+            Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, playerName));
             Util.message(playerName, ChatColor.AQUA + _("youAreMCBansStaff"));
         }
     }
