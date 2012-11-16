@@ -39,7 +39,6 @@ public class MCBans extends JavaPlugin {
     private static MCBans instance;
 
     private MCBansCommandHandler commandHandler;
-    private PlayerListener playerListener = new PlayerListener(this);
     public int taskID = 0;
     public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
     public HashMap<String, HashMap<String, String>> playerCache = new HashMap<String, HashMap<String, String>>();
@@ -116,7 +115,7 @@ public class MCBans extends JavaPlugin {
         log.info("Loading language file: " + config.getLanguage());
         I18n.init(config.getLanguage());
 
-        pm.registerEvents(playerListener, this);
+        pm.registerEvents(new PlayerListener(this), this);
 
         // setup permissions
         Perms.setupPermissionHandler();

@@ -25,8 +25,8 @@ import com.mcbans.firestar.mcbans.util.Util;
 import static com.mcbans.firestar.mcbans.I18n._;
 
 public class PlayerListener implements Listener {
-    private MCBans plugin;
-    private ActionLog log;
+    private final MCBans plugin;
+    private final ActionLog log;
 
     public PlayerListener(final MCBans plugin) {
         this.plugin = plugin;
