@@ -1,6 +1,7 @@
 package com.mcbans.firestar.mcbans;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -8,7 +9,9 @@ import com.mcbans.firestar.mcbans.util.FileStructure;
 
 
 public class ConfigurationManager {
+    /* Current config.yml File Version! */
     private final int latestVersion = 1;
+
     private final MCBans plugin;
 
     //private YamlConfiguration conf;
@@ -52,6 +55,17 @@ public class ConfigurationManager {
                 return;
             }else{
                 System.out.print("[MCBans] Missing or invalid API Key! Please check config.yml and type /mcbans reload");
+            }
+        }
+
+        // check log enable
+        if (isEnableLog()){
+            if (!new File(getLogFile()).exists()){
+                try{
+                    new File(getLogFile()).createNewFile();
+                } catch (IOException ex){
+                    System.out.print("[MCBans] Could not create log file! " + getLogFile());
+                }
             }
         }
     }

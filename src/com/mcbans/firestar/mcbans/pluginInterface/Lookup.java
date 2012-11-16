@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 
+import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.permission.Perms;
@@ -13,12 +13,16 @@ import com.mcbans.firestar.mcbans.request.JsonHandler;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class Lookup implements Runnable {
-    private MCBans plugin;
+    private final MCBans plugin;
+    private final ActionLog log;
+
     private String playerName;
     private String senderName;
 
     public Lookup(MCBans plugin, String playerName, String senderName) {
         this.plugin = plugin;
+        this.log = plugin.getLog();
+
         this.playerName = playerName;
         this.senderName = senderName;
     }
@@ -32,7 +36,7 @@ public class Lookup implements Runnable {
             } catch (InterruptedException e) {
             }
         }
-        plugin.log(senderName + " has looked up the " + playerName + "!");
+        log.info(senderName + " has looked up the " + playerName + "!");
         HashMap<String, String> url_items = new HashMap<String, String>();
         JsonHandler webHandle = new JsonHandler(plugin);
         url_items.put("player", playerName);
@@ -65,16 +69,16 @@ public class Lookup implements Runnable {
                 if (result.toString().contains("Server Disabled")) {
                     Perms.VIEW_BANS.message(ChatColor.RED + "Server Disabled by an MCBans Admin");
                     Perms.VIEW_BANS.message("MCBans is running in reduced functionality mode. Only local bans can be used at this time.");
-                    plugin.log(LogLevels.SEVERE, "The server API key has been disabled by an MCBans Administrator");
-                    plugin.log(LogLevels.SEVERE, "To appeal this decision, please contact an administrator");
+                    log.severe("The server API key has been disabled by an MCBans Administrator");
+                    log.severe("To appeal this decision, please contact an administrator");
                 }
             } else {
                 Util.message(senderName, ChatColor.RED + "There was an error while parsing the data! [JSON Error]");
-                plugin.log(LogLevels.SEVERE, "JSON error while trying to parse lookup data!");
+                log.severe("JSON error while trying to parse lookup data!");
             }
         } catch (NullPointerException e) {
             Util.message(senderName, ChatColor.RED + "There was an error while polling the API!");
-            plugin.log(LogLevels.SEVERE, "Unable to reach MCBans Master server!");
+            log.severe("Unable to reach MCBans Master server!");
         }
     }
 }

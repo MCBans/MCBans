@@ -11,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 
 import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class MCBansCommandHandler implements TabExecutor{
@@ -63,7 +62,7 @@ public class MCBansCommandHandler implements TabExecutor{
         if (bc.name != null){
             commands.put(bc.name, bc);
         }else{
-            plugin.log(LogLevels.WARNING, "Invalid command not registered! " + bc.getClass().getName());
+            plugin.getLog().warning("Invalid command not registered! " + bc.getClass().getName());
         }
     }
 }

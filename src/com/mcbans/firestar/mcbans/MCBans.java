@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,15 +29,13 @@ import com.mcbans.firestar.mcbans.commands.CommandRban;
 import com.mcbans.firestar.mcbans.commands.CommandTempban;
 import com.mcbans.firestar.mcbans.commands.CommandUnban;
 import com.mcbans.firestar.mcbans.commands.MCBansCommandHandler;
-import com.mcbans.firestar.mcbans.log.ActionLog;
-import com.mcbans.firestar.mcbans.log.LogLevels;
-import com.mcbans.firestar.mcbans.log.Logger;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 
 import fr.neatmonster.nocheatplus.NoCheatPlus;
 
 public class MCBans extends JavaPlugin {
+
     private static MCBans instance;
 
     private MCBansCommandHandler commandHandler;
@@ -65,7 +64,7 @@ public class MCBans extends JavaPlugin {
         add("api.mcbans.com");
     }};
     public String apiServer = "";
-    public Logger logger = new Logger(this);
+    private ActionLog log = null;
     private RollbackHandler rbHandler = null;
     private boolean ncpEnabled = false;
     private boolean acEnabled = false;
@@ -85,17 +84,19 @@ public class MCBans extends JavaPlugin {
             }
         }
 
-        log(LogLevels.INFO, "MCBans Disabled");
+        final PluginDescriptionFile pdfFile = this.getDescription();
+        log.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled!");
     }
 
     @Override
     public void onEnable() {
         instance = this;
         PluginManager pm = getServer().getPluginManager();
+        log = new ActionLog(this); // setup logger
 
         // check online-mode
         if (!this.getServer().getOnlineMode()) {
-            logger.log(LogLevels.FATAL, "MCBans: Your server is not in online mode!");
+            log.severe("This server is not in online mode!");
             pm.disablePlugin(this);
             return;
         }
@@ -105,7 +106,7 @@ public class MCBans extends JavaPlugin {
         try{
             config.loadConfig(true);
         }catch (Exception ex){
-            log(LogLevels.INFO, "an error occured while trying to load the config file.");
+            log.warning("an error occured while trying to load the config file.");
             ex.printStackTrace();
         }
         if (!pm.isPluginEnabled(this)){
@@ -113,22 +114,12 @@ public class MCBans extends JavaPlugin {
         }
 
         // load language
-        log(LogLevels.INFO, "Loading language file: " + config.getLanguage());
+        log.info("Loading language file: " + config.getLanguage());
         language = new Language(this);
 
         pm.registerEvents(playerListener, this);
 
-        // Setup logging
-        if (config.isEnableLog()) {
-            log(LogLevels.INFO, "Starting to save to log file!");
-            actionLog = new ActionLog(this, config.getLogFile());
-            actionLog.write("MCBans Log File Started");
-        } else {
-            log(LogLevels.INFO, "Log file disabled!");
-        }
-
         // setup permissions
-        //Permissions = new BukkitPermissions(Settings, this);
         Perms.setupPermissionHandler();
 
         // regist commands
@@ -153,13 +144,14 @@ public class MCBans extends JavaPlugin {
 
         // hookup integration plugin
         checkPlugin(true);
-        if (ncpEnabled) log(LogLevels.INFO, "NoCheatPlus plugin found! Enabled this integration!");
-        if (acEnabled) log(LogLevels.INFO, "AntiCheat plugin found! Enabled this integration!");
+        if (ncpEnabled) log.info("NoCheatPlus plugin found! Enabled this integration!");
+        if (acEnabled) log.info("AntiCheat plugin found! Enabled this integration!");
 
         // enabling MCBansAPI
         api = new MCBansAPI(this);
 
-        log(LogLevels.INFO, "Started up successfully!");
+        final PluginDescriptionFile pdfFile = this.getDescription();
+        log.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
     }
 
     @Override
@@ -207,17 +199,6 @@ public class MCBans extends JavaPlugin {
         }
     }
 
-    public void log(String message) {
-        log(LogLevels.NONE, message);
-    }
-
-    public void log(LogLevels type, String message) {
-        if (actionLog != null) {
-            actionLog.write(message);
-        }
-        logger.log(type, message);
-    }
-
     public boolean isEnabledNCP(){
         return this.ncpEnabled;
     }
@@ -236,6 +217,10 @@ public class MCBans extends JavaPlugin {
 
     public ConfigurationManager getConfigs(){
         return this.config;
+    }
+
+    public ActionLog getLog(){
+        return this.log;
     }
 
     public static String getPrefix(){

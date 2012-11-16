@@ -9,17 +9,20 @@ import org.bukkit.plugin.PluginManager;
 
 import uk.co.oliwali.HawkEye.HawkEye;
 
+import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.log.LogLevels;
 
 import de.diddiz.LogBlock.LogBlock;
 
 public class RollbackHandler {
     private final MCBans plugin;
+    private final ActionLog log;
+
     private BaseRollback method = null;
 
     public RollbackHandler(final MCBans plugin){
         this.plugin = plugin;
+        this.log = plugin.getLog();
     }
 
     /**
@@ -34,7 +37,7 @@ public class RollbackHandler {
         if (check != null && check instanceof LogBlock && check.isEnabled()) {
             method = new LbRollback(plugin);
             if (method.setPlugin(check)){
-                plugin.log(LogLevels.INFO, "LogBlock plugin found. Using this for rollback.");
+                log.info("LogBlock plugin found. Using this for rollback.");
                 return true;
             }
         }
@@ -43,7 +46,7 @@ public class RollbackHandler {
         check = pm.getPlugin("HawkEye");
         if (check != null && check instanceof HawkEye && check.isEnabled()) {
             method = new HeRollback(plugin);
-            plugin.log(LogLevels.INFO, "HawkEye plugin found. Using this for rollback.");
+            log.info("HawkEye plugin found. Using this for rollback.");
             return true;
         }
 
@@ -54,15 +57,15 @@ public class RollbackHandler {
             if (cpAPI.isEnabled()){
                 method = new CpRollback(plugin);
                 method.setPlugin(check);
-                plugin.log(LogLevels.INFO, "CoreProtect plugin found. Using this for rollback.");
+                log.info("CoreProtect plugin found. Using this for rollback.");
                 return true;
             }else{
-                plugin.log(LogLevels.INFO, "CoreProtect plugin found but disabled API.");
-                plugin.log(LogLevels.INFO, "Change 'api-enabled' value of CoreProtect config.yml and restart server!");
+                log.info("CoreProtect plugin found but disabled API.");
+                log.info("Change 'api-enabled' value of CoreProtect config.yml and restart server!");
             }
         }
 
-        plugin.log(LogLevels.INFO, "Rollback plugin not found!");
+        log.info("Rollback plugin not found!");
         method = null;
 
         return false;

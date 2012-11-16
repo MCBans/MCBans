@@ -23,7 +23,7 @@ public class Disconnect implements Runnable {
             } catch (InterruptedException e) {
             }
         }
-        plugin.log(playerName + " has disconnected!");
+        plugin.getLog().info(playerName + " has disconnected!");
         JsonHandler webhandle = new JsonHandler(plugin);
         HashMap<String, String> url_items = new HashMap<String, String>();
         url_items.put("player", playerName);

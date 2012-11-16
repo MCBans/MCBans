@@ -2,20 +2,23 @@ package com.mcbans.firestar.mcbans.callBacks;
 
 import java.util.HashMap;
 
+import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 public class ServerChoose implements Runnable {
     private final MCBans plugin;
+    private final ActionLog log;
 
     public ServerChoose(MCBans plugin) {
         this.plugin = plugin;
+        this.log = plugin.getLog();
     }
 
     @Override
     public void run() {
         plugin.notSelectedServer = true;
-        plugin.log("Looking for fastest api server!");
+        log.info("Looking for fastest api server!");
         long d = 99999;
         for (String server : plugin.apiServers) {
             try {
@@ -30,14 +33,14 @@ public class ServerChoose implements Runnable {
                     if (d > ft) {
                         d = ft;
                         plugin.apiServer = server;
-                        plugin.log("API Server found: " + server + " :: response time: " + ft);
+                        log.info("API Server found: " + server + " :: response time: " + ft);
                     }
                 }
             } catch (IllegalArgumentException e) {
             } catch (NullPointerException e) {
             }
         }
-        plugin.log("Fastest server selected: " + plugin.apiServer + " :: response time: " + d);
+        log.info("Fastest server selected: " + plugin.apiServer + " :: response time: " + d);
         plugin.notSelectedServer = false;
     }
 }

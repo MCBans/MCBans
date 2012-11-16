@@ -11,17 +11,19 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 
 @SuppressWarnings("unchecked")
 public class JsonHandler {
-    private MCBans plugin;
+    private final MCBans plugin;
+    private final ActionLog log;
 
     public JsonHandler(MCBans plugin) {
         this.plugin = plugin;
+        this.log = plugin.getLog();
     }
 
     public JSONObject get_data(String json_text) {
@@ -50,7 +52,7 @@ public class JsonHandler {
                         out.put(next, output.getString(next));
                     } catch (JSONException e) {
                         if (plugin.getConfigs().isDebug()) {
-                            plugin.log(LogLevels.SEVERE, "JSON Error On Retrieve");
+                            log.severe("JSON Error On Retrieve");
                             e.printStackTrace();
                         }
                     }
@@ -69,7 +71,7 @@ public class JsonHandler {
     public String request_from_api(String data) {
         try {
             if (plugin.getConfigs().isDebug()) {
-                plugin.log(LogLevels.INFO, "Sending request!");
+                log.info("Sending request!");
             }
             URL url = new URL("http://" + plugin.apiServer + "/v2/" + plugin.getConfigs().getApiKey());
             URLConnection conn = url.openConnection();
@@ -87,7 +89,7 @@ public class JsonHandler {
             }
             String result = buf.toString();
             if (plugin.getConfigs().isDebug()) {
-                plugin.log(LogLevels.INFO, result);
+                log.info(result);
             }
             wr.close();
             rd.close();
@@ -95,7 +97,7 @@ public class JsonHandler {
         } catch (Exception e) {
             if (plugin.getConfigs().isDebug()) {
                 if (plugin != null) {
-                    plugin.log(LogLevels.SEVERE, "Fetch Data Error");
+                    log.severe("Fetch Data Error");
                 }
                 e.printStackTrace();
             }
@@ -106,7 +108,7 @@ public class JsonHandler {
     public String request_from_api(String data, String server) {
         try {
             if (plugin.getConfigs().isDebug()) {
-                plugin.log(LogLevels.INFO, "Sending request!");
+                log.info("Sending request!");
             }
             URL url = new URL("http://" + server + "/v2/" + plugin.getConfigs().getApiKey());
             URLConnection conn = url.openConnection();
@@ -124,7 +126,7 @@ public class JsonHandler {
             }
             String result = buf.toString();
             if (plugin.getConfigs().isDebug()) {
-                plugin.log(LogLevels.INFO, result);
+                log.info(result);
             }
             wr.close();
             rd.close();
@@ -132,7 +134,7 @@ public class JsonHandler {
         } catch (Exception e) {
             if (plugin.getConfigs().isDebug()) {
                 if (plugin != null) {
-                    plugin.log(LogLevels.SEVERE, "Fetch Data Error");
+                    log.severe("Fetch Data Error");
                 }
                 e.printStackTrace();
             }

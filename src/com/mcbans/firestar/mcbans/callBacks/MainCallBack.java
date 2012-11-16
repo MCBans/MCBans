@@ -4,18 +4,21 @@ import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 
+import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
 
-
 public class MainCallBack implements Runnable {
     private final MCBans plugin;
+    private final ActionLog log;
     public long last_req=0;
+
     public MainCallBack(MCBans plugin){
         this.plugin = plugin;
+        log = plugin.getLog();
     }
+
     @Override
     public void run(){
         int callBackInterval = ((60*1000)*plugin.getConfigs().getCallBackInterval());
@@ -55,7 +58,7 @@ public class MainCallBack implements Runnable {
                 for(String cb : response.keySet()) {
                     if (cb.contains("notice")) {
                         Perms.VIEW_BANS.message(ChatColor.GOLD + "Notice: " + ChatColor.WHITE + response.get(cb));
-                        plugin.log(LogLevels.INFO, "MCBans Notice: " + response.get(cb));
+                        log.info("MCBans Notice: " + response.get(cb));
                     }
                 }
             }

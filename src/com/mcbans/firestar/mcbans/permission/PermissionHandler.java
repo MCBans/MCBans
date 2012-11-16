@@ -12,8 +12,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
+import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.log.LogLevels;
 
 public class PermissionHandler {
     public enum PermType {
@@ -28,6 +28,7 @@ public class PermissionHandler {
     private static PermissionHandler instance;
 
     private final MCBans plugin;
+    private final ActionLog log;
     private PermType permType = null;
 
     // permission plugin
@@ -40,6 +41,7 @@ public class PermissionHandler {
      */
     private PermissionHandler(final MCBans plugin){
         this.plugin = plugin;
+        this.log = plugin.getLog();
         instance = this;
     }
 
@@ -55,14 +57,14 @@ public class PermissionHandler {
             if (setupVaultPermission()){
                 permType = PermType.VAULT;
             }else{
-                plugin.logger.log(LogLevels.WARNING, "Selected Vault for permission control, but NOT found this plugin!");
+                log.warning("Selected Vault for permission control, but NOT found this plugin!");
             }
         }
         else if ("pex".equalsIgnoreCase(selected) || "permissionsex".equalsIgnoreCase(selected)){
             if (setupPEXPermission()){
                 permType = PermType.PEX;
             }else{
-                plugin.logger.log(LogLevels.WARNING, "Selected PermissionsEx for permission control, but NOT found this plugin!");
+                log.warning("Selected PermissionsEx for permission control, but NOT found this plugin!");
             }
         }
         else if ("superperms".equalsIgnoreCase(selected)){
@@ -78,12 +80,12 @@ public class PermissionHandler {
         // Invalid configuration, Use default SuperPerms
         if (permType == null){
             permType = PermType.SUPERPERMS;
-            if (!found) plugin.logger.log(LogLevels.WARNING, "Valid permissions name not selected!");
+            if (!found) log.warning("Valid permissions name not selected!");
         }
 
         // Display result
         if (!silent){
-            plugin.logger.log(LogLevels.INFO, "Using " + getPermTypeString() + " for permission control.");
+            log.info("Using " + getPermTypeString() + " for permission control.");
         }
     }
     public void setupPermissions(){
@@ -129,7 +131,7 @@ public class PermissionHandler {
 
             // Other Types, forgot to add here
             default:
-                plugin.logger.log(LogLevels.WARNING, "Plugin author forgot add to integration to this permission plugin! Please report this!");
+                log.warning("Plugin author forgot add to integration to this permission plugin! Please report this!");
                 return false;
         }
     }
@@ -171,7 +173,7 @@ public class PermissionHandler {
 
             // Other Types, forgot add here
             default:
-                plugin.logger.log(LogLevels.WARNING, "Plugin author forgot add to integration to this permission plugin! Please report this!");
+                log.warning("Plugin author forgot add to integration to this permission plugin! Please report this!");
                 return false;
         }
     }
@@ -215,7 +217,7 @@ public class PermissionHandler {
                 vaultPermission = permissionProvider.getProvider();
             }
         }catch (Exception ex){
-            plugin.logger.log(LogLevels.WARNING, "Unexpected error trying to setup Vault permissions!");
+            log.warning("Unexpected error trying to setup Vault permissions!");
             ex.printStackTrace();
         }
 
@@ -233,7 +235,7 @@ public class PermissionHandler {
         try{
             pex = (PermissionsEx) testPex;
         }catch (Exception ex){
-            plugin.logger.log(LogLevels.WARNING, "Unexpected error trying to setup PEX permissions!");
+            log.warning("Unexpected error trying to setup PEX permissions!");
             ex.printStackTrace();
         }
 

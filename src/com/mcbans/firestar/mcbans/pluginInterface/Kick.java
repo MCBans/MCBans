@@ -40,7 +40,7 @@ public class Kick implements Runnable {
             }
             reason = kickEvent.getReason();
 
-            plugin.log(senderName + " has kicked " + player.getName() + " [" + reason + "]");
+            plugin.getLog().info(senderName + " has kicked " + player.getName() + " [" + reason + "]");
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
                 public void run() {

@@ -16,17 +16,19 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.log.LogLevels;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.pluginInterface.Disconnect;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class PlayerListener implements Listener {
     private MCBans plugin;
+    private ActionLog log;
 
     public PlayerListener(final MCBans plugin) {
         this.plugin = plugin;
+        this.log = plugin.getLog();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -87,7 +89,7 @@ public class PlayerListener implements Listener {
                             System.out.println("[MCBans] " + event.getName() + " authenticated with " + s3[2] + " rep");
                         }
                     }else{
-                        plugin.log( LogLevels.WARNING, "Invalid response! (Player: " + event.getName() + ")");
+                        log.warning("Invalid response! (Player: " + event.getName() + ")");
                     }
                 }
             }
@@ -115,7 +117,7 @@ public class PlayerListener implements Listener {
             Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + plugin.language.getFormatAlts("altAccounts", playerName, pcache.get("al").toString()));
         }
         if(pcache.containsKey("m")){
-            plugin.log( LogLevels.INFO, playerName + " is a MCBans.com Staff member");
+            log.info(playerName + " is a MCBans.com Staff member");
             Util.broadcastMessage(ChatColor.AQUA + plugin.language.getFormat("isMCBansMod", playerName));
             Util.message(playerName, ChatColor.AQUA + plugin.language.getFormat ("youAreMCBansStaff"));
         }
