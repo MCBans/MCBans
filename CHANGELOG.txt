@@ -5,6 +5,8 @@
 - Added API key valid check
 - Rewrited permission structure and permission node
 - Rewrited command structure
+- Rewrited localize structure
+- Rewrited logging structure
 - Rewrited configuration structure (Change settings.yml to config.yml)
 - Fixed minor exception while player joining the server
 
