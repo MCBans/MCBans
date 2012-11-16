@@ -7,6 +7,7 @@ import com.mcbans.firestar.mcbans.BanType;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.pluginInterface.Ban;
 import com.mcbans.firestar.mcbans.util.Util;
+import static com.mcbans.firestar.mcbans.I18n._;
 
 public class CommandBan extends BaseCommand{
     public CommandBan(){
@@ -36,7 +37,7 @@ public class CommandBan extends BaseCommand{
 
         // check permission
         if (!type.getPermission().has(sender)){
-            throw new CommandException(ChatColor.DARK_RED + plugin.language.getFormat("permissionDenied"));
+            throw new CommandException(ChatColor.DARK_RED + _("permissionDenied"));
         }
 
         String reason = null;
@@ -52,7 +53,7 @@ public class CommandBan extends BaseCommand{
 
             case GLOBAL:
                 if (args.size() == 0){
-                    Util.message(sender, ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
+                    Util.message(sender, ChatColor.DARK_RED + _("formatError"));
                     return;
                 }
                 reason = Util.join(args, " ");
@@ -61,7 +62,7 @@ public class CommandBan extends BaseCommand{
 
             case TEMP:
                 if (args.size() < 2){
-                    Util.message(sender, ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
+                    Util.message(sender, ChatColor.DARK_RED + _("formatError"));
                     return;
                 }
                 final String duration = args.remove(0);

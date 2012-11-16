@@ -12,6 +12,7 @@ import com.mcbans.firestar.mcbans.ConfigurationManager;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.util.Util;
+import static com.mcbans.firestar.mcbans.I18n._;
 
 public abstract class BaseCommand {
     // Set this class
@@ -59,7 +60,7 @@ public abstract class BaseCommand {
         // Check args size
         if (argLength > args.size()){
             //sendUsage();
-            Util.message(sender, ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
+            Util.message(sender, ChatColor.DARK_RED + _("formatError"));
             return true;
         }
 
@@ -76,7 +77,7 @@ public abstract class BaseCommand {
 
         // Check permission
         if (!permission(sender)){
-            Util.message(sender, plugin.language.getFormat("permissionDenied"));
+            Util.message(sender, _("permissionDenied"));
             //plugin.log(senderName + " has tried the command [" + command + "]!"); // maybe not needs command logger. Craftbukkit added this.
             //plugin.broadcastPlayer(sender, "&cYou don't have permission to use this!");
             return true;

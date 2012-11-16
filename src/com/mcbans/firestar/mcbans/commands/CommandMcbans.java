@@ -3,6 +3,7 @@ package com.mcbans.firestar.mcbans.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.callBacks.ManualResync;
 import com.mcbans.firestar.mcbans.callBacks.ManualSync;
 import com.mcbans.firestar.mcbans.callBacks.Ping;
@@ -10,6 +11,7 @@ import com.mcbans.firestar.mcbans.callBacks.ServerChoose;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.util.Util;
+import static com.mcbans.firestar.mcbans.I18n._;
 
 public class CommandMcbans extends BaseCommand{
     public CommandMcbans(){
@@ -56,7 +58,7 @@ public class CommandMcbans extends BaseCommand{
         /* Check response time */
         if (first.equalsIgnoreCase("ping")){
             if (!Perms.ADMIN.has(sender)){
-                throw new CommandException(ChatColor.DARK_RED + plugin.language.getFormat("permissionDenied"));
+                throw new CommandException(ChatColor.DARK_RED + _("permissionDenied"));
             }
             Ping manualPingCheck = new Ping(plugin, senderName);
             (new Thread(manualPingCheck)).start();
@@ -65,7 +67,7 @@ public class CommandMcbans extends BaseCommand{
         /* Sync banned-players.txt */
         if (first.equalsIgnoreCase("sync")){
             if (!Perms.ADMIN.has(sender)){
-                throw new CommandException(ChatColor.DARK_RED + plugin.language.getFormat("permissionDenied"));
+                throw new CommandException(ChatColor.DARK_RED + _("permissionDenied"));
             }
 
             // Check if all sync
@@ -117,7 +119,7 @@ public class CommandMcbans extends BaseCommand{
         /* Reload plugin */
         if (first.equalsIgnoreCase("reload")){
             if (!Perms.ADMIN.has(sender)){
-                throw new CommandException(ChatColor.DARK_RED + plugin.language.getFormat("permissionDenied"));
+                throw new CommandException(ChatColor.DARK_RED + _("permissionDenied"));
             }
 
             send(ChatColor.AQUA + "Reloading Settings..");
@@ -128,11 +130,11 @@ public class CommandMcbans extends BaseCommand{
                 send(ChatColor.RED + "An error occured while trying to load the config file.");
             }
             send(ChatColor.AQUA + "Reloading Language File..");
-            boolean reloadLanguage = plugin.language.reload();
-            if (!reloadLanguage) {
-                send(ChatColor.RED + "Reload failed - File missing!");
-            } else {
+            try{
+                I18n.setCurrentLanguage(config.getLanguage());
                 send(ChatColor.GREEN + "Reload completed!");
+            }catch(Exception ex){
+                send(ChatColor.RED + "An error occured while trying to load the language file.");
             }
             ServerChoose serverChooser = new ServerChoose(plugin);
             (new Thread(serverChooser)).start();
@@ -140,7 +142,7 @@ public class CommandMcbans extends BaseCommand{
         }
 
         // Format error
-        throw new CommandException(ChatColor.DARK_RED + plugin.language.getFormat("formatError"));
+        throw new CommandException(ChatColor.DARK_RED + _("formatError"));
     }
 
     private void send(final String msg){
