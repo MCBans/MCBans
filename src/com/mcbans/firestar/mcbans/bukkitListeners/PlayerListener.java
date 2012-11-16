@@ -56,7 +56,7 @@ public class PlayerListener implements Listener {
                     String[] s3 = s2.split(";");
                     double repMin = plugin.getConfigs().getMinRep();
                     int maxAlts = plugin.getConfigs().getMaxAlts();
-                    if (s3.length == 6) {
+                    if (s3.length == 6 || s3.length == 7) {
                         if (s3[0].equals("l") || s3[0].equals("g") || s3[0].equals("t") || s3[0].equals("i") || s3[0].equals("s")) {
                             event.disallow(Result.KICK_BANNED, s3[1]);
                             return;
