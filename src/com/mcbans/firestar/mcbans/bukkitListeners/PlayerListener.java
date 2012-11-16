@@ -125,7 +125,8 @@ public class PlayerListener implements Listener {
         if(pcache == null) return;
 
         if(pcache.containsKey("b")){
-            Util.message(player, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )" );
+            if (config.isEnableSendPreviousBans())
+                Util.message(player, ChatColor.DARK_RED + "You have bans on record! ( check http://mcbans.com )" );
             Perms.VIEW_BANS.message(ChatColor.DARK_RED + _("previousBans", I18n.PLAYER, player.getName()));
         }
         if(pcache.containsKey("d")){

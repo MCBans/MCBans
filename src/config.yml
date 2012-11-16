@@ -83,16 +83,6 @@ maxAlts: 2
 #	Support LogBlock, HawkEye, CoreProtect plugin!
 ##
 
-# rollbackOnBan:
-# 	Rolls back changes made by the banned player
-#   DEFAULT: false
-rollbackOnBan: false
-
-# enableTempBanRollback:
-# 	Allows temp bans to rollback when applicable
-#   DEFAULT: false
-enableTempBanRollback: false
-
 # affectedWorlds:
 # 	Worlds to issue log data or rollback
 #   LogBlock and HawkEye Only! CoreProtect not supported this parameter ;(
@@ -145,10 +135,10 @@ minRep: 3
 #	DEFAULT: 15 (15 Minutes)
 callBackInterval: 15
 
-# onConnectGlobals:
-# 	Show global bans on join
+# sendPreviousBans:
+# 	Send message if player has previous bans
 #   DEFAULT: true
-onConnectGlobals: true
+sendPreviousBans: true
 
 #########################################################
 # DO NOT TOUCH

@@ -333,9 +333,6 @@ public class Ban implements Runnable {
         url_items.put("admin", senderName);
         url_items.put("duration", duration);
         url_items.put("measure", measure);
-        if (plugin.getConfigs().isEnableRollbackTempBan()) {
-            plugin.getRbHandler().rollback(senderName, playerName);
-        }
         if (actionData != null) {
             url_items.put("actionData", actionData.toString());
         }

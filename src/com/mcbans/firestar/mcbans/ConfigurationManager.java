@@ -142,12 +142,6 @@ public class ConfigurationManager {
         return conf.getInt("maxAlts", 2);
     }
 
-    public boolean isEnableRollbackOnBan(){
-        return conf.getBoolean("rollbackOnBan", false);
-    }
-    public boolean isEnableRollbackTempBan(){
-        return conf.getBoolean("enableTempBanRollback", false);
-    }
     public String getAffectedWorlds(){
         return conf.getString("affectedWorlds", "world");
     }
@@ -171,7 +165,7 @@ public class ConfigurationManager {
     public int getCallBackInterval(){
         return conf.getInt("callBackInterval", 15);
     }
-    public boolean isEnableConnectGlobals(){
-        return conf.getBoolean("onConnectGlobals", true);
+    public boolean isEnableSendPreviousBans(){
+        return conf.getBoolean("sendPreviousBans", true);
     }
 }
