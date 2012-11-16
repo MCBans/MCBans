@@ -86,9 +86,10 @@ maxAlts: 2
 # affectedWorlds:
 # 	Worlds to issue log data or rollback
 #   LogBlock and HawkEye Only! CoreProtect not supported this parameter ;(
-#   DEFAULT: world
+#   DEFAULT: *
 #   Multiple worlds: world,world_nether,3rdworld (no spaces)
-affectedWorlds: world
+#   * to all worlds.
+affectedWorlds: *
 
 # backDaysAgo:
 # 	days ago to roll back a player

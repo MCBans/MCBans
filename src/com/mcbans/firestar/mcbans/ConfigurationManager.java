@@ -143,7 +143,7 @@ public class ConfigurationManager {
     }
 
     public String getAffectedWorlds(){
-        return conf.getString("affectedWorlds", "world");
+        return conf.getString("affectedWorlds", "*");
     }
     public int getBackDaysAgo(){
         return conf.getInt("backDaysAgo", 20);
