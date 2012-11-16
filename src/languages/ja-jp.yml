@@ -30,6 +30,7 @@ kickMessageNoPlayer: "%PLAYER% はオフラインです！"
 kickMessageBroadcast: "%ADMIN% は %PLAYER% をkickしました[%REASON%]"
 
 formatError: "引数がおかしいです！"
+invalidName: "ユーザ名が不正です！"
 permissionDenied: "権限がありません！"
 previousBans: "%PLAYER% は他のサーバにBANされています！"
 underMinRep: "あなたのReputation値は、このサーバの閾値以下です！"

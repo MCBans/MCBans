@@ -30,6 +30,7 @@ kickMessageNoPlayer: ""
 kickMessageBroadcast: ""
 
 formatError: "Falsche Parameter!"
+invalidName: ""
 permissionDenied: "Zugriff verweigert!"
 previousBans: "%PLAYER% ist von anderen Servern gebannt!"
 underMinRep: "Deine REP ist zu gering für diesen Server!"

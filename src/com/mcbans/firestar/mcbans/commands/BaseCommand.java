@@ -93,6 +93,11 @@ public abstract class BaseCommand {
             if (targetPlayer != null && targetPlayer.isOnline()){
                 targetIP = targetPlayer.getAddress().getAddress().getHostAddress();
             }
+            // check isValid player name
+            if (!Util.isValidName(target)){
+                Util.message(sender, _("invalidName"));
+                return true;
+            }
         }
 
         // Exec

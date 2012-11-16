@@ -2,6 +2,8 @@ package com.mcbans.firestar.mcbans.util;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -83,5 +85,21 @@ public class Util {
         }
         // return buffer string
         return buffer.toString();
+    }
+
+    /**
+     * Check player name valid or not
+     * @param name player name to check
+     * @return true if valid name
+     */
+    public static boolean isValidName(final String name){
+        if (name == null) return false;
+
+        final String regex = "^[A-Za-z0-9_]{2,16}$";
+        if (!Pattern.compile(regex).matcher(name).matches()){
+            return false;
+        }
+
+        return true;
     }
 }

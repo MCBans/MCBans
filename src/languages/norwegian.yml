@@ -30,6 +30,7 @@ kickMessageNoPlayer: ""
 kickMessageBroadcast: ""
 
 formatError: "Feil inntasting!"
+invalidName: ""
 permissionDenied: "Tillatelse nektet!"
 previousBans: "%PLAYER% har tidligere utestenginger!"
 underMinRep: "Ryktet ditt er under denne serverens minimumskrav!"

@@ -30,6 +30,7 @@ kickMessageNoPlayer: ""
 kickMessageBroadcast: ""
 
 formatError: "¡Parámetros incorrectos!"
+invalidName: ""
 permissionDenied: "¡Permiso denegado!"
 previousBans: "¡%PLAYER% tiene otras prohibiciones!"
 underMinRep: "¡Su reputación está por debajo de este umbral de servidores!"

@@ -30,6 +30,7 @@ kickMessageNoPlayer: "%PLAYER% is not online!"
 kickMessageBroadcast: "%ADMIN% has kicked %PLAYER% [%REASON%]"
 
 formatError: "Incorrect parameters!"
+invalidName: "Invalid player name!"
 permissionDenied: "Permission denied!"
 previousBans: "%PLAYER% has previous bans!"
 underMinRep: "Your reputation is below this servers threshold!"

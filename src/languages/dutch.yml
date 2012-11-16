@@ -30,6 +30,7 @@ kickMessageNoPlayer: ""
 kickMessageBroadcast: ""
 
 formatError: "Verkeerde waardes!"
+invalidName: ""
 permissionDenied: "Je hebt geen permissie om dit te doen!"
 previousBans: "%PLAYER% heeft vorige verbod!"
 underMinRep: "Je reputatie is onder de norm van de server!"
