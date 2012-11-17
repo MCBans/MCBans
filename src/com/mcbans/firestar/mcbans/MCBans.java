@@ -52,16 +52,9 @@ public class MCBans extends JavaPlugin {
     public ActionLog actionLog = null;
     public long lastCallBack = 0;
     public long lastSync = 0;
-    public boolean notSelectedServer = true;
-    //public String apiServersStr = "api01.cluster.mcbans.com,api02.cluster.mcbans.com,api03.cluster.mcbans.com,api.mcbans.com";
-    @SuppressWarnings("serial")
-    public List<String> apiServers = new ArrayList<String>(4) {{
-        add("api01.cluster.mcbans.com");
-        add("api02.cluster.mcbans.com");
-        add("api03.cluster.mcbans.com");
-        add("api.mcbans.com");
-    }};
-    public String apiServer = "";
+    //public boolean notSelectedServer = true;
+    public String apiServer = null;
+
     private ActionLog log = null;
     private RollbackHandler rbHandler = null;
     private boolean ncpEnabled = false;
