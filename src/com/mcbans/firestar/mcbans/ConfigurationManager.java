@@ -166,7 +166,7 @@ public class ConfigurationManager {
         return conf.getInt("autoSyncInterval", 5);
     }
 
-    public boolean isEnableJoinMessage(){
+    public boolean isSendJoinMessage(){
         return conf.getBoolean("onJoinMCBansMessage", false);
     }
     public double getMinRep(){
@@ -175,10 +175,10 @@ public class ConfigurationManager {
     public int getCallBackInterval(){
         return conf.getInt("callBackInterval", 15);
     }
-    public boolean isEnableSendPreviousBans(){
+    public boolean isSendPreviousBans(){
         return conf.getBoolean("sendPreviousBans", true);
     }
-    public boolean isEnableFailsafe(){
+    public boolean isFailsafe(){
         return conf.getBoolean("failsafe", false);
     }
 }
