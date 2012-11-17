@@ -78,7 +78,7 @@ public abstract class BaseCommand {
 
         // Check permission
         if (!permission(sender)){
-            Util.message(sender, _("permissionDenied"));
+            Util.message(sender, ChatColor.DARK_RED + _("permissionDenied"));
             //plugin.log(senderName + " has tried the command [" + command + "]!"); // maybe not needs command logger. Craftbukkit added this.
             //plugin.broadcastPlayer(sender, "&cYou don't have permission to use this!");
             return true;
