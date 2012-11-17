@@ -55,7 +55,6 @@ public class MCBans extends JavaPlugin {
     private RollbackHandler rbHandler = null;
     private boolean ncpEnabled = false;
     private boolean acEnabled = false;
-    private MCBansAPI api;
     private ConfigurationManager config;
     private MCBansCommandHandler commandHandler;
 
@@ -135,9 +134,6 @@ public class MCBans extends JavaPlugin {
         if (ncpEnabled) log.info("NoCheatPlus plugin found! Enabled this integration!");
         if (acEnabled) log.info("AntiCheat plugin found! Enabled this integration!");
 
-        // enabling MCBansAPI
-        api = new MCBansAPI(this);
-
         final PluginDescriptionFile pdfFile = this.getDescription();
         log.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
     }
@@ -205,8 +201,8 @@ public class MCBans extends JavaPlugin {
         return this.rbHandler;
     }
 
-    public MCBansAPI getAPI(){
-        return api;
+    public MCBansAPI getAPI(final Plugin plugin){
+        return MCBansAPI.getHandle(this, plugin);
     }
 
     public ConfigurationManager getConfigs(){
