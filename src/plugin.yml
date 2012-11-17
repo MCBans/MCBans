@@ -1,5 +1,5 @@
 ##  Plugin Information  ##
-name: mcbans
+name: MCBans
 main: com.mcbans.firestar.mcbans.MCBans
 version: 4.0-SNAPSHOT
 description: A global banning solution
