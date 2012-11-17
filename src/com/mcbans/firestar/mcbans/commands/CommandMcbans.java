@@ -77,7 +77,7 @@ public class CommandMcbans extends BaseCommand{
                 ManualResync manualSyncBanRunner = new ManualResync(plugin, senderName);
                 (new Thread(manualSyncBanRunner)).start();
             }else{
-                long syncInterval = config.getSyncInterval();
+                long syncInterval = 60 * config.getSyncInterval();
                 if(syncInterval < (60 * 5)){ // minimum 5 minutes
                     syncInterval = 60 * 5;
                 }
@@ -104,12 +104,16 @@ public class CommandMcbans extends BaseCommand{
                 send(ChatColor.GOLD + r + " until next callback request.");
             }
             else if (args.size() > 0 && args.get(0).equalsIgnoreCase("sync")){
-                long syncInterval = config.getSyncInterval();
-                if(syncInterval < (60 * 5)){
-                    syncInterval = (60 * 5);
+                if (config.isEnableAutoSync()){
+                    long syncInterval = 60 * config.getSyncInterval();
+                    if(syncInterval < (60 * 5)){
+                        syncInterval = (60 * 5);
+                    }
+                    String r = this.timeRemain( (plugin.lastSync + syncInterval) - (System.currentTimeMillis() / 1000) );
+                    send(ChatColor.GOLD + r + " until next sync.");
+                }else{
+                    send(ChatColor.RED + "Auto sync is disabled by config.yml!");
                 }
-                String r = this.timeRemain( (plugin.lastSync + syncInterval) - (System.currentTimeMillis() / 1000) );
-                send(ChatColor.GOLD + r + " until next sync.");
             }
             else{
                 send(ChatColor.WHITE + "/mcbans get call" + ChatColor.BLUE + " Time until callback thread sends data.");

@@ -12,6 +12,8 @@
 - Rewrited configuration structure (Change settings.yml to config.yml)
 - Fixed enableMaxAlts configuration not working
 - Fixed minor exception while player joining the server
+- Fixed sync ban at the incorrect interval
+- Fixed syncBans configuration not working (Moved to enableAutoSync config)
 
 3.9 R1 DIAMOND:
 - Added Rollback for; CoreProtect, Hawkeye, LogBlock.

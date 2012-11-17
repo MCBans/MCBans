@@ -71,6 +71,11 @@ public class ConfigurationManager {
                 }
             }
         }
+
+        // check isEnabledAutoSync
+        if (!initialLoad && isEnableAutoSync()){
+            plugin.bansync.goRequest(); // force run auto-sync
+        }
     }
 
     /**
@@ -149,11 +154,11 @@ public class ConfigurationManager {
         return conf.getInt("backDaysAgo", 20);
     }
 
-    public boolean isEnableSyncBans(){
-        return conf.getBoolean("syncBans", true);
+    public boolean isEnableAutoSync(){
+        return conf.getBoolean("enableAutoSync", true);
     }
     public int getSyncInterval(){
-        return conf.getInt("syncInterval", 1);
+        return conf.getInt("autoSyncInterval", 5);
     }
 
     public boolean isEnableJoinMessage(){

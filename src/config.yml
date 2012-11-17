@@ -7,7 +7,7 @@
 # prefix:
 #	Prefix used for MCBans plugin messages to users on the server
 #	DEFAULT: [MCBans]
-prefix: "[MCBans] "
+prefix: "[MCBans]"
 
 # apiKey:
 #       Your servers apiKey can be found in your account dashboard http://my.mcbans.com/servers
@@ -102,15 +102,15 @@ backDaysAgo: 20
 #	syncing for bans made into the banned-players.txt
 ##
 
-# syncBans:
-#       Allow sync to banned-players.txt
+# enableAutoSync:
+#       Allow auto sync to banned-players.txt
 #       DEFAULT: true
-syncBans: true
+enableAutoSync: true
 
-# syncInterval:
-#       sync every "syncInterval" and grab/delete bans in minutes
-#       DEFAULT: 1
-syncInterval: 1
+# autoSyncInterval:
+#       sync every "autoSyncInterval" and grab/delete bans in minutes
+#       DEFAULT: 5 (5 Minutes)
+autoSyncInterval: 5
 
 #########################################################
 # Miscellaneous Settings

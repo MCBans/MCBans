@@ -45,6 +45,7 @@ public class MCBans extends JavaPlugin {
     public long last_req = 0;
     public long timeRecieved = 0;
     public Thread callbackThread = null;
+    public BanSync bansync = null;
     public Thread syncBan = null;
     public boolean syncRunning = false;
     public long lastID = 0;
@@ -128,8 +129,8 @@ public class MCBans extends JavaPlugin {
         callbackThread.start();
 
         // ban sync
-        BanSync syncBanRunner = new BanSync(this);
-        syncBan = new Thread(syncBanRunner);
+        bansync = new BanSync(this);
+        syncBan = new Thread(bansync);
         syncBan.start();
 
         ServerChoose serverChooser = new ServerChoose(this);

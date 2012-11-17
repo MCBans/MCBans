@@ -38,8 +38,13 @@ public class BanSync implements Runnable {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {}
             }
-            this.mainRequest();
-            plugin.lastSync = System.currentTimeMillis() / 1000;
+
+            // check isEnable auto syncing feature
+            if (plugin.getConfigs().isEnableAutoSync()){
+                this.mainRequest();
+                plugin.lastSync = System.currentTimeMillis() / 1000;
+            }
+
             try {
                 Thread.sleep(syncInterval);
             } catch (InterruptedException e) {}
@@ -61,7 +66,7 @@ public class BanSync implements Runnable {
     }
 
     public void initialSync(){
-        if(plugin.syncRunning==true){
+        if(plugin.syncRunning){
             return;
         }
         plugin.syncRunning = true;
