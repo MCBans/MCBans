@@ -2,15 +2,13 @@ package com.mcbans.firestar.mcbans.util;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
 
 public class Util {
@@ -23,11 +21,14 @@ public class Util {
      * @param msg send message, non prefix
      */
     public static void message(final CommandSender target, String msg) {
-        if (target != null && msg != null){
-            if (target instanceof ConsoleCommandSender){
-                Bukkit.getConsoleSender().sendMessage(MCBans.getPrefix() + " " + msg);
-            }else{
+        if (msg != null){
+            msg = ChatColor.WHITE + msg;
+            if (target != null && target instanceof Player){
                 target.sendMessage(MCBans.getPrefix() + " " + msg);
+            }else{
+                // use craftbukkit for sending coloured message to console. Refer class #ColouredConsoleSender
+                org.bukkit.craftbukkit.command.ColouredConsoleSender.getInstance().sendMessage(msg);
+                //ActionLog.getInstance().info(msg);
             }
         }
     }
@@ -39,11 +40,7 @@ public class Util {
      */
     public static void message(final String playerName, String msg) {
         final Player target = Bukkit.getServer().getPlayer(playerName);
-        if (target != null) {
-            target.sendMessage(MCBans.getPrefix() + " " + msg);
-        } else {
-            ActionLog.getInstance().info(msg);
-        }
+        message(target, msg);
     }
 
     /**
