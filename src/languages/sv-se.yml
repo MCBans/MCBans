@@ -38,4 +38,6 @@ underMinRep: "Ditt ban-rykte �r f�r l�gt f�r att f� spela p� denna s
 overMaxAlts: "Du har fler alt-konton �n vad denna server till�ter!"
 altBanned: "Du har ett alt-konto som �r bannad fr�n denna server!"
 altAccounts: "%PLAYER% kan ha alt-konton [ %ALTS% ]!"
+disputes: ""
+bansOnRecord: ""
 isMCBansMod: "%PLAYER% �r en MCBans.com Staff Medlem!"
