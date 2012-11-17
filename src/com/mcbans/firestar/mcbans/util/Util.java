@@ -22,9 +22,9 @@ public class Util {
      */
     public static void message(final CommandSender target, String msg) {
         if (msg != null){
-            msg = ChatColor.WHITE + msg;
+            msg = MCBans.getPrefix() + " " + ChatColor.WHITE + msg;
             if (target != null && target instanceof Player){
-                target.sendMessage(MCBans.getPrefix() + " " + msg);
+                target.sendMessage(msg);
             }else{
                 // use craftbukkit for sending coloured message to console. Refer class #ColouredConsoleSender
                 org.bukkit.craftbukkit.command.ColouredConsoleSender.getInstance().sendMessage(msg);
