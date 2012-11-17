@@ -20,11 +20,15 @@ public class ActionLog {
         this.plugin = plugin;
     }
 
-    public void log(final Level level, final String message){
+    public void log(final Level level, final String message, final boolean logToFile){
         logger.log(level, logPrefix + message);
-        if (plugin.getConfigs() != null && plugin.getConfigs().isEnableLog()) {
+        if (logToFile && plugin.getConfigs() != null && plugin.getConfigs().isEnableLog()) {
            writeLog(message);
         }
+    }
+
+    public void log(final Level level, final String message){
+        log (level, message, true);
     }
 
     public void fine(final String message){

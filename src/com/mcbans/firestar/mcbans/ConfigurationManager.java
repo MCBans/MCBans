@@ -2,10 +2,14 @@ package com.mcbans.firestar.mcbans;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import com.mcbans.firestar.mcbans.util.FileStructure;
+import com.mcbans.firestar.mcbans.util.Util;
 
 
 public class ConfigurationManager {
@@ -40,7 +44,7 @@ public class ConfigurationManager {
         File file = new File(pluginDir, "config.yml");
         if (!file.exists()){
             FileStructure.extractResource("/config.yml", pluginDir, false, false);
-            log.info("config.yml is not found! Created default config.yml!");
+            log.log(Level.INFO, "config.yml is not found! Created default config.yml!", false);
         }
 
         plugin.reloadConfig();
@@ -51,6 +55,7 @@ public class ConfigurationManager {
         // check API key
         if (getApiKey().length() != 40){
             if (initialLoad){
+                Util.message((CommandSender)null, ChatColor.RED + "=== Missing OR Invalid API Key! ===");
                 log.severe("Missing or invalid API Key! Disabling plugin..");
                 log.severe("Please copy your API key to configuration file.");
                 log.severe("Don't have API key? Go: http://my.mcbans.com/servers/");
