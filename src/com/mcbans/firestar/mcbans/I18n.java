@@ -117,16 +117,17 @@ public class I18n {
         if (msg == null || msg.length() == 0){
             if (msg == null) ActionLog.getInstance().warning("Missing message key '" + key + "'");
             msg = getString(fallbackMessages, key);
-            if (msg == null || msg.length() == 0) msg = "!" + key + "!";
-        }
-        else{
-            // build replaces
-            Map<String, Object> binds = buildBinds(args);
-            for (String bindKey : binds.keySet()){
-                if (bindKey == null) continue;
-                final Object obj = binds.get(bindKey);
-                msg = msg.replace(bindKey, ((obj != null) ? obj.toString() : ""));
+            if (msg == null || msg.length() == 0){
+                return "!" + key + "!";
             }
+        }
+
+        // build replaces
+        Map<String, Object> binds = buildBinds(args);
+        for (String bindKey : binds.keySet()){
+            if (bindKey == null) continue;
+            final Object obj = binds.get(bindKey);
+            msg = msg.replace(bindKey, ((obj != null) ? obj.toString() : ""));
         }
 
         return msg;
