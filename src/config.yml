@@ -1,149 +1,142 @@
 #########################################################
-# Main Configuration Settings
-# MCBans 3.9 (Firestar, Syamn)
-# http://mcbans.com
+# MCBans Configuration File
+# Plugin version 4.0 (Firestar, Syamn)
+# - Main Site: http://mcbans.com
+# - Support Desk: http://support.mcbans.com
+# - Community: http://forums.mcbans.com
 ##
 
 # prefix:
-#	Prefix used for MCBans plugin messages to users on the server
-#	DEFAULT: [MCBans]
+#   Prefix used for MCBans plugin messages to users on the server
+#   DEFAULT: [MCBans]
 prefix: "[MCBans]"
 
 # apiKey:
-#       Your servers apiKey can be found in your account dashboard http://my.mcbans.com/servers
-apiKey:
+#   Your servers apiKey can be found in your account dashboard http://my.mcbans.com/servers
+apiKey: 
 
 # language:
-#       Language you want to have displayed to the players
-#       DEFAULT: en-us
+#   Language you want to have displayed to the players
+#   DEFAULT: en-us
 language: en-us
 
 # permission:
-#	Choose permission controller: Vault, PermissionsEx, SuperPerms (default), OPs
-#	DEFAULT: SuperPerms
+#   Choose permission controller: Vault, PermissionsEx, SuperPerms (default), OPs
+#   DEFAULT: SuperPerms
 permission: SuperPerms
 
 # defaultLocal:
-#	Default reason for users being locally banned from the server, if
-#	no reason is provided.
-#	DEFAULT: "You have been banned!"
+#   Default reason for users being locally banned from the server, if no reason is provided.
+#   DEFAULT: "You have been banned!"
 defaultLocal: "You have been banned!"
 
 # defaultTemp:
-#	Default reason for users being temporarily banned from the server,
-#	if no reason is provided.
-#	DEFAULT: "You have been temporarily banned!"
+#   Default reason for users being temporarily banned from the server, if no reason is provided.
+#   DEFAULT: "You have been temporarily banned!"
 defaultTemp: "You have been temporarily banned!"
 
 # defaultKick:
-#	Default reason for users being kicked from the server, if no reason
-#	is provided.
-#	DEFAULT: "You have been kicked!"
+#   Default reason for users being kicked from the server, if no reason is provided.
+#   DEFAULT: "You have been kicked!"
 defaultKick: "You have been kicked!"
 
 #########################################################
 # Loging and Debug
-#	Debugging and MCBans message logging settings
+#   Debugging and MCBans message logging settings
 ##
 
 # isDebug:
-#	Enable additional debug messages throughout the plugin
-#	DEFAULT: false
+#   Enable additional debug messages throughout the plugin
+#   DEFAULT: false
 isDebug: false
 
 # logEnable:
-#	Enable logging MCBans actions and information to a file
-#	DEFAULT: false
+#   Enable logging MCBans actions and information to a file
+#   DEFAULT: false
 logEnable: false
 
 # logFile:
-#	Location and name of the file to log MCBans plugin data into
-#	DEFAULT: plugins/mcbans/actions.log
+#   Location and name of the file to log MCBans plugin data into
+#   DEFAULT: plugins/mcbans/actions.log
 logFile: "plugins/mcbans/actions.log"
 
 #########################################################
 # Alternate Account Limiting
-#	Limits the how alternate accounts affect connectability to the server
+#   Limits the how alternate accounts affect connectability to the server
 ##
 
 # enableMaxAlts:
-#	Activate limiting maximum number of alt accounts (true/false)
-#	Limits the maximum number of alt accounts a user may have before
-#	being denied access to the server.
-#	DEFAULT: false
+#   Activate limiting maximum number of alt accounts (true/false)
+#   Limits the maximum number of alt accounts a user may have before
+#   being denied access to the server.
+#   DEFAULT: false
 enableMaxAlts: false
 
 # maxAlts:
-#	Maximum number of alternate accounts allowed before denying user
-#	DEFAULT: 2
+#   Maximum number of alternate accounts allowed before denying user
+#   DEFAULT: 2
 maxAlts: 2
 
 #########################################################
 # Block logger plugin integration
-#	Support LogBlock, HawkEye, CoreProtect plugin!
+#   Support LogBlock, HawkEye, CoreProtect plugin!
 ##
 
 # affectedWorlds:
-# 	Worlds to issue log data or rollback
+#   Worlds to issue log data or rollback
 #   LogBlock and HawkEye Only! CoreProtect not supported this parameter ;(
-#   DEFAULT: '*'
-#   Multiple worlds: world,world_nether,3rdworld (no spaces)
-#   '*' to all worlds.
+#   DEFAULT: '*' ('*' to all worlds.)
+#   Multiple worlds: world,world_nether,3rdworld (no spaces)#
 affectedWorlds: '*'
 
 # backDaysAgo:
-# 	days ago to roll back a player
-#   DEFAULT: 20
-#	0 (<=0) to infinite.
+#   days ago to roll back a player
+#   DEFAULT: 20 (0 (<=0) to infinite)
 backDaysAgo: 20
 
 #########################################################
 # MCBans syncing!
-#	syncing for bans made into the banned-players.txt
+#   syncing for bans made into the banned-players.txt
 ##
 
 # enableAutoSync:
-#       Allow auto sync to banned-players.txt
-#       DEFAULT: true
+#   Allow auto sync to banned-players.txt
+#   DEFAULT: true
 enableAutoSync: true
 
 # autoSyncInterval:
-#       sync every "autoSyncInterval" and grab/delete bans in minutes
-#       DEFAULT: 5 (5 Minutes)
+#   sync every "autoSyncInterval" and grab/delete bans in minutes
+#   DEFAULT: 5 (5 Minutes)
 autoSyncInterval: 5
 
 #########################################################
 # Miscellaneous Settings
-#	Settings that don't have a part of any other sections
+#   Settings that don't have a part of any other sections
 ##
 
 # onJoinMCBansMessage:
-#	Display "Server protected by MCBans.com" advertisement notice to
-#	users upon connection.
-#	DEFAULT: false
-#	RECOMMENDED: true
+#   Display "Server protected by MCBans.com" advertisement notice to users upon connection.
+#   DEFAULT: false, RECOMMENDED: true
 onJoinMCBansMessage: false
 
 # minRep:
-#	Minimum reputation a user may have before being disallowed access
-#	to the server.
-#	DEFAULT: 3
-#	-1 to disable.
+#   Minimum reputation a user may have before being disallowed access to the server.
+#   DEFAULT: 3 (-1 to disable)
 minRep: 3
 
 # callBackInterval:
-#	Time (in minutes) between callbacks to the MCBans Master Server
-#	(Excluding the API connections on userConnect)
-#	DEFAULT: 15 (15 Minutes)
+#   Time (in minutes) between callbacks to the MCBans Master Server
+#   (Excluding the API connections on userConnect)
+#   DEFAULT: 15 (15 Minutes)
 callBackInterval: 15
 
 # sendPreviousBans:
-# 	Send message if player has previous bans
+#   Send message if player has previous bans
 #   DEFAULT: true
 sendPreviousBans: true
 
 #########################################################
 # DO NOT TOUCH
-# 	Do not touch this option! It is a check if you are running the recent configuration version
+#   Do not touch this option! It is a check if you are running the recent configuration version
 ##
 ConfigVersion: 1
