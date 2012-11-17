@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.mcbans.firestar.mcbans.ActionLog;
@@ -18,23 +19,16 @@ public class Util {
     /****************************************/
     /**
      * Send message to player
-     * @param target target Player
-     * @param msg send message, non prefix
-     */
-    public static void message(final Player target, String msg) {
-        if (target != null && msg != null){
-            target.sendMessage(MCBans.getPrefix() + " " + msg);
-        }
-    }
-
-    /**
-     * Send message to player
      * @param target target CommandSender
      * @param msg send message, non prefix
      */
     public static void message(final CommandSender target, String msg) {
         if (target != null && msg != null){
-            target.sendMessage(MCBans.getPrefix() + " " + msg);
+            if (target instanceof ConsoleCommandSender){
+                Bukkit.getConsoleSender().sendMessage(MCBans.getPrefix() + " " + msg);
+            }else{
+                target.sendMessage(MCBans.getPrefix() + " " + msg);
+            }
         }
     }
 
