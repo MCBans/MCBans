@@ -41,14 +41,14 @@ public class PlayerListener implements Listener {
     public void onAsyncPlayerPreLoginEvent(final AsyncPlayerPreLoginEvent event) {
         try {
             int check = 1;
-            while (plugin.notSelectedServer) {
+            while (plugin.apiServer == null) {
                 // waiting for server select
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {}
                 check++;
                 if (check > 5) {
-                    log.warning("Can't reach mcbans server! Check passed player: " + event.getName());
+                    log.warning("Can't reach MCBans API Servers! Check passed player: " + event.getName());
                     return;
                 }
             }

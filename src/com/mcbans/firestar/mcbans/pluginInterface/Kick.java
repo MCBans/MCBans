@@ -26,7 +26,7 @@ public class Kick implements Runnable {
 
     @Override
     public void run() {
-        while (plugin.notSelectedServer) {
+        while (plugin.apiServer == null) {
             // waiting for server select
             try {
                 Thread.sleep(1000);

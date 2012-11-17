@@ -34,10 +34,8 @@ import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 import fr.neatmonster.nocheatplus.NoCheatPlus;
 
 public class MCBans extends JavaPlugin {
-
     private static MCBans instance;
 
-    private MCBansCommandHandler commandHandler;
     public int taskID = 0;
     public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
     public HashMap<String, HashMap<String, String>> playerCache = new HashMap<String, HashMap<String, String>>();
@@ -47,12 +45,10 @@ public class MCBans extends JavaPlugin {
     public Thread callbackThread = null;
     public BanSync bansync = null;
     public Thread syncBan = null;
-    public boolean syncRunning = false;
     public long lastID = 0;
-    public ActionLog actionLog = null;
+    public boolean syncRunning = false;
     public long lastCallBack = 0;
     public long lastSync = 0;
-    //public boolean notSelectedServer = true;
     public String apiServer = null;
 
     private ActionLog log = null;
@@ -61,6 +57,7 @@ public class MCBans extends JavaPlugin {
     private boolean acEnabled = false;
     private MCBansAPI api;
     private ConfigurationManager config;
+    private MCBansCommandHandler commandHandler;
 
     @Override
     public void onDisable() {

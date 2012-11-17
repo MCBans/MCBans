@@ -32,7 +32,7 @@ public class BanSync implements Runnable {
             if(syncInterval < ((60 * 1000) * 5)){
                 syncInterval = ((60 * 1000) * 5);
             }
-            while(plugin.notSelectedServer){
+            while(plugin.apiServer == null){
                 //waiting for server select
                 try {
                     Thread.sleep(1000);

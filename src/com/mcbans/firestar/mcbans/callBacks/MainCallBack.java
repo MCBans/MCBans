@@ -27,7 +27,7 @@ public class MainCallBack implements Runnable {
         }
 
         while(true){
-            while(plugin.notSelectedServer){
+            while(plugin.apiServer == null){
                 //waiting for server select
                 try {
                     Thread.sleep(1000);

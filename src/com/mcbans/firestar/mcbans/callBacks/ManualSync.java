@@ -24,7 +24,7 @@ public class ManualSync implements Runnable {
             Util.message(commandSend, ChatColor.GREEN + " Sync already in progress!" );
             return;
         }
-        while(plugin.notSelectedServer){
+        while(plugin.apiServer == null){
             //waiting for server select
             try {
                 Thread.sleep(1000);
