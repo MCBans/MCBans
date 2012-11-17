@@ -13,7 +13,7 @@ prefix: "[MCBans]"
 
 # apiKey:
 #   Your servers apiKey can be found in your account dashboard http://my.mcbans.com/servers
-apiKey: 
+apiKey:
 
 # language:
 #   Language you want to have displayed to the players
@@ -131,9 +131,15 @@ minRep: 3
 callBackInterval: 15
 
 # sendPreviousBans:
-#   Send message if player has previous bans
-#   DEFAULT: true
+#   Send bansOnRecord message if player has previous bans
+#   DEFAULT: true, RECOMMENDED: true
 sendPreviousBans: true
+
+# failsafe:
+#   If set to true, disallow access to the server when can't auth players,
+#   unavailable mcbans api servers, internal error etc.
+#   DEFAULT: false
+failsafe: false
 
 #########################################################
 # DO NOT TOUCH

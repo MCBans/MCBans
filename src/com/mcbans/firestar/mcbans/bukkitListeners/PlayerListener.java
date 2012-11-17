@@ -48,7 +48,13 @@ public class PlayerListener implements Listener {
                 } catch (InterruptedException e) {}
                 check++;
                 if (check > 5) {
-                    log.warning("Can't reach MCBans API Servers! Check passed player: " + event.getName());
+                    // can't reach mcbans servers
+                    if (config.isEnableFailsafe()){
+                        log.warning("Can't reach MCBans API Servers! Kicked player: " + event.getName());
+                        event.disallow(Result.KICK_BANNED, "Unavailable MCBans Service!");
+                    }else{
+                        log.warning("Can't reach MCBans API Servers! Check passed player: " + event.getName());
+                    }
                     return;
                 }
             }
@@ -66,7 +72,12 @@ public class PlayerListener implements Listener {
                 if (br != null) br.close();
             }
             if (response == null){
-                log.warning("Null response! (Player: " + event.getName() + ")");
+                if (config.isEnableFailsafe()){
+                    log.warning("Null response! Kicked player: " + event.getName());
+                    event.disallow(Result.KICK_BANNED, "Unavailable MCBans Service!");
+                }else{
+                    log.warning("Null response! Check passed player: " + event.getName());
+                }
                 return;
             }
 
@@ -108,12 +119,23 @@ public class PlayerListener implements Listener {
                 }
                 plugin.debug(event.getName() + " authenticated with " + s[2] + " rep");
             }else{
-                log.warning("Invalid response! Player: " + event.getName() + ", length: " + s.length);
+                if (config.isEnableFailsafe()){
+                    log.warning("Invalid response!(" + s.length + ") Kicked player: " + event.getName());
+                    event.disallow(Result.KICK_BANNED, "Unavailable MCBans Service!");
+                }else{
+                    log.warning("Invalid response!(" + s.length + ") Check passed player: " + event.getName());
+                }
                 log.warning("Response: " + response);
+                return;
             }
         }catch (Exception ex){
             log.warning("Error occurred in AsyncPlayerPreLoginEvent. Please report this!");
             ex.printStackTrace();
+
+            if (config.isEnableFailsafe()){
+                log.warning("Internal exception! Kicked player: " + event.getName());
+                event.disallow(Result.KICK_BANNED, "Unavailable MCBans Service!");
+            }
         }
     }
 

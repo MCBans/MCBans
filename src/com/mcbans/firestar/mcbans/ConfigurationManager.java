@@ -178,4 +178,7 @@ public class ConfigurationManager {
     public boolean isEnableSendPreviousBans(){
         return conf.getBoolean("sendPreviousBans", true);
     }
+    public boolean isEnableFailsafe(){
+        return conf.getBoolean("failsafe", false);
+    }
 }
