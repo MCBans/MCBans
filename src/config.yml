@@ -57,8 +57,8 @@ logEnable: false
 
 # logFile:
 #   Location and name of the file to log MCBans plugin data into
-#   DEFAULT: plugins/mcbans/actions.log
-logFile: "plugins/mcbans/actions.log"
+#   DEFAULT: plugins/MCBans/actions.log
+logFile: "plugins/MCBans/actions.log"
 
 #########################################################
 # Alternate Account Limiting

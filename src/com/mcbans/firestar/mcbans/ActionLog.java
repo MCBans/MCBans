@@ -53,7 +53,7 @@ public class ActionLog {
             appendLine(plugin.getConfigs().getLogFile(),
                     "[" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "] " + message);
         } catch (IOException ex) {
-            logger.warning(logPrefix + "Could not write log file!" + ex.getMessage());
+            logger.warning(logPrefix + "Could not write log file! " + ex.getMessage());
         }
     }
 

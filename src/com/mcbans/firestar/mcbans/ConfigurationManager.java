@@ -113,7 +113,7 @@ public class ConfigurationManager {
 
     /* ***** Begin Configuration Getters *********************** */
     public String getPrefix(){
-        return conf.getString("prefix", "[mcbans]");
+        return conf.getString("prefix", "[MCBans]");
     }
     public String getApiKey(){
         return conf.getString("apiKey", "").trim();
@@ -142,7 +142,7 @@ public class ConfigurationManager {
         return conf.getBoolean("logEnable", false);
     }
     public String getLogFile(){
-        return conf.getString("logFile", "plugins/mcbans/actions.log");
+        return conf.getString("logFile", "plugins/MCBans/actions.log");
     }
 
     public boolean isEnableMaxAlts(){
