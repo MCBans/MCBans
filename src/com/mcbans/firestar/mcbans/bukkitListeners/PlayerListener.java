@@ -3,6 +3,7 @@ package com.mcbans.firestar.mcbans.bukkitListeners;
 import static com.mcbans.firestar.mcbans.I18n._;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -128,7 +129,16 @@ public class PlayerListener implements Listener {
                 log.warning("Response: " + response);
                 return;
             }
-        }catch (Exception ex){
+        }
+        catch (IOException ex){
+            log.warning("Cannot connect MCBans API server!");
+            if (config.isDebug()) ex.printStackTrace();
+
+            if (config.isFailsafe()){
+                event.disallow(Result.KICK_BANNED, _("unavailable"));
+            }
+        }
+        catch (Exception ex){
             log.warning("Error occurred in AsyncPlayerPreLoginEvent. Please report this!");
             ex.printStackTrace();
 
