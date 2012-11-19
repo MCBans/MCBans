@@ -120,13 +120,13 @@ public class MCBansAPI {
     public static MCBansAPI getHandle(final MCBans plugin, final Plugin otherPlugin){
         if (otherPlugin == null) return null;
 
-        MCBansAPI api = apiHandles.get(plugin);
+        MCBansAPI api = apiHandles.get(otherPlugin);
 
         if (api == null){
             // get new api
             api = new MCBansAPI(plugin, otherPlugin.getName());
 
-            apiHandles.put(plugin, api);
+            apiHandles.put(otherPlugin, api);
         }
 
         return api;
