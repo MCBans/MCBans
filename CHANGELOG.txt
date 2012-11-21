@@ -6,6 +6,7 @@
 - Added player name valid check
 - Added config file version check (Auto recreate config.yml as necessary)
 - Added more localizable messages
+- Added timeout configuration
 - Added failsafe configuration
 - Rewrited permission structure and permission node
 - Rewrited command structure

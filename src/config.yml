@@ -135,9 +135,14 @@ callBackInterval: 15
 #   DEFAULT: true, RECOMMENDED: true
 sendPreviousBans: true
 
+# timeout:
+#   Timeout (in seconds) value of connecting mcbans API server while player joining the server.
+#   DEFAULT: 10 (10 Seconds)
+timeout: 10
+
 # failsafe:
 #   If set to true, disallow access to the server when can't auth players,
-#   unavailable mcbans api servers, internal error etc.
+#   unavailable mcbans api servers (timeout), internal plugin error etc.
 #   DEFAULT: false
 failsafe: false
 

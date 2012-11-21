@@ -178,6 +178,9 @@ public class ConfigurationManager {
     public boolean isSendPreviousBans(){
         return conf.getBoolean("sendPreviousBans", true);
     }
+    public int getTimeoutInSec(){
+        return conf.getInt("timeout", 10);
+    }
     public boolean isFailsafe(){
         return conf.getBoolean("failsafe", false);
     }

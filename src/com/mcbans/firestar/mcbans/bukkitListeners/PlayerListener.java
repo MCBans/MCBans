@@ -5,7 +5,9 @@ import static com.mcbans.firestar.mcbans.I18n._;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
@@ -61,13 +63,19 @@ public class PlayerListener implements Listener {
             }
 
             // get player information
-            final URL urlMCBans = new URL("http://" + plugin.apiServer + "/v2/" + config.getApiKey() + "/login/"
+            final String uriStr = "http://" + plugin.apiServer + "/v2/" + config.getApiKey() + "/login/"
                     + URLEncoder.encode(event.getName(), "UTF-8") + "/"
-                    + URLEncoder.encode(String.valueOf(event.getAddress().getHostAddress()), "UTF-8"));
+                    + URLEncoder.encode(String.valueOf(event.getAddress().getHostAddress()), "UTF-8");
+            final URLConnection conn = new URL(uriStr).openConnection();
+
+            conn.setConnectTimeout(config.getTimeoutInSec() * 1000);
+            conn.setReadTimeout(config.getTimeoutInSec() * 1000);
+            conn.setUseCaches(false);
+
             BufferedReader br = null;
             String response = null;
             try{
-                br = new BufferedReader(new InputStreamReader(urlMCBans.openStream()));
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 response = br.readLine();
             }finally{
                 if (br != null) br.close();
@@ -128,6 +136,12 @@ public class PlayerListener implements Listener {
                 }
                 log.warning("Response: " + response);
                 return;
+            }
+        }
+        catch (SocketTimeoutException ex){
+            log.warning("Cannot connect MCBans API server: timeout");
+            if (config.isFailsafe()){
+                event.disallow(Result.KICK_BANNED, _("unavailable"));
             }
         }
         catch (IOException ex){
