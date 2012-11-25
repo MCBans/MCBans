@@ -8,18 +8,15 @@ import com.mcbans.firestar.mcbans.api.data.PlayerLookupData;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class LookupCallback extends BaseCallback{
-    private PlayerLookupData data;
-
     public LookupCallback(final MCBans plugin, final CommandSender sender) {
         super(plugin, sender);
     }
-
-    public void setLookupData(final PlayerLookupData data){
-        this.data = data;
+    public LookupCallback(){
+        super(MCBans.getInstance(), null);
     }
 
-    @Override
-    public void success(){
+    //@Override
+    public void success(final PlayerLookupData data){
         Util.message(sender, "Player " + ChatColor.DARK_AQUA + data.getPlayerName() + ChatColor.WHITE + " has " + ChatColor.DARK_RED
                 + data.getTotal() + " ban(s)" + ChatColor.WHITE + " and " + ChatColor.BLUE + data.getRepuration() + " REP"
                 + ChatColor.WHITE + ".");
@@ -42,6 +39,11 @@ public class LookupCallback extends BaseCallback{
                 Util.message(sender, record);
             }
         }
+    }
+
+    @Override
+    public void success(){
+        throw new IllegalArgumentException("Wrong usage!");
     }
 
     @Override

@@ -8,8 +8,11 @@ import org.bukkit.plugin.Plugin;
 
 import com.mcbans.firestar.mcbans.BanType;
 import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.api.data.PlayerLookupData;
+import com.mcbans.firestar.mcbans.callBacks.LookupCallback;
 import com.mcbans.firestar.mcbans.request.Ban;
 import com.mcbans.firestar.mcbans.request.Kick;
+import com.mcbans.firestar.mcbans.request.LookupRequest;
 
 public class MCBansAPI {
     private final MCBans plugin;
@@ -105,6 +108,20 @@ public class MCBansAPI {
         // Start
         Kick kickPlayer = new Kick(plugin, targetName, senderName, reason);
         Thread triggerThread = new Thread(kickPlayer);
+        triggerThread.start();
+    }
+
+    /**
+     * Lookup Player
+     * @param targetName Lookup target player's name
+     * @param senderName Lookup issued admin's name
+     * @param callback LookupCallback
+     */
+    public void lookup(String targetName, String senderName, LookupCallback callback){
+        plugin.getLog().info("Plugin " + pname + " tried to lookup player " + targetName);
+
+        LookupRequest request = new LookupRequest(plugin, callback, targetName, senderName);
+        Thread triggerThread = new Thread(request);
         triggerThread.start();
     }
 

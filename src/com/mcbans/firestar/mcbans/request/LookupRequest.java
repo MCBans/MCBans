@@ -28,8 +28,7 @@ public class LookupRequest extends BaseRequest<LookupCallback>{
         JSONObject result = this.request_JOBJ();
 
         try{
-            callback.setLookupData(new PlayerLookupData(targetName, result));
-            callback.success();
+            callback.success(new PlayerLookupData(targetName, result));
         } catch (JSONException e) {
             if (result.toString().contains("error")) {
                 if (result.toString().contains("Server Disabled")) {
