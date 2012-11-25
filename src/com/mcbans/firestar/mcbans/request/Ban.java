@@ -353,6 +353,13 @@ public class Ban implements Runnable {
             } else if (response.get("result").equals("a")) {
                 Util.message(senderName,
                         ChatColor.DARK_RED + _("tempBanMessageAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+            } else if (response.get("result").equals("n")){
+                if (response.get("msg") != null){
+                    Util.message(senderName, ChatColor.DARK_RED + response.get("msg"));
+                }else{
+                    Util.message(senderName,
+                            ChatColor.DARK_RED + _("tempBanMessageError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                }
             }
             log.info(senderName + " has tried to ban " + playerName + " with a temp type ban [" + reason + "]!");
         } catch (Exception ex) {
