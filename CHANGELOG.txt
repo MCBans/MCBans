@@ -18,6 +18,7 @@
 - Fixed minor exception while player joining the server
 - Fixed sync ban at the incorrect interval
 - Fixed syncBans configuration not working (Moved to enableAutoSync config)
+- Fixed tempban w(week) parameter not working
 
 3.9 R1 DIAMOND:
 - Added Rollback for; CoreProtect, Hawkeye, LogBlock.

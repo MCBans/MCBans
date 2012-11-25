@@ -26,7 +26,7 @@ commands:
   tempban:
     description: temporary ban user
     aliases: [tban]
-    usage: /<command> <playername> <duration> <m(minutes) or h(hours) or d(days)> [reason]
+    usage: /<command> <playername> <duration> <m(minutes) or h(hours) or d(days) or w(weeks)> [reason]
   lookup:
     description: lookup a player
     aliases: [lup]

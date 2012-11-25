@@ -43,12 +43,12 @@ public class CommandMcbans extends BaseCommand{
         if (first.equalsIgnoreCase("banning")){
             send(ChatColor.WHITE + "/ban <name> <reason>" + ChatColor.BLUE + " Local ban user");
             send(ChatColor.WHITE + "/ban <name> g <reason>" + ChatColor.BLUE + " Global ban user");
-            send(ChatColor.WHITE + "/ban <name> t <time> <m or h or d> <reason>" + ChatColor.BLUE + " Temporarily ban");
-            send(ChatColor.WHITE + "/tban <name> <time> <m(minute) or h(hour) or d(day)> <reason>" + ChatColor.BLUE + " Temp ban user");
+            send(ChatColor.WHITE + "/ban <name> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Temporarily ban");
+            send(ChatColor.WHITE + "/tban <name> <time> <m(minute), h(hour), d(day), w(week)> <reason>" + ChatColor.BLUE + " Temp ban user");
             send(ChatColor.WHITE + "/gban <name> <reason>" + ChatColor.BLUE + " Global ban user");
             send(ChatColor.WHITE + "/rban <name> <reason>" + ChatColor.BLUE + " Rollback and local ban");
             send(ChatColor.WHITE + "/rban <name> g <reason>" + ChatColor.BLUE + " Rollback and global ban");
-            send(ChatColor.WHITE + "/rban <name> t <time> <m or h or d> <reason>" + ChatColor.BLUE + " Rollback and temporarily ban");
+            send(ChatColor.WHITE + "/rban <name> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Rollback and temporarily ban");
             return;
         }
         /* User Help */
