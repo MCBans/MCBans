@@ -11,6 +11,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -128,6 +129,11 @@ public class PlayerListener implements Listener {
                 }
                 plugin.debug(event.getName() + " authenticated with " + s[2] + " rep");
             }else{
+                if (response.toString().contains("Server Disabled")) {
+                    Util.message(Bukkit.getConsoleSender(), ChatColor.RED + "This Server Disabled by MCBans Administration!");
+                    return;
+                }
+
                 if (config.isFailsafe()){
                     log.warning("Invalid response!(" + s.length + ") Kicked player: " + event.getName());
                     event.disallow(Result.KICK_BANNED, _("unavailable"));

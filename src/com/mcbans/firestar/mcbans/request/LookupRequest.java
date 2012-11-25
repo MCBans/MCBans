@@ -33,8 +33,8 @@ public class LookupRequest extends BaseRequest<LookupCallback>{
         } catch (JSONException e) {
             if (result.toString().contains("error")) {
                 if (result.toString().contains("Server Disabled")) {
-                    ActionLog.getInstance().severe(ChatColor.RED + "Server Disabled by an MCBans Admin");
-                    ActionLog.getInstance().severe(ChatColor.RED + "To appeal this decision, please file ticket on support.mcbans.com");
+                    ActionLog.getInstance().severe("Server Disabled by an MCBans Admin");
+                    ActionLog.getInstance().severe("To appeal this decision, please file ticket on support.mcbans.com");
 
                     callback.error("This server disabled by MCBans Administration.");
                     return;
