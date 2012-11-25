@@ -5,12 +5,13 @@ import java.util.List;
 
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
+import com.mcbans.firestar.mcbans.util.Util;
 
 public class PlayerLookupData {
     private String name;
 
-    private String total;
-    private String rep;
+    private int total = 0;
+    private double reputation = 10.0D;
 
     private List<String> global = new ArrayList<String>();
     private List<String> local = new ArrayList<String>();
@@ -19,8 +20,13 @@ public class PlayerLookupData {
     public PlayerLookupData(final String name, final JSONObject response) throws JSONException, NullPointerException{
         this.name = name;
 
-        this.total = response.getString("total");
-        this.rep = response.getString("reputation");
+        if (Util.isInteger(response.getString("total").trim())){
+            total = Integer.parseInt(response.getString("total").trim());
+        }
+
+        if (Util.isDouble(response.getString("reputation").trim())){
+            reputation = Double.parseDouble(response.getString("reputation").trim());
+        }
 
         if (response.getJSONArray("global").length() > 0) {
             for (int v = 0; v < response.getJSONArray("global").length(); v++) {
@@ -43,11 +49,11 @@ public class PlayerLookupData {
         return this.name;
     }
 
-    public String getTotal(){
+    public int getTotal(){
         return this.total;
     }
-    public String getRepuration(){
-        return this.rep;
+    public double getRepuration(){
+        return this.reputation;
     }
 
     public List<String> getGlobals(){

@@ -93,4 +93,33 @@ public class Util {
 
         return true;
     }
+
+    /**
+     * Check string is integer
+     * @param str String text to check
+     * @return true if cast to int successfully
+     */
+    public static boolean isInteger(String str) {
+        try{
+            Integer.parseInt(str);
+        }catch (NumberFormatException e){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Check string is double
+     * @param str String text to check
+     * @return true if cast to double successfully
+     */
+    public static boolean isDouble(String str) {
+        try{
+            Double.parseDouble(str);
+        }catch (NumberFormatException e){
+            return false;
+        }
+        return true;
+    }
+
 }
