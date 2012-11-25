@@ -1,4 +1,4 @@
-package com.mcbans.firestar.mcbans.pluginInterface;
+package com.mcbans.firestar.mcbans.request;
 
 import static com.mcbans.firestar.mcbans.I18n._;
 
@@ -17,7 +17,7 @@ public class Kick implements Runnable {
     private final String senderName;
     private String reason;
 
-    public Kick(MCBans plugin, String playerName, String senderName, String reason) {
+    public Kick(final MCBans plugin, final String playerName, final String senderName, final String reason) {
         this.plugin = plugin;
         this.playerName = playerName;
         this.senderName = senderName;
@@ -26,12 +26,6 @@ public class Kick implements Runnable {
 
     @Override
     public void run() {
-        while (plugin.apiServer == null) {
-            // waiting for server select
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {}
-        }
         final Player player = plugin.getServer().getPlayer(playerName);
         if (player != null) {
             // Call PlayerKickEvent
@@ -42,14 +36,16 @@ public class Kick implements Runnable {
             }
             reason = kickEvent.getReason();
 
-            plugin.getLog().info(senderName + " has kicked " + player.getName() + " [" + reason + "]");
+            // kick player
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
                 public void run() {
                     player.kickPlayer(_("kickMessagePlayer", I18n.PLAYER, player.getName(), I18n.SENDER, senderName, I18n.REASON, reason));
                 }
-            }, 1L);
+            }, 0L);
+
             Util.broadcastMessage(ChatColor.GREEN + _("kickMessageBroadcast", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason));
+            plugin.getLog().info(senderName + " has kicked " + player.getName() + " [" + reason + "]");
         } else {
             Util.message(senderName, ChatColor.DARK_RED + _("kickMessageNoPlayer", I18n.PLAYER, playerName));
         }

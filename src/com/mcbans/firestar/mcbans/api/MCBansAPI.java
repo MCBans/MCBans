@@ -8,8 +8,8 @@ import org.bukkit.plugin.Plugin;
 
 import com.mcbans.firestar.mcbans.BanType;
 import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.pluginInterface.Ban;
-import com.mcbans.firestar.mcbans.pluginInterface.Kick;
+import com.mcbans.firestar.mcbans.request.Ban;
+import com.mcbans.firestar.mcbans.request.Kick;
 
 public class MCBansAPI {
     private final MCBans plugin;

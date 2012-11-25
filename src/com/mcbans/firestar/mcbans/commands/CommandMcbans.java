@@ -8,10 +8,11 @@ import org.bukkit.command.CommandSender;
 import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.callBacks.ManualResync;
 import com.mcbans.firestar.mcbans.callBacks.ManualSync;
-import com.mcbans.firestar.mcbans.callBacks.Ping;
+import com.mcbans.firestar.mcbans.callBacks.MessageCallback;
 import com.mcbans.firestar.mcbans.callBacks.ServerChoose;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.permission.Perms;
+import com.mcbans.firestar.mcbans.request.PingRequest;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class CommandMcbans extends BaseCommand{
@@ -61,8 +62,8 @@ public class CommandMcbans extends BaseCommand{
             if (!Perms.ADMIN.has(sender)){
                 throw new CommandException(ChatColor.DARK_RED + _("permissionDenied"));
             }
-            Ping manualPingCheck = new Ping(plugin, senderName);
-            (new Thread(manualPingCheck)).start();
+            PingRequest request = new PingRequest(plugin, new MessageCallback(plugin, sender));
+            (new Thread(request)).start();
             return;
         }
         /* Sync banned-players.txt */

@@ -3,7 +3,7 @@ package com.mcbans.firestar.mcbans.commands;
 import org.bukkit.command.CommandSender;
 
 import com.mcbans.firestar.mcbans.permission.Perms;
-import com.mcbans.firestar.mcbans.pluginInterface.Kick;
+import com.mcbans.firestar.mcbans.request.Kick;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class CommandKick extends BaseCommand{

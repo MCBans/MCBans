@@ -9,7 +9,7 @@ import com.mcbans.firestar.mcbans.BanType;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.permission.Perms;
-import com.mcbans.firestar.mcbans.pluginInterface.Ban;
+import com.mcbans.firestar.mcbans.request.Ban;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class CommandRban extends BaseCommand{

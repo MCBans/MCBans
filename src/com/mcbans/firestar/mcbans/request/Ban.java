@@ -1,4 +1,4 @@
-package com.mcbans.firestar.mcbans.pluginInterface;
+package com.mcbans.firestar.mcbans.request;
 
 import static com.mcbans.firestar.mcbans.I18n._;
 
@@ -24,7 +24,6 @@ import com.mcbans.firestar.mcbans.events.PlayerUnbanEvent;
 import com.mcbans.firestar.mcbans.events.PlayerUnbannedEvent;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
-import com.mcbans.firestar.mcbans.request.JsonHandler;
 import com.mcbans.firestar.mcbans.util.Util;
 
 import fr.neatmonster.nocheatplus.checks.ViolationHistory;
@@ -73,24 +72,15 @@ public class Ban implements Runnable {
         this (plugin, action, playerName, playerIP, senderName, reason, duration, measure, null, false);
     }
 
-    /**
-     * @deprecated Use another constructor. This constructor will be removed on future release.
-     */
-    @Deprecated
-    public Ban(MCBans plugin, String action, String playerName, String playerIP, String senderName, String reason, String duration,
-            String measure, JSONObject actionData, int rollback_dummy) {
-        this (plugin, action, playerName, playerIP, senderName, reason, duration, measure, actionData, true);
-    }
-
-    public void kickPlayer(String playerToKick, final String kickString) {
+    public void kickPlayer(String playerToKick, final String kickReason) {
         final Player target = plugin.getServer().getPlayer(playerToKick);
         if (target != null) {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    target.kickPlayer(kickString);
+                    target.kickPlayer(kickReason);
                 }
-            }, 1L);
+            }, 0L);
         }
     }
 

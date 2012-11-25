@@ -26,7 +26,7 @@ import com.mcbans.firestar.mcbans.ConfigurationManager;
 import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.permission.Perms;
-import com.mcbans.firestar.mcbans.pluginInterface.Disconnect;
+import com.mcbans.firestar.mcbans.request.DisconnectRequest;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class PlayerListener implements Listener {
@@ -190,7 +190,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(final PlayerQuitEvent event) {
-        Disconnect disconnectHandler = new Disconnect(plugin, event.getPlayer().getName());
-        (new Thread(disconnectHandler)).start();
+        // send disconnect request
+        new Thread(new DisconnectRequest(plugin, event.getPlayer().getName())).start();
     }
 }

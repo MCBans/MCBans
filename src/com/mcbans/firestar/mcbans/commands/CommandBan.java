@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import com.mcbans.firestar.mcbans.BanType;
 import com.mcbans.firestar.mcbans.exception.CommandException;
-import com.mcbans.firestar.mcbans.pluginInterface.Ban;
+import com.mcbans.firestar.mcbans.request.Ban;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class CommandBan extends BaseCommand{
