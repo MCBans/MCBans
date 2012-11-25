@@ -18,7 +18,7 @@ public class LookupCallback extends BaseCallback{
     //@Override
     public void success(final PlayerLookupData data){
         Util.message(sender, "Player " + ChatColor.DARK_AQUA + data.getPlayerName() + ChatColor.WHITE + " has " + ChatColor.DARK_RED
-                + data.getTotal() + " ban(s)" + ChatColor.WHITE + " and " + ChatColor.BLUE + data.getRepuration() + " REP"
+                + data.getTotal() + " ban(s)" + ChatColor.WHITE + " and " + ChatColor.BLUE + data.getReputation() + " REP"
                 + ChatColor.WHITE + ".");
 
 

@@ -54,7 +54,7 @@ public class PlayerLookupData {
     public int getTotal(){
         return this.total;
     }
-    public double getRepuration(){
+    public double getReputation(){
         return this.reputation;
     }
 
