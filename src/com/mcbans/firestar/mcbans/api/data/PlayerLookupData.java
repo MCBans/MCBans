@@ -18,6 +18,8 @@ public class PlayerLookupData {
     private List<String> other = new ArrayList<String>();
 
     public PlayerLookupData(final String name, final JSONObject response) throws JSONException, NullPointerException{
+        if (name == null || response == null) return;
+
         this.name = name;
 
         if (Util.isInteger(response.getString("total").trim())){

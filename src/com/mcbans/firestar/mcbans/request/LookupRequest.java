@@ -24,12 +24,16 @@ public class LookupRequest extends BaseRequest<LookupCallback>{
 
     @Override
     protected void execute() {
-        log.info(callback.getSender().getName() + " has looked up the " + targetName + "!");
+        if (callback.getSender() != null){
+            log.info(callback.getSender().getName() + " has looked up the " + targetName + "!");
+        }
+
         JSONObject result = this.request_JOBJ();
 
         try{
             callback.success(new PlayerLookupData(targetName, result));
-        } catch (JSONException e) {
+        }
+        catch (JSONException ex) {
             if (result.toString().contains("error")) {
                 if (result.toString().contains("Server Disabled")) {
                     ActionLog.getInstance().severe("Server Disabled by an MCBans Admin");
@@ -40,9 +44,20 @@ public class LookupRequest extends BaseRequest<LookupCallback>{
                 }
             }
             ActionLog.getInstance().severe("JSON error while trying to parse lookup data!");
-        } catch (NullPointerException e) {
+            callback.error("JSON Error");
+        }
+        catch (NullPointerException ex) {
             ActionLog.getInstance().severe("Unable to reach MCBans Master server!");
             callback.error(ChatColor.RED + "Unable to reach MCBans Master server");
+            if (plugin.getConfigs().isDebug()){
+                ex.printStackTrace();
+            }
+        }
+        catch (Exception ex){
+            callback.error("Unknown Error: " + ex.getMessage());
+            if (plugin.getConfigs().isDebug()){
+                ex.printStackTrace();
+            }
         }
     }
 }
