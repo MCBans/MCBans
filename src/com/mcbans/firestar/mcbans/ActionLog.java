@@ -23,7 +23,7 @@ public class ActionLog {
     public void log(final Level level, final String message, final boolean logToFile){
         logger.log(level, logPrefix + message);
         if (logToFile && plugin.getConfigs() != null && plugin.getConfigs().isEnableLog()) {
-           writeLog(message);
+            writeLog(message);
         }
     }
 

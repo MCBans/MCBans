@@ -110,18 +110,18 @@ public class Ban implements Runnable {
             }
 
             switch (action_id) {
-            case 0:
-                globalBan();
-                break;
-            case 1:
-                localBan();
-                break;
-            case 2:
-                tempBan();
-                break;
-            case 3:
-                unBan();
-                break;
+                case 0:
+                    globalBan();
+                    break;
+                case 1:
+                    localBan();
+                    break;
+                case 2:
+                    tempBan();
+                    break;
+                case 3:
+                    unBan();
+                    break;
             }
         } else {
             log.warning("Error, caught invalid action! Another plugin using mcbans improperly?");

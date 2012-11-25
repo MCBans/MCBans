@@ -8,7 +8,6 @@ import org.bukkit.plugin.Plugin;
 
 import com.mcbans.firestar.mcbans.BanType;
 import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.api.data.PlayerLookupData;
 import com.mcbans.firestar.mcbans.callBacks.LookupCallback;
 import com.mcbans.firestar.mcbans.request.Ban;
 import com.mcbans.firestar.mcbans.request.Kick;
