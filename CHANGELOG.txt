@@ -8,6 +8,7 @@
 - Added more localizable messages
 - Added timeout configuration
 - Added failsafe configuration
+- Added player lookup API
 - Rewrited permission structure and permission node
 - Rewrited command structure
 - Rewrited localize structure
