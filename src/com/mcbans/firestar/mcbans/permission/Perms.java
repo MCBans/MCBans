@@ -37,7 +37,6 @@ public enum Perms {
     KICK            ("kick"),
     LOOKUP_PLAYER   ("lookup.player"),
     LOOKUP_BAN      ("lookup.ban"),
-
     ;
 
     // Node header

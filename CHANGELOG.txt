@@ -11,6 +11,7 @@
 - Added player lookup API
 - Added ban lookup command/API
 - Added support colored messages (color/format code: &<char>)
+- Added mcbans.hideview permission (hide view alts/previous bans on connect)
 - Rewrited permission structure and permission node
 - Rewrited command structure
 - Rewrited localize structure
@@ -21,6 +22,7 @@
 - Fixed sync ban at the incorrect interval
 - Fixed syncBans configuration not working (Moved to enableAutoSync config)
 - Fixed tempban w(week) parameter not working
+- Fixed onJoinMCBansMessage configuration not working
 
 3.9 R1 DIAMOND:
 - Added Rollback for; CoreProtect, Hawkeye, LogBlock.

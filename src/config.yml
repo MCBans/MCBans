@@ -85,8 +85,8 @@ maxAlts: 2
 # affectedWorlds:
 #   Worlds to issue log data or rollback
 #   LogBlock and HawkEye Only! CoreProtect not supported this parameter ;(
-#   DEFAULT: '*' ('*' to all worlds.)
-#   Multiple worlds: world,world_nether,3rdworld (no spaces)#
+#   DEFAULT: '*' ('*' to all worlds)
+#   Multiple worlds: world,world_nether,3rdworld (no spaces)
 affectedWorlds: '*'
 
 # backDaysAgo:
