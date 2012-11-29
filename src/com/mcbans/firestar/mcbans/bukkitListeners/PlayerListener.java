@@ -212,6 +212,10 @@ public class PlayerListener implements Listener {
             Util.message(player, ChatColor.AQUA + "You are a MCBans Staff Member! (ver " + plugin.getDescription().getVersion() + ")");
             Util.message(player, ChatColor.AQUA + "Online Admins: " + ((admins.size() > 0) ? Util.join(admins, ", ") : ChatColor.GRAY + "(none)"));
         }
+
+        if (config.isSendJoinMessage()){
+            Util.message(player, ChatColor.DARK_GREEN + "Server secured by MCBans!");
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
