@@ -53,6 +53,14 @@ public class Util {
         }
     }
 
+    /**
+     * Coloring message
+     * @param msg non-colored message
+     */
+    public static String color(String msg) {
+        return msg.replaceAll("&([0-9a-fA-Fk-oK-OrR])", "\u00A7$1");
+    }
+
     /****************************************/
     // Etc utils
     /****************************************/

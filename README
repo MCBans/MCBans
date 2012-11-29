@@ -45,5 +45,6 @@ Temporary Ban Variations
 
 Misc Commands
 * /lookup <playername> - checks players ban history (local/global bans)
+* /banlookup <banID> - checks ban details
 * /kick <playername> [reason] - kicks a player from the game
 * /unban <playername> - unbans the player from your server

@@ -33,7 +33,8 @@ public enum Perms {
 
     // Others
     KICK            ("kick"),
-    LOOKUP          ("lookup"),
+    LOOKUP_PLAYER   ("lookup.player"),
+    LOOKUP_BAN      ("lookup.ban"),
 
     ;
 

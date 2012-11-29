@@ -36,6 +36,6 @@ public class CommandLookup extends BaseCommand{
 
     @Override
     public boolean permission(CommandSender sender) {
-        return Perms.LOOKUP.has(sender);
+        return Perms.LOOKUP_PLAYER.has(sender);
     }
 }

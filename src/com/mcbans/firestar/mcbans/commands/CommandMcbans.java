@@ -53,7 +53,8 @@ public class CommandMcbans extends BaseCommand{
         }
         /* User Help */
         if (first.equalsIgnoreCase("user")){
-            send(ChatColor.WHITE + "/lookup <name>" + ChatColor.BLUE + " Lookup the reputation information");
+            send(ChatColor.WHITE + "/lookup <name>" + ChatColor.BLUE + " Lookup the player information");
+            send(ChatColor.WHITE + "/banlookup <banID>" + ChatColor.BLUE + " Lookup the ban information");
             send(ChatColor.WHITE + "/kick <name> <reason>" + ChatColor.BLUE + " Kick user from the server");
             return;
         }

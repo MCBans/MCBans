@@ -9,6 +9,7 @@
 - Added timeout configuration
 - Added failsafe configuration
 - Added player lookup API
+- Added ban lookup command
 - Rewrited permission structure and permission node
 - Rewrited command structure
 - Rewrited localize structure
