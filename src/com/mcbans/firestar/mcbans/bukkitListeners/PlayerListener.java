@@ -182,13 +182,16 @@ public class PlayerListener implements Listener {
         if(pcache.containsKey("b")){
             if (config.isSendPreviousBans())
                 Util.message(player, ChatColor.DARK_RED + _("bansOnRecord"));
-            Perms.VIEW_BANS.message(ChatColor.DARK_RED + _("previousBans", I18n.PLAYER, player.getName()));
+
+            if (!Perms.HIDE_VIEW.has(player))
+                Perms.VIEW_BANS.message(ChatColor.DARK_RED + _("previousBans", I18n.PLAYER, player.getName()));
         }
         if(pcache.containsKey("d")){
             Util.message(player, ChatColor.DARK_RED + _("disputes", I18n.COUNT, pcache.get("d")));
         }
         if(pcache.containsKey("a")){
-            Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + _("altAccounts", I18n.PLAYER, player.getName(), I18n.ALTS, pcache.get("al")));
+            if (!Perms.HIDE_VIEW.has(player))
+                Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + _("altAccounts", I18n.PLAYER, player.getName(), I18n.ALTS, pcache.get("al")));
         }
         if(pcache.containsKey("m")){
             //Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));

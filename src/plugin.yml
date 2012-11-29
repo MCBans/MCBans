@@ -66,9 +66,9 @@ permissions:
   mcbans.view.staff:
     description: show notification of a mcbans staff on connect
     default: true
-  mcbans.alts.hide:
-    description: Hide notification of alts on connect
-    default: op
+  mcbans.hideview:
+    description: Hide notification of previous bans/alts on connect
+    default: false
   mcbans.kick:
     description: Permission to use kick command
     default: op

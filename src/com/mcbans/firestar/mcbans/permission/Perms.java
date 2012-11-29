@@ -26,14 +26,12 @@ public enum Perms {
     UNBAN           ("unban"),
 
     // View permissions
-    //VIEW_KICK       ("view.kick"), // disuse
-    //VIEW_JOIN       ("view.join"), // disuse
     VIEW_ALTS       ("view.alts"),
     VIEW_BANS       ("view.bans"),
     VIEW_STAFF      ("view.staff"),
 
     // Hide permissions
-    HIDE_ALTS       ("hide.alts"), // TODO:not used
+    HIDE_VIEW       ("hideview"),
 
     // Others
     KICK            ("kick"),
