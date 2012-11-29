@@ -137,9 +137,8 @@ public class MCBansAPI {
 
     /**
      * Lookup Ban
-     * @param targetName Lookup target player's name
-     * @param senderName Lookup issued admin's name
-     * @param callback LookupCallback
+     * @param banID Lookup target ban ID
+     * @param callback BanLookupCallback
      */
     public void lookupBan(int banID, BanLookupCallback callback){
         plugin.getLog().info("Plugin " + pname + " tried to lookup banID " + banID);
