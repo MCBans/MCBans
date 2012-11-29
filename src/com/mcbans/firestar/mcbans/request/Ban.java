@@ -148,7 +148,7 @@ public class Ban implements Runnable {
             return;
         }
         if (!response.containsKey("result")) {
-            Util.message(senderName, ChatColor.DARK_RED + _("unBanMessageError", I18n.PLAYER, playerName, I18n.SENDER, senderName));
+            Util.message(senderName, ChatColor.DARK_RED + _("unBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName));
             return;
         }
         if (response.get("result").equals("y")) {
@@ -156,17 +156,17 @@ public class Ban implements Runnable {
             if (d.isBanned()) {
                 d.setBanned(false);
             }
-            Util.message(senderName, ChatColor.GREEN + _("unBanMessageSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName));
+            Util.message(senderName, ChatColor.GREEN + _("unBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName));
             plugin.getServer().getPluginManager().callEvent(new PlayerUnbannedEvent(playerName, senderName));
 
             log.info(senderName + " unbanned " + playerName + "!");
             return;
         } else if (response.get("result").equals("e")) {
-            Util.message(senderName, ChatColor.DARK_RED + _("unBanMessageError", I18n.PLAYER, playerName, I18n.SENDER, senderName));
+            Util.message(senderName, ChatColor.DARK_RED + _("unBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName));
         } else if (response.get("result").equals("s")) {
-            Util.message(senderName, ChatColor.DARK_RED + _("unBanMessageGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName));
+            Util.message(senderName, ChatColor.DARK_RED + _("unBanGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName));
         } else if (response.get("result").equals("n")) {
-            Util.message(senderName, ChatColor.DARK_RED + _("unBanMessageNot", I18n.PLAYER, playerName, I18n.SENDER, senderName));
+            Util.message(senderName, ChatColor.DARK_RED + _("unBanNot", I18n.PLAYER, playerName, I18n.SENDER, senderName));
         }
         log.info(senderName + " tried to unban " + playerName + "!");
     }
@@ -205,21 +205,21 @@ public class Ban implements Runnable {
                 return;
             }
             if (response.get("result").equals("y")) {
-                this.kickPlayer(playerName, _("localBanMessagePlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
-                Util.broadcastMessage(ChatColor.GREEN + _("localBanMessageSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                this.kickPlayer(playerName, _("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                Util.broadcastMessage(ChatColor.GREEN + _("localBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
                 plugin.getServer().getPluginManager().callEvent(new PlayerBannedEvent(playerName, playerIP, senderName, reason, action_id, duration, measure));
 
                 log.info(playerName + " has been banned with a local type ban [" + reason + "] [" + senderName + "]!");
                 return;
             } else if (response.get("result").equals("e")) {
                 Util.message(senderName,
-                        ChatColor.DARK_RED + _("localBanMessageError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                        ChatColor.DARK_RED + _("localBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
             } else if (response.get("result").equals("s")) {
                 Util.message(senderName,
-                        ChatColor.DARK_RED + _("localBanMessageGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                        ChatColor.DARK_RED + _("localBanGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
             } else if (response.get("result").equals("a")) {
                 Util.message(senderName,
-                        ChatColor.DARK_RED + _("localBanMessageAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                        ChatColor.DARK_RED + _("localBanAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
             }
             log.info(senderName + " has tried to ban " + playerName + " with a local type ban [" + reason + "]!");
         } catch (Exception ex) {
@@ -275,25 +275,25 @@ public class Ban implements Runnable {
                 return;
             }
             if (response.get("result").equals("y")) {
-                this.kickPlayer(playerName, _("globalBanMessagePlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
-                Util.broadcastMessage(ChatColor.GREEN + _("globalBanMessageSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                this.kickPlayer(playerName, _("globalBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                Util.broadcastMessage(ChatColor.GREEN + _("globalBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
                 plugin.getServer().getPluginManager().callEvent(new PlayerBannedEvent(playerName, playerIP, senderName, reason, action_id, duration, measure));
 
                 log.info(playerName + " has been banned with a global type ban [" + reason + "] [" + senderName + "]!");
                 return;
             } else if (response.get("result").equals("e")) {
                 Util.message(senderName,
-                        ChatColor.DARK_RED + _("globalBanMessageError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                        ChatColor.DARK_RED + _("globalBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
             } else if (response.get("result").equals("w")) {
                 badword = response.get("word");
                 Util.message(senderName,
-                        ChatColor.DARK_RED + _("globalBanMessageWarning", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP, I18n.BADWORD, badword));
+                        ChatColor.DARK_RED + _("globalBanWarning", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP, I18n.BADWORD, badword));
             } else if (response.get("result").equals("s")) {
                 Util.message(senderName,
-                        ChatColor.DARK_RED + _("globalBanMessageGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                        ChatColor.DARK_RED + _("globalBanGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
             } else if (response.get("result").equals("a")) {
                 Util.message(senderName,
-                        ChatColor.DARK_RED + _("globalBanMessageAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                        ChatColor.DARK_RED + _("globalBanAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
             }
             log.info(senderName + " has tried to ban " + playerName + " with a global type ban [" + reason + "]!");
         } catch (Exception ex) {
@@ -338,27 +338,27 @@ public class Ban implements Runnable {
                 return;
             }
             if (response.get("result").equals("y")) {
-                this.kickPlayer(playerName, _("tempBanMessagePlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
-                Util.broadcastMessage(ChatColor.GREEN + _("tempBanMessageSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                this.kickPlayer(playerName, _("tempBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                Util.broadcastMessage(ChatColor.GREEN + _("tempBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
                 plugin.getServer().getPluginManager().callEvent(new PlayerBannedEvent(playerName, playerIP, senderName, reason, action_id, duration, measure));
 
                 log.info(playerName + " has been banned with a temp type ban [" + reason + "] [" + senderName + "]!");
                 return;
             } else if (response.get("result").equals("e")) {
                 Util.message(senderName,
-                        ChatColor.DARK_RED + _("tempBanMessageError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                        ChatColor.DARK_RED + _("tempBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
             } else if (response.get("result").equals("s")) {
                 Util.message(senderName,
-                        ChatColor.DARK_RED + _("tempBanMessageGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                        ChatColor.DARK_RED + _("tempBanGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
             } else if (response.get("result").equals("a")) {
                 Util.message(senderName,
-                        ChatColor.DARK_RED + _("tempBanMessageAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                        ChatColor.DARK_RED + _("tempBanAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
             } else if (response.get("result").equals("n")){
                 if (response.get("msg") != null){
                     Util.message(senderName, ChatColor.DARK_RED + response.get("msg"));
                 }else{
                     Util.message(senderName,
-                            ChatColor.DARK_RED + _("tempBanMessageError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+                            ChatColor.DARK_RED + _("tempBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
                 }
             }
             log.info(senderName + " has tried to ban " + playerName + " with a temp type ban [" + reason + "]!");
@@ -375,7 +375,7 @@ public class Ban implements Runnable {
         if (!target.isBanned()) {
             target.setBanned(true);
         }
-        this.kickPlayer(playerName, _("localBanMessagePlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
+        this.kickPlayer(playerName, _("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.PLAYERIP, playerIP));
     }
 
     private Map<String, JSONObject> getProof() throws JSONException{
