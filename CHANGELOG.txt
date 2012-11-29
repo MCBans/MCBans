@@ -10,6 +10,7 @@
 - Added failsafe configuration
 - Added player lookup API
 - Added ban lookup command/API
+- Added support colored messages (color/format code: &<char>)
 - Rewrited permission structure and permission node
 - Rewrited command structure
 - Rewrited localize structure
