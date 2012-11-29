@@ -39,7 +39,7 @@ public class BanLookupData {
         }catch (ParseException ex){
             this.date = null;
         }
-        */
+         */
     }
 
     public int getBanID(){

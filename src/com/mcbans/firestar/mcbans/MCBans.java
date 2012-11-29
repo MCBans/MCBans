@@ -82,7 +82,7 @@ public class MCBans extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         log = new ActionLog(this); // setup logger
 
-        // check online-mode
+        // check online-mode, Do NOT remove this check!
         if (!this.getServer().getOnlineMode()) {
             log.severe("This server is not in online mode!");
             pm.disablePlugin(this);

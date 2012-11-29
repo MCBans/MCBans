@@ -144,7 +144,7 @@ public class PermissionHandler {
      * @return true if player has that permission in specific world.
      */
     public boolean has(final String playerName, final String permission, final String worldName){
-     // Switch by using permission controller
+        // Switch by using permission controller
         switch (permType){
             // Vault
             case VAULT:
