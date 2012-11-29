@@ -9,9 +9,8 @@ import java.util.Map;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import uk.co.oliwali.HawkEye.util.Util;
-
 import com.mcbans.firestar.mcbans.util.FileStructure;
+import com.mcbans.firestar.mcbans.util.Util;
 
 public class I18n {
     private static final String languageDirName = "languages";
@@ -122,6 +121,9 @@ public class I18n {
                 return "!" + key + "!";
             }
         }
+
+        // coloring
+        msg = Util.color(msg);
 
         // build replaces
         Map<String, Object> binds = buildBinds(args);
