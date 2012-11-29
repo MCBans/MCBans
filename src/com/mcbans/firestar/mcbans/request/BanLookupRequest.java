@@ -34,7 +34,11 @@ public class BanLookupRequest extends BaseRequest<BanLookupCallback>{
         }
         catch (JSONException ex) {
             if (result.toString().contains("error")) {
-                if (result.toString().contains("Server Disabled")) {
+                if (result.toString().contains("dne")){
+                    callback.error("Ban record not found: " + banID);
+                    return;
+                }
+                else if (result.toString().contains("Server Disabled")) {
                     ActionLog.getInstance().severe("Server Disabled by an MCBans Admin");
                     ActionLog.getInstance().severe("To appeal this decision, please file ticket on support.mcbans.com");
 

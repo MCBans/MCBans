@@ -18,12 +18,6 @@ public class BanLookupCallback extends BaseCallback{
     }
 
     public void success(final BanLookupData data){
-        if (data.isError()){
-            Util.message(sender, Util.color("&4Ban record not found: " + data.getBanID()));
-            return;
-        }
-
-        // record exist
         String lostRep = (data.getLostRep() > 0) ? "&4" + data.getLostRep() : "&70";
         String type = "&f[" + ((data.getType().contains("global")) ? "&c" : "&6") + data.getType().toUpperCase(Locale.ENGLISH) + "&f]";
 
