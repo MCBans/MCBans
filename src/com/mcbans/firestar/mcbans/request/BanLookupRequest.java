@@ -12,7 +12,7 @@ import com.mcbans.firestar.mcbans.org.json.JSONObject;
 public class BanLookupRequest extends BaseRequest<BanLookupCallback>{
     private int banID;
 
-    public BanLookupRequest(final MCBans plugin, final BanLookupCallback callback, final int banID, final String senderName) {
+    public BanLookupRequest(final MCBans plugin, final BanLookupCallback callback, final int banID) {
         super(plugin, callback);
 
         this.items.put("ban", String.valueOf(banID));

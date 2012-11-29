@@ -29,7 +29,7 @@ public class CommandBanlookup extends BaseCommand{
         }
 
         // Start
-        BanLookupRequest request = new BanLookupRequest(plugin, new BanLookupCallback(plugin, sender), Integer.parseInt(banID), sender.getName());
+        BanLookupRequest request = new BanLookupRequest(plugin, new BanLookupCallback(plugin, sender), Integer.parseInt(banID));
         Thread triggerThread = new Thread(request);
         triggerThread.start();
     }

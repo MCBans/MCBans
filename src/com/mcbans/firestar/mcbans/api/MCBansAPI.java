@@ -8,8 +8,10 @@ import org.bukkit.plugin.Plugin;
 
 import com.mcbans.firestar.mcbans.BanType;
 import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.callBacks.BanLookupCallback;
 import com.mcbans.firestar.mcbans.callBacks.LookupCallback;
 import com.mcbans.firestar.mcbans.request.Ban;
+import com.mcbans.firestar.mcbans.request.BanLookupRequest;
 import com.mcbans.firestar.mcbans.request.Kick;
 import com.mcbans.firestar.mcbans.request.LookupRequest;
 import com.mcbans.firestar.mcbans.util.Util;
@@ -117,10 +119,10 @@ public class MCBansAPI {
      * @param senderName Lookup issued admin's name
      * @param callback LookupCallback
      */
-    public void lookup(String targetName, String senderName, LookupCallback callback){
+    public void lookupPlayer(String targetName, String senderName, LookupCallback callback){
         plugin.getLog().info("Plugin " + pname + " tried to lookup player " + targetName);
         if (targetName == null || callback == null){
-            plugin.getLog().info("Invalid usage (null): lookup");
+            plugin.getLog().info("Invalid usage (null): lookupPlayer");
             return;
         }
 
@@ -129,6 +131,24 @@ public class MCBansAPI {
         }
 
         LookupRequest request = new LookupRequest(plugin, callback, targetName, senderName);
+        Thread triggerThread = new Thread(request);
+        triggerThread.start();
+    }
+
+    /**
+     * Lookup Ban
+     * @param targetName Lookup target player's name
+     * @param senderName Lookup issued admin's name
+     * @param callback LookupCallback
+     */
+    public void lookupBan(int banID, BanLookupCallback callback){
+        plugin.getLog().info("Plugin " + pname + " tried to lookup banID " + banID);
+        if (banID < 0 || callback == null){
+            plugin.getLog().info("Invalid usage (null): lookupBan");
+            return;
+        }
+
+        BanLookupRequest request = new BanLookupRequest(plugin, callback, banID);
         Thread triggerThread = new Thread(request);
         triggerThread.start();
     }
