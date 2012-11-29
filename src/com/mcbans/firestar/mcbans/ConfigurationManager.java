@@ -113,7 +113,7 @@ public class ConfigurationManager {
 
     /* ***** Begin Configuration Getters *********************** */
     public String getPrefix(){
-        return conf.getString("prefix", "[MCBans]");
+        return Util.color(conf.getString("prefix", "[MCBans]"));
     }
     public String getApiKey(){
         return conf.getString("apiKey", "").trim();
