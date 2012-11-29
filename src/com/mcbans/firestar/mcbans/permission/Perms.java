@@ -1,5 +1,8 @@
 package com.mcbans.firestar.mcbans.permission;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
@@ -27,6 +30,7 @@ public enum Perms {
     //VIEW_JOIN       ("view.join"), // disuse
     VIEW_ALTS       ("view.alts"),
     VIEW_BANS       ("view.bans"),
+    VIEW_STAFF      ("view.staff"),
 
     // Hide permissions
     HIDE_ALTS       ("hide.alts"), // TODO:not used
@@ -92,6 +96,16 @@ public enum Perms {
                 Util.message(player, message);
             }
         }
+    }
+
+    public Set<Player> getPlayers(){
+        Set<Player> players = new HashSet<Player>();
+        for (Player player : Bukkit.getServer().getOnlinePlayers()){
+            if (this.has(player)){
+                players.add(player);
+            }
+        }
+        return players;
     }
 
     /* PermissionHandler */

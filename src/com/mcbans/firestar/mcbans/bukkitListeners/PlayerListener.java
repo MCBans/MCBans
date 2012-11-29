@@ -10,9 +10,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -188,9 +191,23 @@ public class PlayerListener implements Listener {
             Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + _("altAccounts", I18n.PLAYER, player.getName(), I18n.ALTS, pcache.get("al")));
         }
         if(pcache.containsKey("m")){
-            log.info(player.getName() + " is a MCBans Staff member");
-            Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
+            //Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
+            // notify to console, mcbans.view.staff, mcbans.admin, mcbans.ban.global players
+            Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is a MCBans Staff member");
+            Set<Player> players = Perms.VIEW_STAFF.getPlayers();
+            players.addAll(Perms.ADMIN.getPlayers());
+            players.addAll(Perms.BAN_GLOBAL.getPlayers());
+            for (Player p : players){
+                Util.message(p, ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
+            }
+
+            // send information to mcbans staff
+            Set<String> admins = new HashSet<String>();
+            for (Player p : Perms.ADMIN.getPlayers()){
+                admins.add(p.getName());
+            }
             Util.message(player, ChatColor.AQUA + "You are a MCBans Staff Member! (ver " + plugin.getDescription().getVersion() + ")");
+            Util.message(player, ChatColor.AQUA + "Online Admins: " + ((admins.size() > 0) ? Util.join(admins, ", ") : ChatColor.GRAY + "(none)"));
         }
     }
 
