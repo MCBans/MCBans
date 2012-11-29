@@ -23,7 +23,7 @@ public class CommandBanlookup extends BaseCommand{
         final String banID = args.get(0).trim();
 
         // check valid banID
-        if (!Util.isInteger(banID)){
+        if (!Util.isInteger(banID) || Integer.parseInt(banID) < 0){
             Util.message(sender, _("formatError"));
             return;
         }

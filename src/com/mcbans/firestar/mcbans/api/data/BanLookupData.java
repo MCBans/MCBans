@@ -18,10 +18,18 @@ public class BanLookupData {
     private double lostRep = 0;
     private String type;
 
+    private boolean error = false;
+
     public BanLookupData(final int banID, final JSONObject response) throws JSONException, NullPointerException{
         if (banID < 0 || response == null) return;
 
         this.banID = banID;
+
+        // check if exist bans record
+        if (response.has("error") && response.getString("error").equals("dne")){
+            this.error = true;
+            return;
+        }
 
         this.name = response.getString("player");
         this.admin = response.getString("admin");
@@ -66,5 +74,9 @@ public class BanLookupData {
     }
     public String getType(){
         return this.type;
+    }
+
+    public boolean isError(){
+        return this.error;
     }
 }
