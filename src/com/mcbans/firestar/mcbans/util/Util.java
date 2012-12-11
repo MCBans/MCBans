@@ -27,7 +27,8 @@ public class Util {
                 target.sendMessage(msg);
             }else{
                 // use craftbukkit for sending coloured message to console. Refer class #ColouredConsoleSender
-                org.bukkit.craftbukkit.command.ColouredConsoleSender.getInstance().sendMessage(msg);
+                //org.bukkit.craftbukkit.command.ColouredConsoleSender.getInstance().sendMessage();
+                Bukkit.getServer().getConsoleSender().sendMessage(msg);
                 //ActionLog.getInstance().info(msg);
             }
         }
