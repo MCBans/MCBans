@@ -29,7 +29,7 @@ public class Kick implements Runnable {
         final Player player = plugin.getServer().getPlayer(playerName);
         if (player != null) {
             // Call PlayerKickEvent
-            PlayerKickEvent kickEvent = new PlayerKickEvent(playerName, senderName, reason);
+            PlayerKickEvent kickEvent = new PlayerKickEvent(player.getName(), senderName, reason);
             plugin.getServer().getPluginManager().callEvent(kickEvent);
             if (kickEvent.isCancelled()){
                 return;
@@ -44,7 +44,7 @@ public class Kick implements Runnable {
                 }
             }, 0L);
 
-            Util.broadcastMessage(ChatColor.GREEN + _("kickBroadcast", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason));
+            Util.broadcastMessage(ChatColor.GREEN + _("kickBroadcast", I18n.PLAYER, player.getName(), I18n.SENDER, senderName, I18n.REASON, reason));
             plugin.getLog().info(senderName + " has kicked " + player.getName() + " [" + reason + "]");
         } else {
             Util.message(senderName, ChatColor.DARK_RED + _("kickNoPlayer", I18n.PLAYER, playerName));
