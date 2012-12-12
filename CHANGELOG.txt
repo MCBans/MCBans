@@ -23,6 +23,7 @@
 - Fixed syncBans configuration not working (Moved to enableAutoSync config)
 - Fixed tempban w(week) parameter not working
 - Fixed onJoinMCBansMessage configuration not working
+- Fixed kicking wrong player
 
 3.9 R1 DIAMOND:
 - Added Rollback for; CoreProtect, Hawkeye, LogBlock.
