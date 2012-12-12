@@ -16,17 +16,24 @@ public class Kick implements Runnable {
     private final String playerName;
     private final String senderName;
     private String reason;
+    private final boolean useExactName;
 
-    public Kick(final MCBans plugin, final String playerName, final String senderName, final String reason) {
+    public Kick(final MCBans plugin, final String playerName, final String senderName, final String reason, final boolean useExactName) {
         this.plugin = plugin;
         this.playerName = playerName;
         this.senderName = senderName;
         this.reason = reason;
+        this.useExactName = useExactName;
+    }
+
+    @Deprecated
+    public Kick(final MCBans plugin, final String playerName, final String senderName, final String reason){
+        this(plugin, playerName, senderName, reason, false);
     }
 
     @Override
     public void run() {
-        final Player player = plugin.getServer().getPlayer(playerName);
+        final Player player = (useExactName) ? plugin.getServer().getPlayerExact(playerName) : plugin.getServer().getPlayer(playerName);
         if (player != null) {
             // Call PlayerKickEvent
             PlayerKickEvent kickEvent = new PlayerKickEvent(player.getName(), senderName, reason);

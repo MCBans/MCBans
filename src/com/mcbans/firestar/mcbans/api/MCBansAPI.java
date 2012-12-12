@@ -108,7 +108,7 @@ public class MCBansAPI {
         reason = (reason == null || reason == "") ? plugin.getConfigs().getDefaultKick() : reason;
 
         // Start
-        Kick kickPlayer = new Kick(plugin, targetName, senderName, reason);
+        Kick kickPlayer = new Kick(plugin, targetName, senderName, reason, true);
         Thread triggerThread = new Thread(kickPlayer);
         triggerThread.start();
     }
