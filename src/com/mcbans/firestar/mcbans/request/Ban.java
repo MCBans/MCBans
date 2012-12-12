@@ -73,7 +73,7 @@ public class Ban implements Runnable {
     }
 
     public void kickPlayer(String playerToKick, final String kickReason) {
-        final Player target = plugin.getServer().getPlayer(playerToKick);
+        final Player target = plugin.getServer().getPlayerExact(playerToKick);
         if (target != null) {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
