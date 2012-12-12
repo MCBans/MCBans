@@ -175,9 +175,11 @@ public class ConfigurationManager {
     public int getCallBackInterval(){
         return conf.getInt("callBackInterval", 15);
     }
+    /*
     public boolean isSendPreviousBans(){
         return conf.getBoolean("sendPreviousBans", true);
     }
+    */
     public int getTimeoutInSec(){
         return conf.getInt("timeout", 10);
     }

@@ -180,8 +180,7 @@ public class PlayerListener implements Listener {
         if(pcache == null) return;
 
         if(pcache.containsKey("b")){
-            if (config.isSendPreviousBans())
-                Util.message(player, ChatColor.DARK_RED + _("bansOnRecord"));
+            Util.message(player, ChatColor.DARK_RED + _("bansOnRecord"));
 
             if (!Perms.HIDE_VIEW.has(player))
                 Perms.VIEW_BANS.message(ChatColor.DARK_RED + _("previousBans", I18n.PLAYER, player.getName()));
