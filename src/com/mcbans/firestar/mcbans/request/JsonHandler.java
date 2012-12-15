@@ -107,6 +107,11 @@ public class JsonHandler {
 
     public String request_from_api(String data, String server) {
         try {
+            // check valid api key
+            if (!plugin.getConfigs().isValidApiKey()){
+                return "";
+            }
+            
             if (plugin.getConfigs().isDebug()) {
                 log.info("Sending request!");
             }

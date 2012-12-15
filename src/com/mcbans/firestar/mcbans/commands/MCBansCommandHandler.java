@@ -34,6 +34,13 @@ public class MCBansCommandHandler implements TabExecutor{
             Util.message(sender, ChatColor.RED + "This command not loaded properly!");
             return true;
         }
+        
+        if (!(cmd instanceof CommandMcbans)){
+            if (!plugin.getConfigs().isValidApiKey()){
+                Util.message(sender, ChatColor.RED + "Missing or Invalid API key! Edit config.yml and type /mcbans reload");
+                return true;
+            }
+        }
 
         // Run the command
         cmd.run(plugin, sender, commandLabel, args);

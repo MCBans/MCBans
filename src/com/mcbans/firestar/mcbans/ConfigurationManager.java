@@ -22,6 +22,8 @@ public class ConfigurationManager {
     //private YamlConfiguration conf;
     private FileConfiguration conf;
     private File pluginDir;
+    
+    private boolean isValidKey = false;
 
     /**
      * Constructor
@@ -53,17 +55,20 @@ public class ConfigurationManager {
         checkver(conf.getInt("ConfigVersion", 1));
 
         // check API key
-        if (getApiKey().length() != 40){
+        if (conf.getString("apiKey", "").trim().length() != 40){
+            isValidKey = false;
             if (initialLoad){
                 Util.message((CommandSender)null, ChatColor.RED + "=== Missing OR Invalid API Key! ===");
-                log.severe("Missing or invalid API Key! Disabling plugin..");
+                log.severe("Missing or invalid API Key!");
                 log.severe("Please copy your API key to configuration file.");
                 log.severe("Don't have API key? Go: http://my.mcbans.com/servers/");
-                plugin.getPluginLoader().disablePlugin(plugin);
-                return;
+                //plugin.getPluginLoader().disablePlugin(plugin); // Don't disable plugin
+                //return;
             }else{
                 log.severe("Missing or invalid API Key! Please check config.yml and type /mcbans reload");
             }
+        }else{
+            isValidKey = true;
         }
 
         // check log enable
@@ -110,12 +115,20 @@ public class ConfigurationManager {
             log.info("Deleted existing configuration file and generate a new one!");
         }
     }
+    
+    public boolean isValidApiKey(){
+        return isValidKey;
+    }
 
     /* ***** Begin Configuration Getters *********************** */
     public String getPrefix(){
         return Util.color(conf.getString("prefix", "[MCBans]"));
     }
     public String getApiKey(){
+        if (!isValidKey){
+            Util.message((CommandSender)null, ChatColor.RED + "Invalid API Key! Edit your config.yml and type /mcbans reload");
+            return "";
+        }
         return conf.getString("apiKey", "").trim();
     }
     public String getLanguage(){
