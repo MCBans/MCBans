@@ -12,6 +12,9 @@ public class MessageCallback extends BaseCallback{
     public MessageCallback(final MCBans plugin, final CommandSender sender){
         super(plugin, sender);
     }
+    public MessageCallback(final MCBans plugin) {
+        super(plugin, null);
+    }
 
     public void setMessage(final String message){
         this.message = message;

@@ -11,8 +11,10 @@ import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.callBacks.AltLookupCallback;
 import com.mcbans.firestar.mcbans.callBacks.BanLookupCallback;
 import com.mcbans.firestar.mcbans.callBacks.LookupCallback;
+import com.mcbans.firestar.mcbans.callBacks.MessageCallback;
 import com.mcbans.firestar.mcbans.request.AltLookupRequest;
 import com.mcbans.firestar.mcbans.request.Ban;
+import com.mcbans.firestar.mcbans.request.BanIpRequest;
 import com.mcbans.firestar.mcbans.request.BanLookupRequest;
 import com.mcbans.firestar.mcbans.request.Kick;
 import com.mcbans.firestar.mcbans.request.LookupRequest;
@@ -97,6 +99,40 @@ public class MCBansAPI {
         plugin.getLog().info("Plugin " + pname + " tried to unban player " + targetName);
 
         this.ban(BanType.UNBAN, targetName, senderName, "", "", "");
+    }
+    
+    /**
+     * Add IPBan
+     * @param ip target ip address
+     * @param senderName IPBan issued admin's name
+     * @param reason Ban reason
+     * @param callback MessageCallback
+     */
+    public void ipBan(String ip, String senderName, String reason, MessageCallback callback){
+        plugin.getLog().info("Plugin " + pname + " tried to ip ban " + ip);
+        if (ip == null || senderName == null || callback == null){
+            plugin.getLog().info("Invalid usage (null): ipBan");
+            return;
+        }
+        if (reason == null || reason.length() <= 0){
+            reason = plugin.getConfigs().getDefaultLocal();
+        }
+
+        // TODO add valid ip check here
+        
+        BanIpRequest request = new BanIpRequest(plugin, callback, ip, reason, senderName);
+        Thread thread = new Thread(request);
+        thread.start();
+    }
+    
+    /**
+     * Add IPBan
+     * @param ip target ip address
+     * @param senderName IPBan issued admin's name
+     * @param reason Ban reason
+     */
+    public void ipBan(String ip, String senderName, String reason){
+        this.ipBan(ip, senderName, reason, new MessageCallback(plugin));
     }
 
     /**
