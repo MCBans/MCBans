@@ -43,9 +43,13 @@ Temporary Ban Variations
 * /rban <playername> t <int> <m/h/d> <reason> - temp bans a player and rolls them back
 *** E.G. /tban Firestarthe 15 m you are banned for 15 minutes ***
 
+IP Ban Variations
+* /banip <IP> [reason] - bans an IP address
+
 Misc Commands
 * /lookup <playername> - checks players ban history (local/global bans)
 * /banlookup <banID> - checks ban details
+* /altlookup <playername> - checks alt accounts (premium server only!)
 * /kick <playername> [reason] - kicks a player from the game
 * /unban <playername> - unbans the player from your server
 
@@ -58,10 +62,12 @@ Permissions
 * mcbans.ban.temp (default: op) - Allow temp ban player
 * mcbans.ban.rollback (default: op) - Allow use rban command
 * mcbans.unban (default: op) - Allow unban player
+* mcbans.ban.ip (default: op) - Allow use banip command
 * mcbans.view.alts (default: op) - Show notification of a players alts on connect
 * mcbans.view.bans (default: op) - Show previous ban information on player connect
 * mcbans.view.staff (default: true) - Show notification of a mcbans staff on connect
 * mcbans.hideview (default: false) - Hide player view alts/previous bans on connect
 * mcbans.lookup.player (default: op) - Allow lookup player ban history
 * mcbans.lookup.ban (default: op) - Allow lookup ban details
+* mcbans.lookup.alt (default: op) - Allow lookup alt account
 * mcbans.kick (default: op) - Allow kick player

@@ -2,6 +2,7 @@ package com.mcbans.firestar.mcbans.commands;
 
 import static com.mcbans.firestar.mcbans.I18n._;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.mcbans.firestar.mcbans.callBacks.LookupCallback;
@@ -24,7 +25,7 @@ public class CommandLookup extends BaseCommand{
 
         // check isValid player name
         if (!Util.isValidName(target)){
-            Util.message(sender, _("invalidName"));
+            Util.message(sender, ChatColor.RED + _("invalidName"));
             return;
         }
 

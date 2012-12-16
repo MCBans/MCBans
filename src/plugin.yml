@@ -27,6 +27,9 @@ commands:
     description: temporary ban user
     aliases: [tban]
     usage: /<command> <playername> <duration> <m(minutes) or h(hours) or d(days) or w(weeks)> [reason]
+  banip:
+    description: bans an IP address
+    usage: /<command> <ip> [reason]
   lookup:
     description: lookup a player information
     aliases: [lup]
@@ -57,6 +60,9 @@ permissions:
     default: op
   mcbans.ban.rollback:
     description: Gives rban commands
+    default: op
+  mcbans.ban.ip:
+    description: Gives banip command
     default: op
   mcbans.unban:
     description: Permission to use unban command

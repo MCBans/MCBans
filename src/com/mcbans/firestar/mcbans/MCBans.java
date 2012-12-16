@@ -21,6 +21,7 @@ import com.mcbans.firestar.mcbans.callBacks.ServerChoose;
 import com.mcbans.firestar.mcbans.commands.BaseCommand;
 import com.mcbans.firestar.mcbans.commands.CommandAltlookup;
 import com.mcbans.firestar.mcbans.commands.CommandBan;
+import com.mcbans.firestar.mcbans.commands.CommandBanip;
 import com.mcbans.firestar.mcbans.commands.CommandBanlookup;
 import com.mcbans.firestar.mcbans.commands.CommandGlobalban;
 import com.mcbans.firestar.mcbans.commands.CommandKick;
@@ -157,6 +158,9 @@ public class MCBans extends JavaPlugin {
         cmds.add(new CommandGlobalban());
         cmds.add(new CommandTempban());
         cmds.add(new CommandRban());
+        
+        // IP Banning Commands
+        cmds.add(new CommandBanip());
 
         // Other action commands
         cmds.add(new CommandUnban());

@@ -21,6 +21,7 @@ public enum Perms {
     BAN_LOCAL       ("ban.local"),
     BAN_TEMP        ("ban.temp"),
     BAN_ROLLBACK    ("ban.rollback"),
+    BAN_IP          ("ban.ip"),
 
     // Unban permission
     UNBAN           ("unban"),

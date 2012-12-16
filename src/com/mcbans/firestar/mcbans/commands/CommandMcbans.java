@@ -49,6 +49,7 @@ public class CommandMcbans extends BaseCommand{
             send(ChatColor.WHITE + "/rban <name> <reason>" + ChatColor.BLUE + " Rollback and local ban");
             send(ChatColor.WHITE + "/rban <name> g <reason>" + ChatColor.BLUE + " Rollback and global ban");
             send(ChatColor.WHITE + "/rban <name> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Rollback and temporarily ban");
+            send(ChatColor.WHITE + "/banip <ip> [reason]" + ChatColor.BLUE + " Bans an IP address");
             return;
         }
         /* User Help */
