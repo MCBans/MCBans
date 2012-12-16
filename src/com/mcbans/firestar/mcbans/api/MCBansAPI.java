@@ -97,6 +97,14 @@ public class MCBansAPI {
      */
     public void unBan(String targetName, String senderName){
         plugin.getLog().info("Plugin " + pname + " tried to unban player " + targetName);
+        if (targetName == null || senderName == null){
+            plugin.getLog().info("Invalid usage (null): unBan");
+            return;
+        }
+        if (!Util.isValidName(targetName) && !Util.isValidIP(targetName)){
+            plugin.getLog().info("Unban target is not valid name or IP format");
+            return;
+        }
 
         this.ban(BanType.UNBAN, targetName, senderName, "", "", "");
     }
