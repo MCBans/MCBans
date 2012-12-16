@@ -1,6 +1,8 @@
 package com.mcbans.firestar.mcbans.request;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
@@ -38,6 +40,8 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
                     callback.setBroadcastMessage(Util.color("&aIP " + ip + " has been banned by " + issuedBy + ":[" + reason + "]"));
                     callback.success();
                     
+                    kickPlayerByIP(this.ip, plugin.getConfigs().getDefaultKick());
+                    
                     log.info("IP " + ip + " has been banned [" + reason + "] [" + issuedBy + "]!");
                 }else{
                     // always equals("n") if banning ip is formatted improperly
@@ -61,6 +65,19 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
             callback.error("JSON Error");
             if (plugin.getConfigs().isDebug()){
                 ex.printStackTrace();
+            }
+        }
+    }
+    
+    private void kickPlayerByIP(final String ip, final String kickReason){
+        for (final Player p : Bukkit.getOnlinePlayers()){
+            if (ip.equals(p.getAddress().getAddress().getHostAddress())){
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        p.kickPlayer(kickReason);
+                    }
+                }, 0L);
             }
         }
     }
