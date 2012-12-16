@@ -1,5 +1,7 @@
 package com.mcbans.firestar.mcbans.commands;
 
+import static com.mcbans.firestar.mcbans.I18n._;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,7 +32,7 @@ public class CommandBanip extends BaseCommand{
         
         // check isValid IP address
         if (!Util.isValidIP(ip)){
-            throw new CommandException(ChatColor.RED + "Invalid IP address!");
+            throw new CommandException(ChatColor.RED + _("invalidIP"));
         }
 
         // Start

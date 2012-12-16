@@ -29,8 +29,13 @@ kickSuccess: "%PLAYER% has been kicked!"
 kickNoPlayer: "%PLAYER% is not online!"
 kickBroadcast: "%ADMIN% has kicked %PLAYER% [%REASON%]"
 
+ipBanSuccess: "IP %IP% has been banned [%REASON%]"
+ipBanError: "Error adding ban for IP %IP%!"
+ipBanAlready: "IP %IP% is already banned from this server!"
+
 formatError: "Incorrect parameters!"
 invalidName: "Invalid player name!"
+invalidIP: "Invalid IP address!"
 permissionDenied: "Permission denied!"
 rbMethodNotFound: "Rollback plugin not found!"
 unavailable: "Unavailable MCBans Service! Please try again later!"

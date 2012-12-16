@@ -1,15 +1,19 @@
 package com.mcbans.firestar.mcbans.request;
 
+import static com.mcbans.firestar.mcbans.I18n._;
+
+import java.util.Locale;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.mcbans.firestar.mcbans.ActionLog;
+import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.callBacks.MessageCallback;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
-import com.mcbans.firestar.mcbans.util.Util;
 
 public class BanIpRequest extends BaseRequest<MessageCallback>{
     private String ip;
@@ -31,29 +35,40 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
 
     @Override
     protected void execute() {
-        JSONObject result = this.request_JOBJ();
+        JSONObject response = this.request_JOBJ();
         
         try {
-            if (result != null && result.has("result")){
-                if (result.getString("result").trim().equals("y")){
+            if (response != null && response.has("result")){
+                final String result = response.getString("result").trim().toLowerCase(Locale.ENGLISH);
+                if (result.equals("y")){
                     //callback.setMessage(Util.color(msg))
-                    callback.setBroadcastMessage(Util.color("&aIP " + ip + " has been banned by " + issuedBy + ":[" + reason + "]"));
+                    callback.setBroadcastMessage(ChatColor.GREEN + _("ipBanSuccess", I18n.IP, this.ip, I18n.SENDER, this.issuedBy, I18n.REASON, this.reason));
                     callback.success();
                     
-                    kickPlayerByIP(this.ip, plugin.getConfigs().getDefaultKick());
+                    kickPlayerByIP(this.ip, reason);
                     
                     log.info("IP " + ip + " has been banned [" + reason + "] [" + issuedBy + "]!");
-                }else{
-                    // always equals("n") if banning ip is formatted improperly
-                    callback.error(ChatColor.RED + "Improperly formatted IP address!");
+                }else if (result.equals("a")){
+                    // equals("a") if already banned ip
+                    callback.error(ChatColor.RED + _("ipBanAlready", I18n.IP, this.ip, I18n.SENDER, this.issuedBy, I18n.REASON, this.reason));
                     log.info(issuedBy + " tried to IPBan " + ip + "!");
+                }else if (result.equals("n")){
+                    // equals("n") if banning ip is formatted improperly
+                    callback.error(ChatColor.RED + _("invalidIP"));
+                    log.info(issuedBy + " tried to IPBan " + ip + "!");
+                }else if (result.equals("e")){
+                    // other error
+                    callback.error(ChatColor.RED + _("invalidIP"));
+                    log.info(issuedBy + " tried to IPBan " + ip + "!");
+                }else{
+                    log.severe("Invalid response result: " + result);
                 }
             }else{
                 callback.error(ChatColor.RED + "API appears to be down!");
             }
         } catch (JSONException ex) {
-            if (result.toString().contains("error")) {
-                if (result.toString().contains("Server Disabled")) {
+            if (response.toString().contains("error")) {
+                if (response.toString().contains("Server Disabled")) {
                     ActionLog.getInstance().severe("Server Disabled by an MCBans Admin");
                     ActionLog.getInstance().severe("To appeal this decision, please file ticket on support.mcbans.com");
 

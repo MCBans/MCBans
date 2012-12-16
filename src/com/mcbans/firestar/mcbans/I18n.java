@@ -102,6 +102,7 @@ public class I18n {
     public static final String ALTS     = "%ALTS%";
     public static final String PLAYERIP = "%PLAYERIP%";
     public static final String COUNT    = "%COUNT%";
+    public static final String IP       = "%IP%";
     /* ***** End replace words ******* */
 
     public static String _(final String key, final Object... args){

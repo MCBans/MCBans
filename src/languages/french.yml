@@ -29,8 +29,13 @@ kickSuccess: "%PLAYER% a été expulsé!"
 kickNoPlayer: ""
 kickBroadcast: ""
 
+ipBanSuccess: ""
+ipBanError: ""
+ipBanAlready: ""
+
 formatError: "Paramètres incorrects!"
 invalidName: ""
+invalidIP: ""
 permissionDenied: "Permission refusée!"
 rbMethodNotFound: ""
 previousBans: "%PLAYER% a des bans antérieurs!"

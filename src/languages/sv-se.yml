@@ -29,8 +29,13 @@ kickSuccess: "%PLAYER% blev kickad!"
 kickNoPlayer: "%PLAYER% är inte online!"
 kickBroadcast: "%ADMIN% har kickat %PLAYER% [%REASON%]"
 
+ipBanSuccess: ""
+ipBanError: ""
+ipBanAlready: ""
+
 formatError: "Inkorrekta parametrar!"
 invalidName: "Felaktigt namn"
+invalidIP: ""
 permissionDenied: "Inte nog med rättigheter!"
 rbMethodNotFound: "Tillbakarullningsprogram kunde inte hittas"
 unavailable: "Otillgänglig MCBans-tjänst! Vänligen försök igen om en liten stund!"

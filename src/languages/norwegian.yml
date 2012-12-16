@@ -29,8 +29,13 @@ kickSuccess: "%PLAYER% har blitt kastet ut!"
 kickNoPlayer: ""
 kickBroadcast: ""
 
+ipBanSuccess: ""
+ipBanError: ""
+ipBanAlready: ""
+
 formatError: "Feil inntasting!"
 invalidName: ""
+invalidIP: ""
 permissionDenied: "Tillatelse nektet!"
 rbMethodNotFound: ""
 unavailable: ""

@@ -29,8 +29,13 @@ kickSuccess: "%PLAYER% はkickされました！"
 kickNoPlayer: "%PLAYER% はオフラインです！"
 kickBroadcast: "%ADMIN% は %PLAYER% をkickしました[%REASON%]"
 
+ipBanSuccess: "IP %IP% はBANされました:[%REASON%]"
+ipBanError: "IP %IP% のBAN処理中にエラーが発生しました！"
+ipBanAlready: "IP %IP% は既にこのサーバーでBANされています！"
+
 formatError: "引数がおかしいです！"
 invalidName: "ユーザ名が不正です！"
+invalidIP: "IPアドレスが不正です！"
 permissionDenied: "権限がありません！"
 rbMethodNotFound: "ロールバックを行うプラグインが見つかりません！"
 unavailable: "MCBansサービスが利用不能です！後でもう一度試してください！"

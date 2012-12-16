@@ -29,8 +29,13 @@ kickSuccess: "%PLAYER% is uit de server gegooit!"
 kickNoPlayer: ""
 kickBroadcast: ""
 
+ipBanSuccess: ""
+ipBanError: ""
+ipBanAlready: ""
+
 formatError: "Verkeerde waardes!"
 invalidName: ""
+invalidIP: ""
 permissionDenied: "Je hebt geen permissie om dit te doen!"
 rbMethodNotFound: ""
 unavailable: ""
