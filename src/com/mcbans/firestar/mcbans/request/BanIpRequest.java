@@ -37,9 +37,12 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
                     //callback.setMessage(Util.color(msg))
                     callback.setBroadcastMessage(Util.color("&aIP " + ip + " has been banned by " + issuedBy + ":[" + reason + "]"));
                     callback.success();
+                    
+                    log.info("IP " + ip + " has been banned [" + reason + "] [" + issuedBy + "]!");
                 }else{
                     // always equals("n") if banning ip is formatted improperly
                     callback.error(ChatColor.RED + "Improperly formatted IP address!");
+                    log.info(issuedBy + " tried to IPBan " + ip + "!");
                 }
             }else{
                 callback.error(ChatColor.RED + "API appears to be down!");
