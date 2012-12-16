@@ -8,8 +8,10 @@ import org.bukkit.plugin.Plugin;
 
 import com.mcbans.firestar.mcbans.BanType;
 import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.callBacks.AltLookupCallback;
 import com.mcbans.firestar.mcbans.callBacks.BanLookupCallback;
 import com.mcbans.firestar.mcbans.callBacks.LookupCallback;
+import com.mcbans.firestar.mcbans.request.AltLookupRequest;
 import com.mcbans.firestar.mcbans.request.Ban;
 import com.mcbans.firestar.mcbans.request.BanLookupRequest;
 import com.mcbans.firestar.mcbans.request.Kick;
@@ -115,9 +117,9 @@ public class MCBansAPI {
 
     /**
      * Lookup Player
-     * @param targetName Lookup target player's name
-     * @param senderName Lookup issued admin's name
-     * @param callback LookupCallback
+     * @param targetName Lookup target player name
+     * @param senderName Lookup issued admin name
+     * @param callback LookupCallback LookupCallback
      */
     public void lookupPlayer(String targetName, String senderName, LookupCallback callback){
         plugin.getLog().info("Plugin " + pname + " tried to lookup player " + targetName);
@@ -138,16 +140,37 @@ public class MCBansAPI {
     /**
      * Lookup Ban
      * @param banID Lookup target ban ID
-     * @param callback BanLookupCallback
+     * @param callback BanLookupCallback BanLookupCallback
      */
     public void lookupBan(int banID, BanLookupCallback callback){
-        plugin.getLog().info("Plugin " + pname + " tried to lookup banID " + banID);
+        plugin.getLog().info("Plugin " + pname + " tried to ban lookup " + banID);
         if (banID < 0 || callback == null){
             plugin.getLog().info("Invalid usage (null): lookupBan");
             return;
         }
 
         BanLookupRequest request = new BanLookupRequest(plugin, callback, banID);
+        Thread triggerThread = new Thread(request);
+        triggerThread.start();
+    }
+    
+    /**
+     * Lookup Alt Accounts
+     * @param playerName Lookup target player name
+     * @param callback BanLookupCallback BanLookupCallback
+     */
+    public void lookupAlt(String playerName, AltLookupCallback callback){
+        plugin.getLog().info("Plugin " + pname + " tried to alt lookup " + playerName);
+        if (playerName == null || callback == null){
+            plugin.getLog().info("Invalid usage (null): lookupAlt");
+            return;
+        }
+        
+        if (!Util.isValidName(playerName)){
+            callback.error("Invalid alt lookup target name!");
+        }
+
+        AltLookupRequest request = new AltLookupRequest(plugin, callback, playerName);
         Thread triggerThread = new Thread(request);
         triggerThread.start();
     }
