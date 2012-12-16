@@ -28,13 +28,17 @@ commands:
     aliases: [tban]
     usage: /<command> <playername> <duration> <m(minutes) or h(hours) or d(days) or w(weeks)> [reason]
   lookup:
-    description: lookup a player
+    description: lookup a player information
     aliases: [lup]
     usage: /<command> <playername>
   banlookup:
-    description: lookup a player
+    description: lookup a ban information
     aliases: [blup]
     usage: /<command> <banID>
+  altlookup:
+    description: lookup a player alt accounts
+    aliases: [alup, alt]
+    usage: /<command> <playername>
   mcbans:
     description: mcbans functions
     usage: /<command> <function>
