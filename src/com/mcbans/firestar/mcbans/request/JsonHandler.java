@@ -1,6 +1,7 @@
 package com.mcbans.firestar.mcbans.request;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -12,6 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.mcbans.firestar.mcbans.ActionLog;
+import com.mcbans.firestar.mcbans.ConfigurationManager;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
@@ -19,17 +21,19 @@ import com.mcbans.firestar.mcbans.org.json.JSONObject;
 public class JsonHandler {
     private final MCBans plugin;
     private final ActionLog log;
+    private final ConfigurationManager config;
 
     public JsonHandler(MCBans plugin) {
         this.plugin = plugin;
         this.log = plugin.getLog();
+        this.config = plugin.getConfigs();
     }
 
     public JSONObject get_data(String json_text) {
         try {
             return new JSONObject(json_text);
         } catch (JSONException e) {
-            if (plugin.getConfigs().isDebug()) {
+            if (config.isDebug()) {
                 e.printStackTrace();
             }
         }
@@ -41,9 +45,18 @@ public class JsonHandler {
         HashMap<String, String> out = new HashMap<String, String>();
         String url_req = this.urlparse(items);
         String json_text = this.request_from_api(url_req);
+        if (config.isDebug()){
+            log.info("Requested: '" + url_req + "'");
+            log.info("Converting response '" + json_text + "'");
+        }
+        if (json_text == null || json_text.length() <= 0){
+            if (config.isDebug()) log.severe("Null Response! Please contact MCBans administrator");
+            out.clear();
+            return out;
+        }
+        
         JSONObject output = this.get_data(json_text);
         if (output != null) {
-
             Iterator<String> i = output.keys();
             if (i != null) {
                 while (i.hasNext()) {
@@ -51,7 +64,7 @@ public class JsonHandler {
                     try {
                         out.put(next, output.getString(next));
                     } catch (JSONException e) {
-                        if (plugin.getConfigs().isDebug()) {
+                        if (config.isDebug()) {
                             log.severe("JSON Error On Retrieve");
                             e.printStackTrace();
                         }
@@ -69,81 +82,54 @@ public class JsonHandler {
     }
 
     public String request_from_api(String data) {
-        try {
-            if (plugin.getConfigs().isDebug()) {
-                log.info("Sending request!");
-            }
-            URL url = new URL("http://" + plugin.apiServer + "/v2/" + plugin.getConfigs().getApiKey());
-            URLConnection conn = url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(5000);
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(data);
-            wr.flush();
-            StringBuilder buf = new StringBuilder();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            while ((line = rd.readLine()) != null) {
-                buf.append(line);
-            }
-            String result = buf.toString();
-            if (plugin.getConfigs().isDebug()) {
-                log.info(result);
-            }
-            wr.close();
-            rd.close();
-            return result;
-        } catch (Exception e) {
-            if (plugin.getConfigs().isDebug()) {
-                if (plugin != null) {
-                    log.severe("Fetch Data Error");
-                }
-                e.printStackTrace();
-            }
-            return "";
-        }
+        return request_from_api(data, plugin.apiServer);
     }
 
     public String request_from_api(String data, String server) {
+        OutputStreamWriter wr = null;
+        BufferedReader rd = null;
         try {
             // check valid api key
-            if (!plugin.getConfigs().isValidApiKey()){
+            if (!config.isValidApiKey()){
                 return "";
             }
-            
-            if (plugin.getConfigs().isDebug()) {
-                log.info("Sending request!");
+            if (config.isDebug()) {
+                log.info("Sending request: '" + data + "'");
             }
-            URL url = new URL("http://" + server + "/v2/" + plugin.getConfigs().getApiKey());
+            URL url = new URL("http://" + server + "/v2/" + config.getApiKey());
             URLConnection conn = url.openConnection();
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(5000);
             conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            
+            wr = new OutputStreamWriter(conn.getOutputStream());
             wr.write(data);
             wr.flush();
+            
             StringBuilder buf = new StringBuilder();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = rd.readLine()) != null) {
                 buf.append(line);
             }
-            String result = buf.toString();
+            
             if (plugin.getConfigs().isDebug()) {
-                log.info(result);
+                log.info("Result: " + buf.toString());
             }
-            wr.close();
-            rd.close();
-            return result;
+            return buf.toString();
         } catch (Exception e) {
-            if (plugin.getConfigs().isDebug()) {
-                if (plugin != null) {
-                    log.severe("Fetch Data Error");
-                }
+            if (config.isDebug()) {
+                log.severe("Fetch Data Error");
                 e.printStackTrace();
             }
             return "";
+        } finally {
+            if (wr != null){
+                try { wr.close(); } catch (Exception e) {}
+            }
+            if (rd != null){
+                try { rd.close(); } catch (Exception e) {}
+            }
         }
     }
 
@@ -160,7 +146,7 @@ public class JsonHandler {
                 }
             }
         } catch (UnsupportedEncodingException e) {
-            if (plugin.getConfigs().isDebug()) {
+            if (config.isDebug()) {
                 e.printStackTrace();
             }
         }
