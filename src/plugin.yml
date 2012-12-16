@@ -29,6 +29,7 @@ commands:
     usage: /<command> <playername> <duration> <m(minutes) or h(hours) or d(days) or w(weeks)> [reason]
   banip:
     description: bans an IP address
+    aliases: [ipban]
     usage: /<command> <ip> [reason]
   lookup:
     description: lookup a player information
