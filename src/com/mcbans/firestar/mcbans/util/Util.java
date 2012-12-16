@@ -2,6 +2,7 @@ package com.mcbans.firestar.mcbans.util;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
@@ -12,6 +13,12 @@ import org.bukkit.entity.Player;
 import com.mcbans.firestar.mcbans.MCBans;
 
 public class Util {
+    private static final String IP_PATTERN = 
+            "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+    
     /****************************************/
     // Messaging
     /****************************************/
@@ -131,4 +138,14 @@ public class Util {
         return true;
     }
 
+    /**
+     * Check string is valid IP
+     * @param str String to check
+     * @return tru if valid ip address
+     */
+    public static boolean isValidIP(String str){
+        if (str == null) return false;
+        Matcher matcher = Pattern.compile(IP_PATTERN).matcher(str);
+        return matcher.matches();
+    }
 }

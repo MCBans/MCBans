@@ -1,9 +1,11 @@
 package com.mcbans.firestar.mcbans.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.mcbans.firestar.mcbans.callBacks.MessageCallback;
+import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.BanIpRequest;
 import com.mcbans.firestar.mcbans.util.Util;
@@ -18,24 +20,21 @@ public class CommandBanip extends BaseCommand{
     }
 
     @Override
-    public void execute() {
+    public void execute() throws CommandException {
         final String issuedBy = (sender instanceof Player) ? player.getName() : "Console";
-        final String target = args.remove(0).trim();
+        final String ip = args.remove(0).trim();
         String reason = config.getDefaultLocal();
         if (args.size() > 0){
             reason = Util.join(args, " ");
         }
         
-        // TODO check isValid IP address
-        /*
-        if (!Util.isValidName(target)){
-            Util.message(sender, ChatColor.RED + _("invalidName"));
-            return;
+        // check isValid IP address
+        if (!Util.isValidIP(ip)){
+            throw new CommandException(ChatColor.RED + "Invalid IP address!");
         }
-        */
 
         // Start
-        BanIpRequest request = new BanIpRequest(plugin, new MessageCallback(plugin, sender), target, reason, issuedBy);
+        BanIpRequest request = new BanIpRequest(plugin, new MessageCallback(plugin, sender), ip, reason, issuedBy);
         Thread triggerThread = new Thread(request);
         triggerThread.start();
     }

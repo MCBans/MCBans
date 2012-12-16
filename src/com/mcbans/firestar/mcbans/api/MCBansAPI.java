@@ -114,12 +114,15 @@ public class MCBansAPI {
             plugin.getLog().info("Invalid usage (null): ipBan");
             return;
         }
+        if (!Util.isValidIP(ip)){
+            plugin.getLog().info("Invalid IP address (" + ip + "): ipBan");
+            return;
+        }
+        
         if (reason == null || reason.length() <= 0){
             reason = plugin.getConfigs().getDefaultLocal();
         }
 
-        // TODO add valid ip check here
-        
         BanIpRequest request = new BanIpRequest(plugin, callback, ip, reason, senderName);
         Thread thread = new Thread(request);
         thread.start();
