@@ -132,7 +132,7 @@ public class ConfigurationManager {
         return conf.getString("apiKey", "").trim();
     }
     public String getLanguage(){
-        return conf.getString("language", "en-us");
+        return conf.getString("language", "default");
     }
     public String getPermission(){
         return conf.getString("permission", "SuperPerms");

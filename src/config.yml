@@ -17,8 +17,8 @@ apiKey:
 
 # language:
 #   Language you want to have displayed to the players
-#   DEFAULT: en-us
-language: en-us
+#   DEFAULT: default
+language: default
 
 # permission:
 #   Choose permission controller: Vault, PermissionsEx, SuperPerms (default), OPs
