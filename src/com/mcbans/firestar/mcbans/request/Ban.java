@@ -152,9 +152,11 @@ public class Ban implements Runnable {
             return;
         }
         if (response.get("result").equals("y")) {
-            OfflinePlayer d = plugin.getServer().getOfflinePlayer(playerName);
-            if (d.isBanned()) {
-                d.setBanned(false);
+            if (!Util.isValidIP(playerName)){
+                OfflinePlayer d = plugin.getServer().getOfflinePlayer(playerName);
+                if (d.isBanned()) {
+                    d.setBanned(false);
+                }
             }
             Util.message(senderName, ChatColor.GREEN + _("unBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName));
             plugin.getServer().getPluginManager().callEvent(new PlayerUnbannedEvent(playerName, senderName));
