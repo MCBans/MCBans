@@ -15,7 +15,7 @@ public class CommandUnban extends BaseCommand{
         bePlayer = false;
         name = "unban";
         argLength = 1;
-        usage = "Unban player";
+        usage = "Unban player or ip";
         banning = false;
     }
 
@@ -24,7 +24,7 @@ public class CommandUnban extends BaseCommand{
         String target = args.get(0).trim();
         
         if (!Util.isValidName(target) && !Util.isValidIP(target)){
-            throw new CommandException(ChatColor.RED + _("invalidName"));
+            throw new CommandException(ChatColor.RED + _("invalidNameOrIP"));
         }
         
         // Start
