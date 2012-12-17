@@ -100,7 +100,6 @@ public class I18n {
     public static final String REASON   = "%REASON%";
     public static final String BADWORD  = "%BADWORD%";
     public static final String ALTS     = "%ALTS%";
-    public static final String PLAYERIP = "%PLAYERIP%";
     public static final String COUNT    = "%COUNT%";
     public static final String IP       = "%IP%";
     /* ***** End replace words ******* */
