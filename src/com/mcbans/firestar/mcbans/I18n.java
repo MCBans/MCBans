@@ -50,7 +50,7 @@ public class I18n {
         // extract resources
         List<String> locales = new ArrayList<String>();
 
-        locales.add("en-us");
+        locales.add("default");
         locales.add("dutch");
         locales.add("french");
         locales.add("german");
