@@ -13,6 +13,7 @@
 - Added support colored messages (color/format code: &<char>)
 - Added mcbans.hideview permission (hide view alts/previous bans on connect)
 - Added altlookup command for premium servers
+- Added banip command for bans an IP address (Unban with /unban <IP>)
 - Rewrited permission structure and permission node
 - Rewrited command structure
 - Rewrited localize structure

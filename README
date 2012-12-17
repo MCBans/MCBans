@@ -51,7 +51,7 @@ Misc Commands
 * /banlookup <banID> - checks ban details
 * /altlookup <playername> - checks alt accounts (premium server only!)
 * /kick <playername> [reason] - kicks a player from the game
-* /unban <playername> - unbans the player from your server
+* /unban <playername|IP> - unbans the player/IP from your server
 
 Permissions
 --------
@@ -61,8 +61,8 @@ Permissions
 * mcbans.ban.local (default: op) - Allow local ban player
 * mcbans.ban.temp (default: op) - Allow temp ban player
 * mcbans.ban.rollback (default: op) - Allow use rban command
-* mcbans.unban (default: op) - Allow unban player
 * mcbans.ban.ip (default: op) - Allow use banip command
+* mcbans.unban (default: op) - Allow unban player
 * mcbans.view.alts (default: op) - Show notification of a players alts on connect
 * mcbans.view.bans (default: op) - Show previous ban information on player connect
 * mcbans.view.staff (default: true) - Show notification of a mcbans staff on connect
