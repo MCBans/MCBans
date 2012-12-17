@@ -54,7 +54,7 @@ public class Kick implements Runnable {
             Util.broadcastMessage(ChatColor.GREEN + _("kickBroadcast", I18n.PLAYER, player.getName(), I18n.SENDER, senderName, I18n.REASON, reason));
             plugin.getLog().info(senderName + " has kicked " + player.getName() + " [" + reason + "]");
         } else {
-            Util.message(senderName, ChatColor.DARK_RED + _("kickNoPlayer", I18n.PLAYER, playerName));
+            Util.message(senderName, ChatColor.RED + _("kickNoPlayer", I18n.PLAYER, playerName));
         }
     }
 }

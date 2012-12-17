@@ -28,42 +28,43 @@ public class CommandMcbans extends BaseCommand{
     public void execute() throws CommandException {
         /* General Help */
         if (args.size() == 0){
-            send(ChatColor.BLUE + "MCBans Help");
-            send(ChatColor.WHITE + "/mcbans banning" + ChatColor.BLUE + " Help with banning/unban command");
-            send(ChatColor.WHITE + "/mcbans get" + ChatColor.BLUE + " Get time till next call");
-            send(ChatColor.WHITE + "/mcbans ping" + ChatColor.BLUE + " Check overall response time from API");
-            send(ChatColor.WHITE + "/mcbans reload" + ChatColor.BLUE + " Reload settings and language file");
-            send(ChatColor.WHITE + "/mcbans sync" + ChatColor.BLUE + " Force a sync to occur");
-            send(ChatColor.WHITE + "/mcbans user" + ChatColor.BLUE + " Help with user management commands");
+            send("&bMCBans &3" + plugin.getDescription().getVersion() + "&b Help &f|| &b<> &f= required, &b[] &f= optional");
+            send("&f/mcbans banning" + ChatColor.BLUE + " Help with banning/unban command");
+            send("&f/mcbans user" + ChatColor.BLUE + " Help with user management commands");
+            send("&f/mcbans get" + ChatColor.BLUE + " Get time till next call");
+            send("&f/mcbans ping" + ChatColor.BLUE + " Check overall response time from API");
+            send("&f/mcbans sync" + ChatColor.BLUE + " Force a sync to occur");
+            send("&f/mcbans reload" + ChatColor.BLUE + " Reload settings and language file");
             return;
         }
 
         final String first = args.remove(0);
         /* Banning Help */
         if (first.equalsIgnoreCase("banning")){
-            send(ChatColor.WHITE + "/ban <name> <reason>" + ChatColor.BLUE + " Local ban user");
-            send(ChatColor.WHITE + "/ban <name> g <reason>" + ChatColor.BLUE + " Global ban user");
-            send(ChatColor.WHITE + "/ban <name> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Temporarily ban");
-            send(ChatColor.WHITE + "/tban <name> <time> <m(minute), h(hour), d(day), w(week)> <reason>" + ChatColor.BLUE + " Temp ban user");
-            send(ChatColor.WHITE + "/gban <name> <reason>" + ChatColor.BLUE + " Global ban user");
-            send(ChatColor.WHITE + "/rban <name> <reason>" + ChatColor.BLUE + " Rollback and local ban");
-            send(ChatColor.WHITE + "/rban <name> g <reason>" + ChatColor.BLUE + " Rollback and global ban");
-            send(ChatColor.WHITE + "/rban <name> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Rollback and temporarily ban");
-            send(ChatColor.WHITE + "/banip <ip> [reason]" + ChatColor.BLUE + " Bans an IP address");
+            send("&f/ban <name> [reason]" + ChatColor.BLUE + " Local ban user");
+            send("&f/ban <name> g <reason>" + ChatColor.BLUE + " Global ban user");
+            send("&f/ban <name> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Temporarily ban");
+            send("&f/tban <name> <time> <m(minute), h(hour), d(day), w(week)> [reason]" + ChatColor.BLUE + " Temp ban user");
+            send("&f/gban <name> <reason>" + ChatColor.BLUE + " Global ban user");
+            send("&f/rban <name> [reason]" + ChatColor.BLUE + " Rollback and local ban");
+            send("&f/rban <name> g <reason>" + ChatColor.BLUE + " Rollback and global ban");
+            send("&f/rban <name> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Rollback and temporarily ban");
+            send("&f/banip <ip> [reason]" + ChatColor.BLUE + " Bans an IP address");
+            send("&f/unban <name|ip>" + ChatColor.BLUE + " Bans an IP address");
             return;
         }
         /* User Help */
         if (first.equalsIgnoreCase("user")){
-            send(ChatColor.WHITE + "/lookup <name>" + ChatColor.BLUE + " Lookup the player information");
-            send(ChatColor.WHITE + "/banlookup <banID>" + ChatColor.BLUE + " Lookup the ban information");
-            send(ChatColor.WHITE + "/altlookup <name>" + ChatColor.BLUE + " Lookup the alt information");
-            send(ChatColor.WHITE + "/kick <name> <reason>" + ChatColor.BLUE + " Kick user from the server");
+            send("&f/lookup <name>" + ChatColor.BLUE + " Lookup the player information");
+            send("&f/banlookup <banID>" + ChatColor.BLUE + " Lookup the ban information");
+            send("&f/altlookup <name>" + ChatColor.BLUE + " Lookup the alt information");
+            send("&f/kick <name> [reason]" + ChatColor.BLUE + " Kick user from the server");
             return;
         }
         /* Check response time */
         if (first.equalsIgnoreCase("ping")){
             if (!Perms.ADMIN.has(sender)){
-                throw new CommandException(ChatColor.DARK_RED + _("permissionDenied"));
+                throw new CommandException(ChatColor.RED + _("permissionDenied"));
             }
             PingRequest request = new PingRequest(plugin, new MessageCallback(plugin, sender));
             (new Thread(request)).start();
@@ -72,7 +73,7 @@ public class CommandMcbans extends BaseCommand{
         /* Sync banned-players.txt */
         if (first.equalsIgnoreCase("sync")){
             if (!Perms.ADMIN.has(sender)){
-                throw new CommandException(ChatColor.DARK_RED + _("permissionDenied"));
+                throw new CommandException(ChatColor.RED + _("permissionDenied"));
             }
 
             // Check if all sync
@@ -128,7 +129,7 @@ public class CommandMcbans extends BaseCommand{
         /* Reload plugin */
         if (first.equalsIgnoreCase("reload")){
             if (!Perms.ADMIN.has(sender)){
-                throw new CommandException(ChatColor.DARK_RED + _("permissionDenied"));
+                throw new CommandException(ChatColor.RED + _("permissionDenied"));
             }
 
             send(ChatColor.AQUA + "Reloading Settings..");
@@ -151,11 +152,11 @@ public class CommandMcbans extends BaseCommand{
         }
 
         // Format error
-        throw new CommandException(ChatColor.DARK_RED + _("formatError"));
+        throw new CommandException(ChatColor.RED + _("formatError"));
     }
 
     private void send(final String msg){
-        Util.message(sender, msg);
+        Util.message(sender, Util.color(msg));
     }
 
     private String timeRemain(long remain) {

@@ -40,12 +40,12 @@ public class CommandRban extends BaseCommand{
 
         // check permission
         if (!type.getPermission().has(sender)){
-            throw new CommandException(ChatColor.DARK_RED + _("permissionDenied"));
+            throw new CommandException(ChatColor.RED + _("permissionDenied"));
         }
 
         // check hasRollbackMethod
         if (!plugin.getRbHandler().hasRollbackMethod()){
-            throw new CommandException(ChatColor.DARK_RED + _("rbMethodNotFound"));
+            throw new CommandException(ChatColor.RED + _("rbMethodNotFound"));
         }
 
         String reason = null;
@@ -61,7 +61,7 @@ public class CommandRban extends BaseCommand{
 
             case GLOBAL:
                 if (args.size() == 0){
-                    Util.message(sender, ChatColor.DARK_RED + _("formatError"));
+                    Util.message(sender, ChatColor.RED + _("formatError"));
                     return;
                 }
                 reason = Util.join(args, " ");
@@ -70,7 +70,7 @@ public class CommandRban extends BaseCommand{
 
             case TEMP:
                 if (args.size() <= 2){
-                    Util.message(sender, ChatColor.DARK_RED + _("formatError"));
+                    Util.message(sender, ChatColor.RED + _("formatError"));
                     return;
                 }
                 final String duration = args.remove(0);
@@ -85,7 +85,7 @@ public class CommandRban extends BaseCommand{
 
         // Start
         if (banControl == null){
-            Util.message(sender, ChatColor.DARK_RED + "Internal error! Please report console logs!");
+            Util.message(sender, ChatColor.RED + "Internal error! Please report console logs!");
             throw new RuntimeException("Undefined BanType: " + type.name());
         }
         Thread triggerThread = new Thread(banControl);

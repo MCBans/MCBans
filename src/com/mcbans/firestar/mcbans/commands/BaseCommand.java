@@ -61,7 +61,7 @@ public abstract class BaseCommand {
         // Check args size
         if (argLength > args.size()){
             //sendUsage();
-            Util.message(sender, ChatColor.DARK_RED + _("formatError"));
+            Util.message(sender, ChatColor.RED + _("formatError"));
             return true;
         }
 
@@ -78,7 +78,7 @@ public abstract class BaseCommand {
 
         // Check permission
         if (!permission(sender)){
-            Util.message(sender, ChatColor.DARK_RED + _("permissionDenied"));
+            Util.message(sender, ChatColor.RED + _("permissionDenied"));
             //plugin.log(senderName + " has tried the command [" + command + "]!"); // maybe not needs command logger. Craftbukkit added this.
             //plugin.broadcastPlayer(sender, "&cYou don't have permission to use this!");
             return true;
@@ -95,7 +95,7 @@ public abstract class BaseCommand {
             }
             // check isValid player name
             if (!Util.isValidName(target)){
-                Util.message(sender, _("invalidName"));
+                Util.message(sender, ChatColor.RED + _("invalidName"));
                 return true;
             }
         }

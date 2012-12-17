@@ -17,13 +17,13 @@ public class LookupCallback extends BaseCallback{
 
     //@Override
     public void success(final PlayerLookupData data){
-        Util.message(sender, "Player " + ChatColor.DARK_AQUA + data.getPlayerName() + ChatColor.WHITE + " has " + ChatColor.DARK_RED
+        Util.message(sender, "Player " + ChatColor.DARK_AQUA + data.getPlayerName() + ChatColor.WHITE + " has " + ChatColor.RED
                 + data.getTotal() + " ban(s)" + ChatColor.WHITE + " and " + ChatColor.BLUE + data.getReputation() + " REP"
                 + ChatColor.WHITE + ".");
 
 
         if (data.getGlobals().size() > 0) {
-            Util.message(sender, ChatColor.DARK_RED + "Global bans");
+            Util.message(sender, ChatColor.RED + "Global bans");
             for (String record : data.getGlobals()){
                 Util.message(sender, record);
             }
