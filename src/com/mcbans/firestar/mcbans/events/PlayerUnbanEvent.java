@@ -4,20 +4,27 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import com.mcbans.firestar.mcbans.util.Util;
+
 public class PlayerUnbanEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean isCancelled = false;
 
-    private String player;
+    private String target;
     private String sender;
 
-    public PlayerUnbanEvent(String player, String sender) {
-        this.player = player;
+    public PlayerUnbanEvent(String target, String sender) {
+        this.target = target;
         this.sender = sender;
     }
 
+    public String getTargetName() {
+        return this.target;
+    }
+    
+    @Deprecated
     public String getPlayerName() {
-        return this.player;
+        return this.getTargetName();
     }
 
     public String getSenderName() {
@@ -26,6 +33,10 @@ public class PlayerUnbanEvent extends Event implements Cancellable {
 
     public void setSenderName(String senderName) {
         this.sender = senderName;
+    }
+    
+    public boolean isIPBan(){
+        return Util.isValidIP(this.target);
     }
 
     @Override
