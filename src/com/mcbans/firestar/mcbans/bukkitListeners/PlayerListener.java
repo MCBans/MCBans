@@ -210,6 +210,9 @@ public class PlayerListener implements Listener {
             }
             Util.message(player, ChatColor.AQUA + "You are a MCBans Staff Member! (ver " + plugin.getDescription().getVersion() + ")");
             Util.message(player, ChatColor.AQUA + "Online Admins: " + ((admins.size() > 0) ? Util.join(admins, ", ") : ChatColor.GRAY + "(none)"));
+           
+            // add online mcbans staff list array
+            plugin.mcbStaff.add(player.getName());
         }
 
         if (config.isSendJoinMessage()){
@@ -221,5 +224,9 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(final PlayerQuitEvent event) {
         // send disconnect request
         new Thread(new DisconnectRequest(plugin, event.getPlayer().getName())).start();
+        
+        if (plugin.mcbStaff.contains(event.getPlayer().getName())){
+            plugin.mcbStaff.remove(event.getPlayer().getName());
+        }
     }
 }

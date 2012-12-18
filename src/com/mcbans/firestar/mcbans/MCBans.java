@@ -43,6 +43,7 @@ public class MCBans extends JavaPlugin {
     public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
     public HashMap<String, HashMap<String, String>> playerCache = new HashMap<String, HashMap<String, String>>();
     public HashMap<String, Long> resetTime = new HashMap<String, Long>();
+    public ArrayList<String> mcbStaff = new ArrayList<String>();
     public long last_req = 0;
     public long timeRecieved = 0;
     public Thread callbackThread = null;

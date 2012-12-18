@@ -96,6 +96,10 @@ public enum Perms {
             }
         }
     }
+    
+    public String getNode(){
+        return this.node;
+    }
 
     public Set<Player> getPlayers(){
         Set<Player> players = new HashSet<Player>();
@@ -105,6 +109,14 @@ public enum Perms {
             }
         }
         return players;
+    }
+    
+    public Set<String> getPlayerNames(){
+        Set<String> names = new HashSet<String>();
+        for (Player player : getPlayers()){
+            names.add(player.getName());
+        }
+        return names;
     }
 
     /* PermissionHandler */

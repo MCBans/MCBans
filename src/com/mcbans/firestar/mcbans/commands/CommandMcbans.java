@@ -2,6 +2,7 @@ package com.mcbans.firestar.mcbans.commands;
 
 import static com.mcbans.firestar.mcbans.I18n._;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -148,6 +149,39 @@ public class CommandMcbans extends BaseCommand{
             }
             ServerChoose serverChooser = new ServerChoose(plugin);
             (new Thread(serverChooser)).start();
+            return;
+        }
+        /* for MCBans Mod */
+        if (first.equalsIgnoreCase("staff") && player != null && plugin.mcbStaff.contains(player.getName())){
+            if (args.size() > 0 && args.get(0).equalsIgnoreCase("perms")){
+                send("&6-=== All Online Players Perms ===-");
+                for (Perms perm : Perms.values()){
+                    send("&6" + perm.getNode() + ": &e" + Util.join(perm.getPlayerNames(), ", "));
+                }
+            }else if (args.size() > 0 && args.get(0).equalsIgnoreCase("debug")){
+                send("&6-=== Debug Information ===-)");
+                send("&6CraftBukkit: &e" + Bukkit.getVersion());
+                send("&6Bukkit: &e" + Bukkit.getBukkitVersion());
+                send("&6connData.size: &e" + plugin.connectionData.size() + "&6 pCache.size: &e" + plugin.playerCache.size() + "&6 resetTime.size: &e" + plugin.resetTime.size());
+                send("&6ApiServer: &e" + plugin.apiServer + " &6last_req: &e" + plugin.last_req + " &6last_sync: &e" + plugin.lastSync);
+                send("&6timeRecieved: &e" + plugin.timeRecieved + " &6syncRunning: &e" + plugin.syncRunning + " &6lastID: &e" + plugin.lastID);
+                send("&6NCP: &e" + plugin.isEnabledNCP() + " &6AC: &e" + plugin.isEnabledAC());
+            }else{
+                send("&6-=== Server Settings ===-)");
+                send("&6ValidApiKey: &e" + config.isValidApiKey() + "&6 PermissionCtrl: &e" + config.getPermission());
+                send("&6MinRep: &e" + config.getMinRep() + "&6 AutoSync: &e" + config.isEnableAutoSync());
+                send("&6Max Alts: &e" + config.isEnableMaxAlts() + " (" + config.getMaxAlts() +")");
+                send("&6Failsafe: &e" + config.isFailsafe() + "&6 isDebug: &e" + config.isDebug() + "&6 Log: &e" + config.isEnableLog());
+                
+                send("&6-=== Server Status ===-)");
+                send("&6MCBans Plugin: &e" + plugin.getDescription().getVersion());
+                send("&6Name: &e" + Bukkit.getServerName() + "&6 IP: &e" + Bukkit.getServer().getIp() + ":" + Bukkit.getServer().getPort());
+                send("&6OnlineMode: &e" + Bukkit.getOnlineMode());
+                
+                send("&6-=== Online Players ===-");
+                send("&6mcbans.admin: &e" + Util.join(Perms.ADMIN.getPlayerNames(), ", "));
+                send("&6mcbans.ban.global: &e" + Util.join(Perms.BAN_GLOBAL.getPlayerNames(), ", "));
+            }
             return;
         }
 

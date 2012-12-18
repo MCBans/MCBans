@@ -1,7 +1,6 @@
 package com.mcbans.firestar.mcbans.callBacks;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
@@ -20,7 +19,7 @@ public class AltLookupCallback extends BaseCallback{
     }
 
     public void success(final AltLookupData data){
-        Util.message(sender, Util.color("&fPlayer &3" + data.getPlayerName() + "&f may has &4" + data.getAltCount() + "&f alt account(s)&f."));
+        Util.message(sender, Util.color("&fPlayer &3" + data.getPlayerName() + "&f may has &c" + data.getAltCount() + " alt account(s)&f."));
         if (data.getAltCount() > 0){
             String line2 = "";
             
