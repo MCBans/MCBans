@@ -1,3 +1,5 @@
+4.1 [Next Release]:
+
 4.0:
 - Added NoCheatPlus, AntiCheat data sending to mcbans
 - Added MCBansAPI class for other plugin integration
