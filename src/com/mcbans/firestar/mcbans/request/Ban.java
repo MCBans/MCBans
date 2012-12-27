@@ -336,7 +336,8 @@ public class Ban implements Runnable {
                 return;
             }
             if (!response.containsKey("result")) {
-                bukkitBan();
+                //bukkitBan(); // don't use default ban
+                Util.message(senderName, ChatColor.RED + " MCBans down, please try again later.");
                 return;
             }
             if (response.get("result").equals("y")) {
@@ -365,7 +366,7 @@ public class Ban implements Runnable {
             }
             log.info(senderName + " has tried to ban " + playerName + " with a temp type ban [" + reason + "]!");
         } catch (Exception ex) {
-            bukkitBan();
+            //bukkitBan();
             log.warning("Error occurred in tempBan. Please report this!");
             ex.printStackTrace();
         }
