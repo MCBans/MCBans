@@ -28,16 +28,16 @@ public class I18n {
 
         // load default (fallback) language: English
         try{
-            fallbackMessages = loadLanguageFile("en-us");
+            fallbackMessages = loadLanguageFile("default");
         }catch (Exception ex){
-            ActionLog.getInstance().warning("Could not load default(en-us.yml) messages file!");
+            ActionLog.getInstance().warning("Could not load default(default.yml) messages file!");
         }
 
         // load custom language
         try{
             setCurrentLanguage(locale);
         }catch (Exception ex){
-            ActionLog.getInstance().warning("Could not load messages for " + locale + ": using en-us.yml");
+            ActionLog.getInstance().warning("Could not load messages for " + locale + ": using default.yml");
             messages = fallbackMessages;
         }
     }
