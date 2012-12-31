@@ -159,7 +159,7 @@ public class CommandMcbans extends BaseCommand{
                     send("&6" + perm.getNode() + ": &e" + Util.join(perm.getPlayerNames(), ", "));
                 }
             }else if (args.size() > 0 && args.get(0).equalsIgnoreCase("debug")){
-                send("&6-=== Debug Information ===-)");
+                send("&6-=== Debug Information ===-");
                 send("&6CraftBukkit: &e" + Bukkit.getVersion());
                 send("&6Bukkit: &e" + Bukkit.getBukkitVersion());
                 send("&6connData.size: &e" + plugin.connectionData.size() + "&6 pCache.size: &e" + plugin.playerCache.size() + "&6 resetTime.size: &e" + plugin.resetTime.size());
@@ -167,13 +167,13 @@ public class CommandMcbans extends BaseCommand{
                 send("&6timeRecieved: &e" + plugin.timeRecieved + " &6syncRunning: &e" + plugin.syncRunning + " &6lastID: &e" + plugin.lastID);
                 send("&6NCP: &e" + plugin.isEnabledNCP() + " &6AC: &e" + plugin.isEnabledAC());
             }else{
-                send("&6-=== Server Settings ===-)");
+                send("&6-=== Server Settings ===-");
                 send("&6ValidApiKey: &e" + config.isValidApiKey() + "&6 PermissionCtrl: &e" + config.getPermission());
                 send("&6MinRep: &e" + config.getMinRep() + "&6 AutoSync: &e" + config.isEnableAutoSync());
                 send("&6Max Alts: &e" + config.isEnableMaxAlts() + " (" + config.getMaxAlts() +")");
                 send("&6Failsafe: &e" + config.isFailsafe() + "&6 isDebug: &e" + config.isDebug() + "&6 Log: &e" + config.isEnableLog());
                 
-                send("&6-=== Server Status ===-)");
+                send("&6-=== Server Status ===-");
                 send("&6MCBans Plugin: &e" + plugin.getDescription().getVersion());
                 send("&6Name: &e" + Bukkit.getServerName() + "&6 IP: &e" + Bukkit.getServer().getIp() + ":" + Bukkit.getServer().getPort());
                 send("&6OnlineMode: &e" + Bukkit.getOnlineMode());
