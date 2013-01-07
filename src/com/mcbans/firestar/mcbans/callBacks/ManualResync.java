@@ -3,6 +3,7 @@ package com.mcbans.firestar.mcbans.callBacks;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -105,15 +106,24 @@ public class ManualResync implements Runnable {
     }
 
     public void save(){
+        Writer writer = null;
+        BufferedWriter fout = null;
         try {
-            Writer writer = new OutputStreamWriter(new FileOutputStream(new File(plugin.getDataFolder(), "sync.last")), "UTF-8");
-            BufferedWriter fout = new BufferedWriter(writer);
+            writer = new OutputStreamWriter(new FileOutputStream(new File(plugin.getDataFolder(), "sync.last")), "UTF-8");
+            fout = new BufferedWriter(writer);
             fout.write(String.valueOf(plugin.lastID));
-            fout.close();
-            writer.close();
         } catch (Exception e) {
             if(plugin.getConfigs().isDebug()){
                 e.printStackTrace();
+            }
+        } finally {
+            if (fout != null){
+                try { fout.close(); } 
+                catch (IOException ignore) {}
+            }
+            if (writer != null){
+                try { writer.close(); } 
+                catch (IOException ignore) {}
             }
         }
     }
