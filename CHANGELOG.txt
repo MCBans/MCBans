@@ -1,5 +1,6 @@
 4.1 [Next Release]:
 - Fixed language file warning
+- Fixed ban sync
 
 4.0:
 - Added NoCheatPlus, AntiCheat data sending to mcbans
