@@ -102,7 +102,7 @@ public class ManualResync implements Runnable {
     public void save(){
         try {
             Writer writer = new OutputStreamWriter(
-                    new FileOutputStream("plugins/mcbans/sync.last"), "UTF-8");
+                    new FileOutputStream("plugins/MCBans/sync.last"), "UTF-8");
             BufferedWriter fout = new BufferedWriter(writer);
             fout.write(String.valueOf(plugin.lastID));
             fout.close();
