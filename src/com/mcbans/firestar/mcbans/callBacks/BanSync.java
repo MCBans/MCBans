@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -19,9 +20,11 @@ import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 public class BanSync implements Runnable {
     private final MCBans plugin;
+    private final File syncFile;
 
     public BanSync(MCBans plugin){
         this.plugin = plugin;
+        this.syncFile = new File(plugin.getDataFolder(), "sync.last");
         this.load();
     }
 
@@ -58,11 +61,10 @@ public class BanSync implements Runnable {
     private void mainRequest(){
         if(plugin.lastID == 0){
             this.initialSync();
-            this.save();
         }else{
             this.startSync();
-            this.save();
         }
+        this.save();
     }
 
     public void initialSync(){
@@ -123,14 +125,14 @@ public class BanSync implements Runnable {
             if(plugin.lastID == startID){
                 f++;
             }else{
-                f=1;
+                f = 1;
             }
             if(f > 5){
                 goNext = false;
             }
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ignore) {}
         }
         plugin.syncRunning = false;
     }
@@ -190,51 +192,61 @@ public class BanSync implements Runnable {
             if(plugin.lastID == startID){
                 f++;
             }else{
-                f=1;
+                f = 1;
             }
             if(f > 5){
                 goNext = false;
             }
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException ignore) {}
         }
         plugin.syncRunning = false;
     }
     public void save(){
+        Writer writer = null;
+        BufferedWriter fout = null;
         try {
-            Writer writer = new OutputStreamWriter(
-                    new FileOutputStream("plugins/MCBans/sync.last"), "UTF-8");
-            BufferedWriter fout = new BufferedWriter(writer);
+            writer = new OutputStreamWriter(new FileOutputStream(syncFile), "UTF-8");
+            fout = new BufferedWriter(writer);
             fout.write(String.valueOf(plugin.lastID));
-            fout.close();
-            writer.close();
         } catch (Exception e) {
             if(plugin.getConfigs().isDebug()){
                 e.printStackTrace();
+            }
+        } finally {
+            if (fout != null){
+                try { fout.close(); }
+                catch (IOException ignore) {}
+            }
+            if (writer != null){
+                try { writer.close(); }
+                catch (IOException ignore) {}
             }
         }
     }
     public void load(){
-        File f = new File("plugins/MCBans/sync.last");
-        if(f.exists()!=true){
-            plugin.lastID=0;
+        if(syncFile.exists() != true){
+            plugin.lastID = 0;
             return;
         }
-        String strLine="";
+        String strLine = "";
+        BufferedReader i = null;
         try {
-            BufferedReader i = new BufferedReader(new InputStreamReader
-                    (new FileInputStream("plugins/MCBans/sync.last"),"UTF8"));
+            i = new BufferedReader(new InputStreamReader(new FileInputStream(syncFile), "UTF-8"));
             String line = null;
-            while (( line = i.readLine()) != null){
+            while ((line = i.readLine()) != null){
                 strLine += line;
             }
-            i.close();
-            plugin.lastID=Integer.valueOf(strLine);
+            plugin.lastID = Integer.valueOf(strLine);
         } catch (Exception e) {
             if(plugin.getConfigs().isDebug()){
                 e.printStackTrace();
+            }
+        } finally {
+            if (i != null){
+                try { i.close(); }
+                catch (IOException ignore) {}
             }
         }
     }
