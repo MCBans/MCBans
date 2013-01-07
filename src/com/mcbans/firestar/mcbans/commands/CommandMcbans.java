@@ -5,6 +5,7 @@ import static com.mcbans.firestar.mcbans.I18n._;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.callBacks.ManualResync;
@@ -166,6 +167,10 @@ public class CommandMcbans extends BaseCommand{
                 send("&6ApiServer: &e" + plugin.apiServer + " &6last_req: &e" + plugin.last_req + " &6last_sync: &e" + plugin.lastSync);
                 send("&6timeRecieved: &e" + plugin.timeRecieved + " &6syncRunning: &e" + plugin.syncRunning + " &6lastID: &e" + plugin.lastID);
                 send("&6NCP: &e" + plugin.isEnabledNCP() + " &6AC: &e" + plugin.isEnabledAC());
+            }else if(args.size() > 0 && args.get(0).equalsIgnoreCase("verify")) {
+                for (Player p : plugin.getServer().getOnlinePlayers()){
+                    Util.message(p, ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
+                }
             }else{
                 send("&6-=== Server Settings ===-");
                 send("&6ValidApiKey: &e" + config.isValidApiKey() + "&6 PermissionCtrl: &e" + config.getPermission());
@@ -181,6 +186,7 @@ public class CommandMcbans extends BaseCommand{
                 send("&6-=== Online Players ===-");
                 send("&6mcbans.admin: &e" + Util.join(Perms.ADMIN.getPlayerNames(), ", "));
                 send("&6mcbans.ban.global: &e" + Util.join(Perms.BAN_GLOBAL.getPlayerNames(), ", "));
+                send("&6Other commands: &e/mcbans staff perms , /mcbans staff debug , /mcbans staff verify");
             }
             return;
         }
