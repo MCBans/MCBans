@@ -33,69 +33,72 @@ public class ManualResync implements Runnable {
         }
         plugin.syncRunning = true;
         
-        boolean goNext = true;
-        int f = 1;
-        plugin.last_req=0;
-        plugin.lastID = 0;
-        plugin.timeRecieved = 0;
-        
-        while(goNext){
-            long startID = plugin.lastID;
-            JsonHandler webHandle = new JsonHandler( plugin );
-            HashMap<String, String> url_items = new HashMap<String, String>();
-            url_items.put( "latestSync", String.valueOf(plugin.lastID) );
-            url_items.put( "timeRecieved", String.valueOf(plugin.timeRecieved) );
-            url_items.put( "exec", "banSyncInitialNew" );
-            JSONObject response = webHandle.hdl_jobj(url_items);
-            try {
-                if(response.has("banned")){
-                    if (response.getJSONArray("banned").length() > 0) {
-                        for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
-                            String[] plyer = response.getJSONArray("banned").getString(v).split(";");
-                            OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
-                            if(d.isBanned()){
-                                if(plyer[1].equals("u")){
-                                    d.setBanned(false);
-                                }
-                            }else{
-                                if(plyer[1].equals("b")){
-                                    d.setBanned(true);
+        try{
+            boolean goNext = true;
+            int f = 1;
+            plugin.last_req=0;
+            plugin.lastID = 0;
+            plugin.timeRecieved = 0;
+            
+            while(goNext){
+                long startID = plugin.lastID;
+                JsonHandler webHandle = new JsonHandler( plugin );
+                HashMap<String, String> url_items = new HashMap<String, String>();
+                url_items.put( "latestSync", String.valueOf(plugin.lastID) );
+                url_items.put( "timeRecieved", String.valueOf(plugin.timeRecieved) );
+                url_items.put( "exec", "banSyncInitialNew" );
+                JSONObject response = webHandle.hdl_jobj(url_items);
+                try {
+                    if(response.has("banned")){
+                        if (response.getJSONArray("banned").length() > 0) {
+                            for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
+                                String[] plyer = response.getJSONArray("banned").getString(v).split(";");
+                                OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
+                                if(d.isBanned()){
+                                    if(plyer[1].equals("u")){
+                                        d.setBanned(false);
+                                    }
+                                }else{
+                                    if(plyer[1].equals("b")){
+                                        d.setBanned(true);
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                if(plugin.lastID == 0){
-                    if(response.has("timerecieved")){
-                        plugin.timeRecieved = response.getLong("timerecieved");
+                    if(plugin.lastID == 0){
+                        if(response.has("timerecieved")){
+                            plugin.timeRecieved = response.getLong("timerecieved");
+                        }
+                    }
+                    if(response.has("lastid")){
+                        plugin.lastID = response.getLong("lastid");
+                    }
+                    goNext = response.has("more");
+                } catch (JSONException e) {
+                    if(plugin.getConfigs().isDebug()){
+                        e.printStackTrace();
+                    }
+                } catch (NullPointerException e) {
+                    if(plugin.getConfigs().isDebug()){
+                        e.printStackTrace();
                     }
                 }
-                if(response.has("lastid")){
-                    plugin.lastID = response.getLong("lastid");
+                if(plugin.lastID == startID){
+                    f++;
+                }else{
+                    f = 1;
                 }
-                goNext = response.has("more");
-            } catch (JSONException e) {
-                if(plugin.getConfigs().isDebug()){
-                    e.printStackTrace();
+                if(f > 5){
+                    goNext = false;
                 }
-            } catch (NullPointerException e) {
-                if(plugin.getConfigs().isDebug()){
-                    e.printStackTrace();
-                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ignore) {}
             }
-            if(plugin.lastID == startID){
-                f++;
-            }else{
-                f = 1;
-            }
-            if(f > 5){
-                goNext = false;
-            }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ignore) {}
+        } finally {
+            plugin.syncRunning = false;
         }
-        plugin.syncRunning = false;
         
         Util.message(commandSend, ChatColor.GREEN + " Sync finished");
         this.save();

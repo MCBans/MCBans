@@ -13,70 +13,73 @@ import com.mcbans.firestar.mcbans.util.Util;
 
 public class ManualSync implements Runnable {
     private final MCBans plugin;
-    private String commandSend = "";
-    public ManualSync(MCBans plugin, String sender){
+    private final String commandSend;
+    
+    public ManualSync(final MCBans plugin, final String sender){
         this.plugin = plugin;
         this.commandSend = sender;
     }
+    
     @Override
     public void run() {
-        if(plugin.syncRunning){
-            Util.message(commandSend, ChatColor.GREEN + " Sync already in progress!" );
-            return;
-        }
         while(plugin.apiServer == null){
             //waiting for server select
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ignore) {}
         }
-        int fre = 0;
+        
+        if(plugin.syncRunning){
+            Util.message(commandSend, ChatColor.GREEN + " Sync already in progress!" );
+            return;
+        }
         plugin.syncRunning = true;
-        boolean goNext = true;
-        while(goNext){
-            JsonHandler webHandle = new JsonHandler( plugin );
-            HashMap<String, String> url_items = new HashMap<String, String>();
-            url_items.put( "latestSync", String.valueOf(plugin.lastID) );
-            url_items.put( "exec", "banSync" );
-            JSONObject response = webHandle.hdl_jobj(url_items);
-            try {
-                if(response.has("banned")){
-                    fre += response.getJSONArray("banned").length();
-                    if (response.getJSONArray("banned").length() > 0) {
-                        for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
-                            String[] plyer = response.getJSONArray("banned").getString(v).split(";");
-                            OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
-                            if(d.isBanned()){
-                                if(plyer[1].equals("u")){
-                                    d.setBanned(false);
-                                }
-                            }else{
-                                if(plyer[1].equals("b")){
-                                    d.setBanned(true);
+        
+        int fre = 0;
+        try{
+            boolean goNext = true;
+            while(goNext){
+                JsonHandler webHandle = new JsonHandler( plugin );
+                HashMap<String, String> url_items = new HashMap<String, String>();
+                url_items.put( "latestSync", String.valueOf(plugin.lastID) );
+                url_items.put( "exec", "banSync" );
+                JSONObject response = webHandle.hdl_jobj(url_items);
+                try {
+                    if(response.has("banned")){
+                        fre += response.getJSONArray("banned").length();
+                        if (response.getJSONArray("banned").length() > 0) {
+                            for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
+                                String[] plyer = response.getJSONArray("banned").getString(v).split(";");
+                                OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
+                                if(d.isBanned()){
+                                    if(plyer[1].equals("u")){
+                                        d.setBanned(false);
+                                    }
+                                }else{
+                                    if(plyer[1].equals("b")){
+                                        d.setBanned(true);
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                if(response.has("lastid")){
-                    long h = response.getLong("lastid");
-                    if(h != 0){
-                        plugin.lastID = h;
+                    if(response.has("lastid")){
+                        long h = response.getLong("lastid");
+                        if(h != 0){
+                            plugin.lastID = h;
+                        }
                     }
+                    goNext = response.has("more");
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                if(response.has("more")){
-                    goNext = true;
-                }else{
-                    goNext = false;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ignore) {}
             }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {}
+        } finally {
+            plugin.syncRunning = false;
         }
-        plugin.syncRunning = false;
-        Util.message(commandSend, ChatColor.GREEN + " Sync finished, "+fre+" actions!" );
+        Util.message(commandSend, ChatColor.GREEN + " Sync finished, " + fre + " actions!" );
     }
 }

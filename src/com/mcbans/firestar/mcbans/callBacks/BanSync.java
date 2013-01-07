@@ -72,69 +72,73 @@ public class BanSync implements Runnable {
             return;
         }
         plugin.syncRunning = true;
-        boolean goNext = true;
-        int f = 1;
-        while(goNext){
-            long startID = plugin.lastID;
-            JsonHandler webHandle = new JsonHandler( plugin );
-            HashMap<String, String> url_items = new HashMap<String, String>();
-            url_items.put( "latestSync", String.valueOf(plugin.lastID) );
-            url_items.put( "timeRecieved", String.valueOf(plugin.timeRecieved) );
-            url_items.put( "exec", "banSyncInitialNew" );
-            JSONObject response = webHandle.hdl_jobj(url_items);
-            try {
-                if(response.has("banned")){
-                    if (response.getJSONArray("banned").length() > 0) {
-                        for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
-                            String[] plyer = response.getJSONArray("banned").getString(v).split(";");
-                            OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
-                            if(d.isBanned()){
-                                if(plyer[1].equals("u")){
-                                    d.setBanned(false);
-                                }
-                            }else{
-                                if(plyer[1].equals("b")){
-                                    d.setBanned(true);
+        
+        try{
+            boolean goNext = true;
+            int f = 1;
+            while(goNext){
+                long startID = plugin.lastID;
+                JsonHandler webHandle = new JsonHandler( plugin );
+                HashMap<String, String> url_items = new HashMap<String, String>();
+                url_items.put( "latestSync", String.valueOf(plugin.lastID) );
+                url_items.put( "timeRecieved", String.valueOf(plugin.timeRecieved) );
+                url_items.put( "exec", "banSyncInitialNew" );
+                JSONObject response = webHandle.hdl_jobj(url_items);
+                try {
+                    if(response.has("banned")){
+                        if (response.getJSONArray("banned").length() > 0) {
+                            for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
+                                String[] plyer = response.getJSONArray("banned").getString(v).split(";");
+                                OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
+                                if(d.isBanned()){
+                                    if(plyer[1].equals("u")){
+                                        d.setBanned(false);
+                                    }
+                                }else{
+                                    if(plyer[1].equals("b")){
+                                        d.setBanned(true);
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                if(plugin.lastID == 0){
-                    if(response.has("timerecieved")){
-                        plugin.timeRecieved = response.getLong("timerecieved");
+                    if(plugin.lastID == 0){
+                        if(response.has("timerecieved")){
+                            plugin.timeRecieved = response.getLong("timerecieved");
+                        }
+                    }
+                    if(response.has("lastid")){
+                        plugin.lastID = response.getLong("lastid");
+                    }
+                    if(response.has("more")){
+                        goNext = true;
+                    }else{
+                        goNext = false;
+                    }
+                } catch (JSONException e) {
+                    if(plugin.getConfigs().isDebug()){
+                        e.printStackTrace();
+                    }
+                } catch (NullPointerException e) {
+                    if(plugin.getConfigs().isDebug()){
+                        e.printStackTrace();
                     }
                 }
-                if(response.has("lastid")){
-                    plugin.lastID = response.getLong("lastid");
-                }
-                if(response.has("more")){
-                    goNext = true;
+                if(plugin.lastID == startID){
+                    f++;
                 }else{
+                    f = 1;
+                }
+                if(f > 5){
                     goNext = false;
                 }
-            } catch (JSONException e) {
-                if(plugin.getConfigs().isDebug()){
-                    e.printStackTrace();
-                }
-            } catch (NullPointerException e) {
-                if(plugin.getConfigs().isDebug()){
-                    e.printStackTrace();
-                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ignore) {}
             }
-            if(plugin.lastID == startID){
-                f++;
-            }else{
-                f = 1;
-            }
-            if(f > 5){
-                goNext = false;
-            }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ignore) {}
+        } finally {
+            plugin.syncRunning = false;
         }
-        plugin.syncRunning = false;
     }
 
     public void startSync(){
@@ -142,66 +146,70 @@ public class BanSync implements Runnable {
             return;
         }
         plugin.syncRunning = true;
-        boolean goNext = true;
-        int f = 1;
-        while(goNext){
-            long startID = plugin.lastID;
-            JsonHandler webHandle = new JsonHandler( plugin );
-            HashMap<String, String> url_items = new HashMap<String, String>();
-            url_items.put( "latestSync", String.valueOf(plugin.lastID) );
-            url_items.put( "exec", "banSyncNew" );
-            JSONObject response = webHandle.hdl_jobj(url_items);
-            try {
-                if(response.has("banned")){
-                    if (response.getJSONArray("banned").length() > 0) {
-                        for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
-                            String[] plyer = response.getJSONArray("banned").getString(v).split(";");
-                            OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
-                            if(d.isBanned()){
-                                if(plyer[1].equals("u")){
-                                    d.setBanned(false);
-                                }
-                            }else{
-                                if(plyer[1].equals("b")){
-                                    d.setBanned(true);
+        
+        try{
+            boolean goNext = true;
+            int f = 1;
+            while(goNext){
+                long startID = plugin.lastID;
+                JsonHandler webHandle = new JsonHandler( plugin );
+                HashMap<String, String> url_items = new HashMap<String, String>();
+                url_items.put( "latestSync", String.valueOf(plugin.lastID) );
+                url_items.put( "exec", "banSyncNew" );
+                JSONObject response = webHandle.hdl_jobj(url_items);
+                try {
+                    if(response.has("banned")){
+                        if (response.getJSONArray("banned").length() > 0) {
+                            for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
+                                String[] plyer = response.getJSONArray("banned").getString(v).split(";");
+                                OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
+                                if(d.isBanned()){
+                                    if(plyer[1].equals("u")){
+                                        d.setBanned(false);
+                                    }
+                                }else{
+                                    if(plyer[1].equals("b")){
+                                        d.setBanned(true);
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                if(response.has("lastid")){
-                    long h = response.getLong("lastid");
-                    if(h != 0){
-                        plugin.lastID = h;
+                    if(response.has("lastid")){
+                        long h = response.getLong("lastid");
+                        if(h != 0){
+                            plugin.lastID = h;
+                        }
+                    }
+                    if(response.has("more")){
+                        goNext = true;
+                    }else{
+                        goNext = false;
+                    }
+                } catch (NullPointerException e) {
+                    if(plugin.getConfigs().isDebug()){
+                        e.printStackTrace();
+                    }
+                } catch (JSONException e) {
+                    if(plugin.getConfigs().isDebug()){
+                        e.printStackTrace();
                     }
                 }
-                if(response.has("more")){
-                    goNext = true;
+                if(plugin.lastID == startID){
+                    f++;
                 }else{
+                    f = 1;
+                }
+                if(f > 5){
                     goNext = false;
                 }
-            } catch (NullPointerException e) {
-                if(plugin.getConfigs().isDebug()){
-                    e.printStackTrace();
-                }
-            } catch (JSONException e) {
-                if(plugin.getConfigs().isDebug()){
-                    e.printStackTrace();
-                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ignore) {}
             }
-            if(plugin.lastID == startID){
-                f++;
-            }else{
-                f = 1;
-            }
-            if(f > 5){
-                goNext = false;
-            }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ignore) {}
+        } finally {
+            plugin.syncRunning = false;
         }
-        plugin.syncRunning = false;
     }
     public void save(){
         Writer writer = null;
