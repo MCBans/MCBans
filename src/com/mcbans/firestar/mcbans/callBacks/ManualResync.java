@@ -1,6 +1,7 @@
 package com.mcbans.firestar.mcbans.callBacks;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -17,23 +18,27 @@ import com.mcbans.firestar.mcbans.util.Util;
 
 public class ManualResync implements Runnable {
     private final MCBans plugin;
-    private String commandSend = "";
-    public ManualResync(MCBans plugin, String sender){
+    private final String commandSend;
+    
+    public ManualResync(final MCBans plugin, final String sender){
         this.plugin = plugin;
         this.commandSend = sender;
     }
+    
     @Override
     public void run() {
-        if(plugin.syncRunning==true){
+        if(plugin.syncRunning){
             Util.message(commandSend, ChatColor.GREEN + " Sync already in progress!" );
             return;
         }
         plugin.syncRunning = true;
+        
         boolean goNext = true;
         int f = 1;
         plugin.last_req=0;
         plugin.lastID = 0;
         plugin.timeRecieved = 0;
+        
         while(goNext){
             long startID = plugin.lastID;
             JsonHandler webHandle = new JsonHandler( plugin );
@@ -68,11 +73,7 @@ public class ManualResync implements Runnable {
                 if(response.has("lastid")){
                     plugin.lastID = response.getLong("lastid");
                 }
-                if(response.has("more")){
-                    goNext = true;
-                }else{
-                    goNext = false;
-                }
+                goNext = response.has("more");
             } catch (JSONException e) {
                 if(plugin.getConfigs().isDebug()){
                     e.printStackTrace();
@@ -92,17 +93,17 @@ public class ManualResync implements Runnable {
             }
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ignore) {}
         }
         plugin.syncRunning = false;
-        Util.message(commandSend, ChatColor.GREEN + " Sync finished" );
+        
+        Util.message(commandSend, ChatColor.GREEN + " Sync finished");
         this.save();
     }
 
     public void save(){
         try {
-            Writer writer = new OutputStreamWriter(
-                    new FileOutputStream("plugins/MCBans/sync.last"), "UTF-8");
+            Writer writer = new OutputStreamWriter(new FileOutputStream(new File(plugin.getDataFolder(), "sync.last")), "UTF-8");
             BufferedWriter fout = new BufferedWriter(writer);
             fout.write(String.valueOf(plugin.lastID));
             fout.close();
