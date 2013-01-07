@@ -205,7 +205,7 @@ public class BanSync implements Runnable {
     public void save(){
         try {
             Writer writer = new OutputStreamWriter(
-                    new FileOutputStream("plugins/mcbans/sync.last"), "UTF-8");
+                    new FileOutputStream("plugins/MCBans/sync.last"), "UTF-8");
             BufferedWriter fout = new BufferedWriter(writer);
             fout.write(String.valueOf(plugin.lastID));
             fout.close();
@@ -217,7 +217,7 @@ public class BanSync implements Runnable {
         }
     }
     public void load(){
-        File f = new File("plugins/mcbans/sync.last");
+        File f = new File("plugins/MCBans/sync.last");
         if(f.exists()!=true){
             plugin.lastID=0;
             return;
@@ -225,7 +225,7 @@ public class BanSync implements Runnable {
         String strLine="";
         try {
             BufferedReader i = new BufferedReader(new InputStreamReader
-                    (new FileInputStream("plugins/mcbans/sync.last"),"UTF8"));
+                    (new FileInputStream("plugins/MCBans/sync.last"),"UTF8"));
             String line = null;
             while (( line = i.readLine()) != null){
                 strLine += line;
