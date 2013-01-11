@@ -121,15 +121,19 @@ public class ConfigurationManager {
     }
 
     /* ***** Begin Configuration Getters *********************** */
-    public String getPrefix(){
-        return Util.color(conf.getString("prefix", "[MCBans]"));
-    }
     public String getApiKey(){
         if (!isValidKey){
             Util.message((CommandSender)null, ChatColor.RED + "Invalid API Key! Edit your config.yml and type /mcbans reload");
             return "";
         }
         return conf.getString("apiKey", "").trim();
+    }
+    public String getProxyIP(){
+        return conf.getString("proxyIP", "").trim();
+    }
+    
+    public String getPrefix(){
+        return Util.color(conf.getString("prefix", "[MCBans]"));
     }
     public String getLanguage(){
         return conf.getString("language", "default");
@@ -158,13 +162,6 @@ public class ConfigurationManager {
         return conf.getString("logFile", "plugins/MCBans/actions.log");
     }
 
-    public boolean isEnableMaxAlts(){
-        return conf.getBoolean("enableMaxAlts", false);
-    }
-    public int getMaxAlts(){
-        return conf.getInt("maxAlts", 2);
-    }
-
     public String getAffectedWorlds(){
         return conf.getString("affectedWorlds", "*");
     }
@@ -182,9 +179,6 @@ public class ConfigurationManager {
     public boolean isSendJoinMessage(){
         return conf.getBoolean("onJoinMCBansMessage", false);
     }
-    public double getMinRep(){
-        return conf.getDouble("minRep", 3.0D);
-    }
     public int getCallBackInterval(){
         return conf.getInt("callBackInterval", 15);
     }
@@ -195,8 +189,5 @@ public class ConfigurationManager {
     */
     public int getTimeoutInSec(){
         return conf.getInt("timeout", 10);
-    }
-    public boolean isFailsafe(){
-        return conf.getBoolean("failsafe", false);
     }
 }

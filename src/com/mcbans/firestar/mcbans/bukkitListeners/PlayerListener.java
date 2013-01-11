@@ -5,6 +5,7 @@ import static com.mcbans.firestar.mcbans.I18n._;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -44,8 +45,9 @@ public class PlayerListener implements Listener {
         this.config = plugin.getConfigs();
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    //@EventHandler(priority = EventPriority.HIGHEST) // not called here
     public void onAsyncPlayerPreLoginEvent(final AsyncPlayerPreLoginEvent event) {
+        /*
         try {
             int check = 1;
             while (plugin.apiServer == null) {
@@ -170,56 +172,44 @@ public class PlayerListener implements Listener {
                 event.disallow(Result.KICK_BANNED, _("unavailable"));
             }
         }
+        */
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-
-        final HashMap<String,String> pcache = plugin.playerCache.remove(player.getName());
-        if(pcache == null) return;
-
-        if(pcache.containsKey("b")){
-            Util.message(player, ChatColor.RED + _("bansOnRecord"));
-
-            if (!Perms.HIDE_VIEW.has(player))
-                Perms.VIEW_BANS.message(ChatColor.RED + _("previousBans", I18n.PLAYER, player.getName()));
+        
+        // check player connected from proxy
+        if (!checkConnectedFrom(player)){
+            final String ip = player.getAddress().getAddress().getHostAddress();
+            log.severe("[MCBans] ERROR! Invalid connection address(" + ip + ")! Disabling plugin..");
+            plugin.getServer().getPluginManager().disablePlugin(plugin);
+            return;
         }
-        if(pcache.containsKey("d")){
-            Util.message(player, ChatColor.RED + _("disputes", I18n.COUNT, pcache.get("d")));
-        }
-        if(pcache.containsKey("a")){
-            if (!Perms.HIDE_VIEW.has(player))
-                Perms.VIEW_ALTS.message(ChatColor.DARK_PURPLE + _("altAccounts", I18n.PLAYER, player.getName(), I18n.ALTS, pcache.get("al")));
-        }
-        if(pcache.containsKey("m")){
-            //Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
-            // notify to console, mcbans.view.staff, mcbans.admin, mcbans.ban.global players
-            Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is a MCBans Staff member");
-            Set<Player> players = Perms.VIEW_STAFF.getPlayers();
-            players.addAll(Perms.ADMIN.getPlayers());
-            players.addAll(Perms.BAN_GLOBAL.getPlayers());
-            for (Player p : players){
-                Util.message(p, ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
-            }
-
-            // send information to mcbans staff
-            Set<String> admins = new HashSet<String>();
-            for (Player p : Perms.ADMIN.getPlayers()){
-                admins.add(p.getName());
-            }
-            Util.message(player, ChatColor.AQUA + "You are a MCBans Staff Member! (ver " + plugin.getDescription().getVersion() + ")");
-            Util.message(player, ChatColor.AQUA + "Online Admins: " + ((admins.size() > 0) ? Util.join(admins, ", ") : ChatColor.GRAY + "(none)"));
-           
-            // add online mcbans staff list array
-            plugin.mcbStaff.add(player.getName());
-        }
-
+        
         if (config.isSendJoinMessage()){
             Util.message(player, ChatColor.DARK_GREEN + "Server secured by MCBans!");
         }
     }
-
+    private boolean checkConnectedFrom(final Player player){
+        if (player == null || player.getAddress() == null){
+            return false;
+        }
+        
+        final InetAddress inet = player.getAddress().getAddress();
+        if (inet == null || inet.getHostAddress() == null){
+            return false;
+        }
+        
+        // check player connected from local network
+        if (inet.isAnyLocalAddress() || inet.isSiteLocalAddress() || inet.isLoopbackAddress()){
+            return true;
+        }
+        
+        // check from proxy address
+        return inet.getHostAddress().equalsIgnoreCase(config.getProxyIP());
+    }
+    
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(final PlayerQuitEvent event) {
         // send disconnect request

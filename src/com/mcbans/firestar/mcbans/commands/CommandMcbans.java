@@ -169,9 +169,7 @@ public class CommandMcbans extends BaseCommand{
             }else{
                 send("&6-=== Server Settings ===-");
                 send("&6ValidApiKey: &e" + config.isValidApiKey() + "&6 PermissionCtrl: &e" + config.getPermission());
-                send("&6MinRep: &e" + config.getMinRep() + "&6 AutoSync: &e" + config.isEnableAutoSync());
-                send("&6Max Alts: &e" + config.isEnableMaxAlts() + " (" + config.getMaxAlts() +")");
-                send("&6Failsafe: &e" + config.isFailsafe() + "&6 isDebug: &e" + config.isDebug() + "&6 Log: &e" + config.isEnableLog());
+                send("&6This is for proxy version MCBans.jar, no more informations on here...");
                 
                 send("&6-=== Server Status ===-");
                 send("&6MCBans Plugin: &e" + plugin.getDescription().getVersion());
