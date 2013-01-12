@@ -196,13 +196,21 @@ public class PlayerListener implements Listener {
             //Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
             // notify to console, mcbans.view.staff, mcbans.admin, mcbans.ban.global players
             Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is a MCBans Staff member");
-            Set<Player> players = Perms.VIEW_STAFF.getPlayers();
-            players.addAll(Perms.ADMIN.getPlayers());
-            players.addAll(Perms.BAN_GLOBAL.getPlayers());
-            for (Player p : players){
-                Util.message(p, ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
-            }
-
+            
+            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable(){
+                @Override
+                public void run() {
+                    Set<Player> players = Perms.VIEW_STAFF.getPlayers();
+                    players.addAll(Perms.ADMIN.getPlayers());
+                    players.addAll(Perms.BAN_GLOBAL.getPlayers());
+                    for (final Player p : players){
+                        if (p.canSee(player)){ // check joined player cansee
+                            Util.message(p, ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
+                        }
+                    }
+                }
+            }, 1L);
+            
             // send information to mcbans staff
             Set<String> admins = new HashSet<String>();
             for (Player p : Perms.ADMIN.getPlayers()){
