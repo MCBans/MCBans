@@ -2,7 +2,7 @@
 name: MCBans
 main: com.mcbans.firestar.mcbans.MCBans
 version: 4.1-SNAPSHOT
-description: A global banning solution
+description: A global banning solution [For Proxy version]
 website: http://mcbans.com/
 softdepend: [NoCheatPlus, AntiCheat, LogBlock, HawkEye, CoreProtect, Vault, PermissionsEx]
 author: Firestar, Syamn
