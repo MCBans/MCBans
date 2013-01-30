@@ -27,6 +27,7 @@ tempBanAlready: "%PLAYER% is al gebanned van deze server!"
 kickPlayer: "%REASON%"
 kickSuccess: "%PLAYER% is uit de server gegooit!"
 kickNoPlayer: "Geen speler met dat naam!"
+kickExemptPlayer: ""
 kickBroadcast: "%PLAYER% was uit de server gegooit! [%REASON%]"
 
 ipBanSuccess: "IP %IP% is gebant [%REASON%]"

@@ -27,6 +27,7 @@ tempBanAlready: "¡%PLAYER% ya está prohibido desde el servidor!"
 kickPlayer: "%REASON%"
 kickSuccess: "¡%PLAYER% fue expulsado!"
 kickNoPlayer: ""
+kickExemptPlayer: ""
 kickBroadcast: ""
 
 ipBanSuccess: ""
