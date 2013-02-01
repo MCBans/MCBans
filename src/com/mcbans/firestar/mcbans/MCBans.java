@@ -37,6 +37,7 @@ import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 import fr.neatmonster.nocheatplus.NoCheatPlus;
 
 public class MCBans extends JavaPlugin {
+    public final String apiRequestSuffix = "4.1";
     private static MCBans instance;
 
     public int taskID = 0;

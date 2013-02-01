@@ -69,7 +69,8 @@ public class PlayerListener implements Listener {
             // get player information
             final String uriStr = "http://" + plugin.apiServer + "/v2/" + config.getApiKey() + "/login/"
                     + URLEncoder.encode(event.getName(), "UTF-8") + "/"
-                    + URLEncoder.encode(String.valueOf(event.getAddress().getHostAddress()), "UTF-8");
+                    + URLEncoder.encode(String.valueOf(event.getAddress().getHostAddress()), "UTF-8") + "/"
+                    + plugin.apiRequestSuffix;
             final URLConnection conn = new URL(uriStr).openConnection();
 
             conn.setConnectTimeout(config.getTimeoutInSec() * 1000);
@@ -96,7 +97,7 @@ public class PlayerListener implements Listener {
 
             plugin.debug("Response: " + response);
             String[] s = response.split(";");
-            if (s.length == 6 || s.length == 7) {
+            if (s.length == 6 || s.length == 7 || s.length == 8) {
                 // check banned
                 if (s[0].equals("l") || s[0].equals("g") || s[0].equals("t") || s[0].equals("i") || s[0].equals("s")) {
                     event.disallow(Result.KICK_BANNED, s[1]);
@@ -116,17 +117,24 @@ public class PlayerListener implements Listener {
                 else{
                     HashMap<String, String> tmp = new HashMap<String, String>();
                     if(s[0].equals("b")){
-                        tmp.put("b", "y");
+                        if (s.length == 8){
+                            tmp.put("b", s[7]);
+                        }else{
+                            tmp.put("b", null);
+                        }
                     }
-                    if(Integer.parseInt(s[3])>0){
+                    if(Integer.parseInt(s[3]) > 0){
                         tmp.put("a", s[3]);
                         tmp.put("al", s[6]);
                     }
                     if(s[4].equals("y")){
                         tmp.put("m", "y");
                     }
-                    if(Integer.parseInt(s[5])>0){
+                    if(Integer.parseInt(s[5]) > 0){
                         tmp.put("d", s[5]);
+                    }
+                    if (s.length == 8){
+                       
                     }
                     plugin.playerCache.put(event.getName(), tmp);
                 }
@@ -181,9 +189,20 @@ public class PlayerListener implements Listener {
 
         if(pcache.containsKey("b")){
             Util.message(player, ChatColor.RED + _("bansOnRecord"));
-
-            if (!Perms.HIDE_VIEW.has(player))
+            
+            if (!Perms.HIDE_VIEW.has(player)){
                 Perms.VIEW_BANS.message(ChatColor.RED + _("previousBans", I18n.PLAYER, player.getName()));
+                
+                String prev = pcache.get("b");
+                if (prev != null){
+                    prev = prev.trim();
+                    String[] bans = prev.split(",");
+                    for (String ban : bans){
+                        String[] data = ban.split("\\$");
+                        Perms.VIEW_BANS.message(ChatColor.WHITE+ data[1] + ChatColor.GRAY + " .:. " + ChatColor.WHITE + data[0] + ChatColor.GRAY +  " (by " + data[2] + ")");
+                    }
+                }
+            }
         }
         if(pcache.containsKey("d")){
             Util.message(player, ChatColor.RED + _("disputes", I18n.COUNT, pcache.get("d")));

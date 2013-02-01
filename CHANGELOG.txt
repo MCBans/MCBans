@@ -1,4 +1,5 @@
 4.1 [Next Release]:
+- Added show detail previous bans message on join
 - Added permission: exempt from kicks (mcbans.kick.exempt)
 - Fixed language file warning
 - Fixed ban sync
