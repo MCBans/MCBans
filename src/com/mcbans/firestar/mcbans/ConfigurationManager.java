@@ -100,7 +100,7 @@ public class ConfigurationManager {
             String destPath = new File(pluginDir, destName).getPath();
             try{
                 FileStructure.copyTransfer(srcPath, destPath);
-                log.info("Copied old config.yml to "+destName+"!");
+                log.info("Outdated config file! Copied old config.yml to " + destName + "!");
             }catch(Exception ex){
                 log.warning("Failed to copy old config.yml!");
             }
