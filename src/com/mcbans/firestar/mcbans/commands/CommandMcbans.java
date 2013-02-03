@@ -2,6 +2,8 @@ package com.mcbans.firestar.mcbans.commands;
 
 import static com.mcbans.firestar.mcbans.I18n._;
 
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
