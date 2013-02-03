@@ -43,7 +43,7 @@ public class I18n {
     }
 
     // Extract methods
-    private static void extractLanguageFiles(final boolean force){
+    public static void extractLanguageFiles(final boolean force){
         final File langDir = getLanguagesDir();
         FileStructure.createDir(langDir);
 
@@ -118,7 +118,7 @@ public class I18n {
             if (msg == null) ActionLog.getInstance().warning("Missing message key '" + key + "'");
             msg = getString(fallbackMessages, key);
             if (msg == null || msg.length() == 0){
-                ActionLog.getInstance().warning("Delete languages/default.yml and restart the server to regenerate.");
+                ActionLog.getInstance().warning("Delete language files and type '/mcbans reload' to regenerate them.");
                 return "!" + key + "!";
             }
         }

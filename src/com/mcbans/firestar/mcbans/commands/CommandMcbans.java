@@ -142,6 +142,7 @@ public class CommandMcbans extends BaseCommand{
             }
             send(ChatColor.AQUA + "Reloading Language File..");
             try{
+                I18n.extractLanguageFiles(false);
                 I18n.setCurrentLanguage(config.getLanguage());
                 send(ChatColor.GREEN + "Reload completed!");
             }catch(Exception ex){
