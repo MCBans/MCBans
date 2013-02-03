@@ -1,4 +1,4 @@
-4.1 [Next Release]:
+4.1:
 - Added show detail previous bans message on join
 - Added sendDetailPrevBansOnJoin configuration (auto regenerate config.yml)
 - Added permission: exempt from kicks (mcbans.kick.exempt)
