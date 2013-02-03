@@ -106,8 +106,12 @@ public class CommandMcbans extends BaseCommand{
                 if(callBackInterval < (60 * 15)){
                     callBackInterval = (60 * 15);
                 }
-                String r = this.timeRemain( (plugin.lastCallBack + callBackInterval) - (System.currentTimeMillis() / 1000) );
-                send(ChatColor.GOLD + r + " until next callback request.");
+                final String remainStr = timeRemain( (plugin.lastCallBack + callBackInterval) - (System.currentTimeMillis() / 1000) );
+                if (remainStr != null){
+                    send(ChatColor.GOLD + remainStr + " until next callback request.");
+                }else{
+                    send(ChatColor.GOLD  + "Callback request is in progress...");
+                }
             }
             else if (args.size() > 0 && args.get(0).equalsIgnoreCase("sync")){
                 if (config.isEnableAutoSync()){
@@ -115,8 +119,12 @@ public class CommandMcbans extends BaseCommand{
                     if(syncInterval < (60 * 5)){
                         syncInterval = (60 * 5);
                     }
-                    String r = this.timeRemain( (plugin.lastSync + syncInterval) - (System.currentTimeMillis() / 1000) );
-                    send(ChatColor.GOLD + r + " until next sync.");
+                    final String remainStr = timeRemain( (plugin.lastSync + syncInterval) - (System.currentTimeMillis() / 1000) );
+                    if (remainStr != null){
+                        send(ChatColor.GOLD + remainStr + " until next sync.");
+                    }else{
+                        send(ChatColor.GOLD  + "Ban sync is in progress...");
+                    }
                 }else{
                     send(ChatColor.RED + "Auto sync is disabled by config.yml!");
                 }
@@ -195,6 +203,9 @@ public class CommandMcbans extends BaseCommand{
     }
 
     private String timeRemain(long remain) {
+        if (remain <= 0){
+            return null;
+        }
         try {
             String format = "";
             long timeRemaining = remain;
@@ -220,7 +231,10 @@ public class CommandMcbans extends BaseCommand{
             }
             return format;
         } catch (ArithmeticException e) {
-            return "";
+            if (config.isDebug()){
+                e.printStackTrace();
+            }
+            return "error";
         }
     }
 
