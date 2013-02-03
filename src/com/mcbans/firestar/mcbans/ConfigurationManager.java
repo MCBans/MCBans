@@ -14,7 +14,7 @@ import com.mcbans.firestar.mcbans.util.Util;
 
 public class ConfigurationManager {
     /* Current config.yml File Version! */
-    private final int latestVersion = 1;
+    private final int latestVersion = 2;
 
     private final MCBans plugin;
     private final ActionLog log;
@@ -181,6 +181,9 @@ public class ConfigurationManager {
 
     public boolean isSendJoinMessage(){
         return conf.getBoolean("onJoinMCBansMessage", false);
+    }
+    public boolean isSendDetailPrevBans(){
+        return conf.getBoolean("sendDetailPrevBansOnJoin", false);
     }
     public double getMinRep(){
         return conf.getDouble("minRep", 3.0D);

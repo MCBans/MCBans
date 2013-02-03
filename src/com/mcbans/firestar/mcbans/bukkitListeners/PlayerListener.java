@@ -194,7 +194,7 @@ public class PlayerListener implements Listener {
                 Perms.VIEW_BANS.message(ChatColor.RED + _("previousBans", I18n.PLAYER, player.getName()));
                 
                 String prev = pcache.get("b");
-                if (prev != null){
+                if (config.isSendDetailPrevBans() && prev != null){
                     prev = prev.trim();
                     String[] bans = prev.split(",");
                     for (String ban : bans){

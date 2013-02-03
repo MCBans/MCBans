@@ -119,6 +119,12 @@ autoSyncInterval: 5
 #   DEFAULT: false, RECOMMENDED: true
 onJoinMCBansMessage: false
 
+# sendDetailPrevBansOnJoin:
+#   Show detail previous bans information (banned server, reason, issued by) on player join.
+#   (Require "mcbans.view.bans" permission. "mcbans.hideview" is exempt permission.)
+#   DEFAULT: true
+sendDetailPrevBansOnJoin: true
+
 # minRep:
 #   Minimum reputation a user may have before being disallowed access to the server.
 #   DEFAULT: 3 (-1 to disable)
@@ -145,4 +151,4 @@ failsafe: false
 # DO NOT TOUCH
 #   Do not touch this option! It is a check if you are running the recent configuration version
 ##
-ConfigVersion: 1
+ConfigVersion: 2
