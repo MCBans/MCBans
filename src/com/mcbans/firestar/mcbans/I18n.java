@@ -118,6 +118,7 @@ public class I18n {
             if (msg == null) ActionLog.getInstance().warning("Missing message key '" + key + "'");
             msg = getString(fallbackMessages, key);
             if (msg == null || msg.length() == 0){
+                ActionLog.getInstance().warning("Delete languages/default.yml and restart the server to regenerate.");
                 return "!" + key + "!";
             }
         }
