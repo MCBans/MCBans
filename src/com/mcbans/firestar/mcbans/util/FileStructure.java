@@ -80,7 +80,6 @@ public class FileStructure {
         InputStream in = null;
         InputStreamReader reader = null;
         OutputStreamWriter writer =null;
-        DataInputStream dis = null;
         try{
             // get inside jar resource uri
             URL res = MCBans.class.getResource(from);
@@ -117,16 +116,10 @@ public class FileStructure {
             ex.printStackTrace();
         }finally{
             // close stream
-            try{
-                if (out != null)
-                    out.close();
-                if (in != null)
-                    in.close();
-                if (reader != null)
-                    reader.close();
-                if (writer != null)
-                    writer.close();
-            }catch (Exception ex){}
+            try{ if (out != null) out.close(); } catch (Exception ignore){}
+            try{ if (in != null) in.close(); } catch (Exception ignore){}
+            try{ if (reader != null) reader.close(); } catch (Exception ignore){}
+            try{ if (writer != null) writer.close(); } catch (Exception ignore){}
         }
     }
 

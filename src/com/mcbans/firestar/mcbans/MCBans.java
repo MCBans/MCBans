@@ -75,6 +75,9 @@ public class MCBans extends JavaPlugin {
                 syncBan.interrupt();
             }
         }
+        
+        getServer().getScheduler().cancelTasks(this);
+        instance = null;
 
         final PluginDescriptionFile pdfFile = this.getDescription();
         log.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled!");
