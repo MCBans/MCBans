@@ -199,7 +199,9 @@ public class PlayerListener implements Listener {
                     String[] bans = prev.split(",");
                     for (String ban : bans){
                         String[] data = ban.split("\\$");
-                        Perms.VIEW_BANS.message(ChatColor.WHITE+ data[1] + ChatColor.GRAY + " .:. " + ChatColor.WHITE + data[0] + ChatColor.GRAY +  " (by " + data[2] + ")");
+                        if (data.length == 3){
+                            Perms.VIEW_BANS.message(ChatColor.WHITE+ data[1] + ChatColor.GRAY + " .:. " + ChatColor.WHITE + data[0] + ChatColor.GRAY +  " (by " + data[2] + ")");
+                        }
                     }
                 }
             }
