@@ -27,6 +27,7 @@ tempBanAlready: "%PLAYER% は既にこのサーバーでBANされています！
 kickPlayer: "%REASON%"
 kickSuccess: "%PLAYER% はkickされました！"
 kickNoPlayer: "%PLAYER% はオフラインです！"
+kickExemptPlayer: "%PLAYER% をKickすることはできません！"
 kickBroadcast: "%ADMIN% は %PLAYER% をkickしました[%REASON%]"
 
 ipBanSuccess: "IP %IP% はBANされました:[%REASON%]"

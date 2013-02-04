@@ -27,6 +27,7 @@ tempBanAlready: "%PLAYER% est déjà banni sur ce serveur!"
 kickPlayer: "%REASON%"
 kickSuccess: "%PLAYER% a été expulsé!"
 kickNoPlayer: "%PLAYER% n'est pas en ligne!"
+kickExemptPlayer: ""
 kickBroadcast: "%ADMIN% a donne le coup %PLAYER% [%REASON%]"
 
 ipBanSuccess: "IP %IP% a ete banni [%REASON%]"

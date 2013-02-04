@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.events.PlayerKickEvent;
+import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class Kick implements Runnable {
@@ -35,6 +36,12 @@ public class Kick implements Runnable {
     public void run() {
         final Player player = (useExactName) ? plugin.getServer().getPlayerExact(playerName) : plugin.getServer().getPlayer(playerName);
         if (player != null) {
+            // Check exempt permission
+            if (Perms.EXEMPT_KICK.has(player)){
+                Util.message(senderName, ChatColor.RED + _("kickExemptPlayer", I18n.PLAYER, playerName));
+                return;
+            }
+            
             // Call PlayerKickEvent
             PlayerKickEvent kickEvent = new PlayerKickEvent(player.getName(), senderName, reason);
             plugin.getServer().getPluginManager().callEvent(kickEvent);

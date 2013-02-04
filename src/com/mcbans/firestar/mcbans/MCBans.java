@@ -37,6 +37,7 @@ import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 import fr.neatmonster.nocheatplus.NoCheatPlus;
 
 public class MCBans extends JavaPlugin {
+    public final String apiRequestSuffix = "4.1";
     private static MCBans instance;
 
     public int taskID = 0;
@@ -74,6 +75,9 @@ public class MCBans extends JavaPlugin {
                 syncBan.interrupt();
             }
         }
+        
+        getServer().getScheduler().cancelTasks(this);
+        instance = null;
 
         final PluginDescriptionFile pdfFile = this.getDescription();
         log.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled!");

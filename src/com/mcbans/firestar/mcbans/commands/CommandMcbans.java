@@ -2,9 +2,12 @@ package com.mcbans.firestar.mcbans.commands;
 
 import static com.mcbans.firestar.mcbans.I18n._;
 
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.callBacks.ManualResync;
@@ -106,8 +109,12 @@ public class CommandMcbans extends BaseCommand{
                 if(callBackInterval < (60 * 15)){
                     callBackInterval = (60 * 15);
                 }
-                String r = this.timeRemain( (plugin.lastCallBack + callBackInterval) - (System.currentTimeMillis() / 1000) );
-                send(ChatColor.GOLD + r + " until next callback request.");
+                final String remainStr = timeRemain( (plugin.lastCallBack + callBackInterval) - (System.currentTimeMillis() / 1000) );
+                if (remainStr != null){
+                    send(ChatColor.GOLD + remainStr + " until next callback request.");
+                }else{
+                    send(ChatColor.GOLD  + "Callback request is in progress...");
+                }
             }
             else if (args.size() > 0 && args.get(0).equalsIgnoreCase("sync")){
                 if (config.isEnableAutoSync()){
@@ -115,8 +122,12 @@ public class CommandMcbans extends BaseCommand{
                     if(syncInterval < (60 * 5)){
                         syncInterval = (60 * 5);
                     }
-                    String r = this.timeRemain( (plugin.lastSync + syncInterval) - (System.currentTimeMillis() / 1000) );
-                    send(ChatColor.GOLD + r + " until next sync.");
+                    final String remainStr = timeRemain( (plugin.lastSync + syncInterval) - (System.currentTimeMillis() / 1000) );
+                    if (remainStr != null){
+                        send(ChatColor.GOLD + remainStr + " until next sync.");
+                    }else{
+                        send(ChatColor.GOLD  + "Ban sync is in progress...");
+                    }
                 }else{
                     send(ChatColor.RED + "Auto sync is disabled by config.yml!");
                 }
@@ -142,6 +153,7 @@ public class CommandMcbans extends BaseCommand{
             }
             send(ChatColor.AQUA + "Reloading Language File..");
             try{
+                I18n.extractLanguageFiles(false);
                 I18n.setCurrentLanguage(config.getLanguage());
                 send(ChatColor.GREEN + "Reload completed!");
             }catch(Exception ex){
@@ -166,6 +178,17 @@ public class CommandMcbans extends BaseCommand{
                 send("&6ApiServer: &e" + plugin.apiServer + " &6last_req: &e" + plugin.last_req + " &6last_sync: &e" + plugin.lastSync);
                 send("&6timeRecieved: &e" + plugin.timeRecieved + " &6syncRunning: &e" + plugin.syncRunning + " &6lastID: &e" + plugin.lastID);
                 send("&6NCP: &e" + plugin.isEnabledNCP() + " &6AC: &e" + plugin.isEnabledAC());
+            }else if(args.size() > 0 && args.get(0).equalsIgnoreCase("verify")) {
+                //Send to console
+                Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is a MCBans Staff member");
+            	//All players who should be able to see the message
+                Set<Player> players = Perms.VIEW_STAFF.getPlayers();
+                players.addAll(Perms.ADMIN.getPlayers());
+                players.addAll(Perms.BAN_GLOBAL.getPlayers());
+                //Send it
+                for (Player p : players){
+                    Util.message(p, ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
+                }
             }else{
                 send("&6-=== Server Settings ===-");
                 send("&6ValidApiKey: &e" + config.isValidApiKey() + "&6 PermissionCtrl: &e" + config.getPermission());
@@ -192,6 +215,9 @@ public class CommandMcbans extends BaseCommand{
     }
 
     private String timeRemain(long remain) {
+        if (remain <= 0){
+            return null;
+        }
         try {
             String format = "";
             long timeRemaining = remain;
@@ -217,7 +243,10 @@ public class CommandMcbans extends BaseCommand{
             }
             return format;
         } catch (ArithmeticException e) {
-            return "";
+            if (config.isDebug()){
+                e.printStackTrace();
+            }
+            return "error";
         }
     }
 

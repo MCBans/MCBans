@@ -12,8 +12,8 @@
 ##
 
 # apiKey:
-#   Your servers apiKey, same as set to MCBansProxy(plugin for BungeeCord) plugin
-apiKey:
+#   Your servers apiKey can be found in your account dashboard http://my.mcbans.com/servers
+apiKey: YOUR_API_KEY_HERE
 
 # proxyIP:
 #   Your proxy servers(BungeeCord) IP address
@@ -114,6 +114,17 @@ autoSyncInterval: 5
 #   DEFAULT: false, RECOMMENDED: true
 onJoinMCBansMessage: false
 
+# sendDetailPrevBansOnJoin:
+#   Show detail previous bans information (banned server, reason, issued by) on player join.
+#   (Require "mcbans.view.bans" permission. "mcbans.hideview" is exempt permission.)
+#   DEFAULT: true
+sendDetailPrevBansOnJoin: true
+
+# minRep:
+#   Minimum reputation a user may have before being disallowed access to the server.
+#   DEFAULT: 3 (-1 to disable)
+minRep: 3
+
 # callBackInterval:
 #   Time (in minutes) between callbacks to the MCBans Master Server
 #   (Excluding the API connections on userConnect)
@@ -124,4 +135,4 @@ callBackInterval: 15
 # DO NOT TOUCH
 #   Do not touch this option! It is a check if you are running the recent configuration version
 ##
-ConfigVersion: 1
+ConfigVersion: 2

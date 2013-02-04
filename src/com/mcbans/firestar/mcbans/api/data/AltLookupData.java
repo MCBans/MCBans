@@ -1,11 +1,11 @@
 package com.mcbans.firestar.mcbans.api.data;
 
 import java.util.HashMap;
-//import java.util.concurrent.ConcurrentHashMap;
 
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.util.Util;
+//import java.util.concurrent.ConcurrentHashMap;
 
 public class AltLookupData {
     private String playerName;

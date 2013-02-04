@@ -14,7 +14,7 @@ import com.mcbans.firestar.mcbans.util.Util;
 
 public class ConfigurationManager {
     /* Current config.yml File Version! */
-    private final int latestVersion = 1;
+    private final int latestVersion = 2;
 
     private final MCBans plugin;
     private final ActionLog log;
@@ -100,7 +100,7 @@ public class ConfigurationManager {
             String destPath = new File(pluginDir, destName).getPath();
             try{
                 FileStructure.copyTransfer(srcPath, destPath);
-                log.info("Copied old config.yml to "+destName+"!");
+                log.info("Outdated config file! Copied old config.yml to " + destName + "!");
             }catch(Exception ex){
                 log.warning("Failed to copy old config.yml!");
             }
@@ -178,6 +178,9 @@ public class ConfigurationManager {
 
     public boolean isSendJoinMessage(){
         return conf.getBoolean("onJoinMCBansMessage", false);
+    }
+    public boolean isSendDetailPrevBans(){
+        return conf.getBoolean("sendDetailPrevBansOnJoin", false);
     }
     public int getCallBackInterval(){
         return conf.getInt("callBackInterval", 15);

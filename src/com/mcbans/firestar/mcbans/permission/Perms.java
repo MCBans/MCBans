@@ -33,6 +33,9 @@ public enum Perms {
 
     // Hide permissions
     HIDE_VIEW       ("hideview"),
+    
+    // Exempt
+    EXEMPT_KICK     ("kick.exempt"),
 
     // Others
     KICK            ("kick"),
@@ -52,7 +55,6 @@ public enum Perms {
     Perms(final String node){
         this.node = HEADER + node;
     }
-
 
     /**
      * Check permissible has this permission.

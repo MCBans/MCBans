@@ -27,6 +27,7 @@ tempBanAlready: "%PLAYER% er allerede stengt ute fra denne serveren!"
 kickPlayer: "%REASON%"
 kickSuccess: "%PLAYER% har blitt kastet ut!"
 kickNoPlayer: ""
+kickExemptPlayer: ""
 kickBroadcast: ""
 
 ipBanSuccess: ""
