@@ -401,9 +401,6 @@ public class Ban implements Runnable {
                 target.setBanned(false);
             }
         }
-        if (!target.isBanned()) {
-            target.setBanned(true);
-        }
     }
 
     private Map<String, JSONObject> getProof() throws JSONException{
