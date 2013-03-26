@@ -12,6 +12,8 @@ import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.callBacks.MessageCallback;
+import com.mcbans.firestar.mcbans.events.PlayerBanEvent;
+import com.mcbans.firestar.mcbans.events.PlayerIPBanEvent;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.util.Util;
@@ -37,6 +39,14 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
     @Override
     protected void execute() {
         JSONObject response = this.request_JOBJ();
+        
+        PlayerIPBanEvent ipBanEvent = new PlayerIPBanEvent(ip, issuedBy, reason);
+        plugin.getServer().getPluginManager().callEvent(ipBanEvent);
+        if (ipBanEvent.isCancelled()){
+            return;
+        }
+        issuedBy = ipBanEvent.getSenderName();
+        reason = ipBanEvent.getReason();
         
         // Add default bukkit ipban
         if (Util.isValidIP(ip)){

@@ -385,7 +385,7 @@ public class Ban implements Runnable {
         }
     }
 
-    private void bukkitBan(final boolean flag){        
+    private void bukkitBan(final boolean flag){
         OfflinePlayer target = plugin.getServer().getOfflinePlayer(playerName);
         if (target == null){
             return;
