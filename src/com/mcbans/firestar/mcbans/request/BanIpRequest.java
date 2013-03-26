@@ -14,6 +14,7 @@ import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.callBacks.MessageCallback;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
+import com.mcbans.firestar.mcbans.util.Util;
 
 public class BanIpRequest extends BaseRequest<MessageCallback>{
     private String ip;
@@ -36,6 +37,11 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
     @Override
     protected void execute() {
         JSONObject response = this.request_JOBJ();
+        
+        // Add default bukkit ipban
+        if (Util.isValidIP(ip)){
+            Bukkit.getServer().banIP(ip);
+        }
         
         try {
             if (response != null && response.has("result")){
