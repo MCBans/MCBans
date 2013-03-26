@@ -1,3 +1,8 @@
+4.2:
+- Using bukkit default ban/ipban list for some commands
+- Add cancellable IPBanEvent and IPBannedEvent
+- Fixed error while ban syncing
+
 4.1:
 - Added show detail previous bans message on join
 - Added sendDetailPrevBansOnJoin configuration (auto regenerate config.yml)
