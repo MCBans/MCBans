@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import net.h31ix.anticheat.api.AnticheatAPI;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -136,6 +137,13 @@ public class Ban implements Runnable {
             return;
         }
         senderName = unBanEvent.getSenderName();
+        
+        // First, remove from bukkit banlist
+        if (!Util.isValidIP(playerName)){
+            bukkitBan(false);
+        }else{
+            Bukkit.getServer().unbanIP(playerName);
+        }
 
         JsonHandler webHandle = new JsonHandler(plugin);
         HashMap<String, String> url_items = new HashMap<String, String>();
@@ -143,6 +151,7 @@ public class Ban implements Runnable {
         url_items.put("admin", senderName);
         url_items.put("exec", "unBan");
         HashMap<String, String> response = webHandle.mainRequest(url_items);
+        
         if (response.containsKey("error")){
             Util.message(senderName, ChatColor.RED + "Error: " + response.get("error"));
             return;
@@ -153,10 +162,7 @@ public class Ban implements Runnable {
         }
         if (response.get("result").equals("y")) {
             if (!Util.isValidIP(playerName)){
-                OfflinePlayer d = plugin.getServer().getOfflinePlayer(playerName);
-                if (d.isBanned()) {
-                    d.setBanned(false);
-                }
+                
             }
             Util.message(senderName, ChatColor.GREEN + _("unBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName));
             plugin.getServer().getPluginManager().callEvent(new PlayerUnbannedEvent(playerName, senderName));
@@ -182,6 +188,9 @@ public class Ban implements Runnable {
         }
         senderName = lBanEvent.getSenderName();
         reason = lBanEvent.getReason();
+        
+        // First, add bukkit banlist
+        bukkitBan(true);
 
         JsonHandler webHandle = new JsonHandler(plugin);
         HashMap<String, String> url_items = new HashMap<String, String>();
@@ -203,7 +212,7 @@ public class Ban implements Runnable {
                 return;
             }
             if (!response.containsKey("result")) {
-                bukkitBan();
+                Util.message(senderName, ChatColor.RED + " MCBans down, added bukkit default ban, unban with /pardon");
                 return;
             }
             if (response.get("result").equals("y")) {
@@ -225,7 +234,7 @@ public class Ban implements Runnable {
             }
             log.info(senderName + " has tried to ban " + playerName + " with a local type ban [" + reason + "]!");
         } catch (Exception ex) {
-            bukkitBan();
+            Util.message(senderName, ChatColor.RED + " MCBans down, added bukkit default ban, unban with /pardon");
             log.warning("Error occurred in localBan. Please report this!");
             ex.printStackTrace();
         }
@@ -240,6 +249,9 @@ public class Ban implements Runnable {
         }
         senderName = gBanEvent.getSenderName();
         reason = gBanEvent.getReason();
+        
+        // First, add bukkit banlist
+        bukkitBan(true);
 
         JsonHandler webHandle = new JsonHandler(plugin);
         HashMap<String, String> url_items = new HashMap<String, String>();
@@ -273,7 +285,7 @@ public class Ban implements Runnable {
                 return;
             }
             if (!response.containsKey("result")) {
-                bukkitBan();
+                Util.message(senderName, ChatColor.RED + " MCBans down, added bukkit default ban, unban with /pardon");
                 return;
             }
             if (response.get("result").equals("y")) {
@@ -299,7 +311,8 @@ public class Ban implements Runnable {
             }
             log.info(senderName + " has tried to ban " + playerName + " with a global type ban [" + reason + "]!");
         } catch (Exception ex) {
-            bukkitBan();
+            Util.message(senderName, ChatColor.RED + " MCBans down, added bukkit default ban, unban with /pardon");
+            
             log.warning("Error occurred in globalBan. Please report this!");
             ex.printStackTrace();
         }
@@ -372,13 +385,22 @@ public class Ban implements Runnable {
         }
     }
 
-    private void bukkitBan(){
-        Util.message(senderName, ChatColor.RED + " MCBans down, adding bukkit default ban, unban with /pardon");
+    private void bukkitBan(final boolean flag){
         OfflinePlayer target = plugin.getServer().getOfflinePlayer(playerName);
-        if (!target.isBanned()) {
-            target.setBanned(true);
+        if (target == null){
+            return;
         }
-        this.kickPlayer(playerName, _("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+        
+        if (flag){
+            if (!target.isBanned()){
+                target.setBanned(true);
+                this.kickPlayer(playerName, _("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+            }
+        }else{
+            if (target.isBanned()){
+                target.setBanned(false);
+            }
+        }
     }
 
     private Map<String, JSONObject> getProof() throws JSONException{
