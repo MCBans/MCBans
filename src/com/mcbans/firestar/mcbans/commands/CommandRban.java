@@ -81,6 +81,9 @@ public class CommandRban extends BaseCommand{
                 }
                 banControl = new Ban(plugin, type.getActionName(), target, targetIP, senderName, reason, duration, measure, (new JSONObject()), true);
                 break;
+                
+            case UNBAN:
+            	break;
         }
 
         // Start
