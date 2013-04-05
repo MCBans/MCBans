@@ -99,17 +99,12 @@ public class PermissionHandler {
      * @return true if permissible has that permission.
      */
     public boolean has(final Permissible permissible, final String permission){
-        // Console has all permission, return true
-        if (permissible instanceof ConsoleCommandSender){
+        // Console / Rcon has all permission, return true
+        if (!(permissible instanceof Player)){
             return true;
         }
-        // is not player, return false
-        Player player = null;
-        if (permissible instanceof Player){
-            player = (Player) permissible;
-        }else{
-            return false;
-        }
+        
+        Player player = (Player) permissible;
 
         // Switch by using permission controller
         switch (permType){
