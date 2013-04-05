@@ -1,3 +1,6 @@
+4.21:
+- Fixed rcon permission issue
+
 4.2:
 - Using bukkit default ban/ipban list for some commands
 - Add cancellable IPBanEvent and IPBannedEvent
