@@ -12,8 +12,11 @@ import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.callBacks.MessageCallback;
+import com.mcbans.firestar.mcbans.events.PlayerIPBanEvent;
+import com.mcbans.firestar.mcbans.events.PlayerIPBannedEvent;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
+import com.mcbans.firestar.mcbans.util.Util;
 
 public class BanIpRequest extends BaseRequest<MessageCallback>{
     private String ip;
@@ -37,6 +40,19 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
     protected void execute() {
         JSONObject response = this.request_JOBJ();
         
+        PlayerIPBanEvent ipBanEvent = new PlayerIPBanEvent(ip, issuedBy, reason);
+        plugin.getServer().getPluginManager().callEvent(ipBanEvent);
+        if (ipBanEvent.isCancelled()){
+            return;
+        }
+        issuedBy = ipBanEvent.getSenderName();
+        reason = ipBanEvent.getReason();
+        
+        // Add default bukkit ipban
+        if (Util.isValidIP(ip)){
+            Bukkit.getServer().banIP(ip);
+        }
+        
         try {
             if (response != null && response.has("result")){
                 final String result = response.getString("result").trim().toLowerCase(Locale.ENGLISH);
@@ -48,6 +64,7 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
                     kickPlayerByIP(this.ip, reason);
                     
                     log.info("IP " + ip + " has been banned [" + reason + "] [" + issuedBy + "]!");
+                    plugin.getServer().getPluginManager().callEvent(new PlayerIPBannedEvent(ip, issuedBy, reason));
                 }else if (result.equals("a")){
                     // equals("a") if already banned ip
                     callback.error(ChatColor.RED + _("ipBanAlready", I18n.IP, this.ip, I18n.SENDER, this.issuedBy, I18n.REASON, this.reason));

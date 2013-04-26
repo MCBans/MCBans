@@ -3,7 +3,6 @@ package com.mcbans.firestar.mcbans.permission;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.Plugin;
@@ -99,17 +98,12 @@ public class PermissionHandler {
      * @return true if permissible has that permission.
      */
     public boolean has(final Permissible permissible, final String permission){
-        // Console has all permission, return true
-        if (permissible instanceof ConsoleCommandSender){
+        // Console / Rcon has all permission, return true
+        if (!(permissible instanceof Player)){
             return true;
         }
-        // is not player, return false
-        Player player = null;
-        if (permissible instanceof Player){
-            player = (Player) permissible;
-        }else{
-            return false;
-        }
+        
+        Player player = (Player) permissible;
 
         // Switch by using permission controller
         switch (permType){

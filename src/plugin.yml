@@ -1,7 +1,7 @@
 ##  Plugin Information  ##
 name: MCBans
 main: com.mcbans.firestar.mcbans.MCBans
-version: 4.1
+version: 4.21
 description: A global banning solution [For Proxy version]
 website: http://mcbans.com/
 softdepend: [NoCheatPlus, AntiCheat, LogBlock, HawkEye, CoreProtect, Vault, PermissionsEx]

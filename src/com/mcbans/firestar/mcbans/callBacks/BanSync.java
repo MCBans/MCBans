@@ -90,13 +90,15 @@ public class BanSync implements Runnable {
                             for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
                                 String[] plyer = response.getJSONArray("banned").getString(v).split(";");
                                 OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
-                                if(d.isBanned()){
-                                    if(plyer[1].equals("u")){
-                                        d.setBanned(false);
-                                    }
-                                }else{
-                                    if(plyer[1].equals("b")){
-                                        d.setBanned(true);
+                                if (d != null){
+                                    if(d.isBanned()){
+                                        if(plyer[1].equals("u")){
+                                            d.setBanned(false);
+                                        }
+                                    }else{
+                                        if(plyer[1].equals("b")){
+                                            d.setBanned(true);
+                                        }
                                     }
                                 }
                             }
@@ -163,13 +165,15 @@ public class BanSync implements Runnable {
                             for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
                                 String[] plyer = response.getJSONArray("banned").getString(v).split(";");
                                 OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
-                                if(d.isBanned()){
-                                    if(plyer[1].equals("u")){
-                                        d.setBanned(false);
-                                    }
-                                }else{
-                                    if(plyer[1].equals("b")){
-                                        d.setBanned(true);
+                                if (d != null){
+                                    if(d.isBanned()){
+                                        if(plyer[1].equals("u")){
+                                            d.setBanned(false);
+                                        }
+                                    }else{
+                                        if(plyer[1].equals("b")){
+                                            d.setBanned(true);
+                                        }
                                     }
                                 }
                             }

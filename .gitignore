@@ -4,6 +4,12 @@
 .settings
 .settings/
 
+# intellij
+*.iml
+*.ipr
+*.iws
+.idea/
+
 # Mac filesystem dust
 .DS_Store
 

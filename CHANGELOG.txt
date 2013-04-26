@@ -1,3 +1,12 @@
+4.21:
+- Fixed rcon permission issue
+
+4.2:
+- Using bukkit default ban/ipban list for some commands
+- Add cancellable IPBanEvent and IPBannedEvent
+- Fixed error while ban syncing
+- Update sv-se language file ( Thanks to oggehej )
+
 4.1:
 - Added show detail previous bans message on join
 - Added sendDetailPrevBansOnJoin configuration (auto regenerate config.yml)

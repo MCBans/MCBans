@@ -74,6 +74,9 @@ public class CommandBan extends BaseCommand{
                 }
                 banControl = new Ban(plugin, type.getActionName(), target, targetIP, senderName, reason, duration, measure);
                 break;
+                
+            case UNBAN:
+            	break;
         }
 
         // Start
