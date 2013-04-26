@@ -183,6 +183,12 @@ public class PlayerListener implements Listener {
         }
     }
     private boolean checkConnectedFrom(final Player player){
+        // check if the server is using spigot (which relays the real player ip now in combination with BungeeCord)
+        try {
+            Class.forName("org.spigotmc.Metrics", false, this.getClass().getClassLoader());
+            return true;
+        } catch (ClassNotFoundException e) {}
+        
         if (player == null || player.getAddress() == null){
             return false;
         }
