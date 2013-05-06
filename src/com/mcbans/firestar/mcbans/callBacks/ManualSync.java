@@ -44,6 +44,12 @@ public class ManualSync implements Runnable {
                 url_items.put( "latestSync", String.valueOf(plugin.lastID) );
                 url_items.put( "exec", "banSync" );
                 JSONObject response = webHandle.hdl_jobj(url_items);
+                
+                if (response == null){
+                    Util.message(commandSend, "&cNull json response. Please try again later.");
+                    break;
+                }
+                
                 try {
                     if(response.has("banned")){
                         fre += response.getJSONArray("banned").length();
