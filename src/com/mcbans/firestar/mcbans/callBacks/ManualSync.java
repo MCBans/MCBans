@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
 import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.org.json.JSONArray;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
@@ -35,52 +36,44 @@ public class ManualSync implements Runnable {
         }
         plugin.syncRunning = true;
         
-        int fre = 0;
+        int handled = 0;
         try{
             boolean goNext = true;
+            JsonHandler webHandle = new JsonHandler( plugin );
+            HashMap<String, String> url_items = new HashMap<String, String>();
+            JSONObject response = null;
+            
             while(goNext){
-                JsonHandler webHandle = new JsonHandler( plugin );
-                HashMap<String, String> url_items = new HashMap<String, String>();
+                // Prepare request parameters
+                url_items.clear();
                 url_items.put( "latestSync", String.valueOf(plugin.lastID) );
                 url_items.put( "exec", "banSync" );
-                JSONObject response = webHandle.hdl_jobj(url_items);
                 
+                // Send request, get response
+                response = webHandle.hdl_jobj(url_items);                
                 if (response == null){
                     Util.message(commandSend, "&cNull json response. Please try again later.");
                     break;
                 }
                 
+                // Handle response
                 try {
                     if(response.has("banned")){
-                        fre += response.getJSONArray("banned").length();
-                        if (response.getJSONArray("banned").length() > 0) {
-                            for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
-                                String[] plyer = response.getJSONArray("banned").getString(v).split(";");
-                                OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
-                                if (d != null){
-                                    if(d.isBanned()){
-                                        if(plyer[1].equals("u")){
-                                            d.setBanned(false);
-                                        }
-                                    }else{
-                                        if(plyer[1].equals("b")){
-                                            d.setBanned(true);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        handled += handleBannedResponses(response.getJSONArray("banned"));
                     }
                     if(response.has("lastid")){
-                        long h = response.getLong("lastid");
-                        if(h != 0){
-                            plugin.lastID = h;
+                        long lastId = response.getLong("lastid");
+                        if(lastId != 0){
+                            plugin.lastID = lastId;
                         }
                     }
                     goNext = response.has("more");
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    break;
                 }
+                
+                // Wait 500ms
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException ignore) {}
@@ -88,6 +81,34 @@ public class ManualSync implements Runnable {
         } finally {
             plugin.syncRunning = false;
         }
-        Util.message(commandSend, ChatColor.GREEN + " Sync finished, " + fre + " actions!" );
+        Util.message(commandSend, ChatColor.GREEN + " Sync finished, " + handled + " actions!" );
+    }
+    
+    /**
+     * Handling banned status responses
+     * @param array JSONArray
+     * @return Handled record count
+     * @throws JSONException
+     */
+    private int handleBannedResponses(final JSONArray array) throws JSONException{
+        if (array == null || array.length() <= 0){
+            return 0;
+        }
+        
+        for (int v = 0; v < array.length(); v++) {
+            String[] response = array.getString(v).split(";");
+            OfflinePlayer player = plugin.getServer().getOfflinePlayer(response[0]);
+            if (player == null){
+                continue;
+            }
+            
+            if(player.isBanned() && "u".equals(response[1])){
+                player.setBanned(false); // unbanning player
+            }
+            else if(!player.isBanned() && "b".equals(response[1])){
+                player.setBanned(true); // banning player
+            }
+        }        
+        return array.length();
     }
 }
