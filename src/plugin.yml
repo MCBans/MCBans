@@ -92,3 +92,6 @@ permissions:
   mcbans.lookup.ban:
     description: Permission to use banlookup command
     default: op
+  mcbans.lookup.alt:
+    description: Permission to use altlookup command
+    default: op
