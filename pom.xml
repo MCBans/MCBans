@@ -5,7 +5,127 @@
     <version>4.1-SNAPSHOT</version>
     <name>MCBans</name>
     <description>MCBans bukkit plugin</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+	<repositories>
+        <repository>
+            <id>bukkit-repo</id>
+            <url>http://repo.bukkit.org/content/groups/public</url>
+        </repository>
+        <repository>
+            <id>sk89q-mvn2</id>
+            <url>http://mvn2.sk89q.com/repo</url>
+        </repository>
+        <repository>
+            <id>comphenix-rep</id>
+            <name>Comphenix Repository</name>
+            <url>http://repo.comphenix.net/content/groups/public</url>
+        </repository>
+        <repository>
+            <id>md_5-rep</id>
+            <url>http://repo.md-5.net/content/repositories/releases</url>
+        </repository>
+		<repository>
+            <id>ci-synload</id>
+            <url>http://ci.synload.com/plugin/repository/everything/</url>
+        </repository>
+    </repositories>
+	<dependencies>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.6.2-R1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.6.2-R1.1-SNAPSHOT</version>
+        </dependency>
+		<dependency>
+	       <groupId>fr.neatmonster</groupId>
+	       <artifactId>nocheatplus</artifactId>
+	       <version>3.10.3-SNAPSHOT</version>
+	    </dependency>
+		<dependency>
+	       <groupId>uk.co.oliwali</groupId>
+	       <artifactId>Vault</artifactId>
+	       <version>1.2.24</version>
+		   <scope>system</scope>
+		   <systemPath>${basedir}/lib/Vault-1.2.24.jar</systemPath>
+	    </dependency>
+		<dependency>
+	       <groupId>uk.co.oliwali</groupId>
+	       <artifactId>HawkEye</artifactId>
+	       <version>1.0.7b</version>
+		   <scope>system</scope>
+		   <systemPath>${basedir}/lib/HawkEye_1.0.7b.jar</systemPath>
+	    </dependency>
+		<dependency>
+	       <groupId>ru.tehkode.permissions</groupId>
+	       <artifactId>PermissionsEx</artifactId>
+	       <version>1.19.5</version>
+		   <scope>system</scope>
+		   <systemPath>${basedir}/lib/PermissionsEx-1.19.5.jar</systemPath>
+	    </dependency>
+		<dependency>
+	       <groupId>net.h31ix</groupId>
+	       <artifactId>anticheat</artifactId>
+	       <version>1.5.6</version>
+		   <scope>system</scope>
+		   <systemPath>${basedir}/lib/AntiCheat-1.5.6.jar</systemPath>
+	    </dependency>
+		<dependency>
+	       <groupId>net</groupId>
+	       <artifactId>coreprotect</artifactId>
+	       <version>2.05</version>
+		   <scope>system</scope>
+		   <systemPath>${basedir}/lib/CoreProtect-2.05.jar</systemPath>
+	    </dependency>
+		<dependency>
+	       <groupId>de.diddiz</groupId>
+	       <artifactId>logblock</artifactId>
+	       <version>dev-SNAPSHOT</version>
+	    </dependency>
+	</dependencies>
 	<build>
+		<defaultGoal>clean install</defaultGoal>
+		<directory>target</directory>
+		<outputDirectory>target/classes</outputDirectory>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+		<testOutputDirectory>target/test-classes</testOutputDirectory>
+		<sourceDirectory>.</sourceDirectory>
+		<scriptSourceDirectory>.</scriptSourceDirectory>
+		<testSourceDirectory>.</testSourceDirectory>
+		<resources>
+            <resource>
+                <targetPath>.</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}</directory>
+                <includes>
+                    <include>config.yml</include>
+					<include>plugin.yml</include>
+                </includes>
+            </resource>
+			<resource>
+                <targetPath>languages</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}</directory>
+                <includes>
+                    <include>default.yml</include>
+					<include>dutch.yml</include>
+					<include>french.yml</include>
+					<include>german.yml</include>
+					<include>ja-jp.yml</include>
+					<include>norwegian.yml</include>
+					<include>portuguese.yml</include>
+					<include>spanish.yml</include>
+					<include>sv-se.yml</include>
+					<include>zh_TW.yml</include>
+                </includes>
+            </resource>
+		</resources>
 		<plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -30,23 +150,6 @@
                         </manifest>
                     </archive>
                 </configuration>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2-beta-2</version>
-                <configuration>
-                    <descriptor>${basedir}/src/main/assembly/default.xml</descriptor>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>release</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <plugin>
