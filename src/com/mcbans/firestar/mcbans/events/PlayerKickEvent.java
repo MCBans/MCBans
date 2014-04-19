@@ -1,5 +1,7 @@
 package com.mcbans.firestar.mcbans.events;
 
+import java.util.UUID;
+
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -10,14 +12,24 @@ public class PlayerKickEvent extends Event implements Cancellable {
 
     private String player;
     private String sender;
-    private String reason;
+    private String reason, playerUUID, senderUUID;
 
-    public PlayerKickEvent(String player, String sender, String reason) {
+    public PlayerKickEvent(String player, String playerUUID, String sender, String senderUUID, String reason) {
         this.player = player;
         this.sender = sender;
         this.reason = reason;
+        this.playerUUID = playerUUID;
+        this.senderUUID = senderUUID;
     }
 
+    public UUID getPlayerUUID() {
+		return UUID.fromString(playerUUID);
+	}
+
+	public UUID getSenderUUID() {
+		return UUID.fromString(senderUUID);
+	}
+    
     public String getPlayer() {
         return this.player;
     }

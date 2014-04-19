@@ -95,7 +95,7 @@ public class JsonHandler {
             if (config.isDebug()) {
                 log.info("Sending request: '" + data + "'");
             }
-            URL url = new URL("http://" + server + "/v2/" + config.getApiKey());
+            URL url = new URL("http://" + server + "/v3/" + config.getApiKey());
             URLConnection conn = url.openConnection();
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(5000);
@@ -138,10 +138,12 @@ public class JsonHandler {
             for (Map.Entry<String, String> entry : items.entrySet()) {
                 String key = entry.getKey();
                 String val = entry.getValue();
-                if (data.equals("")) {
-                    data = URLEncoder.encode(key, "UTF-8") + "=" + URLEncoder.encode(val, "UTF-8");
-                } else {
-                    data += "&" + URLEncoder.encode(key, "UTF-8") + "=" + URLEncoder.encode(val, "UTF-8");
+                if(val!=null && !val.equals("")){
+                	if (data.equals("")) {
+                    	data = URLEncoder.encode(key, "UTF-8") + "=" + URLEncoder.encode(val, "UTF-8");
+                	} else {
+                		data += "&" + URLEncoder.encode(key, "UTF-8") + "=" + URLEncoder.encode(val, "UTF-8");
+                	}
                 }
             }
         } catch (UnsupportedEncodingException e) {

@@ -16,18 +16,18 @@ public class CommandAltlookup extends BaseCommand{
         name = "altlookup";
         argLength = 1;
         usage = "lookup player alts";
-        banning = false;
+        banning = true;
     }
 
     @Override
     public void execute() {
-        final String target = args.get(0).trim();
+    	args.remove(0); // remove target
 
         // check isValid player name
-        if (!Util.isValidName(target)){
+        /*if (!Util.isValidName(target)){
             Util.message(sender, ChatColor.RED + _("invalidName"));
             return;
-        }
+        }*/
 
         // Start
         AltLookupRequest request = new AltLookupRequest(plugin, new AltLookupCallback(plugin, sender), target);

@@ -15,20 +15,17 @@ public class CommandUnban extends BaseCommand{
         bePlayer = false;
         name = "unban";
         argLength = 1;
-        usage = "Unban player or ip";
-        banning = false;
+        usage = "Unban player, uuid, or ip";
+        banning = true;
     }
 
     @Override
     public void execute() throws CommandException {
-        String target = args.get(0).trim();
-        
-        if (!Util.isValidName(target) && !Util.isValidIP(target)){
-            throw new CommandException(ChatColor.RED + _("invalidNameOrIP"));
-        }
+    	args.remove(0); // remove target
+        //String target = args.get(0).trim(); already fetched in BaseCommand
         
         // Start
-        Ban banControl = new Ban(plugin, BanType.UNBAN.getActionName(), target, "", senderName, "", "", "");
+        Ban banControl = new Ban(plugin, BanType.UNBAN.getActionName(), target, targetUUID, "", senderName, senderUUID, "", "", "", null, false);
         Thread triggerThread = new Thread(banControl);
         triggerThread.start();
     }

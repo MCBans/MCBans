@@ -1,5 +1,7 @@
 package com.mcbans.firestar.mcbans.request;
 
+import java.util.UUID;
+
 import org.bukkit.ChatColor;
 
 import com.mcbans.firestar.mcbans.ActionLog;
@@ -11,7 +13,18 @@ import com.mcbans.firestar.mcbans.org.json.JSONObject;
 
 public class AltLookupRequest extends BaseRequest<AltLookupCallback>{
     private String playerName;
+    private UUID playerUUID;
     
+    public AltLookupRequest(final MCBans plugin, final AltLookupCallback callback, final UUID playerUUID, final String playerName) {
+        super(plugin, callback);
+
+        this.items.put("player_uuid", playerUUID.toString());
+        this.items.put("player", playerName);
+        this.items.put("exec", "altList");
+        
+        this.playerUUID = playerUUID;
+        this.playerName = playerName;
+    }
     public AltLookupRequest(final MCBans plugin, final AltLookupCallback callback, final String playerName) {
         super(plugin, callback);
 
@@ -24,7 +37,7 @@ public class AltLookupRequest extends BaseRequest<AltLookupCallback>{
     @Override
     protected void execute() {
         if (callback.getSender() != null){
-            log.info(callback.getSender().getName() + " has alt looked up the " + playerName + "!");
+            log.info(callback.getSender().getName() + " has looked up " + playerName + "'s alts!");
         }
 
         JSONObject result = this.request_JOBJ();
@@ -40,9 +53,9 @@ public class AltLookupRequest extends BaseRequest<AltLookupCallback>{
             if (result.toString().contains("error")) {
                 if (result.toString().contains("Server Disabled")) {
                     ActionLog.getInstance().severe("Server Disabled by an MCBans Admin");
-                    ActionLog.getInstance().severe("To appeal this decision, please file ticket on support.mcbans.com");
+                    ActionLog.getInstance().severe("To appeal this decision, please file a ticket on support.mcbans.com");
 
-                    callback.error("This server disabled by MCBans Administration.");
+                    callback.error("This server is disabled by MCBans Administration.");
                     return;
                 }
             }

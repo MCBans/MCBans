@@ -1,5 +1,7 @@
 package com.mcbans.firestar.mcbans.events;
 
+import java.util.UUID;
+
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -10,13 +12,18 @@ public class PlayerIPBanEvent extends Event implements Cancellable {
 
     private String ip;
     private String sender;
-    private String reason;
+    private String reason, senderUUID;
 
-    public PlayerIPBanEvent(String ip, String sender, String reason) {
+    public PlayerIPBanEvent(String ip, String sender, String senderUUID, String reason) {
         this.ip = ip;
         this.sender = sender;
+        this.senderUUID = senderUUID;
         this.reason = reason;
     }
+    
+    public UUID getSenderUUID() {
+		return UUID.fromString(senderUUID);
+	}
     
     public String getIP(){
         return this.ip;

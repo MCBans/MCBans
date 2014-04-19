@@ -4,15 +4,12 @@ import static com.mcbans.firestar.mcbans.I18n._;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
-
-import net.h31ix.anticheat.api.AnticheatAPI;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-
 import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.MCBans;
@@ -27,26 +24,23 @@ import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.util.Util;
 
-import fr.neatmonster.nocheatplus.checks.ViolationHistory;
-import fr.neatmonster.nocheatplus.checks.ViolationHistory.ViolationLevel;
-
 public class Ban implements Runnable {
     private final MCBans plugin;
     private final ActionLog log;
 
-    private String playerName = null;
-    private String playerIP = null;
-    private String senderName = null;
-    private String reason = null;
-    private String action = null;
-    private String duration = null;
-    private String measure = null;
+    private String playerName, playerIP, senderName, reason, action, duration, measure, badword, playerUUID, senderUUID = null;
     private boolean rollback = false;
-    private String badword = null;
     private JSONObject actionData = null;
     private HashMap<String, Integer> responses = new HashMap<String, Integer>();
     private int action_id;
 
+    public Ban(MCBans plugin, String action, String playerName, String playerUUID, String playerIP, String senderName, String senderUUID, 
+    		String reason, String duration, String measure, JSONObject actionData, boolean rollback) {
+    	this(plugin, action, playerName, playerIP, senderName, reason, duration,
+                measure, actionData, rollback);
+    	this.playerUUID = playerUUID;
+    	this.senderUUID = senderUUID;
+    }
     public Ban(MCBans plugin, String action, String playerName, String playerIP, String senderName, String reason, String duration,
             String measure, JSONObject actionData, boolean rollback) {
         this.plugin = plugin;
@@ -73,8 +67,14 @@ public class Ban implements Runnable {
         this (plugin, action, playerName, playerIP, senderName, reason, duration, measure, null, false);
     }
 
-    public void kickPlayer(String playerToKick, final String kickReason) {
-        final Player target = plugin.getServer().getPlayerExact(playerToKick);
+    public void kickPlayer(String playerName, String playerUUID, final String kickReason) {
+    	Player targettmp = null;
+    	if(!playerUUID.equals("")){
+    		plugin.getServer().getPlayer(UUID.fromString(playerUUID));
+    	}else{
+    		targettmp = plugin.getServer().getPlayerExact(playerName);
+    	}
+        final Player target = targettmp;
         if (target != null) {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
@@ -98,7 +98,7 @@ public class Ban implements Runnable {
 
             // Call BanEvent
             if (action_id != 3){
-                PlayerBanEvent banEvent = new PlayerBanEvent(playerName, playerIP, senderName, reason, action_id, duration, measure);
+                PlayerBanEvent banEvent = new PlayerBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure);
                 plugin.getServer().getPluginManager().callEvent(banEvent);
                 if (banEvent.isCancelled()){
                     return;
@@ -131,7 +131,7 @@ public class Ban implements Runnable {
 
     public void unBan() {
         // Call PlayerUnbanEvent
-        PlayerUnbanEvent unBanEvent = new PlayerUnbanEvent(playerName, senderName);
+        PlayerUnbanEvent unBanEvent = new PlayerUnbanEvent(playerName, playerUUID, senderName, senderUUID);
         plugin.getServer().getPluginManager().callEvent(unBanEvent);
         if (unBanEvent.isCancelled()){
             return;
@@ -148,7 +148,9 @@ public class Ban implements Runnable {
         JsonHandler webHandle = new JsonHandler(plugin);
         HashMap<String, String> url_items = new HashMap<String, String>();
         url_items.put("player", playerName);
+        url_items.put("player_uuid", playerUUID);
         url_items.put("admin", senderName);
+        url_items.put("admin_uuid", senderUUID);
         url_items.put("exec", "unBan");
         HashMap<String, String> response = webHandle.mainRequest(url_items);
         
@@ -161,11 +163,14 @@ public class Ban implements Runnable {
             return;
         }
         if (response.get("result").equals("y")) {
+        	if (response.containsKey("player")){
+            	playerName = response.get("player");
+            }
             if (!Util.isValidIP(playerName)){
                 
             }
             Util.message(senderName, ChatColor.GREEN + _("unBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName));
-            plugin.getServer().getPluginManager().callEvent(new PlayerUnbannedEvent(playerName, senderName));
+            plugin.getServer().getPluginManager().callEvent(new PlayerUnbannedEvent(playerName, playerUUID, senderName, senderUUID));
 
             log.info(senderName + " unbanned " + playerName + "!");
             return;
@@ -181,7 +186,7 @@ public class Ban implements Runnable {
 
     public void localBan() {
         // Call PlayerLocalBanEvent
-        PlayerLocalBanEvent lBanEvent = new PlayerLocalBanEvent(playerName, playerIP, senderName, reason);
+        PlayerLocalBanEvent lBanEvent = new PlayerLocalBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason);
         plugin.getServer().getPluginManager().callEvent(lBanEvent);
         if (lBanEvent.isCancelled()){
             return;
@@ -195,9 +200,11 @@ public class Ban implements Runnable {
         JsonHandler webHandle = new JsonHandler(plugin);
         HashMap<String, String> url_items = new HashMap<String, String>();
         url_items.put("player", playerName);
+        url_items.put("player_uuid", playerUUID);
         url_items.put("playerip", playerIP);
         url_items.put("reason", reason);
         url_items.put("admin", senderName);
+        url_items.put("admin_uuid", senderUUID);
         if (rollback) {
             plugin.getRbHandler().rollback(senderName, playerName);
         }
@@ -211,12 +218,15 @@ public class Ban implements Runnable {
                 Util.message(senderName, ChatColor.RED + "Error: " + response.get("error"));
                 return;
             }
+            if (response.containsKey("player")){
+            	playerName = response.get("player");
+            }
             if (!response.containsKey("result")) {
                 Util.message(senderName, ChatColor.RED + " MCBans down, added bukkit default ban, unban with /pardon");
                 return;
             }
             if (response.get("result").equals("y")) {
-                this.kickPlayer(playerName, _("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+                this.kickPlayer(playerName, playerUUID, _("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
                 Util.broadcastMessage(ChatColor.GREEN + _("localBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
                 plugin.getServer().getPluginManager().callEvent(new PlayerBannedEvent(playerName, playerIP, senderName, reason, action_id, duration, measure));
 
@@ -242,7 +252,7 @@ public class Ban implements Runnable {
 
     public void globalBan() {
         // Call PlayerGlobalBanEvent
-        PlayerGlobalBanEvent gBanEvent = new PlayerGlobalBanEvent(playerName, playerIP, senderName, reason);
+        PlayerGlobalBanEvent gBanEvent = new PlayerGlobalBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason);
         plugin.getServer().getPluginManager().callEvent(gBanEvent);
         if (gBanEvent.isCancelled()){
             return;
@@ -256,12 +266,14 @@ public class Ban implements Runnable {
         JsonHandler webHandle = new JsonHandler(plugin);
         HashMap<String, String> url_items = new HashMap<String, String>();
         url_items.put("player", playerName);
+        url_items.put("player_uuid", playerUUID);
         url_items.put("playerip", playerIP);
         url_items.put("reason", reason);
         url_items.put("admin", senderName);
+        url_items.put("admin_uuid", senderUUID);
 
         // Put proof
-        try{
+        /*try{
             for (Map.Entry<String, JSONObject> proof : getProof().entrySet()){
                 actionData.put(proof.getKey(), proof.getValue());
             }
@@ -269,7 +281,7 @@ public class Ban implements Runnable {
             if (plugin.getConfigs().isDebug()) {
                 ex.printStackTrace();
             }
-        }
+        }*/
 
         if (rollback) {
             plugin.getRbHandler().rollback(senderName, playerName);
@@ -284,12 +296,15 @@ public class Ban implements Runnable {
                 Util.message(senderName, ChatColor.RED + "Error: " + response.get("error"));
                 return;
             }
+            if (response.containsKey("player")){
+            	playerName = response.get("player");
+            }
             if (!response.containsKey("result")) {
                 Util.message(senderName, ChatColor.RED + " MCBans down, added bukkit default ban, unban with /pardon");
                 return;
             }
             if (response.get("result").equals("y")) {
-                this.kickPlayer(playerName, _("globalBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+                this.kickPlayer(playerName, playerUUID, _("globalBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
                 Util.broadcastMessage(ChatColor.GREEN + _("globalBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
                 plugin.getServer().getPluginManager().callEvent(new PlayerBannedEvent(playerName, playerIP, senderName, reason, action_id, duration, measure));
 
@@ -320,7 +335,7 @@ public class Ban implements Runnable {
 
     public void tempBan() {
         // Call PlayerTempBanEvent
-        PlayerTempBanEvent tBanEvent = new PlayerTempBanEvent(playerName, playerIP, senderName, reason, duration, measure);
+        PlayerTempBanEvent tBanEvent = new PlayerTempBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, duration, measure);
         plugin.getServer().getPluginManager().callEvent(tBanEvent);
         if (tBanEvent.isCancelled()){
             return;
@@ -333,9 +348,11 @@ public class Ban implements Runnable {
         JsonHandler webHandle = new JsonHandler(plugin);
         HashMap<String, String> url_items = new HashMap<String, String>();
         url_items.put("player", playerName);
+        url_items.put("player_uuid", playerUUID);
         url_items.put("playerip", playerIP);
         url_items.put("reason", reason);
         url_items.put("admin", senderName);
+        url_items.put("admin_uuid", senderUUID);
         url_items.put("duration", duration);
         url_items.put("measure", measure);
         if (actionData != null) {
@@ -348,13 +365,16 @@ public class Ban implements Runnable {
                 Util.message(senderName, ChatColor.RED + "Error: " + response.get("error"));
                 return;
             }
+            if (response.containsKey("player")){
+            	playerName = response.get("player");
+            }
             if (!response.containsKey("result")) {
                 //bukkitBan(); // don't use default ban
                 Util.message(senderName, ChatColor.RED + " MCBans down, please try again later.");
                 return;
             }
             if (response.get("result").equals("y")) {
-                this.kickPlayer(playerName, _("tempBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+                this.kickPlayer(playerName, playerUUID, _("tempBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
                 Util.broadcastMessage(ChatColor.GREEN + _("tempBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
                 plugin.getServer().getPluginManager().callEvent(new PlayerBannedEvent(playerName, playerIP, senderName, reason, action_id, duration, measure));
 
@@ -390,11 +410,10 @@ public class Ban implements Runnable {
         if (target == null){
             return;
         }
-        
         if (flag){
             if (!target.isBanned()){
                 target.setBanned(true);
-                this.kickPlayer(playerName, _("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+                this.kickPlayer(playerName, playerUUID, _("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
             }
         }else{
             if (target.isBanned()){
@@ -416,7 +435,7 @@ public class Ban implements Runnable {
             Player p = plugin.getServer().getPlayerExact(playerName);
             if (p != null) playerName = p.getName();
             // NoCheatPlus
-            if (plugin.isEnabledNCP()) {
+            /*if (plugin.isEnabledNCP()) {
                 ViolationHistory history = ViolationHistory.getHistory(playerName, false);
                 if (history != null){
                     // found player history
@@ -428,9 +447,9 @@ public class Ban implements Runnable {
                     ret.put("nocheatplus", tmp);
                     //ActionData.put("nocheatplus", tmp); // don't put directly
                 }
-            }
+            }*/
             // AntiCheat
-            if (plugin.isEnabledAC() && p.getPlayer() != null) {
+            /*if (plugin.isEnabledAC() && p.getPlayer() != null) {
                 JSONObject tmp = new JSONObject();
                 final int level = AnticheatAPI.getLevel(p);
                 final boolean xray = AnticheatAPI.isXrayer(p);
@@ -439,7 +458,7 @@ public class Ban implements Runnable {
                 if (level > 0) tmp.put("hack level", String.valueOf(level));
                 if (xray) tmp.put("detected x-ray", "true");
                 if (tmp.length() > 0) ret.put("anticheat", tmp);
-            }
+            }*/
         }
 
         return ret;

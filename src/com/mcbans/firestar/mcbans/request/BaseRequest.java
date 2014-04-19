@@ -28,7 +28,6 @@ public abstract class BaseRequest<Callback extends BaseCallback> implements Runn
             callback.error("&cCould not select MCBans API Server!");
             return;
         }
-
         execute();
     }
 

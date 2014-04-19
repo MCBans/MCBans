@@ -12,13 +12,13 @@ public class CommandKick extends BaseCommand{
         name = "kick";
         argLength = 1;
         usage = "kick player";
-        banning = false;
+        banning = true;
     }
 
     @Override
     public void execute() {
-        String target = args.remove(0).trim();
-
+        args.remove(0); // remove target
+        
         // build reason
         String reason = config.getDefaultKick();
         if (args.size() > 0){
@@ -26,7 +26,7 @@ public class CommandKick extends BaseCommand{
         }
 
         // Start
-        Kick kickPlayer = new Kick(plugin, target, senderName, reason, false);
+        Kick kickPlayer = new Kick(plugin, target, targetUUID, senderName, senderUUID, reason, false);
         Thread triggerThread = new Thread(kickPlayer);
         triggerThread.start();
     }

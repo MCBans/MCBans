@@ -21,26 +21,28 @@ import com.mcbans.firestar.mcbans.util.Util;
 public class BanIpRequest extends BaseRequest<MessageCallback>{
     private String ip;
     private String reason;
-    private String issuedBy;
+    private String issuedBy,issuedByUUID;
 
-    public BanIpRequest(final MCBans plugin, final MessageCallback callback, final String ip, final String reason, final String issuedBy){
+    public BanIpRequest(final MCBans plugin, final MessageCallback callback, final String ip, final String reason, final String issuedBy, String issuedByUUID){
         super(plugin, callback);
 
         this.items.put("exec", "ipBan");
         this.items.put("ip", ip);
         this.items.put("reason", reason);
         this.items.put("admin", issuedBy);
+        this.items.put("admin_uuid", issuedByUUID);
         
         this.ip = ip;
         this.reason = reason;
         this.issuedBy = issuedBy;
+        this.issuedByUUID = issuedByUUID;
     }
 
     @Override
     protected void execute() {
         JSONObject response = this.request_JOBJ();
         
-        PlayerIPBanEvent ipBanEvent = new PlayerIPBanEvent(ip, issuedBy, reason);
+        PlayerIPBanEvent ipBanEvent = new PlayerIPBanEvent(ip, issuedBy, issuedByUUID, reason);
         plugin.getServer().getPluginManager().callEvent(ipBanEvent);
         if (ipBanEvent.isCancelled()){
             return;
@@ -64,7 +66,7 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
                     kickPlayerByIP(this.ip, reason);
                     
                     log.info("IP " + ip + " has been banned [" + reason + "] [" + issuedBy + "]!");
-                    plugin.getServer().getPluginManager().callEvent(new PlayerIPBannedEvent(ip, issuedBy, reason));
+                    plugin.getServer().getPluginManager().callEvent(new PlayerIPBannedEvent(ip, issuedBy, issuedByUUID, reason));
                 }else if (result.equals("a")){
                     // equals("a") if already banned ip
                     callback.error(ChatColor.RED + _("ipBanAlready", I18n.IP, this.ip, I18n.SENDER, this.issuedBy, I18n.REASON, this.reason));

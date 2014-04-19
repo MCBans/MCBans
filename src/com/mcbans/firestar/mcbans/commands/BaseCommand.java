@@ -24,13 +24,14 @@ public abstract class BaseCommand {
 
     // Needs init
     protected List<String> args = new ArrayList<String>();
-    protected String senderName;
+    protected String senderName, senderUUID;
     protected Player player;
     protected boolean isPlayer;
 
     // Set this class if banning (needs init)
     protected String target = "";
     protected String targetIP = "";
+    protected String targetUUID = "";
 
     // Set extend class constructor (Command property)
     protected String name;
@@ -73,6 +74,7 @@ public abstract class BaseCommand {
         if (sender instanceof Player){
             player = (Player)sender;
             senderName = player.getName();
+            senderUUID = player.getUniqueId().toString();
             isPlayer = true;
         }
 
@@ -92,12 +94,24 @@ public abstract class BaseCommand {
             final Player targetPlayer = Bukkit.getPlayerExact(target);
             if (targetPlayer != null && targetPlayer.isOnline()){
                 targetIP = targetPlayer.getAddress().getAddress().getHostAddress();
+                targetUUID = targetPlayer.getUniqueId().toString();
             }
             // check isValid player name
             if (!Util.isValidName(target)){
-                Util.message(sender, ChatColor.RED + _("invalidName"));
-                return true;
+            	if(Util.isValidUUID(target)){
+            		targetUUID = target;
+            		target = "";
+            	}else{
+            		if(Util.isValidIP(target)){
+            			targetIP = target;
+            		}else{
+            			Util.message(sender, ChatColor.RED + _("invalidName"));
+            			return true;
+            		}
+            	}
             }
+            System.out.println("target: "+target);
+            System.out.println("targetUUID: "+targetUUID);
         }
 
         // Exec
@@ -125,6 +139,7 @@ public abstract class BaseCommand {
         this.senderName = "Console";
 
         this.target = "";
+        this.targetUUID = "";
         this.targetIP = "";
     }
 

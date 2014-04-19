@@ -16,21 +16,26 @@ public class CommandLookup extends BaseCommand{
         name = "lookup";
         argLength = 1;
         usage = "lookup player";
-        banning = false;
+        banning = true;
     }
 
     @Override
     public void execute() {
-        final String target = args.get(0).trim();
-
+    	args.remove(0); // remove target
+        
         // check isValid player name
-        if (!Util.isValidName(target)){
-            Util.message(sender, ChatColor.RED + _("invalidName"));
-            return;
-        }
-
+        /*if (!Util.isValidName(target)){
+        	if(Util.isValidUUID(target)){
+        		targetUUID = target;
+        		target = "";
+        	}else{
+        		Util.message(sender, ChatColor.RED + _("invalidName"));
+        		return;
+            }
+        }*/
+        
         // Start
-        LookupRequest request = new LookupRequest(plugin, new LookupCallback(plugin, sender), target, sender.getName());
+        LookupRequest request = new LookupRequest(plugin, new LookupCallback(plugin, sender), target, targetUUID, senderName, senderUUID);
         Thread triggerThread = new Thread(request);
         triggerThread.start();
     }

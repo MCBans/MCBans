@@ -20,16 +20,16 @@ public class CommandBanlookup extends BaseCommand{
 
     @Override
     public void execute() {
-        final String banID = args.get(0).trim();
+    	target = args.remove(0); // remove target
 
         // check valid banID
-        if (!Util.isInteger(banID) || Integer.parseInt(banID) < 0){
+        if (!Util.isInteger(target) || Integer.parseInt(target) < 0){
             Util.message(sender, _("formatError"));
             return;
         }
 
         // Start
-        BanLookupRequest request = new BanLookupRequest(plugin, new BanLookupCallback(plugin, sender), Integer.parseInt(banID));
+        BanLookupRequest request = new BanLookupRequest(plugin, new BanLookupCallback(plugin, sender), Integer.parseInt(target));
         Thread triggerThread = new Thread(request);
         triggerThread.start();
     }

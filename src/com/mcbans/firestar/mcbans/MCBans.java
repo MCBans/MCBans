@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import net.h31ix.anticheat.Anticheat;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -33,8 +32,6 @@ import com.mcbans.firestar.mcbans.commands.CommandUnban;
 import com.mcbans.firestar.mcbans.commands.MCBansCommandHandler;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
-
-import fr.neatmonster.nocheatplus.NoCheatPlus;
 
 public class MCBans extends JavaPlugin {
     public final String apiRequestSuffix = "4.1";
@@ -138,7 +135,7 @@ public class MCBans extends JavaPlugin {
         rbHandler.setupHandler();
 
         // hookup integration plugin
-        checkPlugin(true);
+        //checkPlugin(true);
         if (ncpEnabled) log.info("NoCheatPlus plugin found! Enabled this integration!");
         if (acEnabled) log.info("AntiCheat plugin found! Enabled this integration!");
 
@@ -188,19 +185,19 @@ public class MCBans extends JavaPlugin {
         }
     }
 
-    public void checkPlugin(final boolean startup){
+    /*public void checkPlugin(final boolean startup){
         // Check NoCheatPlus
-        Plugin checkNCP = getServer().getPluginManager().getPlugin("NoCheatPlus");
+        //Plugin checkNCP = getServer().getPluginManager().getPlugin("NoCheatPlus");
         this.ncpEnabled = (checkNCP != null && checkNCP instanceof NoCheatPlus);
         // Check AntiCheat
-        Plugin checkAC = getServer().getPluginManager().getPlugin("AntiCheat");
+        //Plugin checkAC = getServer().getPluginManager().getPlugin("AntiCheat");
         this.acEnabled = (checkAC != null && checkAC instanceof Anticheat);
 
         if (!startup){
             if (ncpEnabled) ncpEnabled = (checkNCP.isEnabled());
             if (acEnabled) acEnabled = (checkAC.isEnabled());
         }
-    }
+    }*/
 
     public boolean isEnabledNCP(){
         return this.ncpEnabled;

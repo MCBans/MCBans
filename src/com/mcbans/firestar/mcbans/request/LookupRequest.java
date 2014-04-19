@@ -1,5 +1,7 @@
 package com.mcbans.firestar.mcbans.request;
 
+import java.util.UUID;
+
 import org.bukkit.ChatColor;
 
 import com.mcbans.firestar.mcbans.ActionLog;
@@ -12,6 +14,20 @@ import com.mcbans.firestar.mcbans.org.json.JSONObject;
 public class LookupRequest extends BaseRequest<LookupCallback>{
     private String targetName;
 
+    public LookupRequest(final MCBans plugin, final LookupCallback callback, final String playerName, 
+    		final String playerUUID, final String senderName, String senderUUID) {
+        super(plugin, callback);
+        if(playerUUID!=null){
+        	this.items.put("player_uuid", playerUUID);
+        }else{
+        	this.items.put("player", playerName);
+        }
+        this.items.put("admin", senderName);
+        this.items.put("admin_uuid", senderUUID);
+        this.items.put("exec", "playerLookup");
+
+        this.targetName = playerName;
+    }
     public LookupRequest(final MCBans plugin, final LookupCallback callback, final String playerName, final String senderName) {
         super(plugin, callback);
 

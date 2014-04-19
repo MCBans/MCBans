@@ -110,6 +110,17 @@ public class Util {
         return true;
     }
 
+    public static boolean isValidUUID(final String name){
+        if (name == null) return false;
+
+        final String regex = "^[A-Za-z0-9_]{32}$";
+        if (!Pattern.compile(regex).matcher(name.replaceAll("(?im)-", "")).matches()){
+            return false;
+        }
+
+        return true;
+    }
+    
     /**
      * Check string is integer
      * @param str String text to check

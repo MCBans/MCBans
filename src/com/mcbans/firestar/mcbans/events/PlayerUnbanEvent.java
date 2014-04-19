@@ -1,5 +1,7 @@
 package com.mcbans.firestar.mcbans.events;
 
+import java.util.UUID;
+
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -10,13 +12,19 @@ public class PlayerUnbanEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean isCancelled = false;
 
-    private String target;
-    private String sender;
+    private String target,targetUUID;
+    private String sender,senderUUID;
 
-    public PlayerUnbanEvent(String target, String sender) {
+    public PlayerUnbanEvent(String target, String targetUUID, String sender, String senderUUID) {
         this.target = target;
         this.sender = sender;
+        this.senderUUID = senderUUID;
+        this.targetUUID = targetUUID;
     }
+    
+    public UUID getSenderUUID() {
+		return UUID.fromString(senderUUID);
+	}
 
     public String getTargetName() {
         return this.target;

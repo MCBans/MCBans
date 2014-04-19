@@ -18,25 +18,25 @@ public class CommandBanip extends BaseCommand{
         name = "banip";
         argLength = 1;
         usage = "bans an IP address";
-        banning = false;
+        banning = true;
     }
 
     @Override
     public void execute() throws CommandException {
-        final String issuedBy = (sender instanceof Player) ? player.getName() : "Console";
-        final String ip = args.remove(0).trim();
+    	args.remove(0); // remove target
+    	
         String reason = config.getDefaultLocal();
         if (args.size() > 0){
             reason = Util.join(args, " ");
         }
         
         // check isValid IP address
-        if (!Util.isValidIP(ip)){
+        if (!Util.isValidIP(target)){
             throw new CommandException(ChatColor.RED + _("invalidIP"));
         }
 
         // Start
-        BanIpRequest request = new BanIpRequest(plugin, new MessageCallback(plugin, sender), ip, reason, issuedBy);
+        BanIpRequest request = new BanIpRequest(plugin, new MessageCallback(plugin, sender), target, reason, senderName, senderUUID);
         Thread triggerThread = new Thread(request);
         triggerThread.start();
     }

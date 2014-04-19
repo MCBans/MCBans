@@ -30,7 +30,7 @@ public class MCBansAPI {
         this.pname = pname;
     }
 
-    private void ban(BanType type, String targetName, String senderName, String reason, String duration, String measure){
+    private void ban(BanType type, String targetName, String targetUUID, String senderName, String senderUUID, String reason, String duration, String measure){
         // check null
         if (targetName == null || senderName == null){
             return;
@@ -53,11 +53,11 @@ public class MCBansAPI {
      * @param senderName BAN issued admin's name
      * @param reason BAN reason
      */
-    public void localBan(String targetName, String senderName, String reason){
+    public void localBan(String targetName, String targetUUID, String senderName, String senderUUID, String reason){
         plugin.getLog().info("Plugin " + pname + " tried to local ban player " + targetName);
 
         reason = (reason == null || reason == "") ? plugin.getConfigs().getDefaultLocal() : reason;
-        this.ban(BanType.LOCAL, targetName, senderName, reason, "", "");
+        this.ban(BanType.LOCAL, targetName, targetUUID, senderName, senderUUID, reason, "", "");
     }
 
     /**
@@ -66,36 +66,38 @@ public class MCBansAPI {
      * @param senderName BAN issued admin's name
      * @param reason BAN reason
      */
-    public void globalBan(String targetName, String senderName, String reason){
+    public void globalBan(String targetName, String targetUUID, String senderName, String senderUUID, String reason){
         plugin.getLog().info("Plugin " + pname + " tried to global ban player " + targetName);
-
         if (reason == null || reason == "") return;
-        this.ban(BanType.GLOBAL, targetName, senderName, reason, "", "");
+        this.ban(BanType.GLOBAL, targetName, targetUUID, senderName, senderUUID, reason, "", "");
     }
 
     /**
      * Add Temporary BAN
      * @param targetName BAN target player's name
+     * @param senderUUID BAN issued admin's UUID
      * @param senderName BAN issued admin's name
+     * @param senderUUID BAN issued admin's UUID
      * @param reason BAN reason
      * @param duration Banning length duration (intValue)
      * @param measure Banning length measure (m(minute), h(hour), d(day), w(week))
      */
-    public void tempBan(String targetName, String senderName, String reason, String duration, String measure){
+    public void tempBan(String targetName, String targetUUID, String senderName, String senderUUID, String reason, String duration, String measure){
         plugin.getLog().info("Plugin " + pname + " tried to temp ban player " + targetName);
 
         reason = (reason == null || reason == "") ? plugin.getConfigs().getDefaultTemp() : reason;
         duration = (duration == null) ? "" : duration;
         measure = (measure == null) ? "" : measure;
-        this.ban(BanType.TEMP, targetName, senderName, reason, duration, measure);
+        this.ban(BanType.TEMP, targetName, targetUUID, senderName, senderUUID, reason, duration, measure);
     }
 
     /**
      * Remove BAN
      * @param targetName UnBan target player's name
      * @param senderName UnBan issued admin's name
+     * @param senderUUID UnBan issued admin's UUID
      */
-    public void unBan(String targetName, String senderName){
+    public void unBan(String targetName, String targetUUID, String senderName, String senderUUID){
         plugin.getLog().info("Plugin " + pname + " tried to unban player " + targetName);
         if (targetName == null || senderName == null){
             plugin.getLog().info("Invalid usage (null): unBan");
@@ -106,17 +108,18 @@ public class MCBansAPI {
             return;
         }
 
-        this.ban(BanType.UNBAN, targetName, senderName, "", "", "");
+        this.ban(BanType.UNBAN, targetName, targetUUID, senderName, senderUUID, "", "", "");
     }
     
     /**
      * Add IPBan
      * @param ip target ip address
      * @param senderName IPBan issued admin's name
+     * @param senderUUID IPBan issued admin's UUID
      * @param reason Ban reason
      * @param callback MessageCallback
      */
-    public void ipBan(String ip, String senderName, String reason, MessageCallback callback){
+    public void ipBan(String ip, String senderName, String senderUUID, String reason, MessageCallback callback){
         plugin.getLog().info("Plugin " + pname + " tried to ip ban " + ip);
         if (ip == null || senderName == null || callback == null){
             plugin.getLog().info("Invalid usage (null): ipBan");
@@ -131,7 +134,7 @@ public class MCBansAPI {
             reason = plugin.getConfigs().getDefaultLocal();
         }
 
-        BanIpRequest request = new BanIpRequest(plugin, callback, ip, reason, senderName);
+        BanIpRequest request = new BanIpRequest(plugin, callback, ip, reason, senderName, senderUUID);
         Thread thread = new Thread(request);
         thread.start();
     }
@@ -143,7 +146,7 @@ public class MCBansAPI {
      * @param reason Ban reason
      */
     public void ipBan(String ip, String senderName, String reason){
-        this.ipBan(ip, senderName, reason, new MessageCallback(plugin));
+        this.ipBan(ip, senderName, "", reason, new MessageCallback(plugin));
     }
 
     /**
@@ -152,12 +155,12 @@ public class MCBansAPI {
      * @param senderName Kick issued admin's name
      * @param reason Kick reason
      */
-    public void kick(String targetName, String senderName, String reason){
+    public void kick(String targetName, String targetUUID, String senderName, String senderUUID, String reason){
         //plugin.getLog().info("Plugin " + pname + " tried to kick player " + targetName);
         reason = (reason == null || reason == "") ? plugin.getConfigs().getDefaultKick() : reason;
 
         // Start
-        Kick kickPlayer = new Kick(plugin, targetName, senderName, reason, true);
+        Kick kickPlayer = new Kick(plugin, targetName, targetUUID, senderName, senderUUID, reason, true);
         Thread triggerThread = new Thread(kickPlayer);
         triggerThread.start();
     }
@@ -166,9 +169,10 @@ public class MCBansAPI {
      * Lookup Player
      * @param targetName Lookup target player name
      * @param senderName Lookup issued admin name
+     * @param senderUUID Lookup issued admin UUID
      * @param callback LookupCallback
      */
-    public void lookupPlayer(String targetName, String senderName, LookupCallback callback){
+    public void lookupPlayer(String targetName, String targetUUID, String senderName, String senderUUID, LookupCallback callback){
         plugin.getLog().info("Plugin " + pname + " tried to lookup player " + targetName);
         if (targetName == null || callback == null){
             plugin.getLog().info("Invalid usage (null): lookupPlayer");
@@ -179,7 +183,7 @@ public class MCBansAPI {
             callback.error("Invalid lookup target name!");
         }
 
-        LookupRequest request = new LookupRequest(plugin, callback, targetName, senderName);
+        LookupRequest request = new LookupRequest(plugin, callback, targetName, targetUUID, senderName, senderUUID);
         Thread triggerThread = new Thread(request);
         triggerThread.start();
     }

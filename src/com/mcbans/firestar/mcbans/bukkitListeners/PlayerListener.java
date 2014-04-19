@@ -66,8 +66,8 @@ public class PlayerListener implements Listener {
             }
 
             // get player information
-            final String uriStr = "http://" + plugin.apiServer + "/v2/" + config.getApiKey() + "/login/"
-                    + URLEncoder.encode(event.getName(), "UTF-8") + "/"
+            final String uriStr = "http://" + plugin.apiServer + "/v3/" + config.getApiKey() + "/login/"
+                    + URLEncoder.encode(event.getUniqueId().toString(), "UTF-8") + "/"
                     + URLEncoder.encode(String.valueOf(event.getAddress().getHostAddress()), "UTF-8") + "/"
                     + plugin.apiRequestSuffix;
             final URLConnection conn = new URL(uriStr).openConnection();
@@ -251,7 +251,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(final PlayerQuitEvent event) {
         // send disconnect request
-        new Thread(new DisconnectRequest(plugin, event.getPlayer().getName())).start();
+        (new Thread(new DisconnectRequest(plugin, event.getPlayer().getName()))).start();
         
         if (plugin.mcbStaff.contains(event.getPlayer().getName())){
             plugin.mcbStaff.remove(event.getPlayer().getName());

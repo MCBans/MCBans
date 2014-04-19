@@ -2,6 +2,8 @@ package com.mcbans.firestar.mcbans.request;
 
 import static com.mcbans.firestar.mcbans.I18n._;
 
+import java.util.UUID;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -16,25 +18,33 @@ public class Kick implements Runnable {
 
     private final String playerName;
     private final String senderName;
-    private String reason;
+    private String reason,senderUUID,playerUUID;
     private final boolean useExactName;
 
-    public Kick(final MCBans plugin, final String playerName, final String senderName, final String reason, final boolean useExactName) {
+    public Kick(final MCBans plugin, final String playerName, final String playerUUID, final String senderName, final String senderUUID, final String reason, final boolean useExactName) {
         this.plugin = plugin;
         this.playerName = playerName;
         this.senderName = senderName;
         this.reason = reason;
         this.useExactName = useExactName;
+        this.senderUUID = senderUUID;
+        this.playerUUID = playerUUID;
     }
 
     @Deprecated
     public Kick(final MCBans plugin, final String playerName, final String senderName, final String reason){
-        this(plugin, playerName, senderName, reason, false);
+        this(plugin, playerName, "", senderName, "", reason, false);
     }
 
     @Override
     public void run() {
-        final Player player = (useExactName) ? plugin.getServer().getPlayerExact(playerName) : plugin.getServer().getPlayer(playerName);
+    	Player playertmp = null;
+    	if(!playerUUID.equals("")){
+    		playertmp = plugin.getServer().getPlayer(UUID.fromString(playerUUID));
+    	}else{
+    		playertmp = (useExactName) ? plugin.getServer().getPlayerExact(playerName) : plugin.getServer().getPlayer(playerName);
+    	}
+    	final Player player = playertmp;
         if (player != null) {
             // Check exempt permission
             if (Perms.EXEMPT_KICK.has(player)){
@@ -43,7 +53,7 @@ public class Kick implements Runnable {
             }
             
             // Call PlayerKickEvent
-            PlayerKickEvent kickEvent = new PlayerKickEvent(player.getName(), senderName, reason);
+            PlayerKickEvent kickEvent = new PlayerKickEvent(player.getName(), playerUUID, senderName, senderUUID, reason);
             plugin.getServer().getPluginManager().callEvent(kickEvent);
             if (kickEvent.isCancelled()){
                 return;

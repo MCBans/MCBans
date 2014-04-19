@@ -21,7 +21,9 @@ public class PlayerLookupData {
         if (name == null || response == null) return;
 
         this.name = name;
-
+        if (response.has("player")){
+        	this.name = response.getString("player");
+        }
         if (Util.isInteger(response.getString("total").trim())){
             total = Integer.parseInt(response.getString("total").trim());
         }

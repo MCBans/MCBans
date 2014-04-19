@@ -22,9 +22,9 @@ public class CommandGlobalban extends BaseCommand{
 
         // build reason
         String reason = Util.join(args, " ");
-
+        
         // Start
-        Ban banControl = new Ban(plugin, BanType.GLOBAL.getActionName(), target, targetIP, senderName, reason, "", "");
+        Ban banControl = new Ban(plugin, BanType.GLOBAL.getActionName(), target, targetUUID, targetIP, senderName, senderUUID, reason, "", "", null, false);
         Thread triggerThread = new Thread(banControl);
         triggerThread.start();
     }

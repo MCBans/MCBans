@@ -2,6 +2,10 @@ package com.mcbans.firestar.mcbans.commands;
 
 import static com.mcbans.firestar.mcbans.I18n._;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -49,7 +53,7 @@ public class CommandBan extends BaseCommand{
                 if (args.size() > 0){
                     reason = Util.join(args, " ");
                 }
-                banControl = new Ban(plugin, type.getActionName(), target, targetIP, senderName, reason, "", "");
+                banControl = new Ban(plugin, type.getActionName(), target, targetUUID, targetIP, senderName, senderUUID, reason, "", "", null, false);
                 break;
 
             case GLOBAL:
@@ -58,7 +62,7 @@ public class CommandBan extends BaseCommand{
                     return;
                 }
                 reason = Util.join(args, " ");
-                banControl = new Ban(plugin, type.getActionName(), target, targetIP, senderName, reason, "", "");
+                banControl = new Ban(plugin, type.getActionName(), target, targetUUID, targetIP, senderName, senderUUID, reason, "", "", null, false);
                 break;
 
             case TEMP:
@@ -66,13 +70,25 @@ public class CommandBan extends BaseCommand{
                     Util.message(sender, ChatColor.RED + _("formatError"));
                     return;
                 }
-                final String duration = args.remove(0);
-                final String measure = args.remove(0);
+                String measure = "";
+                String duration = args.remove(0);
+                if(!duration.matches("(?sim)([0-9]+)(minute(s|)|m|hour(s|)|h|day(s|)|d|week(s|)|w)")){
+                	measure = args.remove(0);
+                }else{
+                	try {
+                		Pattern regex = Pattern.compile("([0-9]+)(minute(s|)|m|hour(s|)|h|day(s|)|d|week(s|)|w)", Pattern.DOTALL | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.MULTILINE);
+                		Matcher regexMatcher = regex.matcher(duration);
+                		if (regexMatcher.find()) {
+                			duration = regexMatcher.group(1);
+                			measure = regexMatcher.group(2);
+                		} 
+                	} catch (PatternSyntaxException ex) {}
+                }
                 reason = config.getDefaultTemp();
                 if (args.size() > 0){
                     reason = Util.join(args, " ");
                 }
-                banControl = new Ban(plugin, type.getActionName(), target, targetIP, senderName, reason, duration, measure);
+                banControl = new Ban(plugin, type.getActionName(), target, targetUUID, targetIP, senderName, senderUUID, reason, duration, measure, null, false);
                 break;
         }
 
