@@ -17,7 +17,7 @@ public class LookupRequest extends BaseRequest<LookupCallback>{
     public LookupRequest(final MCBans plugin, final LookupCallback callback, final String playerName, 
     		final String playerUUID, final String senderName, String senderUUID) {
         super(plugin, callback);
-        if(playerUUID!=null){
+        if(!playerUUID.equals("")){
         	this.items.put("player_uuid", playerUUID);
         }else{
         	this.items.put("player", playerName);
