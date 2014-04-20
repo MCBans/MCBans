@@ -1,9 +1,11 @@
-# German MCBans File, Translated By: Doridian Updated By: saya0514
+﻿# German MCBans File, Translated By: Doridian Updated By: saya0514
 
 unBanSuccess: "%PLAYER% wurde entbannt!"
 unBanError: "Fehler beim Entbannen von %PLAYER%!"
 unBanGroup: "%PLAYER% ist von einem Server in einer deiner Gruppen gebannt!"
 unBanNot: "%PLAYER% war nicht gebannt!"
+
+banExemptPlayer: "ban exempt"
 
 localBanPlayer: "Du wurdest gebannt. Schau nach auf MCBans.com"
 localBanSuccess: "%PLAYER% wurde gebannt [%REASON%]"
@@ -27,7 +29,7 @@ tempBanAlready: "%PLAYER% ist bereits von diesem Server gebannt!"
 kickPlayer: "%REASON%"
 kickSuccess: "%PLAYER% wurde gekickt!"
 kickNoPlayer: "%PLAYER% ist nicht online!"
-kickExemptPlayer: ""
+kickExemptPlayer: "kick exempt"
 kickBroadcast: "%ADMIN% has kicked %PLAYER% [%REASON%]"
 
 ipBanSuccess: "IP %IP% was banned [%REASON%]"

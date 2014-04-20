@@ -5,6 +5,8 @@ unBanError: "Fout bij het weghalen van de ban van %PLAYER%!"
 unBanGroup: "%PLAYER% is verboden op een server in dezelfde groep als jou!"
 unBanNot: "%PLAYER% is niet verboden!"
 
+banExemptPlayer: "ban exempt"
+
 localBanPlayer: "Je bent gebanned, kijk op www.MCBans.com"
 localBanSuccess: "%PLAYER% was gebant, [%REASON%]"
 localBanError: "Fout bij het bannen van %PLAYER%!"
@@ -27,7 +29,7 @@ tempBanAlready: "%PLAYER% is al gebanned van deze server!"
 kickPlayer: "%REASON%"
 kickSuccess: "%PLAYER% is uit de server gegooit!"
 kickNoPlayer: "Geen speler met dat naam!"
-kickExemptPlayer: ""
+kickExemptPlayer: "kick exempt"
 kickBroadcast: "%PLAYER% was uit de server gegooit! [%REASON%]"
 
 ipBanSuccess: "IP %IP% is gebant [%REASON%]"

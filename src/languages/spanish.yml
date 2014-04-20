@@ -1,9 +1,11 @@
-# Spanish MCBans File, Translated By: dragondeth48 Updated by: Crashdoom
+﻿# Spanish MCBans File, Translated By: dragondeth48 Updated by: Crashdoom
 
 unBanSuccess: "¡levantar la prohibición de %PLAYER%!"
 unBanError: "%PLAYER% es prohibido aún"
 unBanGroup: "¡%PLAYER% es prohibido de un servidora en el mismo grupo como tú!"
 unBanNot: "¡%PLAYER% no es brohibido!"
+
+banExemptPlayer: ""
 
 localBanPlayer: "Usted se prohibieron, Usted consulte MCBans.com"
 localBanSuccess: "%PLAYER% ha sido prohibido [%REASON%]"

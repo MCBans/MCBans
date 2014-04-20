@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -50,6 +51,7 @@ public class MCBans extends JavaPlugin {
     public long lastID = 0;
     public boolean syncRunning = false;
     public long lastCallBack = 0;
+    public static boolean AnnounceAll = false;
     public long lastSync = 0;
     public String apiServer = null;
 
@@ -214,7 +216,15 @@ public class MCBans extends JavaPlugin {
     public MCBansAPI getAPI(final Plugin plugin){
         return MCBansAPI.getHandle(this, plugin);
     }
-
+    public static Player getPlayer(Plugin plugin, String UUID){
+    	UUID = UUID.replaceAll("(?sim)([a-z0-9]{8})([a-z0-9]{4})([a-z0-9]{4})([a-z0-9]{4})([a-z0-9]{12})", "$1-$2-$3-$4-$5");
+    	for(Player p : plugin.getServer().getOnlinePlayers()){
+    		if(p.getUniqueId().toString().equals(UUID)){
+    			return p;
+    		}
+    	}
+    	return null;
+    }
     public ConfigurationManager getConfigs(){
         return this.config;
     }

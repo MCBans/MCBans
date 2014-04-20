@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.permission.Perms;
 
 public class Util {
     private static final String IP_PATTERN = 
@@ -57,7 +58,9 @@ public class Util {
      */
     public static void broadcastMessage(String msg) {
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            player.sendMessage(MCBans.getPrefix() + " " + msg);
+        	if(Perms.ANNOUNCE.has(player) || MCBans.AnnounceAll){
+        		player.sendMessage(MCBans.getPrefix() + " " + msg);
+        	}
         }
     }
 

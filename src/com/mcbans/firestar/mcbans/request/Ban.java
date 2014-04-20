@@ -22,6 +22,7 @@ import com.mcbans.firestar.mcbans.events.PlayerUnbanEvent;
 import com.mcbans.firestar.mcbans.events.PlayerUnbannedEvent;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
+import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.util.Util;
 
 public class Ban implements Runnable {
@@ -70,7 +71,7 @@ public class Ban implements Runnable {
     public void kickPlayer(String playerName, String playerUUID, final String kickReason) {
     	Player targettmp = null;
     	if(!playerUUID.equals("")){
-    		plugin.getServer().getPlayer(UUID.fromString(playerUUID));
+    		targettmp = MCBans.getPlayer(plugin,playerUUID);;
     	}else{
     		targettmp = plugin.getServer().getPlayerExact(playerName);
     	}
@@ -109,7 +110,23 @@ public class Ban implements Runnable {
                 duration = banEvent.getDuration();
                 measure = banEvent.getMeasure();
             }
-
+            Player targettmp = null;
+            if(!playerUUID.equals("")){
+        		targettmp = MCBans.getPlayer(plugin,playerUUID);;
+        	}else{
+        		targettmp = plugin.getServer().getPlayerExact(playerName);
+        	}
+            if(targettmp!=null && action_id!=3){
+	            if (Perms.EXEMPT_BAN.has(targettmp)){
+	                Util.message(senderName, ChatColor.RED + _("banExemptPlayer", I18n.PLAYER, targettmp.getName()));
+	                return;
+	            }
+            }else if(playerName!=null && action_id!=3){
+            	if (Perms.EXEMPT_BAN.has(playerName)){
+	                Util.message(senderName, ChatColor.RED + _("banExemptPlayer", I18n.PLAYER, playerName));
+	                return;
+	            }
+            }
             switch (action_id) {
                 case 0:
                     globalBan();
@@ -144,7 +161,6 @@ public class Ban implements Runnable {
         }else{
             Bukkit.getServer().unbanIP(playerName);
         }
-
         JsonHandler webHandle = new JsonHandler(plugin);
         HashMap<String, String> url_items = new HashMap<String, String>();
         url_items.put("player", playerName);

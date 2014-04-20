@@ -47,6 +47,9 @@ commands:
     description: mcbans functions
     usage: /<command> <function>
 permissions:
+  mcbans.announce:
+    description: Announces bans and kicks to anyone with this permission
+    default: op
   mcbans.admin:
     description: Admin privileges to mcbans, access to admin commands
     default: op
@@ -64,6 +67,9 @@ permissions:
     default: op
   mcbans.ban.ip:
     description: Gives banip command
+    default: op
+  mcbans.ban.exempt:
+    description: Permission to exempt from bans
     default: op
   mcbans.unban:
     description: Permission to use unban command

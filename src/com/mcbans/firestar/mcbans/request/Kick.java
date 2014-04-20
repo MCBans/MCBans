@@ -40,7 +40,7 @@ public class Kick implements Runnable {
     public void run() {
     	Player playertmp = null;
     	if(!playerUUID.equals("")){
-    		playertmp = plugin.getServer().getPlayer(UUID.fromString(playerUUID));
+    		playertmp = MCBans.getPlayer(plugin,playerUUID);
     	}else{
     		playertmp = (useExactName) ? plugin.getServer().getPlayerExact(playerName) : plugin.getServer().getPlayer(playerName);
     	}
@@ -48,7 +48,7 @@ public class Kick implements Runnable {
         if (player != null) {
             // Check exempt permission
             if (Perms.EXEMPT_KICK.has(player)){
-                Util.message(senderName, ChatColor.RED + _("kickExemptPlayer", I18n.PLAYER, playerName));
+                Util.message(senderName, ChatColor.RED + _("kickExemptPlayer", I18n.PLAYER, player.getName()));
                 return;
             }
             

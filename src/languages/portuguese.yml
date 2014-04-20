@@ -1,9 +1,11 @@
-# Brazilian Portuguese MCBans File, Translated By: alexandrecoc Updated By: saya0514
+﻿# Brazilian Portuguese MCBans File, Translated By: alexandrecoc Updated By: saya0514
 
 unBanSuccess: "%PLAYER% foi desbanido!"
 unBanError: "Erro ao remover o ban de %PLAYER%!"
 unBanGroup: "%PLAYER% foi banido de um servidor no mesmo grupo que você!"
 unBanNot: "%PLAYER% nao foi banido!"
+
+banExemptPlayer: ""
 
 localBanPlayer: "Você foi banido, entre em MCBans.com"
 localBanSuccess: "%PLAYER% foi banido [%REASON%]"

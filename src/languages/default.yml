@@ -5,6 +5,8 @@ unBanError: "Error removing the ban for %PLAYER%!"
 unBanGroup: "%PLAYER% banned from a server in the same group as you!"
 unBanNot: "%PLAYER% was not banned!"
 
+banExemptPlayer: "%PLAYER% has ban exempt permission!"
+
 localBanPlayer: "You have been banned, check MCBans.com"
 localBanSuccess: "%PLAYER% has been banned [%REASON%]"
 localBanError: "Error adding ban for %PLAYER%!"

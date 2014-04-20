@@ -15,30 +15,28 @@ public enum Perms {
 
     // Admin permission
     ADMIN           ("admin"),
-
+    
     // Ban permissions
     BAN_GLOBAL      ("ban.global"),
     BAN_LOCAL       ("ban.local"),
     BAN_TEMP        ("ban.temp"),
     BAN_ROLLBACK    ("ban.rollback"),
     BAN_IP          ("ban.ip"),
-
-    // Unban permission
     UNBAN           ("unban"),
+    KICK            ("kick"),
 
     // View permissions
     VIEW_ALTS       ("view.alts"),
     VIEW_BANS       ("view.bans"),
     VIEW_STAFF      ("view.staff"),
-
-    // Hide permissions
+    ANNOUNCE        ("announce"),
     HIDE_VIEW       ("hideview"),
     
     // Exempt
     EXEMPT_KICK     ("kick.exempt"),
+    EXEMPT_BAN      ("ban.exempt"),
 
     // Others
-    KICK            ("kick"),
     LOOKUP_PLAYER   ("lookup.player"),
     LOOKUP_BAN      ("lookup.ban"),
     LOOKUP_ALT      ("lookup.alt"),

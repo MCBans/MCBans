@@ -1,9 +1,11 @@
-# Swedish MCBans File, Translated By: Fronix
+﻿# Swedish MCBans File, Translated By: Fronix
 
 unBanSuccess: "Bannen på %PLAYER% har blivit borttagen!"
 unBanError: "Fel uppstod vid borttagning av bannen på %PLAYER%!"
 unBanGroup: "%PLAYER% bannad från en server i samma grupp som du!"
 unBanNot: "%PLAYER% är inte bannad!"
+
+banExemptPlayer: "%PLAYER% har tillåtelse att inte bli bannad!"
 
 localBanPlayer: "Du har blivit bannad, se MCBans.com för mer information."
 localBanSuccess: "%PLAYER% har blivit bannad [%REASON%]"

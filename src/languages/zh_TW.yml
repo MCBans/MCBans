@@ -1,9 +1,11 @@
-# Traditional Chinese MCBans File, Translated By: marlboromoo
+﻿# Traditional Chinese MCBans File, Translated By: marlboromoo
 
 unBanSuccess: "%PLAYER% 已從黑名單移除!"
 unBanError: "將 %PLAYER% 從黑名單移除時發生錯誤!"
 unBanGroup: "%PLAYER% 已被你其他伺服器加入黑名單了!"
 unBanNot: "%PLAYER% 並沒有被加入黑名單!"
+
+banExemptPlayer: "%PLAYER% 有踢除豁免的權限!"
 
 localBanPlayer: "你已被禁止進入伺服器, 請到 MCBans.com 確認"
 localBanSuccess: "將 %PLAYER% 加入黑名單 [%REASON%]"

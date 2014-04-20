@@ -35,6 +35,7 @@ public class CommandMcbans extends BaseCommand{
             send("&bMCBans &3" + plugin.getDescription().getVersion() + "&b Help &f|| &b<> &f= required, &b[] &f= optional");
             send("&f/mcbans banning" + ChatColor.BLUE + " Help with banning/unban command");
             send("&f/mcbans user" + ChatColor.BLUE + " Help with user management commands");
+            send("&f/mcbans perms" + ChatColor.BLUE + " Permission list for mcbans");
             send("&f/mcbans get" + ChatColor.BLUE + " Get time till next call");
             send("&f/mcbans ping" + ChatColor.BLUE + " Check overall response time from API");
             send("&f/mcbans sync" + ChatColor.BLUE + " Force a sync to occur");
@@ -45,24 +46,66 @@ public class CommandMcbans extends BaseCommand{
         final String first = args.remove(0);
         /* Banning Help */
         if (first.equalsIgnoreCase("banning")){
-            send("&f/ban <name> [reason]" + ChatColor.BLUE + " Local ban user");
-            send("&f/ban <name> g <reason>" + ChatColor.BLUE + " Global ban user");
-            send("&f/ban <name> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Temporarily ban");
-            send("&f/tban <name> <time> <m(minute), h(hour), d(day), w(week)> [reason]" + ChatColor.BLUE + " Temp ban user");
-            send("&f/gban <name> <reason>" + ChatColor.BLUE + " Global ban user");
-            send("&f/rban <name> [reason]" + ChatColor.BLUE + " Rollback and local ban");
-            send("&f/rban <name> g <reason>" + ChatColor.BLUE + " Rollback and global ban");
-            send("&f/rban <name> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Rollback and temporarily ban");
+        	send("&f------------------------------------------");
+            send("&f/ban <name|uuid> [reason]" + ChatColor.BLUE + " Local ban user");
+            send("&f/ban <name|uuid> g <reason>" + ChatColor.BLUE + " Global ban user");
+            send("&f/ban <name|uuid> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Temporarily ban");
+            send("&f/tban <name|uuid> <time> <m(minute), h(hour), d(day), w(week)> [reason]" + ChatColor.BLUE + " Temp ban user");
+            send("&f/gban <name|uuid> <reason>" + ChatColor.BLUE + " Global ban user");
+            send("&f/rban <name|uuid> [reason]" + ChatColor.BLUE + " Rollback and local ban");
+            send("&f/rban <name|uuid> g <reason>" + ChatColor.BLUE + " Rollback and global ban");
+            send("&f/rban <name|uuid> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Rollback and temporarily ban");
             send("&f/banip <ip> [reason]" + ChatColor.BLUE + " Bans an IP address");
-            send("&f/unban <name|ip>" + ChatColor.BLUE + " Bans an IP address");
+            send("&f/unban <name|ip|uuid>" + ChatColor.BLUE + " Bans an IP address");
             return;
         }
         /* User Help */
         if (first.equalsIgnoreCase("user")){
-            send("&f/lookup <name>" + ChatColor.BLUE + " Lookup the player information");
+        	send("&f------------------------------------------");
+            send("&f/lookup <name|uuid>" + ChatColor.BLUE + " Lookup the player information");
             send("&f/banlookup <banID>" + ChatColor.BLUE + " Lookup the ban information");
             send("&f/altlookup <name>" + ChatColor.BLUE + " Lookup the alt information");
             send("&f/kick <name> [reason]" + ChatColor.BLUE + " Kick user from the server");
+            return;
+        }
+        /* User Help */
+        if (first.equalsIgnoreCase("perms")){
+        	send("&f------------------------------------------");
+        	if(args.size() == 0){
+	            send("&f/mcbans perms ban" + ChatColor.BLUE + " Banning/kick Permissions");
+	            send("&f/mcbans perms exempt" + ChatColor.BLUE + " Exemptions from kick/ban");
+	            send("&f/mcbans perms view" + ChatColor.BLUE + " On connect bans/bans/alts");
+	            send("&f/mcbans perms others" + ChatColor.BLUE + " Lookups");
+	            send(ChatColor.GOLD+"mcbans.admin" + ChatColor.BLUE + " Grants admin permission");
+	            return;
+        	}
+        	final String last = args.remove(0);
+        	if(last.equalsIgnoreCase("ban")){
+        		send(ChatColor.GOLD+"mcbans.ban.global" + ChatColor.BLUE + " Grants global ban permissions");
+        		send(ChatColor.GOLD+"mcbans.ban.local" + ChatColor.BLUE + " Grants local ban permissions");
+        		send(ChatColor.GOLD+"mcbans.ban.temp" + ChatColor.BLUE + " Grants temp ban permissions");
+        		send(ChatColor.GOLD+"mcbans.ban.rollback" + ChatColor.BLUE + " Grants rollback ban permissions");
+        		send(ChatColor.GOLD+"mcbans.ban.rollback" + ChatColor.BLUE + " Grants rollback ban permissions");
+        		send(ChatColor.GOLD+"mcbans.ban.ip" + ChatColor.BLUE + " Grants ip ban permissions");
+        		send(ChatColor.GOLD+"mcbans.unban" + ChatColor.BLUE + " Grants unban permissions");
+        		send(ChatColor.GOLD+"mcbans.kick" + ChatColor.BLUE + " Grants kick permissions");
+        		return;
+        	}else if(last.equalsIgnoreCase("view")){
+        		send(ChatColor.GOLD+"mcbans.view.alts" + ChatColor.BLUE + " View players alts on connect {premium}");
+        		send(ChatColor.GOLD+"mcbans.view.bans" + ChatColor.BLUE + " View players bans on connect");
+        		send(ChatColor.GOLD+"mcbans.view.staff" + ChatColor.BLUE + " View if player is mcbans staff on connect");
+        		send(ChatColor.GOLD+"mcbans.announce" + ChatColor.BLUE + " View player is banned/kicked");
+        		return;
+        	}else if(last.equalsIgnoreCase("exempt")){
+        		send(ChatColor.GOLD+"mcbans.kick.exempt" + ChatColor.BLUE + " Player cannot be kicked");
+        		send(ChatColor.GOLD+"mcbans.ban.exempt" + ChatColor.BLUE + " Player cannot be banned");
+        		return;
+        	}else if(last.equalsIgnoreCase("others")){
+        		send(ChatColor.GOLD+"mcbans.lookup.player" + ChatColor.BLUE + " Grants lookup player command");
+        		send(ChatColor.GOLD+"mcbans.lookup.ban" + ChatColor.BLUE + " Grants lookup ban command");
+        		send(ChatColor.GOLD+"mcbans.lookup.alt" + ChatColor.BLUE + " Grants lookup alternate accounts command");
+        		return;
+        	}
             return;
         }
         /* Check response time */

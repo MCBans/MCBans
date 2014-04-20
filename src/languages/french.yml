@@ -1,10 +1,12 @@
-# French MCBans File Translated By: Crueldog Updated By: expertmac2, saya0514, psgs
+﻿# French MCBans File Translated By: Crueldog Updated By: expertmac2, saya0514, psgs
  
 unBanSuccess: "%PLAYER% a été dé-banni!"
 unBanError: "Une erreur est survenue lors du dé-bannage de %PLAYER%!"
 unBanGroup: "%PLAYER% banni d’un serveur du même groupe que vous!"
 unBanNot: "%PLAYER% n’a pas été dé-banni!"
  
+banExemptPlayer: "%PLAYER% ce joeur est exempté d'etre expulsé"
+
 localBanPlayer: "Vous avez été banni, vérifiez MCBans.com"
 localBanSuccess: "%PLAYER% a été banni pour raison: [%REASON%]"
 localBanError: "Une erreur est survenue lors du ban de %PLAYER%!"
