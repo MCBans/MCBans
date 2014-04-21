@@ -4,8 +4,6 @@ import static com.mcbans.firestar.mcbans.I18n._;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-
-import com.mcbans.firestar.mcbans.callBacks.LookupCallback;
 import com.mcbans.firestar.mcbans.callBacks.PreviousCallback;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.permission.Perms;

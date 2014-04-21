@@ -27,6 +27,7 @@ import com.mcbans.firestar.mcbans.commands.CommandGlobalban;
 import com.mcbans.firestar.mcbans.commands.CommandKick;
 import com.mcbans.firestar.mcbans.commands.CommandLookup;
 import com.mcbans.firestar.mcbans.commands.CommandMcbans;
+import com.mcbans.firestar.mcbans.commands.CommandPrevious;
 import com.mcbans.firestar.mcbans.commands.CommandRban;
 import com.mcbans.firestar.mcbans.commands.CommandTempban;
 import com.mcbans.firestar.mcbans.commands.CommandUnban;
@@ -175,6 +176,7 @@ public class MCBans extends JavaPlugin {
         cmds.add(new CommandBanlookup());
         cmds.add(new CommandAltlookup());
         cmds.add(new CommandMcbans());
+        cmds.add(new CommandPrevious());
 
         for (final BaseCommand cmd : cmds){
             commandHandler.registerCommand(cmd);
