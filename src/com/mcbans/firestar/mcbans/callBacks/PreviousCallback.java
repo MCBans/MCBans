@@ -18,10 +18,10 @@ public class PreviousCallback extends BaseCallback{
 	
 	@Override
 	public void success(String identifier, String playerlist ) {
-		if(playerlist.equals("")){
-			Util.message(sender,  _("previousNamesHas", I18n.PLAYER, identifier, I18n.PLAYERS, playerlist));
+		if(!playerlist.equals("")){
+			Util.message(sender,  ChatColor.RED +_("previousNamesHas", I18n.PLAYER, identifier, I18n.PLAYERS, playerlist));
 		}else{
-			Util.message(sender,  _("previousNamesNone", I18n.PLAYER, identifier));
+			Util.message(sender,  ChatColor.AQUA +_("previousNamesNone", I18n.PLAYER, identifier));
 		}
 	}
 	
