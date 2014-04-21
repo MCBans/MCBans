@@ -1,32 +1,35 @@
 ##  Plugin Information  ##
 name: MCBans
 main: com.mcbans.firestar.mcbans.MCBans
-version: 4.3
+version: 4.3.1
 description: A global banning solution
 website: http://mcbans.com/
-softdepend: [NoCheatPlus, AntiCheat, LogBlock, HawkEye, CoreProtect, Vault, PermissionsEx]
+softdepend: [LogBlock, HawkEye, CoreProtect, Vault, PermissionsEx]
 author: Firestar, Syamn
 commands:
   kick:
     description: kicks a user
-    usage: /<command> <playername> [reason]
+    usage: /<command> <playername|UUID> [reason]
   ban:
     description: ban a user
-    usage: /<command> <playername> [g/t/reason] [reason]
+    usage: /<command> <playername|UUID> [g/t/reason] [reason]
   globalban:
     description: global bans a user
     aliases: [gban]
-    usage: /<command> <playername> [reason]
+    usage: /<command> <playername|UUID> [reason]
   rban:
     description: roll back bans
-    usage: /<command> <playername> [g/t/reason] [reason]
+    usage: /<command> <playername|UUID> [g/t/reason] [reason]
+  pvs:
+    description: history of a players UUID
+    usage: /<command> <playername|UUID>
   unban:
     description: unban a user
-    usage: /<command> <playername>
+    usage: /<command> <playername|UUID>
   tempban:
     description: temporary ban user
     aliases: [tban]
-    usage: /<command> <playername> <duration> <m(minutes) or h(hours) or d(days) or w(weeks)> [reason]
+    usage: /<command> <playername|UUID> <duration> <m(minutes) or h(hours) or d(days) or w(weeks)> [reason]
   banip:
     description: bans an IP address
     aliases: [ipban]
@@ -34,7 +37,7 @@ commands:
   lookup:
     description: lookup a player information
     aliases: [lup]
-    usage: /<command> <playername>
+    usage: /<command> <playername|UUID>
   banlookup:
     description: lookup a ban information
     aliases: [blup]
@@ -42,7 +45,7 @@ commands:
   altlookup:
     description: lookup a player alt accounts
     aliases: [alup, alt]
-    usage: /<command> <playername>
+    usage: /<command> <playername|UUID>
   mcbans:
     description: mcbans functions
     usage: /<command> <function>

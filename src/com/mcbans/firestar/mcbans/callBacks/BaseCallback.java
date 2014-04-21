@@ -20,4 +20,6 @@ public abstract class BaseCallback{
     public CommandSender getSender(){
         return this.sender;
     }
+
+	public void success(String identifier, String playerlist) {}
 }
