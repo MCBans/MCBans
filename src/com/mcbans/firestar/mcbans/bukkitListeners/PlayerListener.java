@@ -128,11 +128,15 @@ public class PlayerListener implements Listener {
                     if(Integer.parseInt(s[5]) > 0){
                         tmp.put("d", s[5]);
                     }
-                	if(!s[8].equals("")){
-                		tmp.put("pn", s[8]);
-                	}
-                	if(!s[9].equals("")){
-                		tmp.put("dnsbl", s[9]);
+                    if(s.length>=9){
+	                	if(!s[8].equals("")){
+	                		tmp.put("pn", s[8]);
+	                	}
+                    }
+                    if(s.length>=10){
+	                	if(!s[9].equals("")){
+	                		tmp.put("dnsbl", s[9]);
+	                	}
                 	}
                     if (s.length == 8){
                        
