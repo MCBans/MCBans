@@ -12,9 +12,9 @@ import com.mcbans.firestar.mcbans.request.PreviousNames;
 public class CommandPrevious extends BaseCommand {
 	public CommandPrevious(){
 		bePlayer = false;
-        name = "pvs";
+        name = "namelookup";
         argLength = 1;
-        usage = "pvs player";
+        usage = "nlup player";
         banning = true;
 	}
 	@Override

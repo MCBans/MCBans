@@ -20,8 +20,9 @@ commands:
   rban:
     description: roll back bans
     usage: /<command> <playername|UUID> [g/t/reason] [reason]
-  pvs:
+  namelookup:
     description: history of a players UUID
+    aliases: [nlup]
     usage: /<command> <playername|UUID>
   unban:
     description: unban a user

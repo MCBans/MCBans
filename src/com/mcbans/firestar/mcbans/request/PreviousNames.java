@@ -27,7 +27,7 @@ public class PreviousNames extends BaseRequest<PreviousCallback>{
         }
 		JSONObject result = this.request_JOBJ();
 		try{
-            callback.success(target, result.getString("players"));
+            callback.success(result.getString("player"), result.getString("players"));
         }
         catch (JSONException ex) {
             if (result.toString().contains("error")) {
