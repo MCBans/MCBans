@@ -132,6 +132,11 @@ public class PlayerListener implements Listener {
                     if(Integer.parseInt(s[5]) > 0){
                         tmp.put("d", s[5]);
                     }
+                    if(Integer.parseInt(s[8]) > 0){
+                    	if(!s[8].equals("")){
+                    		tmp.put("pn", s[8]);
+                    	}
+                    }
                     if (s.length == 8){
                        
                     }
@@ -190,8 +195,6 @@ public class PlayerListener implements Listener {
             Util.message(player, ChatColor.RED + _("bansOnRecord"));
             
             if (!Perms.HIDE_VIEW.has(player)){
-                Perms.VIEW_BANS.message(ChatColor.RED + _("previousBans", I18n.PLAYER, player.getName()));
-                
                 String prev = pcache.get("b");
                 if (config.isSendDetailPrevBans() && prev != null){
                     prev = prev.trim();
@@ -207,6 +210,13 @@ public class PlayerListener implements Listener {
         }
         if(pcache.containsKey("d")){
             Util.message(player, ChatColor.RED + _("disputes", I18n.COUNT, pcache.get("d")));
+        }
+        if(pcache.containsKey("pn")){
+        	String plist = "";
+        	for(String name: pcache.get("pn").split(",")){
+        		plist += ((!plist.equals(""))?", ":"") + name;
+        	}
+        	 Perms.VIEW_PREVIOUS.message(ChatColor.RED + _("previousNames", I18n.PLAYER, player.getName(), I18n.PLAYERS, plist ));
         }
         if(pcache.containsKey("a")){
             if (!Perms.HIDE_VIEW.has(player))

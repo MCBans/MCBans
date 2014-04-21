@@ -94,6 +94,7 @@ public class CommandMcbans extends BaseCommand{
         		send(ChatColor.GOLD+"mcbans.view.alts" + ChatColor.BLUE + " View players alts on connect {premium}");
         		send(ChatColor.GOLD+"mcbans.view.bans" + ChatColor.BLUE + " View players bans on connect");
         		send(ChatColor.GOLD+"mcbans.view.staff" + ChatColor.BLUE + " View if player is mcbans staff on connect");
+        		send(ChatColor.GOLD+"mcbans.view.previous" + ChatColor.BLUE + " View players previous names on connect");
         		send(ChatColor.GOLD+"mcbans.announce" + ChatColor.BLUE + " View player is banned/kicked");
         		return;
         	}else if(last.equalsIgnoreCase("exempt")){
