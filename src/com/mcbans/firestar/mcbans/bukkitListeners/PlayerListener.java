@@ -96,7 +96,7 @@ public class PlayerListener implements Listener {
 
             plugin.debug("Response: " + response);
             String[] s = response.split(";");
-            if (s.length == 10) {
+            if (s.length > 8) {
                 // check banned
                 if (s[0].equals("l") || s[0].equals("g") || s[0].equals("t") || s[0].equals("i") || s[0].equals("s")) {
                     event.disallow(Result.KICK_BANNED, s[1]);
