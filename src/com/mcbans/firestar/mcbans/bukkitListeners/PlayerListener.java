@@ -116,11 +116,7 @@ public class PlayerListener implements Listener {
                 else{
                     HashMap<String, String> tmp = new HashMap<String, String>();
                     if(s[0].equals("b")){
-                        if (s.length == 8){
-                            tmp.put("b", s[7]);
-                        }else{
-                            tmp.put("b", null);
-                        }
+                        tmp.put("b", s[7]);
                     }
                     if(Integer.parseInt(s[3]) > 0){
                         tmp.put("a", s[3]);
