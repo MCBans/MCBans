@@ -54,3 +54,5 @@ isMCBansMod: "%PLAYER% is een MCBans.com medewerker!"
 previousNames: "%PLAYER% has changed their name within the last 2 months: %PLAYERS%"
 previousNamesHas: "%PLAYER% has recently changed their name from: %PLAYERS%"
 previousNamesNone: "%PLAYER% has no name changes on record"
+
+proxyDetected: "%PLAYER% is using a proxy %REASON%"

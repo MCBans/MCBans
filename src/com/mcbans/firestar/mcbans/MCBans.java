@@ -36,7 +36,7 @@ import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 
 public class MCBans extends JavaPlugin {
-    public final String apiRequestSuffix = "4.1";
+    public final String apiRequestSuffix = "4.3.1";
     private static MCBans instance;
 
     public int taskID = 0;

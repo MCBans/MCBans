@@ -30,6 +30,7 @@ public enum Perms {
     VIEW_BANS       ("view.bans"),
     VIEW_STAFF      ("view.staff"),
     VIEW_PREVIOUS   ("view.previous"),
+    VIEW_PROXY      ("view.proxy"),
     ANNOUNCE        ("announce"),
     HIDE_VIEW       ("hideview"),
     

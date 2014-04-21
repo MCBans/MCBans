@@ -131,6 +131,9 @@ public class PlayerListener implements Listener {
                 	if(!s[8].equals("")){
                 		tmp.put("pn", s[8]);
                 	}
+                	if(!s[9].equals("")){
+                		tmp.put("dnsbl", s[9]);
+                	}
                     if (s.length == 8){
                        
                     }
@@ -211,6 +214,15 @@ public class PlayerListener implements Listener {
         		plist += ((!plist.equals(""))?", ":"") + name;
         	}
         	 Perms.VIEW_PREVIOUS.message(ChatColor.RED + _("previousNames", I18n.PLAYER, player.getName(), I18n.PLAYERS, plist ));
+        }
+        if(pcache.containsKey("dnsbl")){
+        	String proxlist = "";
+        	for(String name: pcache.get("dnsbl").split(",")){
+        		String from = name.split("$")[0];
+        		String reason = name.split("$")[1];
+        		proxlist += ((!proxlist.equals(""))?", ":"") + "[ "+from+" { "+reason+" } ]";
+        	}
+        	 Perms.VIEW_PROXY.message(ChatColor.RED + _("proxyDetected", I18n.PLAYER, player.getName(), I18n.REASON, proxlist ));
         }
         if(pcache.containsKey("a")){
             if (!Perms.HIDE_VIEW.has(player))
