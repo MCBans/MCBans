@@ -42,7 +42,7 @@ public class MCBansAPI {
             targetIP = (target != null) ? target.getAddress().getAddress().getHostAddress() : "";
         }
 
-        Ban banControl = new Ban(plugin, type.getActionName(), targetName, targetIP, senderName, reason, duration, measure);
+        Ban banControl = new Ban(plugin, type.getActionName(), targetName, targetUUID, targetIP, senderName, senderUUID, reason, duration, measure, null, false);
         Thread triggerThread = new Thread(banControl);
         triggerThread.start();
     }
