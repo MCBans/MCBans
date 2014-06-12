@@ -74,7 +74,7 @@ public abstract class BaseCommand {
         if (sender instanceof Player){
             player = (Player)sender;
             senderName = player.getName();
-            senderUUID = player.getUniqueId().toString();
+            //senderUUID = player.getUniqueId().toString();
             isPlayer = true;
         }
 
@@ -94,7 +94,7 @@ public abstract class BaseCommand {
             final Player targetPlayer = Bukkit.getPlayerExact(target);
             if (targetPlayer != null && targetPlayer.isOnline()){
                 targetIP = targetPlayer.getAddress().getAddress().getHostAddress();
-                targetUUID = targetPlayer.getUniqueId().toString();
+                //targetUUID = targetPlayer.getUniqueId().toString();
             }
             // check isValid player name
             if (!Util.isValidName(target)){

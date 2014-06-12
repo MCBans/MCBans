@@ -2,11 +2,13 @@ package com.mcbans.firestar.mcbans.callBacks;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -33,51 +35,51 @@ public class ManualResync implements Runnable {
             return;
         }
         plugin.syncRunning = true;
-        
         try{
             boolean goNext = true;
-            int f = 1;
-            plugin.last_req=0;
             plugin.lastID = 0;
-            plugin.timeRecieved = 0;
-            
+            plugin.lastType = "bans";
             while(goNext){
-                long startID = plugin.lastID;
                 JsonHandler webHandle = new JsonHandler( plugin );
                 HashMap<String, String> url_items = new HashMap<String, String>();
-                url_items.put( "latestSync", String.valueOf(plugin.lastID) );
-                url_items.put( "timeRecieved", String.valueOf(plugin.timeRecieved) );
-                url_items.put( "exec", "banSyncInitialNew" );
+                url_items.put( "lastId", String.valueOf(plugin.lastID) );
+                url_items.put( "lastType", String.valueOf(plugin.lastType) );
+                url_items.put( "exec", "banSync" );
                 JSONObject response = webHandle.hdl_jobj(url_items);
                 try {
-                    if(response.has("banned")){
-                        if (response.getJSONArray("banned").length() > 0) {
-                            for (int v = 0; v < response.getJSONArray("banned").length(); v++) {
-                                String[] plyer = response.getJSONArray("banned").getString(v).split(";");
-                                OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer[0]);
-                                if (d != null){
-                                    if(d.isBanned()){
-                                        if(plyer[1].equals("u")){
-                                            d.setBanned(false);
-                                        }
-                                    }else{
-                                        if(plyer[1].equals("b")){
-                                            d.setBanned(true);
-                                        }
-                                    }
-                                }
+                    if(response.has("actions")){
+                        if (response.getJSONArray("actions").length() > 0) {
+                            for (int v = 0; v < response.getJSONArray("actions").length(); v++) {
+                            	JSONObject plyer = response.getJSONArray("actions").getJSONObject(v);
+                            	//plugin.act( plyer.getString("do"), plyer.getString("uuid"));
+                            	OfflinePlayer d = plugin.getServer().getOfflinePlayer(plyer.getString("name"));
+                    	    	if (d != null){
+                    		    	if(d.isBanned()){
+                    		            if(plyer.getString("do").equals("unban")){
+                    		                d.setBanned(false);
+                    		            }
+                    		        }else{
+                    		            if(plyer.getString("do").equals("ban")){
+                    		                d.setBanned(true);
+                    		            }
+                    		        }
+                    	    	}
                             }
                         }
                     }
-                    if(plugin.lastID == 0){
-                        if(response.has("timerecieved")){
-                            plugin.timeRecieved = response.getLong("timerecieved");
-                        }
-                    }
                     if(response.has("lastid")){
-                        plugin.lastID = response.getLong("lastid");
-                    }
-                    goNext = response.has("more");
+                    	if(response.getLong("lastid") == 0 && plugin.lastType.equalsIgnoreCase("bans")){
+                    		plugin.lastType = "sync";
+                    		plugin.lastID = 0;
+                    		plugin.debug("Bans retrieved");
+                        }else if(plugin.lastID==response.getLong("lastid") && plugin.lastType.equalsIgnoreCase("sync")){
+                        	plugin.debug("Sync Completed");
+                        	goNext = false;
+                        }else{
+                        	plugin.debug("Recieved "+plugin.lastType+" from: "+plugin.lastID+" to: "+response.getLong("lastid"));
+                        	plugin.lastID=response.getLong("lastid");
+                        }
+            		}
                 } catch (JSONException e) {
                     if(plugin.getConfigs().isDebug()){
                         e.printStackTrace();
@@ -87,46 +89,30 @@ public class ManualResync implements Runnable {
                         e.printStackTrace();
                     }
                 }
-                if(plugin.lastID == startID){
-                    f++;
-                }else{
-                    f = 1;
-                }
-                if(f > 5){
-                    goNext = false;
-                }
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(200);
                 } catch (InterruptedException ignore) {}
             }
         } finally {
             plugin.syncRunning = false;
         }
-        
+        plugin.lastSync = System.currentTimeMillis() / 1000;
         Util.message(commandSend, ChatColor.GREEN + " Sync finished");
-        this.save();
+        save();
     }
-
     public void save(){
-        Writer writer = null;
-        BufferedWriter fout = null;
-        try {
-            writer = new OutputStreamWriter(new FileOutputStream(new File(plugin.getDataFolder(), "sync.last")), "UTF-8");
-            fout = new BufferedWriter(writer);
-            fout.write(String.valueOf(plugin.lastID));
-        } catch (Exception e) {
-            if(plugin.getConfigs().isDebug()){
-                e.printStackTrace();
-            }
-        } finally {
-            if (fout != null){
-                try { fout.close(); } 
-                catch (IOException ignore) {}
-            }
-            if (writer != null){
-                try { writer.close(); } 
-                catch (IOException ignore) {}
-            }
-        }
+    	plugin.lastSyncs.setProperty("lastId", String.valueOf(plugin.lastID));
+    	plugin.lastSyncs.setProperty("lastType", String.valueOf(plugin.lastType));
+    	try {
+			plugin.lastSyncs.store(new FileOutputStream(plugin.syncIni), "Syncing information. DO NOT TOUCH!");
+		} catch (FileNotFoundException e) {
+			if(plugin.getConfigs().isDebug()){
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			if(plugin.getConfigs().isDebug()){
+				e.printStackTrace();
+			}
+		}
     }
 }

@@ -97,8 +97,8 @@ public class JsonHandler {
             }
             URL url = new URL("http://" + server + "/v3/" + config.getApiKey());
             URLConnection conn = url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(5000);
+            conn.setConnectTimeout(25000);
+            conn.setReadTimeout(25000);
             conn.setDoOutput(true);
             
             wr = new OutputStreamWriter(conn.getOutputStream());

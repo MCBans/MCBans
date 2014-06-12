@@ -1,10 +1,19 @@
 package com.mcbans.firestar.mcbans;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
+import java.util.Properties;
+import java.util.UUID;
+
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -36,13 +45,14 @@ import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 
 public class MCBans extends JavaPlugin {
-    public final String apiRequestSuffix = "4.3.1";
+    public final String apiRequestSuffix = "4.3.3";
     private static MCBans instance;
 
     public int taskID = 0;
     public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
     public HashMap<String, HashMap<String, String>> playerCache = new HashMap<String, HashMap<String, String>>();
     public HashMap<String, Long> resetTime = new HashMap<String, Long>();
+    public Properties lastSyncs = new Properties();
     public ArrayList<String> mcbStaff = new ArrayList<String>();
     public long last_req = 0;
     public long timeRecieved = 0;
@@ -50,10 +60,12 @@ public class MCBans extends JavaPlugin {
     public BanSync bansync = null;
     public Thread syncBan = null;
     public long lastID = 0;
+    public File syncIni = null;
+    public long lastSync = 0;
+    public String lastType = "";
     public boolean syncRunning = false;
     public long lastCallBack = 0;
     public static boolean AnnounceAll = false;
-    public long lastSync = 0;
     public String apiServer = null;
 
     private ActionLog log = null;
@@ -95,7 +107,20 @@ public class MCBans extends JavaPlugin {
             pm.disablePlugin(this);
             return;
         }*/
-
+        //load sync configuration
+        syncIni = new File(this.getDataFolder(),"sync.ini");
+        if(syncIni.exists()){
+        	try {
+				lastSyncs.load(new FileInputStream(syncIni));
+				lastID = Long.valueOf(lastSyncs.getProperty("lastId"));
+				lastType = lastSyncs.getProperty("lastType");
+			} catch (FileNotFoundException e) {
+			} catch (IOException e) {}
+        }else{
+        	lastType = "bans";
+        	lastID = 0;
+        }
+        
         // load configuration
         config = new ConfigurationManager(this);
         try{
@@ -107,7 +132,7 @@ public class MCBans extends JavaPlugin {
         if (!pm.isPluginEnabled(this)){
             return;
         }
-
+        
         // load language
         log.info("Loading language file: " + config.getLanguage());
         I18n.init(config.getLanguage());
@@ -219,14 +244,31 @@ public class MCBans extends JavaPlugin {
         return MCBansAPI.getHandle(this, plugin);
     }
     public static Player getPlayer(Plugin plugin, String UUID){
-    	UUID = UUID.replaceAll("(?sim)([a-z0-9]{8})([a-z0-9]{4})([a-z0-9]{4})([a-z0-9]{4})([a-z0-9]{12})", "$1-$2-$3-$4-$5");
-    	for(Player p : plugin.getServer().getOnlinePlayers()){
+    	UUID = UUID.replaceAll("(?ism)([a-z0-9]{8})([a-z0-9]{4})([a-z0-9]{4})([a-z0-9]{4})([a-z0-9]{12})", "$1-$2-$3-$4-$5");
+    	/*for(Player p : plugin.getServer().getOnlinePlayers()){
     		if(p.getUniqueId().toString().equals(UUID)){
     			return p;
     		}
-    	}
+    	}*/
     	return null;
     }
+    /*public void act(String act, String uuid){
+    	uuid = uuid.replaceAll("(?ism)([a-z0-9]{8})([a-z0-9]{4})([a-z0-9]{4})([a-z0-9]{4})([a-z0-9]{12})", "$1-$2-$3-$4-$5");
+    	if(uuid.matches("([a-z0-9]{8})-([a-z0-9]{4})-([a-z0-9]{4})-([a-z0-9]{4})-([a-z0-9]{12})")){
+	    	OfflinePlayer d = getServer().getOfflinePlayer(UUID.fromString(uuid));
+	    	if (d != null){
+		    	if(d.isBanned()){
+		            if(act.equals("unban")){
+		                d.setBanned(false);
+		            }
+		        }else{
+		            if(act.equals("ban")){
+		                d.setBanned(true);
+		            }
+		        }
+	    	}
+    	}
+    }*/
     public ConfigurationManager getConfigs(){
         return this.config;
     }
