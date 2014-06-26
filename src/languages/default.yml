@@ -30,7 +30,7 @@ kickPlayer: "%REASON%"
 kickSuccess: "%PLAYER% has been kicked!"
 kickNoPlayer: "%PLAYER% is not online!"
 kickExemptPlayer: "%PLAYER% has kick exempt permission!"
-kickBroadcast: "%ADMIN% has kicked %PLAYER% [%REASON%]"
+kickBroadcast: "%ADMIN% has kicked %PLAYER% \\n%REASON%"
 
 ipBanSuccess: "IP %IP% has been banned [%REASON%]"
 ipBanError: "Error adding ban for IP %IP%!"
@@ -51,6 +51,9 @@ disputes: "You have %COUNT% open dispute(s)!"
 previousBans: "%PLAYER% has previous bans!"
 bansOnRecord: "You have bans on record! ( check http://mcbans.com )"
 isMCBansMod: "%PLAYER% is an MCBans.com Staff Member!"
+banReturnMessage: "&EReason: &C%REASON%\n&EBan from: &F%ADMIN%\n&EBan Type: &7%TYPE%\n&Bhttp://mcbans.com/ban/%BANID%"
+successSetting: "Successfully changed setting [%REASON%]!"
+failSetting: "Failed to change setting [%REASON%]!"
 
 previousNames: '%PLAYER% has changed their name within the last 2 months "%PLAYERS%"'
 previousNamesHas: '%PLAYER% has recently changed their name from "%PLAYERS%"!'

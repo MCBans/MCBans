@@ -35,6 +35,7 @@ import com.mcbans.firestar.mcbans.commands.CommandBanlookup;
 import com.mcbans.firestar.mcbans.commands.CommandGlobalban;
 import com.mcbans.firestar.mcbans.commands.CommandKick;
 import com.mcbans.firestar.mcbans.commands.CommandLookup;
+import com.mcbans.firestar.mcbans.commands.CommandMCBansSettings;
 import com.mcbans.firestar.mcbans.commands.CommandMcbans;
 import com.mcbans.firestar.mcbans.commands.CommandPrevious;
 import com.mcbans.firestar.mcbans.commands.CommandRban;
@@ -45,7 +46,7 @@ import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 
 public class MCBans extends JavaPlugin {
-    public final String apiRequestSuffix = "4.3.3";
+    public final String apiRequestSuffix = "4.3.4";
     private static MCBans instance;
 
     public int taskID = 0;
@@ -114,8 +115,7 @@ public class MCBans extends JavaPlugin {
 				lastSyncs.load(new FileInputStream(syncIni));
 				lastID = Long.valueOf(lastSyncs.getProperty("lastId"));
 				lastType = lastSyncs.getProperty("lastType");
-			} catch (FileNotFoundException e) {
-			} catch (IOException e) {}
+			} catch (Exception e) {}
         }else{
         	lastType = "bans";
         	lastID = 0;
@@ -164,8 +164,8 @@ public class MCBans extends JavaPlugin {
 
         // hookup integration plugin
         //checkPlugin(true);
-        if (ncpEnabled) log.info("NoCheatPlus plugin found! Enabled this integration!");
-        if (acEnabled) log.info("AntiCheat plugin found! Enabled this integration!");
+        //if (ncpEnabled) log.info("NoCheatPlus plugin found! Enabled this integration!");
+        //if (acEnabled) log.info("AntiCheat plugin found! Enabled this integration!");
 
         final PluginDescriptionFile pdfFile = this.getDescription();
         log.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
@@ -202,6 +202,8 @@ public class MCBans extends JavaPlugin {
         cmds.add(new CommandAltlookup());
         cmds.add(new CommandMcbans());
         cmds.add(new CommandPrevious());
+        
+        cmds.add(new CommandMCBansSettings());
 
         for (final BaseCommand cmd : cmds){
             commandHandler.registerCommand(cmd);

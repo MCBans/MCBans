@@ -134,6 +134,7 @@ public class PlayerListener implements Listener {
 	        if(pcache == null) return;
 	        if(pcache.containsKey("b")){
 	            Util.message(player, ChatColor.RED + _("bansOnRecord"));
+	            Perms.VIEW_BANS.message(ChatColor.RED + _("previousBans", I18n.PLAYER, player.getName()));
 	            if (!Perms.HIDE_VIEW.has(player)){
 	                String prev = pcache.get("b");
 	                if (config.isSendDetailPrevBans() && prev != null){
@@ -315,6 +316,7 @@ public class PlayerListener implements Listener {
 		        if(pcache == null) return;
 		        if(pcache.containsKey("b")){
 		            Util.message(player, ChatColor.RED + _("bansOnRecord"));
+		            Perms.VIEW_BANS.message(ChatColor.RED + _("previousBans", I18n.PLAYER, player.getName()));
 		            if (!Perms.HIDE_VIEW.has(player)){
 		                String prev = pcache.get("b");
 		                if (config.isSendDetailPrevBans() && prev != null){
@@ -400,7 +402,8 @@ public class PlayerListener implements Listener {
     	if (s.length >= 5) {
             // check banned
             if (s[0].equals("l") || s[0].equals("g") || s[0].equals("t") || s[0].equals("i") || s[0].equals("s")) {
-                event.disallow(Result.KICK_BANNED, s[1]);
+            	String[] reasonData = s[1].split("\\$");
+                event.disallow(Result.KICK_BANNED, _("banReturnMessage", I18n.REASON, reasonData[0], I18n.ADMIN, reasonData[1], I18n.BANID, reasonData[2], I18n.TYPE, reasonData[3]));
                 return;
             }
             // check reputation
@@ -458,7 +461,6 @@ public class PlayerListener implements Listener {
                 Util.message(Bukkit.getConsoleSender(), ChatColor.RED + "This Server Disabled by MCBans Administration!");
                 return;
             }
-
             if (config.isFailsafe()){
                 log.warning("Invalid response!(" + s.length + ") Kicked player: " + event.getName());
                 event.disallow(Result.KICK_BANNED, _("unavailable"));

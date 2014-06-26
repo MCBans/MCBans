@@ -4,35 +4,36 @@ import org.bukkit.ChatColor;
 
 import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.callBacks.PreviousCallback;
+import com.mcbans.firestar.mcbans.callBacks.MCBansSettingsCallback;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 
-public class PreviousNames extends BaseRequest<PreviousCallback>{
-	public String target = "";
-	public PreviousNames(MCBans plugin, PreviousCallback callback, String target, String targetUUID, String sender) {
+public class MCBansSettings extends BaseRequest<MCBansSettingsCallback> {
+	public String commands = "";
+	public String sender = "";
+	public MCBansSettings(MCBans plugin, MCBansSettingsCallback callback, String sender, String commands) {
 		super(plugin, callback);
-		this.items.put("player", target);
-		this.items.put("player_uuid", targetUUID);
+		this.commands = commands;
+		this.sender = sender;
 		this.items.put("admin", sender);
-		this.items.put("exec", "uuidLookup");
-		this.target = (!target.equals(""))?target:targetUUID;
+		this.items.put("setting", commands);
+		this.items.put("exec", "setting");
 	}
 
 	@Override
 	protected void execute() {
 		// TODO Auto-generated method stub
 		if (callback.getSender() != null){
-            log.info(callback.getSender().getName() + "  looked up the player history for " + target + "!");
+            log.info(callback.getSender().getName() + " executed setting change <" + commands + ">!");
         }
 		JSONObject result = this.request_JOBJ();
 		try{
-            callback.success(result.getString("player"), result.getString("players"));
+            callback.success(result.getString("result"), result.getString("reason"));
         }
         catch (JSONException ex) {
             if (result.toString().contains("error")) {
                 if (result.toString().contains("dne")){
-                    callback.error("Player record not found: " + target);
+                    callback.error("Could not execute settings change: <" + commands +">");
                     return;
                 }
                 else if (result.toString().contains("Server Disabled")) {
@@ -43,7 +44,7 @@ public class PreviousNames extends BaseRequest<PreviousCallback>{
                     return;
                 }
             }
-            ActionLog.getInstance().severe("JSON error while trying to parse player name history data!");
+            ActionLog.getInstance().severe("JSON error while trying to change server settings!");
             callback.error("JSON Error");
         }
         catch (NullPointerException ex) {

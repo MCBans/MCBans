@@ -55,5 +55,8 @@ isMCBansMod: "%PLAYER% est un membre du personnel de MCBans.com"
 previousNames: "%PLAYER% has changed their name within the last 2 months: %PLAYERS%"
 previousNamesHas: "%PLAYER% has recently changed their name from: %PLAYERS%"
 previousNamesNone: "%PLAYER% has no name changes on record"
+banReturnMessage: "&EReason: &C%REASON%\n&EBan from: &F%ADMIN%\n&EBan Type: &7%TYPE%\n&Bhttp://mcbans.com/ban/%BANID%"
+successSetting: "Successfully changed setting [%REASON%]!"
+failSetting: "Failed to change setting [%REASON%]!"
 
 proxyDetected: "%PLAYER% is using a proxy %REASON%"

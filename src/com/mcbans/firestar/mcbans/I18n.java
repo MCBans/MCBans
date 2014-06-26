@@ -98,7 +98,10 @@ public class I18n {
     public static final String PLAYER   = "%PLAYER%";
     public static final String SENDER   = "%ADMIN%";
     public static final String REASON   = "%REASON%";
-    public static final String PLAYERS   = "%PLAYERS%";
+    public static final String BANID    = "%BANID%";
+    public static final String ADMIN    = "%ADMIN%";
+    public static final String TYPE     = "%TYPE%";
+    public static final String PLAYERS  = "%PLAYERS%";
     public static final String BADWORD  = "%BADWORD%";
     public static final String ALTS     = "%ALTS%";
     public static final String COUNT    = "%COUNT%";
@@ -126,7 +129,10 @@ public class I18n {
 
         // coloring
         msg = Util.color(msg);
-
+        
+        // return character
+        msg = msg.replace("\\n", "\n");
+        
         // build replaces
         Map<String, Object> binds = buildBinds(args);
         for (String bindKey : binds.keySet()){

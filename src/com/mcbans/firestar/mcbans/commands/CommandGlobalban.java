@@ -27,6 +27,7 @@ public class CommandGlobalban extends BaseCommand{
         Ban banControl = new Ban(plugin, BanType.GLOBAL.getActionName(), target, targetUUID, targetIP, senderName, senderUUID, reason, "", "", null, false);
         Thread triggerThread = new Thread(banControl);
         triggerThread.start();
+        
     }
 
     @Override
