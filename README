@@ -52,6 +52,8 @@ Misc Commands
 * /altlookup <playername|UUID> - checks alt accounts (premium server only!)
 * /kick <playername|UUID> [reason] - kicks a player from the game
 * /unban <playername|IP|UUID> - unbans the player/IP from your server
+* /mcbans - mcbans help and more information
+* /mcbs - change server settings
 
 Permissions
 --------
