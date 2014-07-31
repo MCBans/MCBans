@@ -69,6 +69,7 @@ Permissions
 * mcbans.ban.temp (default: op) - Allow temp ban player
 * mcbans.ban.rollback (default: op) - Allow use rban command
 * mcbans.ban.ip (default: op) - Allow use banip command
+* mcbans.ban.exempt (default: op) - Permission to exempt from bans
 * mcbans.unban (default: op) - Allow unban player
 * mcbans.view.alts (default: op) - Show notification of a players alts on connect
 * mcbans.view.bans (default: op) - Show previous ban information on player connect
@@ -78,3 +79,7 @@ Permissions
 * mcbans.lookup.ban (default: op) - Allow lookup ban details
 * mcbans.lookup.alt (default: op) - Allow lookup alt account
 * mcbans.kick (default: op) - Allow kick player
+* mcbans.kick.exempt (default: op) - Permission to exempt from kicks
+* mcbans.maxalts.exempt (default: op) - Permission to exempt from max alt account disconnect
+
+
