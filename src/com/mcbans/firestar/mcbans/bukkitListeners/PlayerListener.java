@@ -412,7 +412,7 @@ public class PlayerListener implements Listener {
                 return;
             }
             // check alternate accounts
-            else if (config.isEnableMaxAlts() && config.getMaxAlts() < Integer.valueOf(s[3]) && Perms.EXEMPT_MAXALTS.has(event.getName())) {
+            else if (config.isEnableMaxAlts() && config.getMaxAlts() < Integer.valueOf(s[3]) && !Perms.EXEMPT_MAXALTS.has(event.getName())) {
                 event.disallow(Result.KICK_BANNED, _("overMaxAlts"));
                 return;
             }
