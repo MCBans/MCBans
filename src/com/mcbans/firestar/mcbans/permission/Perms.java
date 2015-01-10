@@ -37,6 +37,7 @@ public enum Perms {
     // Exempt
     EXEMPT_KICK     ("kick.exempt"),
     EXEMPT_BAN      ("ban.exempt"),
+    EXEMPT_MAXALTS	("maxalts.exempt"),
 
     // Others
     LOOKUP_PLAYER   ("lookup.player"),
