@@ -4,15 +4,17 @@ import static com.mcbans.firestar.mcbans.I18n._;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.regex.Pattern;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
 import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.bukkitListeners.PlayerListener;
 import com.mcbans.firestar.mcbans.events.PlayerBanEvent;
 import com.mcbans.firestar.mcbans.events.PlayerBannedEvent;
 import com.mcbans.firestar.mcbans.events.PlayerGlobalBanEvent;
@@ -56,7 +58,10 @@ public class Ban implements Runnable {
         this.measure = measure;
         this.action = action;
         this.actionData = (actionData != null) ? actionData : new JSONObject();
-
+        String res = PlayerListener.cache.getIfPresent(playerName.toLowerCase());
+        if(res!=null){
+        	PlayerListener.cache.invalidate(playerName.toLowerCase());
+        }
         responses.put("globalBan", 0);
         responses.put("localBan", 1);
         responses.put("tempBan", 2);
@@ -421,7 +426,8 @@ public class Ban implements Runnable {
         }
     }
 
-    private void bukkitBan(final boolean flag){
+    @SuppressWarnings("deprecation")
+	private void bukkitBan(final boolean flag){
         OfflinePlayer target = plugin.getServer().getOfflinePlayer(playerName);
         if (target == null){
             return;
@@ -438,7 +444,8 @@ public class Ban implements Runnable {
         }
     }
 
-    private Map<String, JSONObject> getProof() throws JSONException{
+    @SuppressWarnings("unused")
+	private Map<String, JSONObject> getProof() throws JSONException{
         HashMap<String, JSONObject> ret = new HashMap<String, JSONObject>();
 
         /* Hacked client */

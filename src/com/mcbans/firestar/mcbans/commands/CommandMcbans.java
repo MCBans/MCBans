@@ -131,8 +131,8 @@ public class CommandMcbans extends BaseCommand{
                 (new Thread(manualSyncBanRunner)).start();
             }else{
                 long syncInterval = 60 * config.getSyncInterval();
-                if(syncInterval < (60 * 5)){ // minimum 5 minutes
-                    syncInterval = 60 * 5;
+                if(syncInterval < (60 * 60)){ // minimum 5 minutes
+                    syncInterval = 60 * 60;
                 }
                 long ht = (plugin.lastSync + syncInterval) - (System.currentTimeMillis() / 1000);
                 if (ht > 10) {

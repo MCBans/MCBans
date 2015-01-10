@@ -19,3 +19,4 @@ bin
 bin/**
 build.xml
 /target
+spigot-1.8.jar

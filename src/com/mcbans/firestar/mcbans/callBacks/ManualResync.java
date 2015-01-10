@@ -1,14 +1,9 @@
 package com.mcbans.firestar.mcbans.callBacks;
 
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.HashMap;
-import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -28,7 +23,8 @@ public class ManualResync implements Runnable {
         this.commandSend = sender;
     }
     
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void run() {
         if(plugin.syncRunning){
             Util.message(commandSend, ChatColor.GREEN + " Sync already in progress!" );
@@ -90,7 +86,7 @@ public class ManualResync implements Runnable {
                     }
                 }
                 try {
-                    Thread.sleep(200);
+                	Thread.sleep(5000);
                 } catch (InterruptedException ignore) {}
             }
         } finally {

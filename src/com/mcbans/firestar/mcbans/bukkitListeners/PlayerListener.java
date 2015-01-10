@@ -12,8 +12,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.xml.stream.events.StartDocument;
+import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,6 +25,8 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.ConfigurationManager;
 import com.mcbans.firestar.mcbans.I18n;
@@ -38,7 +39,10 @@ public class PlayerListener implements Listener {
     private final MCBans plugin;
     private final ActionLog log;
     private final ConfigurationManager config;
-
+    public static Cache<String, String> cache = CacheBuilder.newBuilder()
+    	    .maximumSize(10000)
+    	    .expireAfterWrite(5, TimeUnit.MINUTES)
+    	    .build();
     public PlayerListener(final MCBans plugin) {
         this.plugin = plugin;
         this.log = plugin.getLog();
@@ -48,54 +52,59 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onAsyncPlayerPreLoginEvent(final AsyncPlayerPreLoginEvent event) {
         try {
-            int check = 1;
-            while (plugin.apiServer == null) {
-                // waiting for server select
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {}
-                check++;
-                if (check > 5) {
-                    // can't reach mcbans servers
-                    if (config.isFailsafe()){
-                        log.warning("Can't reach MCBans API Servers! Kicked player: " + event.getName());
-                        event.disallow(Result.KICK_BANNED, _("unavailable"));
-                    }else{
-                        log.warning("Can't reach MCBans API Servers! Check passed player: " + event.getName());
-                    }
-                    return;
-                }
-            }
-
-            // get player information
-            final String uriStr = "http://" + plugin.apiServer + "/v3/" + config.getApiKey() + "/login/"
-                    + URLEncoder.encode(event.getName(), "UTF-8") + "/"
-                    + URLEncoder.encode(event.getAddress().getHostAddress(), "UTF-8") + "/"
-                    + plugin.apiRequestSuffix;
-            final URLConnection conn = new URL(uriStr).openConnection();
-
-            conn.setConnectTimeout(config.getTimeoutInSec() * 1000);
-            conn.setReadTimeout(config.getTimeoutInSec() * 1000);
-            conn.setUseCaches(false);
-
-            BufferedReader br = null;
-            String response = null;
-            try{
-                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                response = br.readLine();
-            }finally{
-                if (br != null) br.close();
-            }
-            if (response == null){
-                if (config.isFailsafe()){
-                    log.warning("Null response! Kicked player: " + event.getName());
-                    event.disallow(Result.KICK_BANNED, _("unavailable"));
-                }else{
-                    log.warning("Null response! Check passed player: " + event.getName());
-                }
-                return;
-            }
-
+        	String response = cache.getIfPresent(event.getName().toLowerCase());
+        	if(response==null){
+	            int check = 1;
+	            while (plugin.apiServer == null) {
+	                // waiting for server select
+	                try {
+	                    Thread.sleep(1000);
+	                } catch (InterruptedException e) {}
+	                check++;
+	                if (check > 5) {
+	                    // can't reach mcbans servers
+	                    if (config.isFailsafe()){
+	                        log.warning("Can't reach MCBans API Servers! Kicked player: " + event.getName());
+	                        event.disallow(Result.KICK_BANNED, _("unavailable"));
+	                    }else{
+	                        log.warning("Can't reach MCBans API Servers! Check passed player: " + event.getName());
+	                    }
+	                    return;
+	                }
+	            }
+	            
+	            // get player information
+	            final String uriStr = "http://" + plugin.apiServer + "/v3/" + config.getApiKey() + "/login/"
+	                    + URLEncoder.encode(event.getName(), "UTF-8") + "/"
+	                    + URLEncoder.encode(event.getAddress().getHostAddress(), "UTF-8") + "/"
+	                    + plugin.apiRequestSuffix;
+	            final URLConnection conn = new URL(uriStr).openConnection();
+	
+	            conn.setConnectTimeout(config.getTimeoutInSec() * 1000);
+	            conn.setReadTimeout(config.getTimeoutInSec() * 1000);
+	            conn.setUseCaches(false);
+	
+	            BufferedReader br = null;
+	            response = null;
+	            try{
+	                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+	                response = br.readLine();
+	            }finally{
+	                if (br != null) br.close();
+	            }
+	            if (response == null){
+	                if (config.isFailsafe()){
+	                    log.warning("Null response! Kicked player: " + event.getName());
+	                    event.disallow(Result.KICK_BANNED, _("unavailable"));
+	                }else{
+	                    log.warning("Null response! Check passed player: " + event.getName());
+	                }
+	                return;
+	            }
+	            cache.put(event.getName().toLowerCase(), response);
+        	}else{
+        		plugin.debug("Retrieved from cache");
+        	}
             plugin.debug("Response: " + response);
             handleConnectionData(response,event);
         }
@@ -222,6 +231,7 @@ public class PlayerListener implements Listener {
     	public HandleConnectionData(PlayerJoinEvent event){
     		this.event = event;
     	}
+		@SuppressWarnings("unused")
 		@Override
 	    public void run(){
 			String response = "";
