@@ -21,7 +21,7 @@ public class AltLookupCallback extends BaseCallback{
     public void success(final AltLookupData data){
         Util.message(sender, Util.color("&fPlayer &3" + data.getPlayerName() + "&f may has &c" + data.getAltCount() + " alt account(s)&f."));
         if (data.getAltCount() > 0){
-            String line2 = "";
+            StringBuilder line2 = new StringBuilder();
             
             HashMap<String, Double> map = data.getAltMap();
             boolean first = true;
@@ -31,12 +31,12 @@ public class AltLookupCallback extends BaseCallback{
                 String repStr = ((rep < 10) ? "&c" : "&7") + rep;
                 
                 if (first) { first = false; }
-                else { line2 += "&f, "; }
+                else { line2.append("&f, "); }
                 
-                line2 += "&2" + alt + "&f(" + repStr + "&f)";
+                line2.append("&2").append(alt).append("&f(").append(repStr).append("&f)");
             }
             
-            Util.message(sender, Util.color(line2));
+            Util.message(sender, Util.color(line2.toString()));
         }
     }
 

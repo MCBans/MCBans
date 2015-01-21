@@ -162,20 +162,20 @@ public class PlayerListener implements Listener {
 	            Util.message(player, ChatColor.RED + _("disputes", I18n.COUNT, pcache.get("d")));
 	        }
 	        if(pcache.containsKey("pn")){
-	        	String plist = "";
+	        	StringBuilder plist = new StringBuilder();
 	        	for(String name: pcache.get("pn").split(",")){
-	        		plist += ((!plist.equals(""))?", ":"") + name;
+	        		plist.append(plist.length() == 0 ? "" : ", ").append(name);
 	        	}
-	        	 Perms.VIEW_PREVIOUS.message(ChatColor.RED + _("previousNames", I18n.PLAYER, player.getName(), I18n.PLAYERS, plist ));
+	        	 Perms.VIEW_PREVIOUS.message(ChatColor.RED + _("previousNames", I18n.PLAYER, player.getName(), I18n.PLAYERS, plist.toString() ));
 	        }
 	        if(pcache.containsKey("dnsbl")){
-	        	String proxlist = "";
+	        	StringBuilder proxlist = new StringBuilder();
 	        	for(String name: pcache.get("dnsbl").split(",")){
 	        		String from = name.split("$")[0];
 	        		String reason = name.split("$")[1];
-	        		proxlist += ((!proxlist.equals(""))?", ":"") + "[ "+from+" { "+reason+" } ]";
+	        		proxlist.append(proxlist.length() == 0 ? "" : ", ").append("[ ").append(from).append(" { ").append(reason).append(" } ]");
 	        	}
-	        	 Perms.VIEW_PROXY.message(ChatColor.RED + _("proxyDetected", I18n.PLAYER, player.getName(), I18n.REASON, proxlist ));
+	        	 Perms.VIEW_PROXY.message(ChatColor.RED + _("proxyDetected", I18n.PLAYER, player.getName(), I18n.REASON, proxlist.toString() ));
 	        }
 	        if(pcache.containsKey("a")){
 	            if (!Perms.HIDE_VIEW.has(player))
@@ -345,20 +345,20 @@ public class PlayerListener implements Listener {
 		            Util.message(player, ChatColor.RED + _("disputes", I18n.COUNT, pcache.get("d")));
 		        }
 		        if(pcache.containsKey("pn")){
-		        	String plist = "";
+		        	StringBuilder plist = new StringBuilder();
 		        	for(String name: pcache.get("pn").split(",")){
-		        		plist += ((!plist.equals(""))?", ":"") + name;
+		        		plist.append(plist.length() == 0 ? "" : ", ").append(name);
 		        	}
-		        	 Perms.VIEW_PREVIOUS.message(ChatColor.RED + _("previousNames", I18n.PLAYER, player.getName(), I18n.PLAYERS, plist ));
+		        	 Perms.VIEW_PREVIOUS.message(ChatColor.RED + _("previousNames", I18n.PLAYER, player.getName(), I18n.PLAYERS, plist.toString() ));
 		        }
 		        if(pcache.containsKey("dnsbl")){
-		        	String proxlist = "";
+		        	StringBuilder proxlist = new StringBuilder();
 		        	for(String name: pcache.get("dnsbl").split(",")){
 		        		String from = name.split("$")[0];
 		        		String reason = name.split("$")[1];
-		        		proxlist += ((!proxlist.equals(""))?", ":"") + "[ "+from+" { "+reason+" } ]";
+		        		proxlist.append(proxlist.length() == 0 ? "" : ", ").append("[ ").append(from).append(" { ").append(reason).append(" } ]");
 		        	}
-		        	 Perms.VIEW_PROXY.message(ChatColor.RED + _("proxyDetected", I18n.PLAYER, player.getName(), I18n.REASON, proxlist ));
+		        	 Perms.VIEW_PROXY.message(ChatColor.RED + _("proxyDetected", I18n.PLAYER, player.getName(), I18n.REASON, proxlist.toString() ));
 		        }
 		        if(pcache.containsKey("a")){
 		            if (!Perms.HIDE_VIEW.has(player))
