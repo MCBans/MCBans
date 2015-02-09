@@ -25,7 +25,7 @@
         </repository>
         <repository>
             <id>md_5-rep</id>
-            <url>http://repo.md-5.net/content/repositories/releases</url>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
 		<repository>
             <id>ci-synload</id>
@@ -34,14 +34,10 @@
     </repositories>
 	<dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.7.9-R0.3-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>1.7.9-R0.3-SNAPSHOT</version>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>Spigot-API</artifactId>
+            <version>1.8-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
 		<dependency>
 	       <groupId>uk.co.oliwali</groupId>
