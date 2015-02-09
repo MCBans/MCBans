@@ -11,7 +11,6 @@ import org.bukkit.event.Listener;
 public class BungeeCordEventListener implements Listener {
     
     private final MCBans instance;
-    ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
     public BungeeCordEventListener(final MCBans plugin) {
         instance = plugin;
@@ -19,6 +18,7 @@ public class BungeeCordEventListener implements Listener {
     
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerBan(PlayerBannedEvent event) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("KickPlayer");
         out.writeUTF(event.getPlayerName());
         out.writeUTF(event.getReason());
@@ -27,6 +27,7 @@ public class BungeeCordEventListener implements Listener {
     
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerKick(PlayerKickEvent event) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("KickPlayer");
         out.writeUTF(event.getPlayer());
         out.writeUTF(event.getReason());
