@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+
+import com.mcbans.firestar.mcbans.events.BungeeCordEventListener;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -140,6 +142,11 @@ public class MCBans extends JavaPlugin {
         MainCallBack thisThread = new MainCallBack(this);
         callbackThread = new Thread(thisThread);
         callbackThread.start();
+        
+        //register listener for bungee
+        if(config.isBungeeCord()) {
+            getServer().getPluginManager().registerEvents(new BungeeCordEventListener(this), this);
+        }
 
         // ban sync
         bansync = new BanSync(this);

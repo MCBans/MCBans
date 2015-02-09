@@ -202,4 +202,6 @@ public class ConfigurationManager {
     public boolean isFailsafe(){
         return conf.getBoolean("failsafe", false);
     }
+    public boolean isBungeeCord() { return conf.getBoolean("bungeecord", false); }
+    
 }
