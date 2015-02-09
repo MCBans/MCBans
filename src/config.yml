@@ -147,6 +147,12 @@ timeout: 10
 #   DEFAULT: false
 failsafe: false
 
+# bungeecord:
+#   If set to true, this will kick players from BungeeCord when they
+#   are kicked or banned, regardless of the server they are currently on.
+#   DEFAULT: false
+bungeecord: false
+
 #########################################################
 # DO NOT TOUCH
 #   Do not touch this option! It is a check if you are running the recent configuration version
