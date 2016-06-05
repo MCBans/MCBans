@@ -24,8 +24,8 @@
             <url>http://repo.comphenix.net/content/groups/public</url>
         </repository>
         <repository>
-            <id>md_5-rep</id>
-            <url>http://repo.md-5.net/content/repositories/releases</url>
+            <id>md_5-snapshots</id>
+            <url>http://repo.md-5.net/content/repositories/snapshots/</url>
         </repository>
 		<repository>
             <id>ci-synload</id>
@@ -68,9 +68,9 @@
 		   <systemPath>${basedir}/lib/CoreProtect_2.0.9.jar</systemPath>
 	    </dependency>
 		<dependency>
-	       <groupId>de.diddiz</groupId>
-	       <artifactId>logblock</artifactId>
-	       <version>dev-SNAPSHOT</version>
+            <groupId>de.diddiz</groupId>
+            <artifactId>logblock</artifactId>
+            <version>1.10.1-SNAPSHOT</version>
 	    </dependency>
 	</dependencies>
 	<build>
