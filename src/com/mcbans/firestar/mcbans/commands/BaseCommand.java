@@ -2,6 +2,7 @@ package com.mcbans.firestar.mcbans.commands;
 
 import static com.mcbans.firestar.mcbans.I18n._;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,8 +94,14 @@ public abstract class BaseCommand {
             // get targetIP if available
             final Player targetPlayer = Bukkit.getPlayerExact(target);
             if (targetPlayer != null && targetPlayer.isOnline()){
-                targetIP = targetPlayer.getAddress().getAddress().getHostAddress();
-                //targetUUID = targetPlayer.getUniqueId().toString();
+                InetSocketAddress socket = targetPlayer.getAddress();
+                //Not all IPs are succcessfully resolved
+                //This prevents players from being unbannable/kickable in this rare case
+                if(socket.isUnresolved()) {
+                    targetIP = socket.getHostString();
+                } else {
+                    targetIP = socket.getAddress().getHostAddress();
+                }
             }
             // check isValid player name
             if (!Util.isValidName(target)){
