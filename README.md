@@ -1,8 +1,7 @@
 MCBans Server Plugin
 
-Author: Firestarthe, Syamn
+Author: Firestarthe, Syamn, Corpdraco
 
-[![Build Status](http://ci.synload.com/job/MCBans%20Bukkit/badge/icon)](http://ci.synload.com/job/MCBans%20Bukkit/)
 
 Welcome to MCBans
 ====================
@@ -12,7 +11,7 @@ MCBans is a global banning solution for Minecraft, provided through the Bukkit p
 Helpful Information
 --------
 Main Site: http://mcbans.com
-Support Desk: http://support.mcbans.com
+Support Desk: https://forums.mcbans.com/support-tickets/open
 Community: http://forums.mcbans.com
 
 Expectations
@@ -23,7 +22,7 @@ Please remember the following things while using our plugin!
 * MCBans is maintained constantly by a team of staff, but we're not miracle workers! Like everyone, we need time to perform our tasks and can't do everything on demand.
 * MCBans isn't always 100% clear from invalid bans - but, we're well on our way. Your help is always thanked in removing invalid bans and we try our hardest to monitor everything.
 * MCBans has a small dedicated development team - We do only have a few dedicated developers, but they do have other commitments as well.
-* MCBans staff don't always have good memories! Email: support@mcbans.com
+* MCBans staff don't always have good memories! Visit our support desk.
 
 Commands
 --------
