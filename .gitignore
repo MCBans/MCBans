@@ -20,3 +20,4 @@ bin/**
 build.xml
 /target
 spigot-1.8.jar
+spigot-1.12.jar
