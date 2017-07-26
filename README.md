@@ -12,7 +12,7 @@ Helpful Information
 --------
 Main Site: https://mcbans.com
 
-Support Desk: https://forums.mcbans.com/
+Support Desk: https://forums.mcbans.com/support-tickets/open
 
 Community: https://forums.mcbans.com
 
