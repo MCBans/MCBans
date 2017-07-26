@@ -49,7 +49,7 @@ public class JsonHandler {
             log.info("Converting response '" + json_text + "'");
         }
         if (json_text == null || json_text.length() <= 0){
-            if (config.isDebug()) log.severe("Null Response! Please contact MCBans administrator");
+            if (config.isDebug()) log.severe("Null Response! Please contact MCBans administrator!");
             out.clear();
             return out;
         }
@@ -64,7 +64,7 @@ public class JsonHandler {
                         out.put(next, output.getString(next));
                     } catch (JSONException e) {
                         if (config.isDebug()) {
-                            log.severe("JSON Error On Retrieve");
+                            log.severe("JSON Error On Retrieval!");
                             e.printStackTrace();
                         }
                     }
@@ -93,7 +93,7 @@ public class JsonHandler {
                 return "";
             }
             if (config.isDebug()) {
-                log.info("Sending request: '" + data + "'");
+                log.info("Sending API request: '" + data + "'");
             }
             URL url = new URL("http://" + server + "/v3/" + config.getApiKey());
             URLConnection conn = url.openConnection();
@@ -118,7 +118,7 @@ public class JsonHandler {
             return buf.toString();
         } catch (Exception e) {
             if (config.isDebug()) {
-                log.severe("Fetch Data Error");
+                log.severe("Error fetching data!");
                 e.printStackTrace();
             }
             return "";

@@ -52,14 +52,14 @@ public class AltLookupRequest extends BaseRequest<AltLookupCallback>{
         catch (JSONException ex) {
             if (result.toString().contains("error")) {
                 if (result.toString().contains("Server Disabled")) {
-                    ActionLog.getInstance().severe("Server Disabled by an MCBans Admin");
-                    ActionLog.getInstance().severe("To appeal this decision, please file a ticket on support.mcbans.com");
+                    ActionLog.getInstance().severe("Server Disabled by an MCBans.com Staff Member!");
+                    ActionLog.getInstance().severe("To appeal this decision, please file a ticket on forums.mcbans.com!");
 
-                    callback.error("This server is disabled by MCBans Administration.");
+                    callback.error("This server is disabled by MCBans Staff!");
                     return;
                 }
             }
-            ActionLog.getInstance().severe("JSON error while trying to parse alt lookup data!");
+            ActionLog.getInstance().severe("JSON error while trying to lookup alternate account data!");
             callback.error("JSON Error");
             if (plugin.getConfigs().isDebug()){
                 ex.printStackTrace();
@@ -67,7 +67,7 @@ public class AltLookupRequest extends BaseRequest<AltLookupCallback>{
         }
         catch (NullPointerException ex) {
             ActionLog.getInstance().severe("Unable to reach MCBans Master server!");
-            callback.error(ChatColor.RED + "Unable to reach MCBans Master server");
+            callback.error(ChatColor.RED + "Unable to reach MCBans Master server!");
             if (plugin.getConfigs().isDebug()){
                 ex.printStackTrace();
             }

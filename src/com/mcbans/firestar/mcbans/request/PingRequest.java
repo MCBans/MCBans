@@ -18,10 +18,10 @@ public class PingRequest extends BaseRequest<MessageCallback>{
     @Override
     protected void execute() {
         if ("up".equals(request_String())) {
-            callback.setMessage(ChatColor.GREEN + "API Server response time " + ((System.currentTimeMillis()) - startTime) + " milliseconds!");
+            callback.setMessage(ChatColor.GREEN + "API Response Time: " + ((System.currentTimeMillis()) - startTime) + " milliseconds!");
             callback.success();
         } else {
-            callback.error(ChatColor.RED + "API appears to be down!");
+            callback.error(ChatColor.RED + "MCBans API appears to be down or unreachable! Please notify MCBans staff!");
         }
     }
 }

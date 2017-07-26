@@ -25,7 +25,7 @@ public class MCBansSettingsCallback extends BaseCallback {
 	
 	@Override
 	public void success() {
-		throw new IllegalArgumentException("Wrong usage!");
+		throw new IllegalArgumentException("Wrong Usage!");
 	}
 	@Override
 	public void error(String error) {

@@ -27,7 +27,7 @@ public class FileStructure {
             return;
         }
         if (!dir.mkdir()){
-            ActionLog.getInstance().warning("Can't create directory: " + dir.getName());
+            ActionLog.getInstance().warning("Cannot create directory: " + dir.getName());
         }
     }
 
@@ -38,7 +38,8 @@ public class FileStructure {
      * @param destPath  To Path
      * @throws IOException IOException
      */
-    public static void copyTransfer(String srcPath, String destPath) throws IOException {
+    @SuppressWarnings("resource")
+	public static void copyTransfer(String srcPath, String destPath) throws IOException {
         FileChannel srcChannel = null, destChannel = null;
         try {
             srcChannel = new FileInputStream(srcPath).getChannel();
@@ -83,7 +84,7 @@ public class FileStructure {
             // get inside jar resource uri
             URL res = MCBans.class.getResource(from);
             if (res == null){
-                ActionLog.getInstance().warning("Can't find "+ from +" in plugin Jar file");
+                ActionLog.getInstance().warning("Can't find "+ from +" in plugin jar file");
                 return;
             }
             URLConnection resConn = res.openConnection();

@@ -37,10 +37,10 @@ public class MCBansSettings extends BaseRequest<MCBansSettingsCallback> {
                     return;
                 }
                 else if (result.toString().contains("Server Disabled")) {
-                    ActionLog.getInstance().severe("Server Disabled by an MCBans Admin");
-                    ActionLog.getInstance().severe("To appeal this decision, please file ticket on support.mcbans.com");
+                    ActionLog.getInstance().severe("Server Disabled by an MCBans Staff Member!");
+                    ActionLog.getInstance().severe("To appeal this decision, please file ticket on forums.mcbans.com");
 
-                    callback.error("This server disabled by MCBans Administration.");
+                    callback.error("This server has been disabled by an MCBans Staff Member.");
                     return;
                 }
             }
@@ -48,8 +48,8 @@ public class MCBansSettings extends BaseRequest<MCBansSettingsCallback> {
             callback.error("JSON Error");
         }
         catch (NullPointerException ex) {
-            ActionLog.getInstance().severe("Unable to reach MCBans Master server!");
-            callback.error(ChatColor.RED + "Unable to reach MCBans Master server");
+            ActionLog.getInstance().severe("Unable to reach the MCBans API server!");
+            callback.error(ChatColor.RED + "Unable to reach the MCBans API server!");
             if (plugin.getConfigs().isDebug()){
                 ex.printStackTrace();
             }

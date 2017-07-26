@@ -3,8 +3,10 @@ package com.mcbans.firestar.mcbans.callBacks;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 
+import org.bukkit.BanList;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
@@ -27,7 +29,7 @@ public class ManualResync implements Runnable {
 	@Override
     public void run() {
         if(plugin.syncRunning){
-            Util.message(commandSend, ChatColor.GREEN + " Sync already in progress!" );
+            Util.message(commandSend, ChatColor.GREEN + "Sync is already running! Be patient." );
             return;
         }
         plugin.syncRunning = true;
@@ -52,11 +54,15 @@ public class ManualResync implements Runnable {
                     	    	if (d != null){
                     		    	if(d.isBanned()){
                     		            if(plyer.getString("do").equals("unban")){
-                    		                d.setBanned(false);
+                    		            	if (plugin.getServer().getBanList(BanList.Type.NAME).isBanned(d.getName())){
+                    		            		plugin.getServer().getBanList(BanList.Type.NAME).pardon(d.getName());
+                    		                }
                     		            }
                     		        }else{
                     		            if(plyer.getString("do").equals("ban")){
-                    		                d.setBanned(true);
+                    		            	if (!plugin.getServer().getBanList(BanList.Type.NAME).isBanned(d.getName())){
+                    		                	plugin.getServer().getBanList(BanList.Type.NAME).addBan(d.getName(), "", new Date(), "sync");
+                    		                }
                     		            }
                     		        }
                     	    	}
@@ -67,12 +73,12 @@ public class ManualResync implements Runnable {
                     	if(response.getLong("lastid") == 0 && plugin.lastType.equalsIgnoreCase("bans")){
                     		plugin.lastType = "sync";
                     		plugin.lastID = 0;
-                    		plugin.debug("Bans retrieved");
+                    		plugin.debug("Bans have been retrieved!");
                         }else if(plugin.lastID==response.getLong("lastid") && plugin.lastType.equalsIgnoreCase("sync")){
-                        	plugin.debug("Sync Completed");
+                        	plugin.debug("Sync has completed!");
                         	goNext = false;
                         }else{
-                        	plugin.debug("Recieved "+plugin.lastType+" from: "+plugin.lastID+" to: "+response.getLong("lastid"));
+                        	plugin.debug("Received "+plugin.lastType+" from: "+plugin.lastID+" to: "+response.getLong("lastid"));
                         	plugin.lastID=response.getLong("lastid");
                         }
             		}
@@ -93,14 +99,14 @@ public class ManualResync implements Runnable {
             plugin.syncRunning = false;
         }
         plugin.lastSync = System.currentTimeMillis() / 1000;
-        Util.message(commandSend, ChatColor.GREEN + " Sync finished");
+        Util.message(commandSend, ChatColor.GREEN + "Sync is complete!");
         save();
     }
     public void save(){
     	plugin.lastSyncs.setProperty("lastId", String.valueOf(plugin.lastID));
     	plugin.lastSyncs.setProperty("lastType", String.valueOf(plugin.lastType));
     	try {
-			plugin.lastSyncs.store(new FileOutputStream(plugin.syncIni), "Syncing information. DO NOT TOUCH!");
+			plugin.lastSyncs.store(new FileOutputStream(plugin.syncIni), "Syncing ban information!");
 		} catch (FileNotFoundException e) {
 			if(plugin.getConfigs().isDebug()){
 				e.printStackTrace();

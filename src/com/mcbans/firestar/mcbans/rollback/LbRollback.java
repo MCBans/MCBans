@@ -17,7 +17,8 @@ public class LbRollback extends BaseRollback{
 
     private LogBlock logblock;
 
-    @Override
+    @SuppressWarnings("resource")
+	@Override
     public boolean rollback(CommandSender sender, String senderName, String target) {
         if (logblock == null) return false;
 

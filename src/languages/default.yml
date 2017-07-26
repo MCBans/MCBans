@@ -7,13 +7,13 @@ unBanNot: "%PLAYER% was not banned!"
 
 banExemptPlayer: "%PLAYER% has ban exempt permission!"
 
-localBanPlayer: "You have been banned, check MCBans.com"
+localBanPlayer: "You have been banned, check MCBans.com!"
 localBanSuccess: "%PLAYER% has been banned [%REASON%]"
 localBanError: "Error adding ban for %PLAYER%!"
 localBanGroup: "%PLAYER% banned from a server in the same group as you!"
 localBanAlready: "%PLAYER% is already banned from this server!"
 
-globalBanPlayer: "You have been banned, check MCBans.com"
+globalBanPlayer: "You have been banned, check MCBans.com!"
 globalBanSuccess: "%PLAYER% has been banned [%REASON%]"
 globalBanError: "Error adding ban for %PLAYER%!"
 globalBanWarning: "Error banning %PLAYER%! Reason contained badword: %BADWORD%"

@@ -83,15 +83,15 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
                     log.severe("Invalid response result: " + result);
                 }
             }else{
-                callback.error(ChatColor.RED + "API appears to be down!");
+                callback.error(ChatColor.RED + "MCBans API appears to be down or unreachable!");
             }
         } catch (JSONException ex) {
             if (response.toString().contains("error")) {
                 if (response.toString().contains("Server Disabled")) {
-                    ActionLog.getInstance().severe("Server Disabled by an MCBans Admin");
-                    ActionLog.getInstance().severe("To appeal this decision, please file ticket on support.mcbans.com");
+                    ActionLog.getInstance().severe("Server Disabled by an MCBans Staff Member");
+                    ActionLog.getInstance().severe("To appeal this decision, please file ticket on forums.mcbans.com");
 
-                    callback.error("This server disabled by MCBans Administration.");
+                    callback.error("This server has been disabled by MCBans Staff.");
                     return;
                 }
             }

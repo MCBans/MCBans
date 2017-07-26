@@ -33,13 +33,13 @@ public class CommandMcbans extends BaseCommand{
         /* General Help */
         if (args.size() == 0){
             send("&bMCBans &3" + plugin.getDescription().getVersion() + "&b Help &f|| &b<> &f= required, &b[] &f= optional");
-            send("&f/mcbans banning" + ChatColor.BLUE + " Help with banning/unban command");
+            send("&f/mcbans banning" + ChatColor.BLUE + " Help with banning/unbanning commands");
             send("&f/mcbans user" + ChatColor.BLUE + " Help with user management commands");
-            send("&f/mcbans perms" + ChatColor.BLUE + " Permission list for mcbans");
-            send("&f/mcbans get" + ChatColor.BLUE + " Get time till next call");
+            send("&f/mcbans perms" + ChatColor.BLUE + " Permission list for MCBans");
+            send("&f/mcbans get" + ChatColor.BLUE + " Get time till next API call");
             send("&f/mcbans ping" + ChatColor.BLUE + " Check overall response time from API");
-            send("&f/mcbans sync" + ChatColor.BLUE + " Force a sync to occur");
-            send("&f/mcbans reload" + ChatColor.BLUE + " Reload settings and language file");
+            send("&f/mcbans sync" + ChatColor.BLUE + " Force a sync to occur with MCBans API");
+            send("&f/mcbans reload" + ChatColor.BLUE + " Reload settings and language files");
             return;
         }
 
@@ -47,14 +47,14 @@ public class CommandMcbans extends BaseCommand{
         /* Banning Help */
         if (first.equalsIgnoreCase("banning")){
         	send("&f------------------------------------------");
-            send("&f/ban <name|uuid> [reason]" + ChatColor.BLUE + " Local ban user");
-            send("&f/ban <name|uuid> g <reason>" + ChatColor.BLUE + " Global ban user");
-            send("&f/ban <name|uuid> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Temporarily ban");
-            send("&f/tban <name|uuid> <time> <m(minute), h(hour), d(day), w(week)> [reason]" + ChatColor.BLUE + " Temp ban user");
-            send("&f/gban <name|uuid> <reason>" + ChatColor.BLUE + " Global ban user");
-            send("&f/rban <name|uuid> [reason]" + ChatColor.BLUE + " Rollback and local ban");
-            send("&f/rban <name|uuid> g <reason>" + ChatColor.BLUE + " Rollback and global ban");
-            send("&f/rban <name|uuid> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Rollback and temporarily ban");
+            send("&f/ban <name|uuid> [reason]" + ChatColor.BLUE + " Local ban a player");
+            send("&f/ban <name|uuid> g <reason>" + ChatColor.BLUE + " Global ban a player");
+            send("&f/ban <name|uuid> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Temporarily ban a player");
+            send("&f/tban <name|uuid> <time> <m(minute), h(hour), d(day), w(week)> [reason]" + ChatColor.BLUE + " Temp ban a player");
+            send("&f/gban <name|uuid> <reason>" + ChatColor.BLUE + " Global ban a player");
+            send("&f/rban <name|uuid> [reason]" + ChatColor.BLUE + " Rollback and local ban a player");
+            send("&f/rban <name|uuid> g <reason>" + ChatColor.BLUE + " Rollback and global ban a player");
+            send("&f/rban <name|uuid> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Rollback and temporarily ban a player");
             send("&f/banip <ip> [reason]" + ChatColor.BLUE + " Bans an IP address");
             send("&f/unban <name|ip|uuid>" + ChatColor.BLUE + " Bans an IP address");
             return;
@@ -62,44 +62,44 @@ public class CommandMcbans extends BaseCommand{
         /* User Help */
         if (first.equalsIgnoreCase("user")){
         	send("&f------------------------------------------");
-            send("&f/lookup <name|uuid>" + ChatColor.BLUE + " Lookup the player information");
-            send("&f/banlookup <banID>" + ChatColor.BLUE + " Lookup the ban information");
-            send("&f/altlookup <name>" + ChatColor.BLUE + " Lookup the alt information");
-            send("&f/kick <name> [reason]" + ChatColor.BLUE + " Kick user from the server");
+            send("&f/lookup <name|uuid>" + ChatColor.BLUE + " Lookup the player ban information");
+            send("&f/banlookup <banID>" + ChatColor.BLUE + " Lookup the player ban information");
+            send("&f/altlookup <name>" + ChatColor.BLUE + " Lookup the alt account information");
+            send("&f/kick <name> [reason]" + ChatColor.BLUE + " Kick player from the server");
             return;
         }
         /* User Help */
         if (first.equalsIgnoreCase("perms")){
         	send("&f------------------------------------------");
         	if(args.size() == 0){
-	            send("&f/mcbans perms ban" + ChatColor.BLUE + " Banning/kick Permissions");
+	            send("&f/mcbans perms ban" + ChatColor.BLUE + " Banning/kick permissions");
 	            send("&f/mcbans perms exempt" + ChatColor.BLUE + " Exemptions from kick/ban");
 	            send("&f/mcbans perms view" + ChatColor.BLUE + " On connect bans/bans/alts");
 	            send("&f/mcbans perms others" + ChatColor.BLUE + " Lookups");
-	            send(ChatColor.GOLD+"mcbans.admin" + ChatColor.BLUE + " Grants admin permission");
+	            send(ChatColor.GOLD+"mcbans.admin" + ChatColor.BLUE + " Grants complete MCBans admin permission");
 	            return;
         	}
         	final String last = args.remove(0);
         	if(last.equalsIgnoreCase("ban")){
         		send(ChatColor.GOLD+"mcbans.ban.global" + ChatColor.BLUE + " Grants global ban permissions");
         		send(ChatColor.GOLD+"mcbans.ban.local" + ChatColor.BLUE + " Grants local ban permissions");
-        		send(ChatColor.GOLD+"mcbans.ban.temp" + ChatColor.BLUE + " Grants temp ban permissions");
+        		send(ChatColor.GOLD+"mcbans.ban.temp" + ChatColor.BLUE + " Grants temporary ban permissions");
         		send(ChatColor.GOLD+"mcbans.ban.rollback" + ChatColor.BLUE + " Grants rollback ban permissions");
         		send(ChatColor.GOLD+"mcbans.ban.rollback" + ChatColor.BLUE + " Grants rollback ban permissions");
-        		send(ChatColor.GOLD+"mcbans.ban.ip" + ChatColor.BLUE + " Grants ip ban permissions");
+        		send(ChatColor.GOLD+"mcbans.ban.ip" + ChatColor.BLUE + " Grants IP ban permissions");
         		send(ChatColor.GOLD+"mcbans.unban" + ChatColor.BLUE + " Grants unban permissions");
         		send(ChatColor.GOLD+"mcbans.kick" + ChatColor.BLUE + " Grants kick permissions");
         		return;
         	}else if(last.equalsIgnoreCase("view")){
-        		send(ChatColor.GOLD+"mcbans.view.alts" + ChatColor.BLUE + " View players alts on connect {premium}");
+        		send(ChatColor.GOLD+"mcbans.view.alts" + ChatColor.BLUE + " View players alts on connect {premium only}");
         		send(ChatColor.GOLD+"mcbans.view.bans" + ChatColor.BLUE + " View players bans on connect");
-        		send(ChatColor.GOLD+"mcbans.view.staff" + ChatColor.BLUE + " View if player is mcbans staff on connect");
+        		send(ChatColor.GOLD+"mcbans.view.staff" + ChatColor.BLUE + " View if player is MCBans Staff on connect");
         		send(ChatColor.GOLD+"mcbans.view.previous" + ChatColor.BLUE + " View players previous names on connect");
-        		send(ChatColor.GOLD+"mcbans.announce" + ChatColor.BLUE + " View player is banned/kicked");
+        		send(ChatColor.GOLD+"mcbans.announce" + ChatColor.BLUE + " View if the player is banned/kicked");
         		return;
         	}else if(last.equalsIgnoreCase("exempt")){
-        		send(ChatColor.GOLD+"mcbans.kick.exempt" + ChatColor.BLUE + " Player cannot be kicked");
-        		send(ChatColor.GOLD+"mcbans.ban.exempt" + ChatColor.BLUE + " Player cannot be banned");
+        		send(ChatColor.GOLD+"mcbans.kick.exempt" + ChatColor.BLUE + " Player cannot be kicked at all");
+        		send(ChatColor.GOLD+"mcbans.ban.exempt" + ChatColor.BLUE + " Player cannot be banned at all");
         		return;
         	}else if(last.equalsIgnoreCase("others")){
         		send(ChatColor.GOLD+"mcbans.lookup.player" + ChatColor.BLUE + " Grants lookup player command");
@@ -126,7 +126,7 @@ public class CommandMcbans extends BaseCommand{
 
             // Check if all sync
             if (args.size() > 0 && args.get(0).equalsIgnoreCase("all")){
-                send(ChatColor.GREEN + " Re-Sync has started!");
+                send(ChatColor.GREEN + "Resyncing with MCBans API!");
                 ManualResync manualSyncBanRunner = new ManualResync(plugin, senderName);
                 (new Thread(manualSyncBanRunner)).start();
             }else{
@@ -136,11 +136,11 @@ public class CommandMcbans extends BaseCommand{
                 }
                 long ht = (plugin.lastSync + syncInterval) - (System.currentTimeMillis() / 1000);
                 if (ht > 10) {
-                    send(ChatColor.GREEN + " Sync has started!");
+                    send(ChatColor.GREEN + "Sync has started! This will take a few seconds to complete.");
                     ManualSync manualSyncBanRunner = new ManualSync(plugin, senderName);
                     (new Thread(manualSyncBanRunner)).start();
                 } else {
-                    throw new CommandException(ChatColor.RED + "[Unable] Sync will occur in less than 10 seconds!");
+                    throw new CommandException(ChatColor.RED + "Sync will occur in less than 10 seconds!");
                 }
             }
             return;
@@ -157,7 +157,7 @@ public class CommandMcbans extends BaseCommand{
                 if (remainStr != null){
                     send(ChatColor.GOLD + remainStr + " until next callback request.");
                 }else{
-                    send(ChatColor.GOLD  + "Callback request is in progress...");
+                    send(ChatColor.GOLD  + "Callback request is in progress..");
                 }
             }
             else if (args.size() > 0 && args.get(0).equalsIgnoreCase("sync")){
@@ -193,7 +193,7 @@ public class CommandMcbans extends BaseCommand{
                 config.loadConfig(false);
                 send(ChatColor.GREEN + "Reload completed!");
             }catch (Exception ex){
-                send(ChatColor.RED + "An error occured while trying to load the config file.");
+                send(ChatColor.RED + "An error occurred while trying to load the config file.");
             }
             send(ChatColor.AQUA + "Reloading Language File..");
             try{
@@ -201,7 +201,7 @@ public class CommandMcbans extends BaseCommand{
                 I18n.setCurrentLanguage(config.getLanguage());
                 send(ChatColor.GREEN + "Reload completed!");
             }catch(Exception ex){
-                send(ChatColor.RED + "An error occured while trying to load the language file.");
+                send(ChatColor.RED + "An error occurred while trying to load the language file.");
             }
             ServerChoose serverChooser = new ServerChoose(plugin);
             (new Thread(serverChooser)).start();
@@ -216,15 +216,15 @@ public class CommandMcbans extends BaseCommand{
                 }
             }else if (args.size() > 0 && args.get(0).equalsIgnoreCase("debug")){
                 send("&6-=== Debug Information ===-");
-                send("&6CraftBukkit: &e" + Bukkit.getVersion());
-                send("&6Bukkit: &e" + Bukkit.getBukkitVersion());
+                send("&6Spigot Version: &e" + Bukkit.getVersion());
+                send("&6Build: &e" + Bukkit.getBukkitVersion());
                 send("&6connData.size: &e" + plugin.connectionData.size() + "&6 pCache.size: &e" + plugin.playerCache.size() + "&6 resetTime.size: &e" + plugin.resetTime.size());
                 send("&6ApiServer: &e" + plugin.apiServer + " &6last_req: &e" + plugin.last_req + " &6last_sync: &e" + plugin.lastSync);
                 send("&6timeRecieved: &e" + plugin.timeRecieved + " &6syncRunning: &e" + plugin.syncRunning + " &6lastID: &e" + plugin.lastID);
                 send("&6NCP: &e" + plugin.isEnabledNCP() + " &6AC: &e" + plugin.isEnabledAC());
             }else if(args.size() > 0 && args.get(0).equalsIgnoreCase("verify")) {
                 //Send to console
-                Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is a MCBans Staff member");
+                Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is an MCBans Staff member");
             	//All players who should be able to see the message
                 Set<Player> players = Perms.VIEW_STAFF.getPlayers();
                 players.addAll(Perms.ADMIN.getPlayers());
@@ -235,7 +235,7 @@ public class CommandMcbans extends BaseCommand{
                 }
             }else{
                 send("&6-=== Server Settings ===-");
-                send("&6ValidApiKey: &e" + config.isValidApiKey() + "&6 PermissionCtrl: &e" + config.getPermission());
+                send("&6Valid API Key: &e" + config.isValidApiKey() + "&6 Permissions: &e" + config.getPermission());
                 send("&6MinRep: &e" + config.getMinRep() + "&6 AutoSync: &e" + config.isEnableAutoSync());
                 send("&6Max Alts: &e" + config.isEnableMaxAlts() + " (" + config.getMaxAlts() +")");
                 send("&6Failsafe: &e" + config.isFailsafe() + "&6 isDebug: &e" + config.isDebug() + "&6 Log: &e" + config.isEnableLog());

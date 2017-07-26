@@ -37,7 +37,7 @@ public class RollbackHandler {
         if (check != null && check instanceof LogBlock && check.isEnabled()) {
             method = new LbRollback(plugin);
             if (method.setPlugin(check)){
-                log.info("LogBlock plugin found. Using this for rollback.");
+                log.info("LogBlock plugin found. Going to use this for rollback.");
                 return true;
             }
         }
@@ -46,7 +46,7 @@ public class RollbackHandler {
         check = pm.getPlugin("HawkEye");
         if (check != null && check instanceof HawkEye && check.isEnabled()) {
             method = new HeRollback(plugin);
-            log.info("HawkEye plugin found. Using this for rollback.");
+            log.info("HawkEye plugin found. Going to use this for rollback.");
             return true;
         }
 
@@ -57,7 +57,7 @@ public class RollbackHandler {
             if (cpAPI.isEnabled()){
                 method = new CpRollback(plugin);
                 method.setPlugin(check);
-                log.info("CoreProtect plugin found. Using this for rollback.");
+                log.info("CoreProtect plugin found. Going to use this for rollback.");
                 return true;
             }else{
                 log.info("CoreProtect plugin found but disabled API.");
@@ -65,7 +65,7 @@ public class RollbackHandler {
             }
         }
 
-        log.info("Rollback plugin not found!");
+        log.info("No rollback plugin not found!");
         method = null;
 
         return false;

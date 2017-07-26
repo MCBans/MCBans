@@ -27,7 +27,7 @@ public class PreviousCallback extends BaseCallback{
 	
 	@Override
 	public void success() {
-		throw new IllegalArgumentException("Wrong usage!");
+		throw new IllegalArgumentException("Wrong Usage!");
 	}
 
 	@Override

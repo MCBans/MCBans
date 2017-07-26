@@ -31,13 +31,13 @@ public class MCBansCommandHandler implements TabExecutor{
         final String commandName = command.getName().toLowerCase(Locale.ENGLISH);
         final BaseCommand cmd = commands.get(commandName);
         if (cmd == null){
-            Util.message(sender, ChatColor.RED + "This command not loaded properly!");
+            Util.message(sender, ChatColor.RED + "This command has not been loaded properly!");
             return true;
         }
         
         if (!(cmd instanceof CommandMcbans)){
             if (!plugin.getConfigs().isValidApiKey()){
-                Util.message(sender, ChatColor.RED + "Missing or Invalid API key! Edit config.yml and type /mcbans reload");
+                Util.message(sender, ChatColor.RED + "Missing or Invalid API key! Check API Key or contact MCBans Staff!");
                 return true;
             }
         }
@@ -69,7 +69,7 @@ public class MCBansCommandHandler implements TabExecutor{
         if (bc.name != null){
             commands.put(bc.name, bc);
         }else{
-            plugin.getLog().warning("Invalid command not registered! " + bc.getClass().getName());
+            plugin.getLog().warning("Invalid command! " + bc.getClass().getName());
         }
     }
 }

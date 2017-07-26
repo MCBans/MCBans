@@ -37,7 +37,7 @@ import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.rollback.RollbackHandler;
 
 public class MCBans extends JavaPlugin {
-    public final String apiRequestSuffix = "4.3.5";
+    public final String apiRequestSuffix = "4.4.3";
     private static MCBans instance;
 
     public int taskID = 0;
@@ -117,7 +117,7 @@ public class MCBans extends JavaPlugin {
         try{
             config.loadConfig(true);
         }catch (Exception ex){
-            log.warning("an error occured while trying to load the config file.");
+            log.warning("An error occurred while trying to load the config file.");
             ex.printStackTrace();
         }
         if (!pm.isPluginEnabled(this)){

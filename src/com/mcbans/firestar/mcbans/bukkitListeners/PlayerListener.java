@@ -64,10 +64,10 @@ public class PlayerListener implements Listener {
 	                if (check > 5) {
 	                    // can't reach mcbans servers
 	                    if (config.isFailsafe()){
-	                        log.warning("Can't reach MCBans API Servers! Kicked player: " + event.getName());
+	                        log.warning("Can't reach the MCBans API Server! Kicked player: " + event.getName());
 	                        event.disallow(Result.KICK_BANNED, _("unavailable"));
 	                    }else{
-	                        log.warning("Can't reach MCBans API Servers! Check passed player: " + event.getName());
+	                        log.warning("Can't reach the MCBans API Server! Check passed player: " + event.getName());
 	                    }
 	                    return;
 	                }
@@ -109,13 +109,13 @@ public class PlayerListener implements Listener {
             handleConnectionData(response,event);
         }
         catch (SocketTimeoutException ex){
-            log.warning("Cannot connect MCBans API server: timeout");
+            log.warning("Cannot connect to the MCBans API server: timeout");
             if (config.isFailsafe()){
                 event.disallow(Result.KICK_BANNED, _("unavailable"));
             }
         }
         catch (IOException ex){
-            log.warning("Cannot connect MCBans API server!");
+            log.warning("Cannot connect to the MCBans API server!");
             if (config.isDebug()) ex.printStackTrace();
 
             if (config.isFailsafe()){
@@ -123,7 +123,7 @@ public class PlayerListener implements Listener {
             }
         }
         catch (Exception ex){
-            log.warning("Error occurred in AsyncPlayerPreLoginEvent. Please report this!");
+            log.warning("An error occurred in AsyncPlayerPreLoginEvent. Please report this!");
             ex.printStackTrace();
 
             if (config.isFailsafe()){
@@ -184,7 +184,7 @@ public class PlayerListener implements Listener {
 	        if(pcache.containsKey("m")){
 	            //Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
 	            // notify to console, mcbans.view.staff, mcbans.admin, mcbans.ban.global players
-	            Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is a MCBans Staff member");
+	            Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is an MCBans Staff member");
 	            
 	            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable(){
 	                @Override
@@ -205,7 +205,7 @@ public class PlayerListener implements Listener {
 	            for (Player p : Perms.ADMIN.getPlayers()){
 	                admins.add(p.getName());
 	            }
-	            Util.message(player, ChatColor.AQUA + "You are a MCBans Staff Member! (ver " + plugin.getDescription().getVersion() + ")");
+	            Util.message(player, ChatColor.AQUA + "You are an MCBans Staff Member! (ver " + plugin.getDescription().getVersion() + ")");
 	            Util.message(player, ChatColor.AQUA + "Online Admins: " + ((admins.size() > 0) ? Util.join(admins, ", ") : ChatColor.GRAY + "(none)"));
 	           
 	            // add online mcbans staff list array
@@ -246,9 +246,9 @@ public class PlayerListener implements Listener {
                     if (check > 5) {
                         // can't reach mcbans servers
                         if (config.isFailsafe()){
-                            log.warning("Can't reach MCBans API Servers! Kicked player: " + event.getPlayer().getName());
+                            log.warning("Can't reach the MCBans API Servers! Kicked player: " + event.getPlayer().getName());
                         }else{
-                            log.warning("Can't reach MCBans API Servers! Check passed player: " + event.getPlayer().getName());
+                            log.warning("Can't reach the MCBans API Servers! Check passed player: " + event.getPlayer().getName());
                         }
                         return;
                     }
@@ -277,14 +277,14 @@ public class PlayerListener implements Listener {
                 plugin.debug("Response: " + response);
 	    	}
             catch (SocketTimeoutException ex){
-                log.warning("Cannot connect MCBans API server: timeout");
+                log.warning("Cannot connect to the MCBans API server: timeout");
             }
             catch (IOException ex){
-                log.warning("Cannot connect MCBans API server!");
+                log.warning("Cannot connect to the MCBans API server!");
                 if (config.isDebug()) ex.printStackTrace();
             }
             catch (Exception ex){
-                log.warning("Error occurred in AsyncPlayerPreLoginEvent. Please report this!");
+                log.warning("An error occurred in AsyncPlayerPreLoginEvent. Please report this!");
                 ex.printStackTrace();
             }
 	    	String[] s = response.split(";");
@@ -367,7 +367,7 @@ public class PlayerListener implements Listener {
 		        if(pcache.containsKey("m")){
 		            //Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
 		            // notify to console, mcbans.view.staff, mcbans.admin, mcbans.ban.global players
-		            Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is a MCBans Staff member");
+		            Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is an MCBans Staff member");
 		            
 		            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable(){
 		                @Override
@@ -388,7 +388,7 @@ public class PlayerListener implements Listener {
 		            for (Player p : Perms.ADMIN.getPlayers()){
 		                admins.add(p.getName());
 		            }
-		            Util.message(player, ChatColor.AQUA + "You are a MCBans Staff Member! (ver " + plugin.getDescription().getVersion() + ")");
+		            Util.message(player, ChatColor.AQUA + "You are an MCBans Staff Member! (ver " + plugin.getDescription().getVersion() + ")");
 		            Util.message(player, ChatColor.AQUA + "Online Admins: " + ((admins.size() > 0) ? Util.join(admins, ", ") : ChatColor.GRAY + "(none)"));
 		           
 		            // add online mcbans staff list array
@@ -399,7 +399,7 @@ public class PlayerListener implements Listener {
 		        }
 	        }else{
 	            if (response.toString().contains("Server Disabled")) {
-	                Util.message(Bukkit.getConsoleSender(), ChatColor.RED + "This Server Disabled by MCBans Administration!");
+	                Util.message(Bukkit.getConsoleSender(), ChatColor.RED + "This Server Has Been Disabled by MCBans Staff! Please go to forums.mcbans.com!");
 	                return;
 	            }
 	            log.warning("Response: " + response);
@@ -468,7 +468,7 @@ public class PlayerListener implements Listener {
             plugin.debug(event.getName() + " authenticated with " + s[2] + " rep");
         }else{
             if (response.toString().contains("Server Disabled")) {
-                Util.message(Bukkit.getConsoleSender(), ChatColor.RED + "This Server Disabled by MCBans Administration!");
+                Util.message(Bukkit.getConsoleSender(), ChatColor.RED + "This Server Has Been Disabled by MCBans Staff! Please go to forums.mcbans.com!");
                 return;
             }
             if (config.isFailsafe()){

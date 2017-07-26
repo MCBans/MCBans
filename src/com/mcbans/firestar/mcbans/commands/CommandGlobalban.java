@@ -12,7 +12,7 @@ public class CommandGlobalban extends BaseCommand{
         bePlayer = false;
         name = "globalban";
         argLength = 2;
-        usage = "global ban player";
+        usage = "global bans a player";
         banning = true;
     }
 

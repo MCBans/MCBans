@@ -43,7 +43,7 @@ public abstract class BaseCommand {
 
     public boolean run(final MCBans plugin, final CommandSender sender, final String cmd, final String[] preArgs) {
         if (name == null){
-            Util.message(sender, "&cThis command not loaded properly!");
+            Util.message(sender, "&cThis command has not been loaded properly!");
             return true;
         }
 
@@ -69,7 +69,7 @@ public abstract class BaseCommand {
 
         // Check sender is player
         if (bePlayer && !(sender instanceof Player)){
-            Util.message(sender, "&cThis command cannot run from Console!");
+            Util.message(sender, "&cThis command cannot be executed from console!");
             return true;
         }
         if (sender instanceof Player){

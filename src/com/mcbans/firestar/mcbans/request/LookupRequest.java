@@ -52,10 +52,10 @@ public class LookupRequest extends BaseRequest<LookupCallback>{
         catch (JSONException ex) {
             if (result.toString().contains("error")) {
                 if (result.toString().contains("Server Disabled")) {
-                    ActionLog.getInstance().severe("Server Disabled by an MCBans Admin");
-                    ActionLog.getInstance().severe("To appeal this decision, please file ticket on support.mcbans.com");
+                    ActionLog.getInstance().severe("Server Disabled by an MCBans Staff Member");
+                    ActionLog.getInstance().severe("To appeal this decision, please file ticket on forums.mcbans.com");
 
-                    callback.error("This server disabled by MCBans Administration.");
+                    callback.error("This server has been disabled by MCBans Staff.");
                     return;
                 }
             }
@@ -63,8 +63,8 @@ public class LookupRequest extends BaseRequest<LookupCallback>{
             callback.error("JSON Error");
         }
         catch (NullPointerException ex) {
-            ActionLog.getInstance().severe("Unable to reach MCBans Master server!");
-            callback.error(ChatColor.RED + "Unable to reach MCBans Master server");
+            ActionLog.getInstance().severe("Unable to reach the MCBans API!");
+            callback.error(ChatColor.RED + "Unable to reach the MCBans API!");
             if (plugin.getConfigs().isDebug()){
                 ex.printStackTrace();
             }

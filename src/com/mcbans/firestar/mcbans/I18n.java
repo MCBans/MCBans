@@ -30,14 +30,14 @@ public class I18n {
         try{
             fallbackMessages = loadLanguageFile("default");
         }catch (Exception ex){
-            ActionLog.getInstance().warning("Could not load default(default.yml) messages file!");
+            ActionLog.getInstance().warning("MCBans could not load default (default.yml) messages file!");
         }
 
         // load custom language
         try{
             setCurrentLanguage(locale);
         }catch (Exception ex){
-            ActionLog.getInstance().warning("Could not load messages for " + locale + ": using default.yml");
+            ActionLog.getInstance().warning("MCBans could not load messages for " + locale + ": using default.yml");
             messages = fallbackMessages;
         }
     }
@@ -122,7 +122,7 @@ public class I18n {
             if (msg == null) ActionLog.getInstance().warning("Missing message key '" + key + "'");
             msg = getString(fallbackMessages, key);
             if (msg == null || msg.length() == 0){
-                ActionLog.getInstance().warning("Delete language files and type '/mcbans reload' to regenerate them.");
+                ActionLog.getInstance().warning("Please delete language files and type '/mcbans reload' to regenerate them.");
                 return "!" + key + "!";
             }
         }

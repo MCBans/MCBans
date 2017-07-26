@@ -104,7 +104,7 @@ public class MCBansAPI {
             return;
         }
         if (!Util.isValidName(targetName) && !Util.isValidIP(targetName)){
-            plugin.getLog().info("Unban target is not valid name or IP format");
+            plugin.getLog().info("The target you are trying to unban is not a valid name or IP format!");
             return;
         }
 
@@ -218,7 +218,7 @@ public class MCBansAPI {
         }
         
         if (!Util.isValidName(playerName)){
-            callback.error("Invalid alt lookup target name!");
+            callback.error("Invalid alt account lookup target name!");
         }
 
         AltLookupRequest request = new AltLookupRequest(plugin, callback, playerName);

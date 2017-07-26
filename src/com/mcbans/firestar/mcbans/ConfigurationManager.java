@@ -46,7 +46,7 @@ public class ConfigurationManager {
         File file = new File(pluginDir, "config.yml");
         if (!file.exists()){
             FileStructure.extractResource("/config.yml", pluginDir, false, false);
-            log.log(Level.INFO, "config.yml is not found! Created default config.yml!", false);
+            log.log(Level.INFO, "config.yml has not been found! We created a default config.yml for you!", false);
         }
 
         plugin.reloadConfig();
@@ -59,13 +59,13 @@ public class ConfigurationManager {
             isValidKey = false;
             if (initialLoad){
                 Util.message((CommandSender)null, ChatColor.RED + "=== Missing OR Invalid API Key! ===");
-                log.severe("Missing or invalid API Key!");
-                log.severe("Please copy your API key to configuration file.");
-                log.severe("Don't have API key? Go: http://my.mcbans.com/servers/");
+                log.severe("MCBans detected a missing or invalid API Key!");
+                log.severe("Please copy your API key to the configuration file.");
+                log.severe("Don't have an API key? Go to: http://my.mcbans.com/servers/");
                 //plugin.getPluginLoader().disablePlugin(plugin); // Don't disable plugin
                 //return;
             }else{
-                log.severe("Missing or invalid API Key! Please check config.yml and type /mcbans reload");
+                log.severe("MCBans detected a missing or invalid API Key! Please check config.yml!");
             }
         }else{
             isValidKey = true;
@@ -100,7 +100,7 @@ public class ConfigurationManager {
             String destPath = new File(pluginDir, destName).getPath();
             try{
                 FileStructure.copyTransfer(srcPath, destPath);
-                log.info("Outdated config file! Copied old config.yml to " + destName + "!");
+                log.info("Outdated config file! Automatically copied old config.yml to " + destName + "!");
             }catch(Exception ex){
                 log.warning("Failed to copy old config.yml!");
             }

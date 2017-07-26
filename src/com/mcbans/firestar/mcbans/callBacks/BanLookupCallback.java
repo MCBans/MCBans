@@ -21,7 +21,7 @@ public class BanLookupCallback extends BaseCallback{
         String lostRep = (data.getLostRep() > 0) ? "&4" + data.getLostRep() : "&70";
         String type = "&f[" + ((data.getType().contains("global")) ? "&c" : "&6") + data.getType().toUpperCase(Locale.ENGLISH) + "&f]";
 
-        Util.message(sender, Util.color("BanID: #&a" + data.getBanID() + "&f Player: &3" + data.getPlayerName() + " " + type));
+        Util.message(sender, Util.color("Ban ID: #&a" + data.getBanID() + "&f Player: &3" + data.getPlayerName() + " " + type));
         Util.message(sender, Util.color("Server: &3" + data.getServer() + "&f Issued By: &3" + data.getAdminName()));
         Util.message(sender, Util.color("Rep Lost: " + lostRep + "&f Issued Date: &3" + data.getDate()));
         Util.message(sender, Util.color("Reason: &3" + data.getReason()));
@@ -29,7 +29,7 @@ public class BanLookupCallback extends BaseCallback{
 
     @Override
     public void success(){
-        throw new IllegalArgumentException("Wrong usage!");
+        throw new IllegalArgumentException("Wrong Usage!");
     }
 
     @Override

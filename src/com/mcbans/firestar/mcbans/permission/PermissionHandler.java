@@ -57,14 +57,14 @@ public class PermissionHandler {
             if (setupVaultPermission()){
                 permType = PermType.VAULT;
             }else{
-                log.warning("Selected Vault for permission control, but NOT found this plugin!");
+                log.warning("Selected Vault for permission control, but MCBans did not find this plugin!");
             }
         }
         else if ("pex".equalsIgnoreCase(selected) || "permissionsex".equalsIgnoreCase(selected)){
             if (setupPEXPermission()){
                 permType = PermType.PEX;
             }else{
-                log.warning("Selected PermissionsEx for permission control, but NOT found this plugin!");
+                log.warning("Selected PermissionsEx for permission control, but MCBans did not find this plugin!");
             }
         }
         else if ("superperms".equalsIgnoreCase(selected)){

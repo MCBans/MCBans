@@ -15,7 +15,7 @@ public class CommandAltlookup extends BaseCommand{
         bePlayer = false;
         name = "altlookup";
         argLength = 1;
-        usage = "lookup player alts";
+        usage = "lookup player alternate accounts";
         banning = true;
     }
 

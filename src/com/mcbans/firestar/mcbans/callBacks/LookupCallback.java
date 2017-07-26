@@ -23,13 +23,13 @@ public class LookupCallback extends BaseCallback{
 
 
         if (data.getGlobals().size() > 0) {
-            Util.message(sender, ChatColor.RED + "Global bans");
+            Util.message(sender, ChatColor.RED + "Global Bans");
             for (String record : data.getGlobals()){
                 Util.message(sender, record);
             }
         }
         if (data.getLocals().size() > 0) {
-            Util.message(sender, ChatColor.GOLD + "Local bans");
+            Util.message(sender, ChatColor.GOLD + "Local Bans");
             for (String record : data.getLocals()){
                 Util.message(sender, record);
             }
@@ -43,7 +43,7 @@ public class LookupCallback extends BaseCallback{
 
     @Override
     public void success(){
-        throw new IllegalArgumentException("Wrong usage!");
+        throw new IllegalArgumentException("Wrong Usage!");
     }
 
     @Override

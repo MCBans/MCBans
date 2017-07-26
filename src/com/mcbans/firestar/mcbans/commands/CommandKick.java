@@ -11,7 +11,7 @@ public class CommandKick extends BaseCommand{
         bePlayer = false;
         name = "kick";
         argLength = 1;
-        usage = "kick player";
+        usage = "kicks player from server";
         banning = true;
     }
 

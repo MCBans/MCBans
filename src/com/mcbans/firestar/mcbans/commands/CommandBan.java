@@ -19,7 +19,7 @@ public class CommandBan extends BaseCommand{
         bePlayer = false;
         name = "ban";
         argLength = 1;
-        usage = "ban player";
+        usage = "bans a player";
         banning = true;
     }
 
@@ -94,7 +94,7 @@ public class CommandBan extends BaseCommand{
 
         // Start
         if (banControl == null){
-            Util.message(sender, ChatColor.RED + "Internal error! Please report console logs!");
+            Util.message(sender, ChatColor.RED + "Internal error! Please report console logs to MCBans staff!");
             throw new RuntimeException("Undefined BanType: " + type.name());
         }
         Thread triggerThread = new Thread(banControl);

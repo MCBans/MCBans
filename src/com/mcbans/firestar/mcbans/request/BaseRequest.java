@@ -25,7 +25,7 @@ public abstract class BaseRequest<Callback extends BaseCallback> implements Runn
     @Override
     public void run(){
         if (!checkServer()){
-            callback.error("&cCould not select MCBans API Server!");
+            callback.error("&cCould not select or detect MCBans API Server!");
             return;
         }
         execute();

@@ -15,9 +15,6 @@ public class ServerChoose implements Runnable {
     /* API Servers List */
     @SuppressWarnings("serial")
     private final List<String> apiServers = new ArrayList<String>(4) {{
-        add("api01.cluster.mcbans.com");
-        add("api02.cluster.mcbans.com");
-        add("api03.cluster.mcbans.com");
         add("api.mcbans.com");
     }};
 
@@ -29,7 +26,7 @@ public class ServerChoose implements Runnable {
     @Override
     public void run() {
         plugin.apiServer = null;
-        log.info("Looking for fastest api server!");
+        log.info("Connecting to the API Server!");
 
         long d = 99999;
         String fastest = null;
@@ -58,8 +55,8 @@ public class ServerChoose implements Runnable {
         if (fastest != null){
             log.info("Fastest server selected: " + fastest + " :: response time: " + d);
         }else{
-            log.warning("Can't reach any MCBans API Servers!");
-            log.warning("Check your network or please wait until the recovery!");
+            log.warning("Cannot reach the MCBans API Server!");
+            log.warning("Check your network connection or notify MCBans staff!");
         }
         plugin.apiServer = fastest;
     }
