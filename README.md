@@ -11,7 +11,9 @@ MCBans is a global banning solution for Minecraft, provided through the Bukkit p
 Helpful Information
 --------
 Main Site: https://mcbans.com
+
 Support Desk: https://forums.mcbans.com/
+
 Community: https://forums.mcbans.com
 
 Expectations
