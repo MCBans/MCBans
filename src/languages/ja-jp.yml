@@ -1,4 +1,4 @@
-﻿# Japanese MCBans File, Translated By: syamn
+﻿# Japanese MCBans File, Translated By: syamn, Ru1x
 
 unBanSuccess: "%PLAYER% のBANを解除しました！"
 unBanError: "%PLAYER% のBAN解除中にエラーが発生しました！"
@@ -27,10 +27,10 @@ tempBanGroup: "%PLAYER% は、あなたが所属しているグループの他�
 tempBanAlready: "%PLAYER% は既にこのサーバーでBANされています！"
 
 kickPlayer: "%REASON%"
-kickSuccess: "%PLAYER% はkickされました！"
+kickSuccess: "%PLAYER% はキックされました！"
 kickNoPlayer: "%PLAYER% はオフラインです！"
-kickExemptPlayer: "%PLAYER% をKickすることはできません！"
-kickBroadcast: "%ADMIN% は %PLAYER% をkickしました[%REASON%]"
+kickExemptPlayer: "%PLAYER% をキックすることはできません！"
+kickBroadcast: "%ADMIN% は %PLAYER% をキックしました[%REASON%]"
 
 ipBanSuccess: "IP %IP% はBANされました:[%REASON%]"
 ipBanError: "IP %IP% のBAN処理中にエラーが発生しました！"
@@ -47,15 +47,15 @@ underMinRep: "あなたのReputation値は、このサーバの閾値以下で�
 overMaxAlts: "あなたはこのサーバーで許可されている数より多い数のアカウントを持っています！"
 altBanned: "あなたはこのサーバーでBANされている他のアカウントを持っています！"
 altAccounts: "%PLAYER% は以下のアカウントを持っている可能性があります：[ %ALTS% ]!"
-disputes: "%COUNT% つのオープンDisputeがあります！"
+disputes: "%COUNT% つの進行中異議申し立てがあります！"
 previousBans: "%PLAYER% は他のサーバにBANされています！"
 bansOnRecord: "あなたは他サーバでグローバルBANされています: http://mcbans.com"
-isMCBansMod: "%PLAYER% は MCBans.com のスタッフメンバーです！"
-previousNames: "%PLAYER% has changed their name within the last 2 months: %PLAYERS%"
-previousNamesHas: "%PLAYER% has recently changed their name from: %PLAYERS%"
-previousNamesNone: "%PLAYER% has no name changes on record"
-banReturnMessage: "&EReason: &C%REASON%\n&EBan from: &F%ADMIN%\n&EBan Type: &7%TYPE%\n&Bhttp://mcbans.com/ban/%BANID%"
-successSetting: "Successfully changed setting [%REASON%]!"
-failSetting: "Failed to change setting [%REASON%]!"
+isMCBansMod: "%PLAYER% は MCBans.com のスタッフです！"
+previousNames: "%PLAYER% は2ヶ月以内に名前を変更しています: %PLAYERS%"
+previousNamesHas: "%PLAYER% は以下の名前から変更しました: %PLAYERS%"
+previousNamesNone: "%PLAYER% は名前を変更したことがありません"
+banReturnMessage: "&E理由: &C%REASON%\n&EBAN発行者: &F%ADMIN%\n&EBAN種類: &7%TYPE%\n&Bhttp://mcbans.com/ban/%BANID%"
+successSetting: "設定の変更に成功しました [%REASON%]!"
+failSetting: "設定の変更に失敗しました [%REASON%]!"
 
-proxyDetected: "%PLAYER% is using a proxy %REASON%"
+proxyDetected: "%PLAYER% はプロキシを利用しています"
