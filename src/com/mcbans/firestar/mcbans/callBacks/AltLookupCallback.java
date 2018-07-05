@@ -36,7 +36,7 @@ public class AltLookupCallback extends BaseCallback{
                 line2.append("&b").append(alt).append("&8 (").append(repStr).append("&8)");
             }
             
-            Util.message(sender, Util.color("&8 - " + line2.toString()));
+            Util.message(sender, Util.color(line2.toString()));
         }
     }
 
