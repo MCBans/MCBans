@@ -56,7 +56,7 @@ successSetting: "&7Successfully changed setting: &c%REASON%"
 failSetting: "&7Failed to change setting: &c%REASON%"
 
 previousNames: '&7Player &c%PLAYER% &7has changed usernames within the last 2 months: &b%PLAYERS%'
-previousNamesHas: '&7Player &c%PLAYER% &7has recently changed their name from &b%PLAYERS%&c.'
+previousNamesHas: '&7Player &c%PLAYER% &7has recently changed their name from &b%PLAYERS%&7.'
 previousNamesNone: "&7Player &c%PLAYER% &7has no name changes on record."
 
 proxyDetected: "&7Player &c%PLAYER% &7is using a proxy: &c%REASON%"
