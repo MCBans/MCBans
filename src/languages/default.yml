@@ -26,11 +26,10 @@ tempBanError: "&4An error occurred while temporary banning &c%PLAYER%&4."
 tempBanGroup: "&7Player &c%PLAYER% &7is banned from a server in one of your groups."
 tempBanAlready: "&7Player &c%PLAYER% &7is already banned from this server."
 
-kickPlayer: "&cYou've been kicked from the server.\n\n&7Kicked by: &f%ADMIN%\n&7Reason:&f%REASON%"
+kickPlayer: "&cYou've been kicked from the server.\n\n&7Kicked by: &f%ADMIN%\n&7Reason: &f%REASON%"
 kickSuccess: "&7Player &c%PLAYER% &7has been kicked by &c%ADMIN% &7for: &9%REASON%"
 kickNoPlayer: "&7Player &c%PLAYER% &7is not online."
 kickExemptPlayer: "&4You may not kick &c%PLAYER%&4."
-kickBroadcast: "&7Player &c%PLAYER% &7has been kicked by &c%ADMIN% &7for: &9%REASON%"
 
 ipBanSuccess: "&7An &cIP address &7has been banned."
 ipBanError: "&4An error occurred while IP banning &c%IP%&4."
