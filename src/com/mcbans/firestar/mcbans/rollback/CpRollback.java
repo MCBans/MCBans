@@ -29,7 +29,7 @@ public class CpRollback extends BaseRollback{
                     time,
                     0, null, null, null);
         }catch (Exception e){
-            Util.message(senderName, ChatColor.RED + "Unable to rollback player!");
+            Util.message(senderName, ChatColor.RED + "Unable to rollback player.");
             if (plugin.getConfigs().isDebug()) {
                 e.printStackTrace();
             }

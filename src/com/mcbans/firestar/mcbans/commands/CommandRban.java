@@ -21,7 +21,7 @@ public class CommandRban extends BaseCommand{
         bePlayer = false;
         name = "rban";
         argLength = 1;
-        usage = "ban player and rollback";
+        usage = "ban a player and rollback their block changes";
         banning = true;
     }
 

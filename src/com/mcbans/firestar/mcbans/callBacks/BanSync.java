@@ -70,7 +70,7 @@ public class BanSync implements Runnable {
         			plugin.lastType = "bans";
         			plugin.lastID = 0;
         			goNext =false;
-        			System.out.println(ChatColor.RED+"MCBans: Error resetting sync. Please report to staff!");
+        			System.out.println(ChatColor.RED+"MCBans: Error resetting sync. Please report this to an MCBans developer.");
         		}else{
 	                JsonHandler webHandle = new JsonHandler( plugin );
 	                HashMap<String, String> url_items = new HashMap<String, String>();
@@ -142,7 +142,7 @@ public class BanSync implements Runnable {
     	plugin.lastSyncs.setProperty("lastId", String.valueOf(plugin.lastID));
     	plugin.lastSyncs.setProperty("lastType", String.valueOf(plugin.lastType));
     	try {
-			plugin.lastSyncs.store(new FileOutputStream(plugin.syncIni), "Syncing ban information!");
+			plugin.lastSyncs.store(new FileOutputStream(plugin.syncIni), "Syncing ban information.");
 		} catch (FileNotFoundException e) {
 			if(plugin.getConfigs().isDebug()){
 				e.printStackTrace();

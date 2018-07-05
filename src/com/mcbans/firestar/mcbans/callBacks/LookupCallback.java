@@ -17,19 +17,19 @@ public class LookupCallback extends BaseCallback{
 
     //@Override
     public void success(final PlayerLookupData data){
-        Util.message(sender, "Player " + ChatColor.DARK_AQUA + data.getPlayerName() + ChatColor.WHITE + " has " + ChatColor.RED
-                + data.getTotal() + " ban(s)" + ChatColor.WHITE + " and " + ChatColor.BLUE + data.getReputation() + " REP"
-                + ChatColor.WHITE + ".");
+        Util.message(sender, ChatColor.GRAY + "Player " + ChatColor.RED + data.getPlayerName() + ChatColor.GRAY + " has " + ChatColor.RED
+                + data.getTotal() + " ban(s)" + ChatColor.GRAY + " and " + ChatColor.BLUE + data.getReputation() + " REP"
+                + ChatColor.GRAY + ".");
 
 
         if (data.getGlobals().size() > 0) {
-            Util.message(sender, ChatColor.RED + "Global Bans");
+            Util.message(sender, ChatColor.RED + "Global Bans:");
             for (String record : data.getGlobals()){
                 Util.message(sender, record);
             }
         }
         if (data.getLocals().size() > 0) {
-            Util.message(sender, ChatColor.GOLD + "Local Bans");
+            Util.message(sender, ChatColor.GOLD + "Local Bans:");
             for (String record : data.getLocals()){
                 Util.message(sender, record);
             }

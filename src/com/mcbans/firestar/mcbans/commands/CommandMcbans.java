@@ -48,13 +48,13 @@ public class CommandMcbans extends BaseCommand{
         if (first.equalsIgnoreCase("banning")){
         	send("&f------------------------------------------");
             send("&f/ban <name|uuid> [reason]" + ChatColor.BLUE + " Local ban a player");
-            send("&f/ban <name|uuid> g <reason>" + ChatColor.BLUE + " Global ban a player");
-            send("&f/ban <name|uuid> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Temporarily ban a player");
+            send("&f/ban <name|uuid> -g <reason>" + ChatColor.BLUE + " Global ban a player");
+            send("&f/ban <name|uuid> -t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Temporarily ban a player");
             send("&f/tban <name|uuid> <time> <m(minute), h(hour), d(day), w(week)> [reason]" + ChatColor.BLUE + " Temp ban a player");
             send("&f/gban <name|uuid> <reason>" + ChatColor.BLUE + " Global ban a player");
             send("&f/rban <name|uuid> [reason]" + ChatColor.BLUE + " Rollback and local ban a player");
-            send("&f/rban <name|uuid> g <reason>" + ChatColor.BLUE + " Rollback and global ban a player");
-            send("&f/rban <name|uuid> t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Rollback and temporarily ban a player");
+            send("&f/rban <name|uuid> -g <reason>" + ChatColor.BLUE + " Rollback and global ban a player");
+            send("&f/rban <name|uuid> -t <time> <m, h, d, w> <reason>" + ChatColor.BLUE + " Rollback and temporarily ban a player");
             send("&f/banip <ip> [reason]" + ChatColor.BLUE + " Bans an IP address");
             send("&f/unban <name|ip|uuid>" + ChatColor.BLUE + " Bans an IP address");
             return;
@@ -136,11 +136,11 @@ public class CommandMcbans extends BaseCommand{
                 }
                 long ht = (plugin.lastSync + syncInterval) - (System.currentTimeMillis() / 1000);
                 if (ht > 10) {
-                    send(ChatColor.GREEN + "Sync has started! This will take a few seconds to complete.");
+                    send(ChatColor.GREEN + "Sync has started. This will take a few moments to complete.");
                     ManualSync manualSyncBanRunner = new ManualSync(plugin, senderName);
                     (new Thread(manualSyncBanRunner)).start();
                 } else {
-                    throw new CommandException(ChatColor.RED + "Sync will occur in less than 10 seconds!");
+                    throw new CommandException(ChatColor.RED + "Sync will occur in less than 10 seconds.");
                 }
             }
             return;
@@ -157,7 +157,7 @@ public class CommandMcbans extends BaseCommand{
                 if (remainStr != null){
                     send(ChatColor.GOLD + remainStr + " until next callback request.");
                 }else{
-                    send(ChatColor.GOLD  + "Callback request is in progress..");
+                    send(ChatColor.GOLD  + "Callback request is in progress...");
                 }
             }
             else if (args.size() > 0 && args.get(0).equalsIgnoreCase("sync")){
@@ -188,18 +188,18 @@ public class CommandMcbans extends BaseCommand{
                 throw new CommandException(ChatColor.RED + _("permissionDenied"));
             }
 
-            send(ChatColor.AQUA + "Reloading Settings..");
+            send(ChatColor.AQUA + "Reloading configuration...");
             try{
                 config.loadConfig(false);
-                send(ChatColor.GREEN + "Reload completed!");
+                send(ChatColor.GREEN + "Reload complete.");
             }catch (Exception ex){
                 send(ChatColor.RED + "An error occurred while trying to load the config file.");
             }
-            send(ChatColor.AQUA + "Reloading Language File..");
+            send(ChatColor.AQUA + "Reloading language file...");
             try{
                 I18n.extractLanguageFiles(false);
                 I18n.setCurrentLanguage(config.getLanguage());
-                send(ChatColor.GREEN + "Reload completed!");
+                send(ChatColor.GREEN + "Reload completed.");
             }catch(Exception ex){
                 send(ChatColor.RED + "An error occurred while trying to load the language file.");
             }
@@ -224,7 +224,7 @@ public class CommandMcbans extends BaseCommand{
                 send("&6NCP: &e" + plugin.isEnabledNCP() + " &6AC: &e" + plugin.isEnabledAC());
             }else if(args.size() > 0 && args.get(0).equalsIgnoreCase("verify")) {
                 //Send to console
-                Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is an MCBans Staff member");
+                Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is an MCBans staff member.");
             	//All players who should be able to see the message
                 Set<Player> players = Perms.VIEW_STAFF.getPlayers();
                 players.addAll(Perms.ADMIN.getPlayers());

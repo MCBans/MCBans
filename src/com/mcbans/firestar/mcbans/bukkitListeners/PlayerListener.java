@@ -152,7 +152,7 @@ public class PlayerListener implements Listener {
 	                    for (String ban : bans){
 	                        String[] data = ban.split("\\$");
 	                        if (data.length == 3){
-	                            Perms.VIEW_BANS.message(ChatColor.WHITE+ data[1] + ChatColor.GRAY + " .:. " + ChatColor.WHITE + data[0] + ChatColor.GRAY +  " (by " + data[2] + ")");
+	                            Perms.VIEW_BANS.message(ChatColor.WHITE+ data[1] + ChatColor.DARK_GRAY + " // " + ChatColor.WHITE + data[0] + ChatColor.GRAY +  " (by " + data[2] + ")");
 	                        }
 	                    }
 	                }
@@ -184,7 +184,7 @@ public class PlayerListener implements Listener {
 	        if(pcache.containsKey("m")){
 	            //Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
 	            // notify to console, mcbans.view.staff, mcbans.admin, mcbans.ban.global players
-	            Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is an MCBans Staff member");
+	            Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is an MCBans staff member.");
 	            
 	            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable(){
 	                @Override
@@ -205,14 +205,14 @@ public class PlayerListener implements Listener {
 	            for (Player p : Perms.ADMIN.getPlayers()){
 	                admins.add(p.getName());
 	            }
-	            Util.message(player, ChatColor.AQUA + "You are an MCBans Staff Member! (ver " + plugin.getDescription().getVersion() + ")");
+	            Util.message(player, ChatColor.AQUA + "You are an MCBans staff member. (ver " + plugin.getDescription().getVersion() + ")");
 	            Util.message(player, ChatColor.AQUA + "Online Admins: " + ((admins.size() > 0) ? Util.join(admins, ", ") : ChatColor.GRAY + "(none)"));
 	           
 	            // add online mcbans staff list array
 	            plugin.mcbStaff.add(player.getName());
 	        }
 	        if (config.isSendJoinMessage()){
-	            Util.message(player, ChatColor.DARK_GREEN + "Server secured by MCBans!");
+	            Util.message(player, ChatColor.RED + "This server is secured by MCBans.");
 	        }
         }
     }
@@ -284,7 +284,7 @@ public class PlayerListener implements Listener {
                 if (config.isDebug()) ex.printStackTrace();
             }
             catch (Exception ex){
-                log.warning("An error occurred in AsyncPlayerPreLoginEvent. Please report this!");
+                log.warning("An error occurred in AsyncPlayerPreLoginEvent. Please report this to an MCBans developer.");
                 ex.printStackTrace();
             }
 	    	String[] s = response.split(";");
@@ -335,7 +335,7 @@ public class PlayerListener implements Listener {
 		                    for (String ban : bans){
 		                        String[] data = ban.split("\\$");
 		                        if (data.length == 3){
-		                            Perms.VIEW_BANS.message(ChatColor.WHITE+ data[1] + ChatColor.GRAY + " .:. " + ChatColor.WHITE + data[0] + ChatColor.GRAY +  " (by " + data[2] + ")");
+		                            Perms.VIEW_BANS.message(ChatColor.WHITE+ data[1] + ChatColor.DARK_GRAY + " // " + ChatColor.WHITE + data[0] + ChatColor.GRAY +  " (by " + data[2] + ")");
 		                        }
 		                    }
 		                }
@@ -367,7 +367,7 @@ public class PlayerListener implements Listener {
 		        if(pcache.containsKey("m")){
 		            //Util.broadcastMessage(ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
 		            // notify to console, mcbans.view.staff, mcbans.admin, mcbans.ban.global players
-		            Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is an MCBans Staff member");
+		            Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is an MCBans staff member.");
 		            
 		            plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable(){
 		                @Override
@@ -388,18 +388,18 @@ public class PlayerListener implements Listener {
 		            for (Player p : Perms.ADMIN.getPlayers()){
 		                admins.add(p.getName());
 		            }
-		            Util.message(player, ChatColor.AQUA + "You are an MCBans Staff Member! (ver " + plugin.getDescription().getVersion() + ")");
+		            Util.message(player, ChatColor.AQUA + "You are an MCBans staff member. (ver " + plugin.getDescription().getVersion() + ")");
 		            Util.message(player, ChatColor.AQUA + "Online Admins: " + ((admins.size() > 0) ? Util.join(admins, ", ") : ChatColor.GRAY + "(none)"));
 		           
 		            // add online mcbans staff list array
 		            plugin.mcbStaff.add(player.getName());
 		        }
 		        if (config.isSendJoinMessage()){
-		            Util.message(player, ChatColor.DARK_GREEN + "Server secured by MCBans!");
+		            Util.message(player, ChatColor.RED + "This server is secured by MCBans.");
 		        }
 	        }else{
 	            if (response.toString().contains("Server Disabled")) {
-	                Util.message(Bukkit.getConsoleSender(), ChatColor.RED + "This Server Has Been Disabled by MCBans Staff! Please go to forums.mcbans.com!");
+	                Util.message(Bukkit.getConsoleSender(), ChatColor.RED + "This server has been disabled by MCBans staff. Please go to forums.mcbans.com.");
 	                return;
 	            }
 	            log.warning("Response: " + response);
@@ -468,7 +468,7 @@ public class PlayerListener implements Listener {
             plugin.debug(event.getName() + " authenticated with " + s[2] + " rep");
         }else{
             if (response.toString().contains("Server Disabled")) {
-                Util.message(Bukkit.getConsoleSender(), ChatColor.RED + "This Server Has Been Disabled by MCBans Staff! Please go to forums.mcbans.com!");
+                Util.message(Bukkit.getConsoleSender(), ChatColor.RED + "This server has been disabled by MCBans staff. Please go to forums.mcbans.com.");
                 return;
             }
             if (config.isFailsafe()){

@@ -37,14 +37,14 @@ public class AltLookupRequest extends BaseRequest<AltLookupCallback>{
     @Override
     protected void execute() {
         if (callback.getSender() != null){
-            log.info(callback.getSender().getName() + " has looked up " + playerName + "'s alts!");
+            log.info(callback.getSender().getName() + " has looked up " + playerName + "'s alternate accounts.");
         }
 
         JSONObject result = this.request_JOBJ();
 
         try{
             if (result != null && result.has("result") && result.getString("result").trim().equals("n")){
-                callback.error("This server is not premium!");
+                callback.error("This server is not premium.");
             }else{
                 callback.success(new AltLookupData(playerName, result));
             }
@@ -52,22 +52,22 @@ public class AltLookupRequest extends BaseRequest<AltLookupCallback>{
         catch (JSONException ex) {
             if (result.toString().contains("error")) {
                 if (result.toString().contains("Server Disabled")) {
-                    ActionLog.getInstance().severe("Server Disabled by an MCBans.com Staff Member!");
-                    ActionLog.getInstance().severe("To appeal this decision, please file a ticket on forums.mcbans.com!");
+                    ActionLog.getInstance().severe("This server has been disabled by MCBans staff.");
+                    ActionLog.getInstance().severe("To appeal this decision, please file a ticket at forums.mcbans.com.");
 
-                    callback.error("This server is disabled by MCBans Staff!");
+                    callback.error("This server has been disabled by MCBans staff.");
                     return;
                 }
             }
-            ActionLog.getInstance().severe("JSON error while trying to lookup alternate account data!");
-            callback.error("JSON Error");
+            ActionLog.getInstance().severe("A JSON error occurred while trying to parse alternate account data.");
+            callback.error("An error occurred while parsing JSON data.");
             if (plugin.getConfigs().isDebug()){
                 ex.printStackTrace();
             }
         }
         catch (NullPointerException ex) {
-            ActionLog.getInstance().severe("Unable to reach MCBans Master server!");
-            callback.error(ChatColor.RED + "Unable to reach MCBans Master server!");
+            ActionLog.getInstance().severe("Unable to reach MCBans server.");
+            callback.error(ChatColor.RED + "Unable to reach MCBans server.");
             if (plugin.getConfigs().isDebug()){
                 ex.printStackTrace();
             }

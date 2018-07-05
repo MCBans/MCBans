@@ -180,7 +180,7 @@ public class MCBansAPI {
         }
 
         if (!Util.isValidName(targetName)){
-            callback.error("Invalid lookup target name!");
+            callback.error("Invalid lookup target name.");
         }
 
         LookupRequest request = new LookupRequest(plugin, callback, targetName, targetUUID, senderName, senderUUID);
@@ -218,7 +218,7 @@ public class MCBansAPI {
         }
         
         if (!Util.isValidName(playerName)){
-            callback.error("Invalid alt account lookup target name!");
+            callback.error("Invalid alternate account lookup target name.");
         }
 
         AltLookupRequest request = new AltLookupRequest(plugin, callback, playerName);

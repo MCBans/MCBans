@@ -26,7 +26,7 @@ public class ServerChoose implements Runnable {
     @Override
     public void run() {
         plugin.apiServer = null;
-        log.info("Connecting to the API Server!");
+        log.info("Connecting to the API server.");
 
         long d = 99999;
         String fastest = null;
@@ -55,8 +55,8 @@ public class ServerChoose implements Runnable {
         if (fastest != null){
             log.info("Fastest server selected: " + fastest + " :: response time: " + d);
         }else{
-            log.warning("Cannot reach the MCBans API Server!");
-            log.warning("Check your network connection or notify MCBans staff!");
+            log.warning("Cannot reach the MCBans API Server.");
+            log.warning("Check your network connection or notify MCBans staff.");
         }
         plugin.apiServer = fastest;
     }

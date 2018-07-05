@@ -17,7 +17,7 @@ public class CommandBanip extends BaseCommand{
         bePlayer = false;
         name = "banip";
         argLength = 1;
-        usage = "bans an IP address";
+        usage = "ban an IP address";
         banning = true;
     }
 

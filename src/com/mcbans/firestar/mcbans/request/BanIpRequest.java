@@ -88,15 +88,15 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
         } catch (JSONException ex) {
             if (response.toString().contains("error")) {
                 if (response.toString().contains("Server Disabled")) {
-                    ActionLog.getInstance().severe("Server Disabled by an MCBans Staff Member");
-                    ActionLog.getInstance().severe("To appeal this decision, please file ticket on forums.mcbans.com");
+                    ActionLog.getInstance().severe("This server has been disabled by MCBans staff.");
+                    ActionLog.getInstance().severe("To appeal this decision, please file a ticket at forums.mcbans.com.");
 
-                    callback.error("This server has been disabled by MCBans Staff.");
+                    callback.error("This server has been disabled by MCBans staff.");
                     return;
                 }
             }
-            ActionLog.getInstance().severe("JSON error while trying to parse lookup data!");
-            callback.error("JSON Error");
+            ActionLog.getInstance().severe("A JSON error occurred while trying to parse lookup data.");
+            callback.error("An error occurred while parsing JSON data.");
             if (plugin.getConfigs().isDebug()){
                 ex.printStackTrace();
             }

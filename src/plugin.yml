@@ -1,7 +1,7 @@
 ##  Plugin Information  ##
 name: MCBans
 main: com.mcbans.firestar.mcbans.MCBans
-version: 4.4.3
+version: 4.4.3b
 description: A global banning solution
 website: http://mcbans.com/
 softdepend: [LogBlock, HawkEye, CoreProtect, Vault, PermissionsEx]
@@ -12,14 +12,14 @@ commands:
     usage: /<command> <playername|UUID> [reason]
   ban:
     description: ban a user
-    usage: /<command> <playername|UUID> [g/t/reason] [reason]
+    usage: /<command> <playername|UUID> [-g/-t/reason] [reason]
   globalban:
     description: global bans a user
     aliases: [gban]
     usage: /<command> <playername|UUID> [reason]
   rban:
     description: roll back bans
-    usage: /<command> <playername|UUID> [g/t/reason] [reason]
+    usage: /<command> <playername|UUID> [-g/-t/reason] [reason]
   namelookup:
     description: history of a players UUID
     aliases: [nlup]

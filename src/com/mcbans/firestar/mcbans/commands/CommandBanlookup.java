@@ -14,7 +14,7 @@ public class CommandBanlookup extends BaseCommand{
         bePlayer = false;
         name = "banlookup";
         argLength = 1;
-        usage = "lookup player ban history";
+        usage = "lookup a player's ban history";
         banning = false;
     }
 

@@ -150,7 +150,7 @@ public class Ban implements Runnable {
                     break;
             }
         } else {
-            log.warning("Error! MCBans caught an invalid action! Perhaps another plugin is using MCBans improperly?");
+            log.warning("Error: MCBans caught an invalid action. Perhaps another plugin is using MCBans improperly?");
         }
     }
 
@@ -246,7 +246,7 @@ public class Ban implements Runnable {
             	playerName = response.get("player");
             }
             if (!response.containsKey("result")) {
-                Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you, unban with /pardon");
+                Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
                 return;
             }
             if (response.get("result").equals("y")) {
@@ -266,10 +266,10 @@ public class Ban implements Runnable {
                 Util.message(senderName,
                         ChatColor.RED + _("localBanAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
             }
-            log.info(senderName + " has tried to ban " + playerName + " with a local type ban [" + reason + "]!");
+            log.info(senderName + " tried to ban " + playerName + " with a local type ban [" + reason + "]!");
         } catch (Exception ex) {
-            Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you, unban with /pardon");
-            log.warning("Error occurred with local banning! Please report this!");
+            Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+            log.warning("Error occurred with local banning. Please report this to an MCBans developer.");
             ex.printStackTrace();
         }
     }
@@ -324,7 +324,7 @@ public class Ban implements Runnable {
             	playerName = response.get("player");
             }
             if (!response.containsKey("result")) {
-                Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you, unban with /pardon");
+                Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
                 return;
             }
             if (response.get("result").equals("y")) {
@@ -348,11 +348,11 @@ public class Ban implements Runnable {
                 Util.message(senderName,
                         ChatColor.RED + _("globalBanAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
             }
-            log.info(senderName + " has tried to ban " + playerName + " with a global type ban [" + reason + "]!");
+            log.info(senderName + " tried to ban " + playerName + " with a global type ban [" + reason + "]!");
         } catch (Exception ex) {
-            Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you, unban with /pardon");
+            Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
             
-            log.warning("Error occurred with global banning! Please report this!");
+            log.warning("Error occurred with global banning. Please report this to an MCBans developer.");
             ex.printStackTrace();
         }
     }
@@ -394,7 +394,7 @@ public class Ban implements Runnable {
             }
             if (!response.containsKey("result")) {
                 //bukkitBan(); // don't use default ban
-                Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you, unban with /pardon");
+                Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
                 return;
             }
             if (response.get("result").equals("y")) {
@@ -421,10 +421,10 @@ public class Ban implements Runnable {
                             ChatColor.RED + _("tempBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
                 }
             }
-            log.info(senderName + " has tried to ban " + playerName + " with a temp type ban [" + reason + "]!");
+            log.info(senderName + " tried to ban " + playerName + " with a temp type ban [" + reason + "]!");
         } catch (Exception ex) {
             //bukkitBan();
-            log.warning("Error occurred with temporary bans! Please report this!");
+            log.warning("Error occurred with temporary banning. Please report this to an MCBans developer.");
             ex.printStackTrace();
         }
     }
