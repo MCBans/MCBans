@@ -17,10 +17,14 @@ public class LookupCallback extends BaseCallback{
 
     //@Override
     public void success(final PlayerLookupData data){
+
+        if (data.getGlobals().size() > 0 || data.getLocals().size() > 0 || data.getOthers().size() > 0) {
+            Util.message(sender, ChatColor.DARK_GRAY + "------------------------------");
+        }
+
         Util.message(sender, ChatColor.GRAY + "Player " + ChatColor.RED + data.getPlayerName() + ChatColor.GRAY + " has " + ChatColor.RED
                 + data.getTotal() + " ban(s)" + ChatColor.GRAY + " and " + ChatColor.BLUE + data.getReputation() + " REP"
                 + ChatColor.GRAY + ".");
-
 
         if (data.getGlobals().size() > 0) {
             Util.message(sender, ChatColor.RED + "Global Bans:");
@@ -39,6 +43,11 @@ public class LookupCallback extends BaseCallback{
                 Util.message(sender, record);
             }
         }
+
+        if (data.getGlobals().size() > 0 || data.getLocals().size() > 0 || data.getOthers().size() > 0) {
+            Util.message(sender, ChatColor.DARK_GRAY + "------------------------------");
+        }
+
     }
 
     @Override
