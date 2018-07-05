@@ -193,7 +193,7 @@ public class Ban implements Runnable {
             if (!Util.isValidIP(playerName)){
                 
             }
-            Util.message(senderName, ChatColor.GREEN + _("unBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName));
+            Util.broadcastMessage(ChatColor.GREEN + _("unBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName));
             plugin.getServer().getPluginManager().callEvent(new PlayerUnbannedEvent(playerName, playerUUID, senderName, senderUUID));
 
             log.info(senderName + " unbanned " + playerName + "!");

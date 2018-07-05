@@ -199,7 +199,7 @@ public class CommandMcbans extends BaseCommand{
             try{
                 I18n.extractLanguageFiles(false);
                 I18n.setCurrentLanguage(config.getLanguage());
-                send(ChatColor.GREEN + "Reload completed.");
+                send(ChatColor.GREEN + "Reload complete.");
             }catch(Exception ex){
                 send(ChatColor.RED + "An error occurred while trying to load the language file.");
             }

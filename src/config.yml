@@ -8,8 +8,8 @@
 
 # prefix:
 #   Prefix used for MCBans plugin messages to users on the server
-#   DEFAULT: [MCBans]
-prefix: "&cMCBans &8> "
+#   DEFAULT: "&cMCBans &8>&r "
+prefix: "&cMCBans &8>&r "
 
 # apiKey:
 #   Your servers apiKey can be found in your account dashboard http://my.mcbans.com/servers
