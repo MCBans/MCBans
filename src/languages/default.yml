@@ -14,7 +14,7 @@ localBanGroup: "&7Player &c%PLAYER% &7is banned from a server in one of your gro
 localBanAlready: "&7Player &c%PLAYER% &7is already banned from this server."
 
 globalBanPlayer: "&cYour account has been suspended.\n\n&7Banned by: &f%ADMIN%\n&7Reason: &f%REASON%\n&7Ban type: &cGLOBAL\n\n&7Visit http://mcbans.com/ to appeal."
-globalBanSuccess: "&7Player &c%PLAYER% &7has been &cbanned &7by &c%ADMIN% &7for: &9%REASON%"
+globalBanSuccess: "&7Player &c%PLAYER% &7has been &4banned &7by &c%ADMIN% &7for: &9%REASON%"
 globalBanError: "&4An error occurred while global banning &c%PLAYER%&4."
 globalBanWarning: "&4Error: Global bans may not contain the word: &c%BADWORD%&4"
 globalBanGroup: "&7Player &c%PLAYER% &7is banned from a server in one of your groups."
