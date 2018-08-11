@@ -22,7 +22,7 @@ public class LbRollback extends BaseRollback{
     public boolean rollback(CommandSender sender, String senderName, String target) {
         if (logblock == null) return false;
 
-        Util.message(senderName, ChatColor.GREEN + "Starting rollback..");
+        Util.message(senderName, ChatColor.GREEN + "Starting rollback...");
 
         for (String world : worlds) {
             QueryParams params = null;
@@ -38,7 +38,7 @@ public class LbRollback extends BaseRollback{
 
                 this.logblock.getCommandsHandler().new CommandRollback(sender, params, true);
             } catch (Exception e) {
-                Util.message(senderName, ChatColor.RED + "Unable to rollback player!");
+                Util.message(senderName, ChatColor.RED + "Unable to rollback player.");
                 if (plugin.getConfigs().isDebug()) {
                     e.printStackTrace();
                 }

@@ -30,7 +30,7 @@ public class Util {
      */
     public static void message(final CommandSender target, String msg) {
         if (msg != null){
-            msg = MCBans.getPrefix() + " " + ChatColor.WHITE + msg;
+            msg = MCBans.getPrefix() + ChatColor.WHITE + msg;
             if (target != null && target instanceof Player){
                 target.sendMessage(msg);
             }else{
@@ -59,7 +59,7 @@ public class Util {
     public static void broadcastMessage(String msg) {
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
         	if(Perms.ANNOUNCE.has(player) || MCBans.AnnounceAll){
-        		player.sendMessage(MCBans.getPrefix() + " " + msg);
+        		player.sendMessage(MCBans.getPrefix() + msg);
         	}
         }
     }

@@ -126,7 +126,7 @@ public class PermissionHandler {
 
             // Other Types, forgot to add here
             default:
-                log.warning("Plugin author forgot add to integration to this permission plugin! Please report this!");
+                log.warning("Plugin author forgot to add integration for this permission plugin. Please report this!");
                 return false;
         }
     }
@@ -168,7 +168,7 @@ public class PermissionHandler {
 
             // Other Types, forgot add here
             default:
-                log.warning("Plugin author forgot add to integration to this permission plugin! Please report this!");
+                log.warning("Plugin author forgot to add integration for this permission plugin. Please report this!");
                 return false;
         }
     }

@@ -36,7 +36,7 @@ public class ManualSync implements Runnable {
         }
         
         if(plugin.syncRunning){
-            Util.message(commandSend, ChatColor.GREEN + "Sync is already running! Be patient." );
+            Util.message(commandSend, ChatColor.GREEN + "Sync is already running." );
             return;
         }
         plugin.syncRunning = true;
@@ -112,14 +112,14 @@ public class ManualSync implements Runnable {
             plugin.syncRunning = false;
         }
         plugin.lastSync = System.currentTimeMillis() / 1000;
-        Util.message(commandSend, ChatColor.GREEN + "Sync is complete with " + changes + " actions!" );
+        Util.message(commandSend, ChatColor.GREEN + "Sync is complete with " + changes + " actions." );
         save();
     }
     public void save(){
     	plugin.lastSyncs.setProperty("lastId", String.valueOf(plugin.lastID));
     	plugin.lastSyncs.setProperty("lastType", String.valueOf(plugin.lastType));
     	try {
-			plugin.lastSyncs.store(new FileOutputStream(plugin.syncIni), "Syncing ban information!");
+			plugin.lastSyncs.store(new FileOutputStream(plugin.syncIni), "Syncing ban information.");
 		} catch (FileNotFoundException e) {
 			if(plugin.getConfigs().isDebug()){
 				e.printStackTrace();

@@ -15,7 +15,7 @@ public class CommandUnban extends BaseCommand{
         bePlayer = false;
         name = "unban";
         argLength = 1;
-        usage = "Unbans the player, uuid, or ip";
+        usage = "unban a player/uuid or IP";
         banning = true;
     }
 

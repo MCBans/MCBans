@@ -19,7 +19,7 @@ public class AltLookupCallback extends BaseCallback{
     }
 
     public void success(final AltLookupData data){
-        Util.message(sender, Util.color("&fPlayer &3" + data.getPlayerName() + "&f may have &c" + data.getAltCount() + " alt account(s)&f."));
+        Util.message(sender, Util.color("&7Player &c" + data.getPlayerName() + "&7 may have &f" + data.getAltCount() + "&7 alternate account(s)."));
         if (data.getAltCount() > 0){
             StringBuilder line2 = new StringBuilder();
             
@@ -28,12 +28,12 @@ public class AltLookupCallback extends BaseCallback{
             for (Map.Entry<String, Double> ent : map.entrySet()){
                 String alt = ent.getKey();
                 Double rep = ent.getValue();
-                String repStr = ((rep < 10) ? "&c" : "&7") + rep;
+                String repStr = ((rep < 10) ? "&c" : "&9") + rep;
                 
                 if (first) { first = false; }
-                else { line2.append("&f, "); }
+                else { line2.append("&8 / "); }
                 
-                line2.append("&2").append(alt).append("&f(").append(repStr).append("&f)");
+                line2.append("&b").append(alt).append("&8 (").append(repStr).append("&8)");
             }
             
             Util.message(sender, Util.color(line2.toString()));

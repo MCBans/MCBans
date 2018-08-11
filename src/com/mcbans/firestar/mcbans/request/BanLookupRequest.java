@@ -24,7 +24,7 @@ public class BanLookupRequest extends BaseRequest<BanLookupCallback>{
     @Override
     protected void execute() {
         if (callback.getSender() != null){
-            log.info(callback.getSender().getName() + " has ban looked up the " + banID + "!");
+            log.info(callback.getSender().getName() + " has performed a ban lookup for ID " + banID + "!");
         }
 
         JSONObject result = this.request_JOBJ();
@@ -39,19 +39,19 @@ public class BanLookupRequest extends BaseRequest<BanLookupCallback>{
                     return;
                 }
                 else if (result.toString().contains("Server Disabled")) {
-                    ActionLog.getInstance().severe("Server Disabled by MCBans Staff!");
-                    ActionLog.getInstance().severe("To appeal this decision, please file ticket on forums.mcbans.com");
+                    ActionLog.getInstance().severe("This server has been disabled by MCBans staff.");
+                    ActionLog.getInstance().severe("To appeal this decision, please file a ticket at forums.mcbans.com.");
 
-                    callback.error("This server has been disabled by MCBans staff!");
+                    callback.error("This server has been disabled by MCBans staff.");
                     return;
                 }
             }
-            ActionLog.getInstance().severe("JSON error while trying to parse ban lookup data!");
-            callback.error("JSON Error");
+            ActionLog.getInstance().severe("A JSON error occurred while trying to parse ban lookup data.");
+            callback.error("An error occurred while parsing JSON data.");
         }
         catch (NullPointerException ex) {
-            ActionLog.getInstance().severe("Unable to reach MCBans API!");
-            callback.error(ChatColor.RED + "Unable to reach MCBans API!");
+            ActionLog.getInstance().severe("Unable to reach MCBans API.");
+            callback.error(ChatColor.RED + "Unable to reach MCBans API.");
             if (plugin.getConfigs().isDebug()){
                 ex.printStackTrace();
             }

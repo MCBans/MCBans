@@ -19,7 +19,7 @@ public class CommandBan extends BaseCommand{
         bePlayer = false;
         name = "ban";
         argLength = 1;
-        usage = "bans a player";
+        usage = "ban a player";
         banning = true;
     }
 
@@ -30,9 +30,9 @@ public class CommandBan extends BaseCommand{
         // check BanType
         BanType type = BanType.LOCAL;
         if (args.size() > 0) {
-            if (args.get(0).equalsIgnoreCase("g")){
+            if (args.get(0).equalsIgnoreCase("-g")){
                 type = BanType.GLOBAL;
-            }else if (args.get(0).equalsIgnoreCase("t")){
+            }else if (args.get(0).equalsIgnoreCase("-t")){
                 type = BanType.TEMP;
             }
         }
@@ -94,7 +94,7 @@ public class CommandBan extends BaseCommand{
 
         // Start
         if (banControl == null){
-            Util.message(sender, ChatColor.RED + "Internal error! Please report console logs to MCBans staff!");
+            Util.message(sender, ChatColor.RED + "Internal error. Please report console logs to an MCBans developer.");
             throw new RuntimeException("Undefined BanType: " + type.name());
         }
         Thread triggerThread = new Thread(banControl);

@@ -15,7 +15,7 @@ public class CommandTempban extends BaseCommand{
         bePlayer = false;
         name = "tempban";
         argLength = 2;
-        usage = "temporary ban player";
+        usage = "temporary ban a player";
         banning = true;
     }
 

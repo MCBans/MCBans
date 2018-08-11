@@ -49,7 +49,7 @@ public class JsonHandler {
             log.info("Converting response '" + json_text + "'");
         }
         if (json_text == null || json_text.length() <= 0){
-            if (config.isDebug()) log.severe("Null Response! Please contact MCBans administrator!");
+            if (config.isDebug()) log.severe("Null Response. Please contact an MCBans developer.");
             out.clear();
             return out;
         }

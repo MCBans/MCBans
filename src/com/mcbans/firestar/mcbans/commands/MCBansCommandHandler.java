@@ -31,13 +31,13 @@ public class MCBansCommandHandler implements TabExecutor{
         final String commandName = command.getName().toLowerCase(Locale.ENGLISH);
         final BaseCommand cmd = commands.get(commandName);
         if (cmd == null){
-            Util.message(sender, ChatColor.RED + "This command has not been loaded properly!");
+            Util.message(sender, ChatColor.RED + "This command has not been loaded properly.");
             return true;
         }
         
         if (!(cmd instanceof CommandMcbans)){
             if (!plugin.getConfigs().isValidApiKey()){
-                Util.message(sender, ChatColor.RED + "Missing or Invalid API key! Check API Key or contact MCBans Staff!");
+                Util.message(sender, ChatColor.RED + "Missing or Invalid API key! Check API key or contact MCBans staff.");
                 return true;
             }
         }

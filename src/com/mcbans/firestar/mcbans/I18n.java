@@ -111,7 +111,7 @@ public class I18n {
     public static String _(final String key, final Object... args){
         // message file not proper loaded
         if (messages == null){
-            ActionLog.getInstance().warning("Localized messages file is NOT loaded..");
+            ActionLog.getInstance().warning("Localized messages file is NOT loaded.");
             return "!" + key + "!";
         }
 

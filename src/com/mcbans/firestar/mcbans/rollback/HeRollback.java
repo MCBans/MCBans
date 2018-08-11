@@ -29,7 +29,7 @@ public class HeRollback extends BaseRollback{
 
         // Check if player already has a rollback processing
         if (session.doingRollback()){
-            Util.message(senderName, ChatColor.RED + "Unable to rollback player! You already have a rollback processing!");
+            Util.message(senderName, ChatColor.RED + "Unable to rollback player. You already have a rollback processing.");
             return false;
         }
 
@@ -47,12 +47,12 @@ public class HeRollback extends BaseRollback{
             }
 
             // Create new SearchQuery
-            Util.message(senderName, ChatColor.GREEN + "Starting rollback..");
+            Util.message(senderName, ChatColor.GREEN + "Starting rollback...");
 
             new SearchQuery(new RollbackCallback(session, RollbackType.GLOBAL), parser, SearchDir.DESC); // async rollback
             //HawkEyeAPI.performSearch(callback, parser, SearchDir.DESC);
         }catch (Exception e){
-            Util.message(senderName, ChatColor.RED + "Unable to rollback player!");
+            Util.message(senderName, ChatColor.RED + "Unable to rollback player.");
             if (plugin.getConfigs().isDebug()) {
                 e.printStackTrace();
             }

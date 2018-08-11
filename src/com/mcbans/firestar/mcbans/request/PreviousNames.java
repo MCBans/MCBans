@@ -23,7 +23,7 @@ public class PreviousNames extends BaseRequest<PreviousCallback>{
 	protected void execute() {
 		// TODO Auto-generated method stub
 		if (callback.getSender() != null){
-            log.info(callback.getSender().getName() + "  looked up the player history for " + target + "!");
+            log.info(callback.getSender().getName() + " performed a player history lookup for " + target + "!");
         }
 		JSONObject result = this.request_JOBJ();
 		try{
@@ -36,15 +36,15 @@ public class PreviousNames extends BaseRequest<PreviousCallback>{
                     return;
                 }
                 else if (result.toString().contains("Server Disabled")) {
-                    ActionLog.getInstance().severe("Server Disabled by an MCBans Staff Member!");
+                    ActionLog.getInstance().severe("This server has been disabled by MCBans staff.");
                     ActionLog.getInstance().severe("To appeal this decision, please file ticket on forums.mcbans.com");
 
-                    callback.error("This server has been disabled by an MCBans Staff Member.");
+                    callback.error("This server has been disabled by MCBans staff.");
                     return;
                 }
             }
-            ActionLog.getInstance().severe("JSON error while trying to parse player name history data!");
-            callback.error("JSON Error");
+            ActionLog.getInstance().severe("A JSON error occurred while trying to parse player name history data.");
+            callback.error("An error occurred while parsing JSON data.");
         }
         catch (NullPointerException ex) {
             ActionLog.getInstance().severe("Unable to reach MCBans API server!");

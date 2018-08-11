@@ -52,15 +52,15 @@ public class LookupRequest extends BaseRequest<LookupCallback>{
         catch (JSONException ex) {
             if (result.toString().contains("error")) {
                 if (result.toString().contains("Server Disabled")) {
-                    ActionLog.getInstance().severe("Server Disabled by an MCBans Staff Member");
-                    ActionLog.getInstance().severe("To appeal this decision, please file ticket on forums.mcbans.com");
+                    ActionLog.getInstance().severe("This server has been disabled by MCBans staff.");
+                    ActionLog.getInstance().severe("To appeal this decision, please file a ticket at forums.mcbans.com.");
 
-                    callback.error("This server has been disabled by MCBans Staff.");
+                    callback.error("This server has been disabled by MCBans staff.");
                     return;
                 }
             }
-            ActionLog.getInstance().severe("JSON error while trying to parse lookup data!");
-            callback.error("JSON Error");
+            ActionLog.getInstance().severe("A JSON error occurred while trying to parse lookup data.");
+            callback.error("An error occurred while parsing JSON data.");
         }
         catch (NullPointerException ex) {
             ActionLog.getInstance().severe("Unable to reach the MCBans API!");
