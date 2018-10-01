@@ -85,7 +85,6 @@ public class CommandMcbans extends BaseCommand{
         		send(ChatColor.GOLD+"mcbans.ban.local" + ChatColor.BLUE + " Grants local ban permissions");
         		send(ChatColor.GOLD+"mcbans.ban.temp" + ChatColor.BLUE + " Grants temporary ban permissions");
         		send(ChatColor.GOLD+"mcbans.ban.rollback" + ChatColor.BLUE + " Grants rollback ban permissions");
-        		send(ChatColor.GOLD+"mcbans.ban.rollback" + ChatColor.BLUE + " Grants rollback ban permissions");
         		send(ChatColor.GOLD+"mcbans.ban.ip" + ChatColor.BLUE + " Grants IP ban permissions");
         		send(ChatColor.GOLD+"mcbans.unban" + ChatColor.BLUE + " Grants unban permissions");
         		send(ChatColor.GOLD+"mcbans.kick" + ChatColor.BLUE + " Grants kick permissions");
