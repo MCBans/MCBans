@@ -3,6 +3,8 @@ package com.mcbans.firestar.mcbans.events;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import java.util.UUID;
+
 public class PlayerBannedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
 
@@ -64,11 +66,19 @@ public class PlayerBannedEvent extends Event {
         return (this.action_id == 2);
     }
 
-    public String getPlayerUUID() {
+    public UUID getPlayerUUID() {
+        return UUID.fromString(this.playerUUID);
+    }
+
+    public UUID getSenderUUID() {
+        return UUID.fromString(this.senderUUID);
+    }
+
+    public String getPlayerUUIDAsString() {
         return this.playerUUID;
     }
 
-    public String getSenderUUID() {
+    public String getSenderUUIDAsString() {
         return this.senderUUID;
     }
 
