@@ -7,21 +7,25 @@ public class PlayerBannedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
 
     private String player;
+    private String playerUUID;
     private String playerIP;
     private String sender;
+    private String senderUUID;
     private String reason;
     private int action_id;
     private String duration;
     private String measure;
 
-    public PlayerBannedEvent(String player, String playerIP, String sender, String reason, int action_id, String duration, String measure) {
+    public PlayerBannedEvent(String player, String playerUUID, String playerIP, String sender, String senderUUID, String reason, int action_id, String duration, String measure) {
         this.player = player;
         this.playerIP = playerIP;
+        this.playerUUID = playerUUID;
         this.sender = sender;
         this.reason = reason;
         this.action_id = action_id;
         this.duration = duration;
         this.measure = measure;
+        this.senderUUID = senderUUID;
     }
 
     public String getPlayerName() {
@@ -58,6 +62,14 @@ public class PlayerBannedEvent extends Event {
 
     public boolean isTempBan() {
         return (this.action_id == 2);
+    }
+
+    public String getPlayerUUID() {
+        return this.playerUUID;
+    }
+
+    public String getSenderUUID() {
+        return this.senderUUID;
     }
 
     @Override
