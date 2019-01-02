@@ -1,25 +1,19 @@
 package com.mcbans.firestar.mcbans.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import com.mcbans.firestar.mcbans.ActionLog;
+import com.mcbans.firestar.mcbans.MCBans;
+
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
-
-import com.mcbans.firestar.mcbans.ActionLog;
-import com.mcbans.firestar.mcbans.MCBans;
+import java.nio.charset.StandardCharsets;
 
 
 public class FileStructure {
     /**
      * Create directory
-     * @param dir
+     * @param dir targetDir
      */
     public static void createDir(final File dir){
         // if already exists, do nothing
@@ -40,15 +34,9 @@ public class FileStructure {
      */
     @SuppressWarnings("resource")
 	public static void copyTransfer(String srcPath, String destPath) throws IOException {
-        FileChannel srcChannel = null, destChannel = null;
-        try {
-            srcChannel = new FileInputStream(srcPath).getChannel();
-            destChannel = new FileOutputStream(destPath).getChannel();
-
+        try(FileChannel srcChannel = new FileInputStream(srcPath).getChannel();
+            FileChannel destChannel = new FileOutputStream(destPath).getChannel()){
             srcChannel.transferTo(0, srcChannel.size(), destChannel);
-        } finally {
-            srcChannel.close();
-            destChannel.close();
         }
     }
 
@@ -96,7 +84,7 @@ public class FileStructure {
             }else{
                 // write file
                 if (lang){
-                    reader = new InputStreamReader(in, "UTF-8");
+                    reader = new InputStreamReader(in, StandardCharsets.UTF_8);
                     writer = new OutputStreamWriter(new FileOutputStream(of)); // not specify output encode
 
                     int text;
@@ -106,7 +94,7 @@ public class FileStructure {
                 }else{
                     out = new FileOutputStream(of);
                     byte[] buf = new byte[1024]; // Buffer size
-                    int len = 0;
+                    int len;
                     while((len = in.read(buf)) >= 0){
                         out.write(buf, 0, len);
                     }

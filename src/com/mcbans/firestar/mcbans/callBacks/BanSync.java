@@ -1,24 +1,23 @@
 package com.mcbans.firestar.mcbans.callBacks;
 
-import static com.mcbans.firestar.mcbans.I18n._;
+// import java.io.FileNotFoundException;
+// import java.io.FileOutputStream;
+// import java.io.IOException;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-
-import org.bukkit.BanList;
-import org.bukkit.ChatColor;
-
-import org.bukkit.OfflinePlayer;
-
-import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.bukkitListeners.PlayerListener;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
-import com.mcbans.firestar.mcbans.request.JsonHandler;
+import org.bukkit.BanList;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+
+import java.util.Date;
+
+import static com.mcbans.firestar.mcbans.callBacks.ManualReSync.getJsonObject;
+
+// import java.util.HashMap;
+// import com.mcbans.firestar.mcbans.request.JsonHandler;
 
 public class BanSync implements Runnable {
     private final MCBans plugin;
@@ -57,7 +56,7 @@ public class BanSync implements Runnable {
     	this.startSync();
     }
 
-	public void startSync(){
+	private void startSync(){
         if(plugin.syncRunning){
             return;
         }
@@ -66,18 +65,14 @@ public class BanSync implements Runnable {
         try{
             boolean goNext = true;
         	while(goNext){
-        		if(String.valueOf(plugin.lastType).equals("") || String.valueOf(plugin.lastType)==null || String.valueOf(plugin.lastID)==null || String.valueOf(plugin.lastID).equals("")){
+		        if(String.valueOf(plugin.lastType).equals("") || String.valueOf(plugin.lastType) == null || String.valueOf(plugin.lastID).equals("")){
         			plugin.lastType = "bans";
         			plugin.lastID = 0;
         			goNext =false;
         			System.out.println(ChatColor.RED+"MCBans: Error resetting sync. Please report this to an MCBans developer.");
         		}else{
-	                JsonHandler webHandle = new JsonHandler( plugin );
-	                HashMap<String, String> url_items = new HashMap<String, String>();
-	                url_items.put( "lastId", String.valueOf(plugin.lastID) );
-	                url_items.put( "lastType", String.valueOf(plugin.lastType) );
-	                url_items.put( "exec", "banSync" );
-	                JSONObject response = webHandle.hdl_jobj(url_items);
+
+			        JSONObject response = getJson(plugin);
 	                try {
 	                    if(response.has("actions")){
 	                        if (response.getJSONArray("actions").length() > 0) {
@@ -118,16 +113,12 @@ public class BanSync implements Runnable {
 	                        }
 	            		}
 	                    save();
-	                } catch (JSONException e) {
-	                    if(plugin.getConfigs().isDebug()){
-	                        e.printStackTrace();
-	                    }
-	                } catch (NullPointerException e) {
+	                }catch(JSONException | NullPointerException e){
 	                    if(plugin.getConfigs().isDebug()){
 	                        e.printStackTrace();
 	                    }
 	                }
-	                try {
+			        try{
 	                    Thread.sleep(5000);
 	                } catch (InterruptedException ignore) {}
         		}
@@ -138,19 +129,12 @@ public class BanSync implements Runnable {
         plugin.lastSync = System.currentTimeMillis() / 1000;
         save();
     }
-    public void save(){
-    	plugin.lastSyncs.setProperty("lastId", String.valueOf(plugin.lastID));
-    	plugin.lastSyncs.setProperty("lastType", String.valueOf(plugin.lastType));
-    	try {
-			plugin.lastSyncs.store(new FileOutputStream(plugin.syncIni), "Syncing ban information.");
-		} catch (FileNotFoundException e) {
-			if(plugin.getConfigs().isDebug()){
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			if(plugin.getConfigs().isDebug()){
-				e.printStackTrace();
-			}
-		}
+
+	private void save(){
+		ManualReSync.syncInfo(plugin);
+	}
+
+	private JSONObject getJson(MCBans plugin){
+		return getJsonObject(plugin);
     }
 }

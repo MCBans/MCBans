@@ -1,11 +1,11 @@
 package com.mcbans.firestar.mcbans.api.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.util.Util;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerLookupData {
     private String name;
@@ -13,9 +13,9 @@ public class PlayerLookupData {
     private int total = 0;
     private double reputation = 10.0D;
 
-    private List<String> global = new ArrayList<String>();
-    private List<String> local = new ArrayList<String>();
-    private List<String> other = new ArrayList<String>();
+	private List<String> global = new ArrayList<>();
+	private List<String> local = new ArrayList<>();
+	private List<String> other = new ArrayList<>();
 
     public PlayerLookupData(final String name, final JSONObject response) throws JSONException, NullPointerException{
         if (name == null || response == null) return;

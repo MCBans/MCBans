@@ -1,16 +1,15 @@
 package com.mcbans.firestar.mcbans.request;
 
-import org.bukkit.ChatColor;
-
 import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.callBacks.MCBansSettingsCallback;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
+import org.bukkit.ChatColor;
 
 public class MCBansSettings extends BaseRequest<MCBansSettingsCallback> {
-	public String commands = "";
-	public String sender = "";
+	public String commands;
+	public String sender;
 	public MCBansSettings(MCBans plugin, MCBansSettingsCallback callback, String sender, String commands) {
 		super(plugin, callback);
 		this.commands = commands;

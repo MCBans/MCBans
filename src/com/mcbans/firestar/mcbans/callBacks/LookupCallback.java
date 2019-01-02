@@ -1,19 +1,20 @@
 package com.mcbans.firestar.mcbans.callBacks;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.api.data.PlayerLookupData;
 import com.mcbans.firestar.mcbans.util.Util;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 public class LookupCallback extends BaseCallback{
     public LookupCallback(final MCBans plugin, final CommandSender sender) {
         super(plugin, sender);
     }
-    public LookupCallback(){
-        super(MCBans.getInstance(), null);
-    }
+
+	// This Constructor is not used.
+	public LookupCallback(){
+		super(MCBans.getInstance(), null);
+	}
 
     //@Override
     public void success(final PlayerLookupData data){

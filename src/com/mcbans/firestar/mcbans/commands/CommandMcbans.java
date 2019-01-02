@@ -1,16 +1,7 @@
 package com.mcbans.firestar.mcbans.commands;
 
-import static com.mcbans.firestar.mcbans.I18n._;
-
-import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.mcbans.firestar.mcbans.I18n;
-import com.mcbans.firestar.mcbans.callBacks.ManualResync;
+import com.mcbans.firestar.mcbans.callBacks.ManualReSync;
 import com.mcbans.firestar.mcbans.callBacks.ManualSync;
 import com.mcbans.firestar.mcbans.callBacks.MessageCallback;
 import com.mcbans.firestar.mcbans.callBacks.ServerChoose;
@@ -18,6 +9,14 @@ import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.PingRequest;
 import com.mcbans.firestar.mcbans.util.Util;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.Set;
+
+import static com.mcbans.firestar.mcbans.I18n.localize;
 
 public class CommandMcbans extends BaseCommand{
     public CommandMcbans(){
@@ -111,7 +110,7 @@ public class CommandMcbans extends BaseCommand{
         /* Check response time */
         if (first.equalsIgnoreCase("ping")){
             if (!Perms.ADMIN.has(sender)){
-                throw new CommandException(ChatColor.RED + _("permissionDenied"));
+                throw new CommandException(ChatColor.RED + localize("permissionDenied"));
             }
             PingRequest request = new PingRequest(plugin, new MessageCallback(plugin, sender));
             (new Thread(request)).start();
@@ -120,13 +119,13 @@ public class CommandMcbans extends BaseCommand{
         /* Sync banned-players.txt */
         if (first.equalsIgnoreCase("sync")){
             if (!Perms.ADMIN.has(sender)){
-                throw new CommandException(ChatColor.RED + _("permissionDenied"));
+                throw new CommandException(ChatColor.RED + localize("permissionDenied"));
             }
 
             // Check if all sync
             if (args.size() > 0 && args.get(0).equalsIgnoreCase("all")){
                 send(ChatColor.GREEN + "Resyncing with MCBans API!");
-                ManualResync manualSyncBanRunner = new ManualResync(plugin, senderName);
+                ManualReSync manualSyncBanRunner = new ManualReSync(plugin, senderName);
                 (new Thread(manualSyncBanRunner)).start();
             }else{
                 long syncInterval = 60 * config.getSyncInterval();
@@ -147,7 +146,7 @@ public class CommandMcbans extends BaseCommand{
         /* Get next scheduling time */
         if (first.equalsIgnoreCase("get")){
             if (args.size() > 0 && args.get(0).equalsIgnoreCase("call")){
-                long callBackInterval = 0;
+                long callBackInterval;
                 callBackInterval = 60 * config.getCallBackInterval();
                 if(callBackInterval < (60 * 15)){
                     callBackInterval = (60 * 15);
@@ -184,7 +183,7 @@ public class CommandMcbans extends BaseCommand{
         /* Reload plugin */
         if (first.equalsIgnoreCase("reload")){
             if (!Perms.ADMIN.has(sender)){
-                throw new CommandException(ChatColor.RED + _("permissionDenied"));
+                throw new CommandException(ChatColor.RED + localize("permissionDenied"));
             }
 
             send(ChatColor.AQUA + "Reloading configuration...");
@@ -230,7 +229,7 @@ public class CommandMcbans extends BaseCommand{
                 players.addAll(Perms.BAN_GLOBAL.getPlayers());
                 //Send it
                 for (Player p : players){
-                    Util.message(p, ChatColor.AQUA + _("isMCBansMod", I18n.PLAYER, player.getName()));
+                    Util.message(p, ChatColor.AQUA + localize("isMCBansMod", I18n.PLAYER, player.getName()));
                 }
             }else{
                 send("&6-=== Server Settings ===-");
@@ -252,7 +251,7 @@ public class CommandMcbans extends BaseCommand{
         }
 
         // Format error
-        throw new CommandException(ChatColor.RED + _("formatError"));
+        throw new CommandException(ChatColor.RED + localize("formatError"));
     }
 
     private void send(final String msg){
@@ -265,12 +264,11 @@ public class CommandMcbans extends BaseCommand{
         }
         try {
             String format = "";
-            long timeRemaining = remain;
-            long sec = timeRemaining % 60;
-            long min = (timeRemaining / 60) % 60;
-            long hours = (timeRemaining / (60 * 60)) % 24;
-            long days = (timeRemaining / (60 * 60 * 24)) % 7;
-            long weeks = (timeRemaining / (60 * 60 * 24 * 7));
+            long sec = remain % 60;
+            long min = (remain / 60) % 60;
+            long hours = (remain / (60 * 60)) % 24;
+            long days = (remain / (60 * 60 * 24)) % 7;
+            long weeks = (remain / (60 * 60 * 24 * 7));
             if (sec != 0) {
                 format = sec + " seconds";
             }

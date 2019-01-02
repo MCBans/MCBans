@@ -1,18 +1,14 @@
 package com.mcbans.firestar.mcbans.rollback;
 
+import com.mcbans.firestar.mcbans.ActionLog;
+import com.mcbans.firestar.mcbans.MCBans;
+import de.diddiz.LogBlock.LogBlock;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
-
 import uk.co.oliwali.HawkEye.HawkEye;
-
-import com.mcbans.firestar.mcbans.ActionLog;
-import com.mcbans.firestar.mcbans.MCBans;
-
-import de.diddiz.LogBlock.LogBlock;
 
 public class RollbackHandler {
     private final MCBans plugin;
@@ -34,7 +30,7 @@ public class RollbackHandler {
 
         // Check LogBlock
         Plugin check = pm.getPlugin("LogBlock");
-        if (check != null && check instanceof LogBlock && check.isEnabled()) {
+        if(check instanceof LogBlock && check.isEnabled()){
             method = new LbRollback(plugin);
             if (method.setPlugin(check)){
                 log.info("LogBlock found. Using LogBlock for rollbacks.");
@@ -44,7 +40,7 @@ public class RollbackHandler {
 
         // Check HawkEye
         check = pm.getPlugin("HawkEye");
-        if (check != null && check instanceof HawkEye && check.isEnabled()) {
+        if(check instanceof HawkEye && check.isEnabled()){
             method = new HeRollback(plugin);
             log.info("HawkEye found. Using HawkEye for rollbacks.");
             return true;
@@ -52,7 +48,7 @@ public class RollbackHandler {
 
         // Check CoreProtect
         check = pm.getPlugin("CoreProtect");
-        if (check != null && check instanceof CoreProtect && check.isEnabled()) {
+        if(check instanceof CoreProtect && check.isEnabled()){
             CoreProtectAPI cpAPI = ((CoreProtect) check).getAPI();
             if (cpAPI.isEnabled()){
                 method = new CpRollback(plugin);

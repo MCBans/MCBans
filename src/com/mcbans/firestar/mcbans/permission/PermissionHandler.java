@@ -1,19 +1,17 @@
 package com.mcbans.firestar.mcbans.permission;
 
+import com.mcbans.firestar.mcbans.ActionLog;
+import com.mcbans.firestar.mcbans.MCBans;
 import net.milkbowl.vault.permission.Permission;
-
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
-
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-import com.mcbans.firestar.mcbans.ActionLog;
-import com.mcbans.firestar.mcbans.MCBans;
+// import org.bukkit.command.ConsoleCommandSender;
 
 public class PermissionHandler {
     public enum PermType {
@@ -49,7 +47,7 @@ public class PermissionHandler {
      * Setup and Select permission controller
      * @param silent false if send message to console
      */
-    public void setupPermissions(final boolean silent){
+    private void setupPermissions(final boolean silent){
         final String selected = plugin.getConfigs().getPermission().trim();
         boolean found = true;
 
@@ -88,7 +86,8 @@ public class PermissionHandler {
             log.info("Using " + getPermTypeString() + " for permission control.");
         }
     }
-    public void setupPermissions(){
+
+    void setupPermissions(){
         this.setupPermissions(false);
     }
 
@@ -143,7 +142,7 @@ public class PermissionHandler {
         switch (permType){
             // Vault
             case VAULT:
-                return vaultPermission.has(worldName, playerName, permission);
+                return vaultPermission.has(plugin.getServer().getPlayer(playerName), permission);
 
             // PEX
             case PEX:
@@ -177,7 +176,7 @@ public class PermissionHandler {
      * Get using permission controller name
      * @return string controller name
      */
-    public String getPermTypeString(){
+    private String getPermTypeString(){
         // Switch by using permission controller
         switch (permType){
             case VAULT:

@@ -1,16 +1,15 @@
 package com.mcbans.firestar.mcbans;
 
+import com.mcbans.firestar.mcbans.util.FileStructure;
+import com.mcbans.firestar.mcbans.util.Util;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import com.mcbans.firestar.mcbans.util.FileStructure;
-import com.mcbans.firestar.mcbans.util.Util;
 
 public class I18n {
     private static final String languageDirName = "languages";
@@ -22,7 +21,7 @@ public class I18n {
      * Init I18n
      * @param locale set current locale
      */
-    public static void init(final String locale){
+    static void init(final String locale){
         // extract languages
         extractLanguageFiles(false);
 
@@ -48,7 +47,7 @@ public class I18n {
         FileStructure.createDir(langDir);
 
         // extract resources
-        List<String> locales = new ArrayList<String>();
+        List<String> locales = new ArrayList<>();
 
         locales.add("default");
         locales.add("dutch");
@@ -66,15 +65,16 @@ public class I18n {
     }
 
     // Load methods
-    public static void setCurrentLanguage(final String locale) throws Exception{
+    public static void setCurrentLanguage(final String locale){
         messages = loadLanguageFile(locale);
     }
-    private static Configuration loadLanguageFile(final String locale) throws Exception{
+
+    private static Configuration loadLanguageFile(final String locale){
         final File langDir = getLanguagesDir();
         File file = new File(langDir, locale + ".yml");
 
         // check file available
-        if (file == null || !file.isFile() || !file.canRead()){
+        if(! file.isFile() || ! file.canRead()){
             ActionLog.getInstance().warning("Unknown language file: " + locale);
             return null;
         }
@@ -108,7 +108,7 @@ public class I18n {
     public static final String IP       = "%IP%";
     /* ***** End replace words ******* */
 
-    public static String _(final String key, final Object... args){
+    public static String localize(final String key, final Object... args){
         // message file not proper loaded
         if (messages == null){
             ActionLog.getInstance().warning("Localized messages file is NOT loaded.");
@@ -145,9 +145,9 @@ public class I18n {
     }
 
     private static Map<String, Object> buildBinds(final Object... args){
-        Map<String, Object> bind = new HashMap<String, Object>(args.length / 2);
+        Map<String, Object> bind = new HashMap<>(args.length / 2);
 
-        if (args == null || args.length < 2){
+        if(args.length < 2){
             return bind;
         }
 

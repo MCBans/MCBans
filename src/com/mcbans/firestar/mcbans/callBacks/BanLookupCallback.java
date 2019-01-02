@@ -1,21 +1,22 @@
 package com.mcbans.firestar.mcbans.callBacks;
 
-import java.util.Locale;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.api.data.BanLookupData;
 import com.mcbans.firestar.mcbans.util.Util;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.util.Locale;
 
 public class BanLookupCallback extends BaseCallback{
     public BanLookupCallback(final MCBans plugin, final CommandSender sender) {
         super(plugin, sender);
     }
-    public BanLookupCallback(){
-        super(MCBans.getInstance(), null);
-    }
+
+	// This Constructor is not used.
+	public BanLookupCallback(){
+		super(MCBans.getInstance(), null);
+	}
 
     public void success(final BanLookupData data){
         String lostRep = (data.getLostRep() > 0) ? "&c" + data.getLostRep() : "&f0";

@@ -1,14 +1,13 @@
 package com.mcbans.firestar.mcbans.rollback;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.mcbans.firestar.mcbans.MCBans;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
-import com.mcbans.firestar.mcbans.MCBans;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseRollback {
     protected final MCBans plugin;
@@ -16,7 +15,7 @@ public abstract class BaseRollback {
     // rollback setting
     String[] worlds;
 
-    public BaseRollback(final MCBans plugin){
+    BaseRollback(final MCBans plugin){
         this.plugin = plugin;
 
         worlds = plugin.getConfigs().getAffectedWorlds().split(",");
@@ -28,7 +27,7 @@ public abstract class BaseRollback {
             }
         }
         if (allWorld){
-            List<String> w = new ArrayList<String>(Bukkit.getWorlds().size());
+            List<String> w = new ArrayList<>(Bukkit.getWorlds().size());
             for (World world : Bukkit.getWorlds()){
                 w.add(world.getName());
             }

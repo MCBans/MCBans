@@ -1,23 +1,22 @@
 package com.mcbans.firestar.mcbans.commands;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
+import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 
-import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.util.Util;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class MCBansCommandHandler implements TabExecutor{
     private final MCBans plugin;
 
     // command map
-    private Map<String, BaseCommand> commands = new HashMap<String, BaseCommand>();
+    private Map<String, BaseCommand> commands = new HashMap<>();
 
     /**
      * Constructor

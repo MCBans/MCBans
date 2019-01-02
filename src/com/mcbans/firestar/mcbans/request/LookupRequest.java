@@ -1,15 +1,12 @@
 package com.mcbans.firestar.mcbans.request;
 
-import java.util.UUID;
-
-import org.bukkit.ChatColor;
-
 import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.api.data.PlayerLookupData;
 import com.mcbans.firestar.mcbans.callBacks.LookupCallback;
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
+import org.bukkit.ChatColor;
 
 public class LookupRequest extends BaseRequest<LookupCallback>{
     private String targetName;
@@ -28,15 +25,17 @@ public class LookupRequest extends BaseRequest<LookupCallback>{
 
         this.targetName = playerName;
     }
-    public LookupRequest(final MCBans plugin, final LookupCallback callback, final String playerName, final String senderName) {
-        super(plugin, callback);
 
-        this.items.put("player", playerName);
-        this.items.put("admin", senderName);
-        this.items.put("exec", "playerLookup");
+	// This Constructor is not used.
+	public LookupRequest(final MCBans plugin, final LookupCallback callback, final String playerName, final String senderName){
+		super(plugin, callback);
 
-        this.targetName = playerName;
-    }
+		this.items.put("player", playerName);
+		this.items.put("admin", senderName);
+		this.items.put("exec", "playerLookup");
+
+		this.targetName = playerName;
+	}
 
     @Override
     protected void execute() {

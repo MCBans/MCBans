@@ -1,5 +1,11 @@
 package com.mcbans.firestar.mcbans.request;
 
+import com.mcbans.firestar.mcbans.ActionLog;
+import com.mcbans.firestar.mcbans.ConfigurationManager;
+import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.org.json.JSONException;
+import com.mcbans.firestar.mcbans.org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -10,12 +16,6 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import com.mcbans.firestar.mcbans.ActionLog;
-import com.mcbans.firestar.mcbans.ConfigurationManager;
-import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.org.json.JSONException;
-import com.mcbans.firestar.mcbans.org.json.JSONObject;
 
 public class JsonHandler {
     private final MCBans plugin;
@@ -28,7 +28,7 @@ public class JsonHandler {
         this.config = plugin.getConfigs();
     }
 
-    public JSONObject get_data(String json_text) {
+    private JSONObject get_data(String json_text){
         try {
             return new JSONObject(json_text);
         } catch (JSONException e) {
@@ -41,7 +41,7 @@ public class JsonHandler {
 
     @SuppressWarnings("unchecked")
     public HashMap<String, String> mainRequest(HashMap<String, String> items) {
-        HashMap<String, String> out = new HashMap<String, String>();
+        HashMap<String, String> out = new HashMap<>();
         String url_req = this.urlparse(items);
         String json_text = this.request_from_api(url_req);
         if (config.isDebug()){
@@ -80,7 +80,7 @@ public class JsonHandler {
         return get_data(jsonText);
     }
 
-    public String request_from_api(String data) {
+    String request_from_api(String data){
         return request_from_api(data, plugin.apiServer);
     }
 
@@ -133,16 +133,16 @@ public class JsonHandler {
     }
 
     public String urlparse(HashMap<String, String> items) {
-        String data = "";
+        StringBuilder data = new StringBuilder();
         try {
             for (Map.Entry<String, String> entry : items.entrySet()) {
                 String key = entry.getKey();
                 String val = entry.getValue();
                 if(val!=null && !val.equals("")){
-                	if (data.equals("")) {
-                    	data = URLEncoder.encode(key, "UTF-8") + "=" + URLEncoder.encode(val, "UTF-8");
+                    if(data.toString().equals("")){
+                        data = new StringBuilder(URLEncoder.encode(key, "UTF-8") + "=" + URLEncoder.encode(val, "UTF-8"));
                 	} else {
-                		data += "&" + URLEncoder.encode(key, "UTF-8") + "=" + URLEncoder.encode(val, "UTF-8");
+                        data.append("&").append(URLEncoder.encode(key, "UTF-8")).append("=").append(URLEncoder.encode(val, "UTF-8"));
                 	}
                 }
             }
@@ -151,6 +151,6 @@ public class JsonHandler {
                 e.printStackTrace();
             }
         }
-        return data;
+        return data.toString();
     }
 }

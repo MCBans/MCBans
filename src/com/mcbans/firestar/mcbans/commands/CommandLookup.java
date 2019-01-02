@@ -1,14 +1,9 @@
 package com.mcbans.firestar.mcbans.commands;
 
-import static com.mcbans.firestar.mcbans.I18n._;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.mcbans.firestar.mcbans.callBacks.LookupCallback;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.LookupRequest;
-import com.mcbans.firestar.mcbans.util.Util;
+import org.bukkit.command.CommandSender;
 
 public class CommandLookup extends BaseCommand{
     public CommandLookup(){
@@ -29,7 +24,7 @@ public class CommandLookup extends BaseCommand{
         		targetUUID = target;
         		target = "";
         	}else{
-        		Util.message(sender, ChatColor.RED + _("invalidName"));
+        		Util.message(sender, ChatColor.RED + localize("invalidName"));
         		return;
             }
         }*/

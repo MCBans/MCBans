@@ -13,7 +13,7 @@ public enum BanType {
     final private String actionName;
     final private Perms permission;
 
-    private BanType(final String actionName, final Perms permission){
+    BanType(final String actionName, final Perms permission){
         this.actionName = actionName;
         this.permission = permission;
     }

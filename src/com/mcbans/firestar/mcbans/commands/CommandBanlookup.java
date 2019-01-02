@@ -1,13 +1,12 @@
 package com.mcbans.firestar.mcbans.commands;
 
-import static com.mcbans.firestar.mcbans.I18n._;
-
-import org.bukkit.command.CommandSender;
-
 import com.mcbans.firestar.mcbans.callBacks.BanLookupCallback;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.BanLookupRequest;
 import com.mcbans.firestar.mcbans.util.Util;
+import org.bukkit.command.CommandSender;
+
+import static com.mcbans.firestar.mcbans.I18n.localize;
 
 public class CommandBanlookup extends BaseCommand{
     public CommandBanlookup(){
@@ -24,7 +23,7 @@ public class CommandBanlookup extends BaseCommand{
 
         // check valid banID
         if (!Util.isInteger(target) || Integer.parseInt(target) < 0){
-            Util.message(sender, _("formatError"));
+	        Util.message(sender, localize("formatError"));
             return;
         }
 

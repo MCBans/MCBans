@@ -1,17 +1,16 @@
 package com.mcbans.firestar.mcbans.util;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.permission.Perms;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.permission.Perms;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Util {
     private static final String IP_PATTERN = 
@@ -31,7 +30,7 @@ public class Util {
     public static void message(final CommandSender target, String msg) {
         if (msg != null){
             msg = MCBans.getPrefix() + ChatColor.WHITE + msg;
-            if (target != null && target instanceof Player){
+            if(target instanceof Player){
                 target.sendMessage(msg);
             }else{
                 // use craftbukkit for sending coloured message to console. Refer class #ColouredConsoleSender
@@ -82,19 +81,19 @@ public class Util {
      * @return Joined string
      */
     public static String join(Collection<?> s, String delimiter) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         Iterator<?> iter = s.iterator();
 
         // Loop elements
         while (iter.hasNext()){
-            buffer.append(iter.next());
+            builder.append(iter.next());
             // if has next element, put delimiter
             if (iter.hasNext()){
-                buffer.append(delimiter);
+                builder.append(delimiter);
             }
         }
-        // return buffer string
-        return buffer.toString();
+        // return builder string
+        return builder.toString();
     }
 
     /**
@@ -106,22 +105,14 @@ public class Util {
         if (name == null) return false;
 
         final String regex = "^[A-Za-z0-9_]{2,16}$";
-        if (!Pattern.compile(regex).matcher(name).matches()){
-            return false;
-        }
-
-        return true;
+        return Pattern.compile(regex).matcher(name).matches();
     }
 
     public static boolean isValidUUID(final String name){
         if (name == null) return false;
 
         final String regex = "^[A-Za-z0-9_]{32}$";
-        if (!Pattern.compile(regex).matcher(name.replaceAll("(?im)-", "")).matches()){
-            return false;
-        }
-
-        return true;
+        return Pattern.compile(regex).matcher(name.replaceAll("(?im)-", "")).matches();
     }
     
     /**

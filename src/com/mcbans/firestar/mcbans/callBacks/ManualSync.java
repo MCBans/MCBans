@@ -1,20 +1,14 @@
 package com.mcbans.firestar.mcbans.callBacks;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-
+import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.org.json.JSONException;
+import com.mcbans.firestar.mcbans.org.json.JSONObject;
+import com.mcbans.firestar.mcbans.util.Util;
 import org.bukkit.BanList;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
-import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.org.json.JSONException;
-import com.mcbans.firestar.mcbans.org.json.JSONObject;
-import com.mcbans.firestar.mcbans.request.JsonHandler;
-import com.mcbans.firestar.mcbans.util.Util;
+import java.util.Date;
 
 public class ManualSync implements Runnable {
     private final MCBans plugin;
@@ -44,18 +38,13 @@ public class ManualSync implements Runnable {
         try{
             boolean goNext = true;
             while(goNext){
-            	if(String.valueOf(plugin.lastType).equals("") || String.valueOf(plugin.lastType)==null || String.valueOf(plugin.lastID)==null || String.valueOf(plugin.lastID).equals("")){
+	            if(String.valueOf(plugin.lastType).equals("") || String.valueOf(plugin.lastType) == null || String.valueOf(plugin.lastID).equals("")){
         			plugin.lastType = "bans";
         			plugin.lastID = 0;
         			goNext =false;
         		}else{
-	                JsonHandler webHandle = new JsonHandler( plugin );
-	                HashMap<String, String> url_items = new HashMap<String, String>();
-	                url_items.put( "lastId", String.valueOf(plugin.lastID) );
-	                url_items.put( "lastType", String.valueOf(plugin.lastType) );
-	                url_items.put( "exec", "banSync" );
-	                JSONObject response = webHandle.hdl_jobj(url_items);
-	                try {
+		            JSONObject response = ManualReSync.getJson(plugin);
+		            try{
 	                    if(response.has("actions")){
 	                        if (response.getJSONArray("actions").length() > 0) {
 	                            for (int v = 0; v < response.getJSONArray("actions").length(); v++) {
@@ -94,16 +83,12 @@ public class ManualSync implements Runnable {
 	                        	plugin.lastID=response.getLong("lastid");
 	                        }
 	            		}
-	                } catch (JSONException e) {
-	                    if(plugin.getConfigs().isDebug()){
-	                        e.printStackTrace();
-	                    }
-	                } catch (NullPointerException e) {
+		            }catch(JSONException | NullPointerException e){
 	                    if(plugin.getConfigs().isDebug()){
 	                        e.printStackTrace();
 	                    }
 	                }
-	                try {
+		            try{
 	                	Thread.sleep(5000);
 	                } catch (InterruptedException ignore) {}
         		}
@@ -115,19 +100,8 @@ public class ManualSync implements Runnable {
         Util.message(commandSend, ChatColor.GREEN + "Sync is complete with " + changes + " actions." );
         save();
     }
-    public void save(){
-    	plugin.lastSyncs.setProperty("lastId", String.valueOf(plugin.lastID));
-    	plugin.lastSyncs.setProperty("lastType", String.valueOf(plugin.lastType));
-    	try {
-			plugin.lastSyncs.store(new FileOutputStream(plugin.syncIni), "Syncing ban information.");
-		} catch (FileNotFoundException e) {
-			if(plugin.getConfigs().isDebug()){
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			if(plugin.getConfigs().isDebug()){
-				e.printStackTrace();
-			}
-		}
+
+	private void save(){
+		ManualReSync.syncInfo(plugin);
     }
 }

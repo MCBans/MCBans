@@ -1,17 +1,14 @@
 package com.mcbans.firestar.mcbans.request;
 
-import static com.mcbans.firestar.mcbans.I18n._;
-
-import java.util.UUID;
-
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.events.PlayerKickEvent;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.util.Util;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
+import static com.mcbans.firestar.mcbans.I18n.localize;
 
 public class Kick implements Runnable {
     private final MCBans plugin;
@@ -38,7 +35,7 @@ public class Kick implements Runnable {
 
     @Override
     public void run() {
-    	Player playertmp = null;
+	    Player playertmp;
     	if(!playerUUID.equals("")){
     		playertmp = MCBans.getPlayer(plugin,playerUUID);
     	}else{
@@ -48,7 +45,7 @@ public class Kick implements Runnable {
         if (player != null) {
             // Check exempt permission
             if (Perms.EXEMPT_KICK.has(player)){
-                Util.message(senderName, ChatColor.RED + _("kickExemptPlayer", I18n.PLAYER, player.getName()));
+	            Util.message(senderName, ChatColor.RED + localize("kickExemptPlayer", I18n.PLAYER, player.getName()));
                 return;
             }
             
@@ -61,17 +58,12 @@ public class Kick implements Runnable {
             reason = kickEvent.getReason();
 
             // kick player
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    player.kickPlayer(_("kickPlayer", I18n.PLAYER, player.getName(), I18n.SENDER, senderName, I18n.REASON, reason));
-                }
-            }, 0L);
+	        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> player.kickPlayer(localize("kickPlayer", I18n.PLAYER, player.getName(), I18n.SENDER, senderName, I18n.REASON, reason)), 0L);
 
-            Util.broadcastMessage(ChatColor.GREEN + _("kickSuccess", I18n.PLAYER, player.getName(), I18n.SENDER, senderName, I18n.REASON, reason));
+	        Util.broadcastMessage(ChatColor.GREEN + localize("kickSuccess", I18n.PLAYER, player.getName(), I18n.SENDER, senderName, I18n.REASON, reason));
             plugin.getLog().info(senderName + " has kicked " + player.getName() + " [" + reason + "]");
         } else {
-            Util.message(senderName, ChatColor.RED + _("kickNoPlayer", I18n.PLAYER, playerName));
+	        Util.message(senderName, ChatColor.RED + localize("kickNoPlayer", I18n.PLAYER, playerName));
         }
     }
 }

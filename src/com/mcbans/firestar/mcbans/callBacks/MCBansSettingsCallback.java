@@ -1,13 +1,12 @@
 package com.mcbans.firestar.mcbans.callBacks;
 
-import static com.mcbans.firestar.mcbans.I18n._;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.mcbans.firestar.mcbans.I18n;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.util.Util;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import static com.mcbans.firestar.mcbans.I18n.localize;
 
 public class MCBansSettingsCallback extends BaseCallback {
 	public MCBansSettingsCallback(MCBans plugin, CommandSender sender) {
@@ -17,9 +16,9 @@ public class MCBansSettingsCallback extends BaseCallback {
 	@Override
 	public void success(String returnData, String reason) {
 		if(returnData.equalsIgnoreCase("y")){
-			Util.message(sender, ChatColor.GREEN +_("successSetting", I18n.REASON, reason));
+			Util.message(sender, ChatColor.GREEN + localize("successSetting", I18n.REASON, reason));
 		}else{
-			Util.message(sender, ChatColor.RED +_("failSetting", I18n.REASON, reason));
+			Util.message(sender, ChatColor.RED + localize("failSetting", I18n.REASON, reason));
 		}
 	}
 	

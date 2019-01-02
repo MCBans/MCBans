@@ -1,20 +1,20 @@
 package com.mcbans.firestar.mcbans.commands;
 
-import static com.mcbans.firestar.mcbans.I18n._;
-
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.mcbans.firestar.mcbans.ConfigurationManager;
+import com.mcbans.firestar.mcbans.MCBans;
+import com.mcbans.firestar.mcbans.exception.CommandException;
+import com.mcbans.firestar.mcbans.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.mcbans.firestar.mcbans.ConfigurationManager;
-import com.mcbans.firestar.mcbans.MCBans;
-import com.mcbans.firestar.mcbans.exception.CommandException;
-import com.mcbans.firestar.mcbans.util.Util;
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.mcbans.firestar.mcbans.I18n.localize;
 
 public abstract class BaseCommand {
     // Set this class
@@ -24,7 +24,7 @@ public abstract class BaseCommand {
     protected String command;
 
     // Needs init
-    protected List<String> args = new ArrayList<String>();
+    protected List<String> args = new ArrayList<>();
     protected String senderName, senderUUID;
     protected Player player;
     protected boolean isPlayer;
@@ -57,13 +57,12 @@ public abstract class BaseCommand {
 
         // Sort args
 
-        for (String arg : preArgs)
-            args.add(arg);
+        args.addAll(Arrays.asList(preArgs));
 
         // Check args size
         if (argLength > args.size()){
             //sendUsage();
-            Util.message(sender, ChatColor.RED + _("formatError"));
+            Util.message(sender, ChatColor.RED + localize("formatError"));
             return true;
         }
 
@@ -81,7 +80,7 @@ public abstract class BaseCommand {
 
         // Check permission
         if (!permission(sender)){
-            Util.message(sender, ChatColor.RED + _("permissionDenied"));
+            Util.message(sender, ChatColor.RED + localize("permissionDenied"));
             //plugin.log(senderName + " has tried the command [" + command + "]!"); // maybe not needs command logger. Craftbukkit added this.
             //plugin.broadcastPlayer(sender, "&cYou don't have permission to use this!");
             return true;
@@ -112,7 +111,7 @@ public abstract class BaseCommand {
             		if(Util.isValidIP(target)){
             			targetIP = target;
             		}else{
-            			Util.message(sender, ChatColor.RED + _("invalidName"));
+                        Util.message(sender, ChatColor.RED + localize("invalidName"));
             			return true;
             		}
             	}

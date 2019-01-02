@@ -1,22 +1,23 @@
 package com.mcbans.firestar.mcbans.callBacks;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.api.data.AltLookupData;
 import com.mcbans.firestar.mcbans.util.Util;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AltLookupCallback extends BaseCallback{
     public AltLookupCallback(final MCBans plugin, final CommandSender sender) {
         super(plugin, sender);
     }
-    public AltLookupCallback(){
-        super(MCBans.getInstance(), null);
-    }
+
+	// This Constructor is not used.
+	public AltLookupCallback(){
+		super(MCBans.getInstance(), null);
+	}
 
     public void success(final AltLookupData data){
         Util.message(sender, Util.color("&7Player &c" + data.getPlayerName() + "&7 may have &f" + data.getAltCount() + "&7 alternate account(s)."));

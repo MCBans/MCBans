@@ -1,17 +1,17 @@
 package com.mcbans.firestar.mcbans.api.data;
 
-import java.util.HashMap;
-
 import com.mcbans.firestar.mcbans.org.json.JSONException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.util.Util;
+
+import java.util.HashMap;
 //import java.util.concurrent.ConcurrentHashMap;
 
 public class AltLookupData {
     private String playerName;
 
     private int altCount;
-    HashMap<String, Double> altMap = new HashMap<String, Double>();
+    private HashMap<String, Double> altMap = new HashMap<>();
     
     public AltLookupData(final String playerName, final JSONObject response) throws JSONException, NullPointerException{
         if (playerName == null || response == null) return;
@@ -22,8 +22,8 @@ public class AltLookupData {
             this.altCount = Integer.parseInt(response.getString("altListCount"));
         }
 
-        String altList[] = response.getString("altList").split(",");
-        String repList[] = response.getString("repList").split(",");
+        String[] altList = response.getString("altList").split(",");
+        String[] repList = response.getString("repList").split(",");
         
         if (altList.length != repList.length){
             return;

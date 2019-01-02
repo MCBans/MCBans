@@ -1,11 +1,11 @@
 package com.mcbans.firestar.mcbans.request;
 
-import java.util.HashMap;
-
 import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.callBacks.BaseCallback;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
+
+import java.util.HashMap;
 
 public abstract class BaseRequest<Callback extends BaseCallback> implements Runnable{
     protected final MCBans plugin;
@@ -14,12 +14,12 @@ public abstract class BaseRequest<Callback extends BaseCallback> implements Runn
     protected HashMap<String, String> items;
     protected Callback callback;
 
-    public BaseRequest(final MCBans plugin, final Callback callback){
+    BaseRequest(final MCBans plugin, final Callback callback){
         this.plugin = plugin;
         this.log = plugin.getLog();
         this.callback = callback;
 
-        this.items = new HashMap<String, String>();
+        this.items = new HashMap<>();
     }
 
     @Override
@@ -49,13 +49,13 @@ public abstract class BaseRequest<Callback extends BaseCallback> implements Runn
         webHandle.mainRequest(items);
     }
 
-    protected String request_String(){
+    String request_String(){
         JsonHandler webHandle = new JsonHandler(plugin);
         String urlReq = webHandle.urlparse(items);
         return webHandle.request_from_api(urlReq);
     }
 
-    protected JSONObject request_JOBJ(){
+    JSONObject request_JOBJ(){
         JsonHandler webHandle = new JsonHandler(plugin);
         return webHandle.hdl_jobj(items);
     }

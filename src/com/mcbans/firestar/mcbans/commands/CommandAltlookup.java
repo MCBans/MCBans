@@ -1,14 +1,9 @@
 package com.mcbans.firestar.mcbans.commands;
 
-import static com.mcbans.firestar.mcbans.I18n._;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.mcbans.firestar.mcbans.callBacks.AltLookupCallback;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.AltLookupRequest;
-import com.mcbans.firestar.mcbans.util.Util;
+import org.bukkit.command.CommandSender;
 
 public class CommandAltlookup extends BaseCommand{
     public CommandAltlookup(){
@@ -25,7 +20,7 @@ public class CommandAltlookup extends BaseCommand{
 
         // check isValid player name
         /*if (!Util.isValidName(target)){
-            Util.message(sender, ChatColor.RED + _("invalidName"));
+            Util.message(sender, ChatColor.RED + localize("invalidName"));
             return;
         }*/
 

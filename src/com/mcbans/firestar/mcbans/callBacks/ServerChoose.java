@@ -1,12 +1,12 @@
 package com.mcbans.firestar.mcbans.callBacks;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import com.mcbans.firestar.mcbans.ActionLog;
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.request.JsonHandler;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ServerChoose implements Runnable {
     private final MCBans plugin;
@@ -34,7 +34,7 @@ public class ServerChoose implements Runnable {
             try {
                 long pingTime = (System.currentTimeMillis());
                 JsonHandler webHandle = new JsonHandler(plugin);
-                HashMap<String, String> items = new HashMap<String, String>();
+                HashMap<String, String> items = new HashMap<>();
                 items.put("exec", "check");
                 String urlReq = webHandle.urlparse(items);
                 String jsonText = webHandle.request_from_api(urlReq, server);
@@ -47,8 +47,7 @@ public class ServerChoose implements Runnable {
                         fastest = server;
                     }
                 }
-            } catch (IllegalArgumentException e) {
-            } catch (NullPointerException e) {
+            }catch(IllegalArgumentException | NullPointerException e){
             }
         }
 

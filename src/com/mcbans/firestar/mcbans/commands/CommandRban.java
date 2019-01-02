@@ -1,20 +1,19 @@
 package com.mcbans.firestar.mcbans.commands;
 
-import static com.mcbans.firestar.mcbans.I18n._;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-
 import com.mcbans.firestar.mcbans.BanType;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.org.json.JSONObject;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.Ban;
 import com.mcbans.firestar.mcbans.util.Util;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import static com.mcbans.firestar.mcbans.I18n.localize;
 
 public class CommandRban extends BaseCommand{
     public CommandRban(){
@@ -44,15 +43,15 @@ public class CommandRban extends BaseCommand{
 
         // check permission
         if (!type.getPermission().has(sender)){
-            throw new CommandException(ChatColor.RED + _("permissionDenied"));
+            throw new CommandException(ChatColor.RED + localize("permissionDenied"));
         }
 
         // check hasRollbackMethod
         if (!plugin.getRbHandler().hasRollbackMethod()){
-            throw new CommandException(ChatColor.RED + _("rbMethodNotFound"));
+            throw new CommandException(ChatColor.RED + localize("rbMethodNotFound"));
         }
 
-        String reason = null;
+        String reason;
         Ban banControl = null;
 		switch (type){
             case LOCAL:
@@ -65,7 +64,7 @@ public class CommandRban extends BaseCommand{
 
             case GLOBAL:
                 if (args.size() == 0){
-                    Util.message(sender, ChatColor.RED + _("formatError"));
+                    Util.message(sender, ChatColor.RED + localize("formatError"));
                     return;
                 }
                 reason = Util.join(args, " ");
@@ -74,7 +73,7 @@ public class CommandRban extends BaseCommand{
 
             case TEMP:
                 if (args.size() <= 2){
-                    Util.message(sender, ChatColor.RED + _("formatError"));
+                    Util.message(sender, ChatColor.RED + localize("formatError"));
                     return;
                 }
                 String measure = "";

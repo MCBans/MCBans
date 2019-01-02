@@ -1,16 +1,14 @@
 package com.mcbans.firestar.mcbans.commands;
 
-import static com.mcbans.firestar.mcbans.I18n._;
-
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.mcbans.firestar.mcbans.callBacks.MessageCallback;
 import com.mcbans.firestar.mcbans.exception.CommandException;
 import com.mcbans.firestar.mcbans.permission.Perms;
 import com.mcbans.firestar.mcbans.request.BanIpRequest;
 import com.mcbans.firestar.mcbans.util.Util;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import static com.mcbans.firestar.mcbans.I18n.localize;
 
 public class CommandBanip extends BaseCommand{
     public CommandBanip(){
@@ -32,7 +30,7 @@ public class CommandBanip extends BaseCommand{
         
         // check isValid IP address
         if (!Util.isValidIP(target)){
-            throw new CommandException(ChatColor.RED + _("invalidIP"));
+	        throw new CommandException(ChatColor.RED + localize("invalidIP"));
         }
 
         // Start
