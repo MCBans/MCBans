@@ -68,7 +68,7 @@ Permissions
 * mcbans.ban.global (default: op) - Allow global ban player
 * mcbans.ban.local (default: op) - Allow local ban player
 * mcbans.ban.temp (default: op) - Allow temp ban player
-* mcbans.ban.rollback (default: op) - Allow use rban command
+* mcbans.ban.rollback (default: op) - Allow use ban command
 * mcbans.ban.ip (default: op) - Allow use banip command
 * mcbans.ban.exempt (default: op) - Permission to exempt from bans
 * mcbans.unban (default: op) - Allow unban player
