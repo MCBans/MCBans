@@ -66,7 +66,7 @@
         <dependency>
             <groupId>de.diddiz</groupId>
             <artifactId>logblock</artifactId>
-            <version>1.10.1-SNAPSHOT</version>
+            <version>1.13.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <build>
