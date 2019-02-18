@@ -15,7 +15,7 @@ public class ServerChoose implements Runnable {
     /* API Servers List */
     @SuppressWarnings("serial")
     private final List<String> apiServers = new ArrayList<String>(4) {{
-        add("api.mcbans.com");
+        add("api.mcbans.online");
     }};
 
     public ServerChoose(MCBans plugin) {
