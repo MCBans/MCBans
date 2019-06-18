@@ -5,6 +5,7 @@ import static com.mcbans.firestar.mcbans.I18n._;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -122,16 +123,20 @@ public abstract class BaseCommand {
         }
 
         // Exec
-        try {
-            execute();
-        }
-        catch (CommandException ex) {
-            Throwable error = ex;
-            while (error instanceof Exception){
-                Util.message(sender, error.getMessage());
-                error = error.getCause();
+        new Thread() {
+            public void run() {
+                try {
+                    check();
+                    execute();
+                } catch (CommandException ex) {
+                    Throwable error = ex;
+                    while (error instanceof Exception) {
+                        Util.message(sender, error.getMessage());
+                        error = error.getCause();
+                    }
+                }
             }
-        }
+        }.start();
 
         return true;
     }
@@ -174,5 +179,19 @@ public abstract class BaseCommand {
     public void sendUsage(){
         // TODO: change this
         //plugin.broadcastPlayer(sender, "&c/"+this.command+" "+name+" "+usage);
+    }
+
+    private void check() throws CommandException {
+        if(banning) {
+            if(targetUUID.isEmpty()) {
+                if (!Util.checkVault((Player) sender, Bukkit.getOfflinePlayer(target))) {
+                    throw new CommandException(ChatColor.RED + _("permissionDenied"));
+                }
+            } else {
+                if (!Util.checkVault((Player) sender, Bukkit.getOfflinePlayer(UUID.fromString(targetUUID)))) {
+                    throw new CommandException(ChatColor.RED + _("permissionDenied"));
+                }
+            }
+        }
     }
 }

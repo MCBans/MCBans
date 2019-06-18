@@ -5,13 +5,17 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.milkbowl.vault.chat.Chat;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.mcbans.firestar.mcbans.MCBans;
 import com.mcbans.firestar.mcbans.permission.Perms;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class Util {
     private static final String IP_PATTERN = 
@@ -161,5 +165,34 @@ public class Util {
         if (str == null) return false;
         Matcher matcher = Pattern.compile(IP_PATTERN).matcher(str);
         return matcher.matches();
+    }
+
+    public static boolean checkVault(Player sender, OfflinePlayer victim) {
+        if (!VaultStuff.hasVault()) {
+            return true;
+        }
+
+        try {
+            Chat c = ((RegisteredServiceProvider<Chat>) VaultStuff.getChat()).getProvider();
+
+            Permission p = ((RegisteredServiceProvider<Permission>) VaultStuff.getPerms()).getProvider();
+
+            //Priority of sender
+            int gpri = c.getGroupInfoInteger("", p.getPrimaryGroup(sender), "mcbansPriority", 0);
+
+            //Priority of victim
+            int gpri2 = c.getGroupInfoInteger("", p.getPrimaryGroup("", victim), "mcbansPriority", 0);
+
+            if (gpri > gpri2) {
+                return true;
+            }
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+            return true;
+        } catch(ClassCastException e) {
+            e.printStackTrace();
+            return true;
+        }
+        return false;
     }
 }
