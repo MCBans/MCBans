@@ -173,15 +173,11 @@ public class Util {
         }
 
         try {
-            Chat c = ((RegisteredServiceProvider<Chat>) VaultStuff.getChat()).getProvider();
-
-            Permission p = ((RegisteredServiceProvider<Permission>) VaultStuff.getPerms()).getProvider();
-
             //Priority of sender
-            int gpri = c.getGroupInfoInteger("", p.getPrimaryGroup(sender), "mcbansPriority", 0);
+            int gpri = getPriority(sender);
 
             //Priority of victim
-            int gpri2 = c.getGroupInfoInteger("", p.getPrimaryGroup("", victim), "mcbansPriority", 0);
+            int gpri2 = getPriority(victim);
 
             if (gpri > gpri2) {
                 return true;
@@ -194,5 +190,26 @@ public class Util {
             return true;
         }
         return false;
+    }
+
+    public static int getPriority(OfflinePlayer p) {
+        if (!VaultStuff.hasVault()) {
+            return 1;
+        }
+
+        return get(p, "mcbansPriority");
+    }
+
+    public static int get(OfflinePlayer p, String s) {
+        if (!VaultStuff.hasVault()) {
+            return 1;
+        }
+
+        Chat c = ((RegisteredServiceProvider<Chat>) VaultStuff.getChat()).getProvider();
+
+        Permission p2 = ((RegisteredServiceProvider<Permission>) VaultStuff.getPerms()).getProvider();
+
+
+        return c.getGroupInfoInteger("", p2.getPrimaryGroup("", p), s, 1);
     }
 }
