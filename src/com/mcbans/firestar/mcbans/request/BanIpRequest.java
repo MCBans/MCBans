@@ -2,8 +2,12 @@ package com.mcbans.firestar.mcbans.request;
 
 import static com.mcbans.firestar.mcbans.I18n._;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Locale;
+import java.util.UUID;
 
+import com.mcbans.firestar.mcbans.util.VaultStuff;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -40,8 +44,9 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
 
     @Override
     protected void execute() {
+
         JSONObject response = this.request_JOBJ();
-        
+
         PlayerIPBanEvent ipBanEvent = new PlayerIPBanEvent(ip, issuedBy, issuedByUUID, reason);
         plugin.getServer().getPluginManager().callEvent(ipBanEvent);
         if (ipBanEvent.isCancelled()){
@@ -49,12 +54,12 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
         }
         issuedBy = ipBanEvent.getSenderName();
         reason = ipBanEvent.getReason();
-        
+
         // Add default bukkit ipban
         if (Util.isValidIP(ip)){
             Bukkit.getServer().banIP(ip);
         }
-        
+
         try {
             if (response != null && response.has("result")){
                 final String result = response.getString("result").trim().toLowerCase(Locale.ENGLISH);
@@ -62,9 +67,9 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
                     //callback.setMessage(Util.color(msg))
                     callback.setBroadcastMessage(ChatColor.GREEN + _("ipBanSuccess", I18n.IP, this.ip, I18n.SENDER, this.issuedBy, I18n.REASON, this.reason));
                     callback.success();
-                    
+
                     kickPlayerByIP(this.ip, reason);
-                    
+
                     log.info("IP " + ip + " has been banned [" + reason + "] [" + issuedBy + "]!");
                     plugin.getServer().getPluginManager().callEvent(new PlayerIPBannedEvent(ip, issuedBy, issuedByUUID, reason));
                 }else if (result.equals("a")){
@@ -109,6 +114,7 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     @Override
                     public void run() {
+                        VaultStuff.setDefault(p);
                         p.kickPlayer(kickReason);
                     }
                 }, 0L);
