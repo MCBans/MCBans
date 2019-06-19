@@ -456,10 +456,6 @@ public class Ban implements Runnable {
         }
     }
 
-    private int calcDivide(int a, int b) {
-        return 2 * (100 - (b - a) + 1);
-    }
-
 	private void bukkitBan(final boolean flag){
         OfflinePlayer target = plugin.getServer().getPlayer(playerName);
         if (target == null){
