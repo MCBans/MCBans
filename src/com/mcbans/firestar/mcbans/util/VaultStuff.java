@@ -4,6 +4,8 @@ import com.google.common.base.Objects;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 public final class VaultStuff {
 
@@ -31,5 +33,15 @@ public final class VaultStuff {
 
     public static boolean hasVault() {
         return Bukkit.getPluginManager().isPluginEnabled("Vault");
+    }
+
+    public static void setDefault(OfflinePlayer p) {
+        if(hasVault()) {
+            Permission p2 = ((RegisteredServiceProvider<Permission>) perms).getProvider();
+
+            for(String s : p2.getPlayerGroups("", p)) {
+                p2.playerRemoveGroup("", p, s);
+            }
+        }
     }
 }
