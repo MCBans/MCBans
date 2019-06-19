@@ -5,6 +5,7 @@ import static com.mcbans.firestar.mcbans.I18n._;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
@@ -100,7 +101,9 @@ public class Ban implements Runnable {
             // waiting for server select
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+                //
+            }
         }
         if (responses.containsKey(action)) {
             action_id = responses.get(action);
@@ -120,7 +123,7 @@ public class Ban implements Runnable {
             }
             Player targettmp = null;
             if(!playerUUID.equals("")){
-        		targettmp = MCBans.getPlayer(plugin,playerUUID);;
+        		targettmp = MCBans.getPlayer(plugin,playerUUID);
         	}else{
         		targettmp = plugin.getServer().getPlayerExact(playerName);
         	}
@@ -369,6 +372,30 @@ public class Ban implements Runnable {
         duration = tBanEvent.getDuration();
         measure = tBanEvent.getMeasure();
 
+        //Check if the temp ban time is greater than player rank permits
+
+        int i = Integer.parseInt(duration);
+
+        if(measure.equals("m") || measure.equals("minute")) {
+            i = i * 60;
+        } else if(measure.equals("h") || measure.equals("hour")) {
+            i = i * 3600;
+        } else if(measure.equals("d") || measure.equals("day")) {
+            i = i * 86400;
+        } else if(measure.equals("w") || measure.equals("week")) {
+            i = i * 604800;
+        } else {
+            i = -1;
+        }
+
+        if(i != -1) {
+            if (i > Util.get(Bukkit.getPlayer(senderName), "maxTemp")) {
+                Util.get(Bukkit.getPlayer(senderName), "maxTemp");
+            }
+            duration = Integer.toString(i / 60);
+            measure = "m";
+        }
+
         JsonHandler webHandle = new JsonHandler(plugin);
         HashMap<String, String> url_items = new HashMap<String, String>();
         url_items.put("player", playerName);
@@ -427,6 +454,10 @@ public class Ban implements Runnable {
             log.warning("Error occurred with temporary banning. Please report this to an MCBans developer.");
             ex.printStackTrace();
         }
+    }
+
+    private int calcDivide(int a, int b) {
+        return 2 * (100 - (b - a) + 1);
     }
 
 	private void bukkitBan(final boolean flag){
