@@ -110,8 +110,10 @@ public class Ban implements Runnable {
 
                 // Call BanEvent
                 if (action_id != 3) {
-                    PlayerBanEvent banEvent = new PlayerBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure);
-                    plugin.getServer().getPluginManager().callEvent(banEvent);
+                    PlayerBanEvent banEvent = new PlayerBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure);;
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        plugin.getServer().getPluginManager().callEvent(banEvent);
+                    }, 1);
                     if (banEvent.isCancelled()) {
                         return;
                     }
