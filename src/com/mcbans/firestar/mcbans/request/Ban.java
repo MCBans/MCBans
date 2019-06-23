@@ -96,61 +96,73 @@ public class Ban implements Runnable {
 
     @Override
     public void run() {
-        while (plugin.apiServer == null) {
-            // waiting for server select
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {}
-        }
-        if (responses.containsKey(action)) {
-            action_id = responses.get(action);
+        try {
 
-            // Call BanEvent
-            if (action_id != 3){
-                PlayerBanEvent banEvent = new PlayerBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure);
-                plugin.getServer().getPluginManager().callEvent(banEvent);
-                if (banEvent.isCancelled()){
-                    return;
+            while (plugin.apiServer == null) {
+                // waiting for server select
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
                 }
-                senderName = banEvent.getSenderName();
-                reason = banEvent.getReason();
-                action_id = banEvent.getActionID();
-                duration = banEvent.getDuration();
-                measure = banEvent.getMeasure();
             }
-            Player targettmp = null;
-            if(!playerUUID.equals("")){
-        		targettmp = MCBans.getPlayer(plugin,playerUUID);;
-        	}else{
-        		targettmp = plugin.getServer().getPlayerExact(playerName);
-        	}
-            if(targettmp!=null && action_id!=3){
-	            if (Perms.EXEMPT_BAN.has(targettmp)){
-	                Util.message(senderName, ChatColor.RED + _("banExemptPlayer", I18n.PLAYER, targettmp.getName()));
-	                return;
-	            }
-            }else if(playerName!=null && action_id!=3){
-            	if (Perms.EXEMPT_BAN.has(playerName)){
-	                Util.message(senderName, ChatColor.RED + _("banExemptPlayer", I18n.PLAYER, playerName));
-	                return;
-	            }
+            if (responses.containsKey(action)) {
+                action_id = responses.get(action);
+
+                // Call BanEvent
+                if (action_id != 3) {
+                    PlayerBanEvent banEvent = new PlayerBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure);;
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        plugin.getServer().getPluginManager().callEvent(banEvent);
+                    }, 1);
+                    if (banEvent.isCancelled()) {
+                        return;
+                    }
+                    senderName = banEvent.getSenderName();
+                    reason = banEvent.getReason();
+                    action_id = banEvent.getActionID();
+                    duration = banEvent.getDuration();
+                    measure = banEvent.getMeasure();
+                }
+                Player targettmp = null;
+                if (!playerUUID.equals("")) {
+                    targettmp = MCBans.getPlayer(plugin, playerUUID);
+                    ;
+                } else {
+                    targettmp = plugin.getServer().getPlayerExact(playerName);
+                }
+                if (targettmp != null && action_id != 3) {
+                    if (Perms.EXEMPT_BAN.has(targettmp)) {
+                        Util.message(senderName, ChatColor.RED + _("banExemptPlayer", I18n.PLAYER, targettmp.getName()));
+                        return;
+                    }
+                } else if (playerName != null && action_id != 3) {
+                    if (Perms.EXEMPT_BAN.has(playerName)) {
+                        Util.message(senderName, ChatColor.RED + _("banExemptPlayer", I18n.PLAYER, playerName));
+                        return;
+                    }
+                }
+                Runnable r = null;
+                switch (action_id) {
+                    case 0:
+                        r = this::globalBan;
+                        break;
+                    case 1:
+                        r = this::localBan;
+                        break;
+                    case 2:
+                        r = this::tempBan;
+                        break;
+                    case 3:
+                        r = this::unBan;
+                        break;
+                }
+                Bukkit.getScheduler().runTaskLater(plugin, r, 1);
+            } else {
+                err();
             }
-            switch (action_id) {
-                case 0:
-                    globalBan();
-                    break;
-                case 1:
-                    localBan();
-                    break;
-                case 2:
-                    tempBan();
-                    break;
-                case 3:
-                    unBan();
-                    break;
-            }
-        } else {
-            log.warning("Error: MCBans caught an invalid action. Perhaps another plugin is using MCBans improperly?");
+        } catch (Exception e) {
+            e.printStackTrace();
+            err();
         }
     }
 
@@ -487,5 +499,9 @@ public class Ban implements Runnable {
         }
 
         return ret;
+    }
+
+    private void err() {
+        log.warning("\nError: MCBans caught an invalid action. Perhaps another plugin is using MCBans improperly?\n");
     }
 }
