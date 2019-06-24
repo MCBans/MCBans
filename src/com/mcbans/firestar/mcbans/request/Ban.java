@@ -5,6 +5,7 @@ import static com.mcbans.firestar.mcbans.I18n._;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
@@ -150,7 +151,7 @@ public class Ban implements Runnable {
                         r = this::localBan;
                         break;
                     case 2:
-                        r = this::tempBan;
+//                        r = this::uiBan;
                         break;
                     case 3:
                         r = this::unBan;
@@ -370,7 +371,7 @@ public class Ban implements Runnable {
     }
 
     public void tempBan() {
-        // Call PlayerTempBanEvent
+//         Call PlayerTempBanEvent
         PlayerTempBanEvent tBanEvent = new PlayerTempBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, duration, measure);
         plugin.getServer().getPluginManager().callEvent(tBanEvent);
         if (tBanEvent.isCancelled()){
@@ -380,6 +381,33 @@ public class Ban implements Runnable {
         reason = tBanEvent.getReason();
         duration = tBanEvent.getDuration();
         measure = tBanEvent.getMeasure();
+
+        int a = -1;
+
+        if(measure.indexOf(0) == 'm') {
+            a = Integer.parseInt(duration);
+        }
+
+        if(measure.indexOf(0) == 'h') {
+            a = Integer.parseInt(duration) * 3600;
+        }
+
+        if(measure.indexOf(0) == 'd') {
+            a = Integer.parseInt(duration) * 86400;
+        }
+
+        if(measure.indexOf(0) == 'w') {
+            a = Integer.parseInt(duration) * 604800;
+        }
+
+        int b = Util.getInfo(Bukkit.getOfflinePlayer(UUID.fromString(senderUUID)), "maxTemp");
+
+        if(a > b) {
+            a = b;
+        }
+
+        duration = Integer.toString(a);
+        measure = "minute";
 
         JsonHandler webHandle = new JsonHandler(plugin);
         HashMap<String, String> url_items = new HashMap<String, String>();
