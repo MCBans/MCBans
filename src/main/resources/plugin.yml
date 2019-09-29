@@ -1,7 +1,7 @@
 ##  Plugin Information  ##
 name: MCBans
-main: MCBans
-version: 4.5
+main: com.mcbans.plugin.MCBans
+version: 4.5.1
 description: A global banning solution
 website: http://mcbans.com/
 softdepend: [LogBlock, HawkEye, CoreProtect, Vault, PermissionsEx]
