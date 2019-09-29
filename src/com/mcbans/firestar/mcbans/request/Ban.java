@@ -264,7 +264,7 @@ public class Ban implements Runnable {
             if (response.get("result").equals("y")) {
                 this.kickPlayer(playerName, playerUUID, _("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
                 Util.broadcastMessage(ChatColor.GREEN + _("localBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-                plugin.getServer().getPluginManager().callEvent(new PlayerBannedEvent(playerName, playerIP, senderName, reason, action_id, duration, measure));
+                plugin.getServer().getPluginManager().callEvent(new PlayerBannedEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure));
 
                 log.info(playerName + " has been banned with a local type ban [" + reason + "] [" + senderName + "]!");
                 return;
@@ -342,7 +342,7 @@ public class Ban implements Runnable {
             if (response.get("result").equals("y")) {
                 this.kickPlayer(playerName, playerUUID, _("globalBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
                 Util.broadcastMessage(ChatColor.GREEN + _("globalBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-                plugin.getServer().getPluginManager().callEvent(new PlayerBannedEvent(playerName, playerIP, senderName, reason, action_id, duration, measure));
+                plugin.getServer().getPluginManager().callEvent(new PlayerBannedEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure));
 
                 log.info(playerName + " has been banned with a global type ban [" + reason + "] [" + senderName + "]!");
                 return;
@@ -412,7 +412,7 @@ public class Ban implements Runnable {
             if (response.get("result").equals("y")) {
                 this.kickPlayer(playerName, playerUUID, _("tempBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
                 Util.broadcastMessage(ChatColor.GREEN + _("tempBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-                plugin.getServer().getPluginManager().callEvent(new PlayerBannedEvent(playerName, playerIP, senderName, reason, action_id, duration, measure));
+                plugin.getServer().getPluginManager().callEvent(new PlayerBannedEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure));
 
                 log.info(playerName + " has been banned with a temp type ban [" + reason + "] [" + senderName + "]!");
                 return;
