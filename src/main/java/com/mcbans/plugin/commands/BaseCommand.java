@@ -124,20 +124,16 @@ public abstract class BaseCommand {
         }
 
         // Exec
-        new Thread() {
-            public void run() {
-                try {
-                    check();
-                    execute();
-                } catch (CommandException ex) {
-                    Throwable error = ex;
-                    while (error instanceof Exception) {
-                        Util.message(sender, error.getMessage());
-                        error = error.getCause();
-                    }
-                }
+        try {
+            check();
+            execute();
+        } catch (CommandException ex) {
+            Throwable error = ex;
+            while (error instanceof Exception) {
+                Util.message(sender, error.getMessage());
+                error = error.getCause();
             }
-        }.start();
+        }
 
         return true;
     }
