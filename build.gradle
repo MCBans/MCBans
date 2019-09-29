@@ -36,7 +36,7 @@ uploadArchives {
                 authentication(userName: "admin", password: "$System.env.PASSWORD")
             }
             pom.version = "${version}"
-            pom.artifactId = "plugin"
+            pom.artifactId = "mcbans-bukkit"
             pom.groupId = "com.mcbans"
         }
     }
