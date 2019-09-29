@@ -36,8 +36,8 @@ uploadArchives {
                 authentication(userName: "admin", password: "$System.env.PASSWORD")
             }
             pom.version = "${version}"
-            pom.artifactId = "nucleocore"
-            pom.groupId = "com.mcbans.plugin"
+            pom.artifactId = "plugin"
+            pom.groupId = "com.mcbans"
         }
     }
 }
