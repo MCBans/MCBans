@@ -1,0 +1,43 @@
+group 'mcbans'
+version '4.5.0'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'http://maven.sk89q.com/repo/'
+    }
+    maven {
+        url 'http://repo.md-5.net/content/repositories/snapshots/'
+    }
+    maven {
+        url 'http://ci.synload.com/plugin/repository/everything/'
+    }
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    compile group: 'org.bukkit', name: 'bukkit', version: '1.13.2-R0.1-SNAPSHOT'
+    compile group: 'de.diddiz', name: 'logblock', version: '1.13.1-SNAPSHOT'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://nexus.synload.com/repository/releases/") {
+                authentication(userName: "admin", password: "$System.env.PASSWORD")
+            }
+            pom.version = "${version}"
+            pom.artifactId = "nucleocore"
+            pom.groupId = "com.synload.nucleo"
+        }
+    }
+}

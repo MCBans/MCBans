@@ -10,63 +10,45 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
-    <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>sk89q-mvn2</id>
-            <url>http://maven.sk89q.com/repo/</url>
-        </repository>
-        <repository>
-            <id>md_5-snapshots</id>
-            <url>http://repo.md-5.net/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>ci-synload</id>
-            <url>http://ci.synload.com/plugin/repository/everything/</url>
-        </repository>
-    </repositories>
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <groupId></groupId>
+            <artifactId></artifactId>
+            <version></version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>uk.co.oliwali</groupId>
-            <artifactId>Vault</artifactId>
-            <version>1.2.24</version>
+            <groupId></groupId>
+            <artifactId></artifactId>
+            <version></version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/Vault.jar</systemPath>
+            <systemPath>libs/Vault.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>uk.co.oliwali</groupId>
-            <artifactId>HawkEye</artifactId>
-            <version>1.0.7b</version>
+            <groupId></groupId>
+            <artifactId></artifactId>
+            <version></version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/HawkEye.jar</systemPath>
+            <systemPath>libs/HawkEye.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>ru.tehkode.permissions</groupId>
-            <artifactId>PermissionsEx</artifactId>
-            <version>1.19.5</version>
+            <groupId></groupId>
+            <artifactId></artifactId>
+            <version></version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/PermissionsEx.jar</systemPath>
+            <systemPath>libs/PermissionsEx.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>net</groupId>
-            <artifactId>coreprotect</artifactId>
-            <version>2.05</version>
+            <groupId></groupId>
+            <artifactId></artifactId>
+            <version></version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/CoreProtect_2.0.9.jar</systemPath>
+            <systemPath>libs/CoreProtect_2.0.9.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>de.diddiz</groupId>
-            <artifactId>logblock</artifactId>
-            <version>1.13.1-SNAPSHOT</version>
+            <groupId></groupId>
+            <artifactId></artifactId>
+            <version></version>
         </dependency>
     </dependencies>
     <build>

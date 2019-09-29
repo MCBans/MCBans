@@ -1,0 +1,61 @@
+# English MCBans File, Translated By: __
+
+unBanSuccess: "&7Player &c%PLAYER% &7has been unbanned by &c%ADMIN%&7."
+unBanError: "&4An error occurred while unbanning &c%PLAYER%&4."
+unBanGroup: "&7Player &c%PLAYER% &7is banned from a server in one of your groups."
+unBanNot: "&7Player &c%PLAYER% &7was not banned."
+
+banExemptPlayer: "&4You may not ban &c%PLAYER%&4."
+
+localBanPlayer: "&cYour account has been suspended.\n\n&7Banned by: &f%ADMIN%\n&7Reason: &f%REASON%\n&7Ban type: &6LOCAL\n\n&7Visit http://mcbans.com/ to appeal."
+localBanSuccess: "&7Player &c%PLAYER% &7has been &6banned &7by &c%ADMIN% &7for: &3%REASON%"
+localBanError: "&4An error occurred while local banning &c%PLAYER%&4."
+localBanGroup: "&7Player &c%PLAYER% &7is banned from a server in one of your groups."
+localBanAlready: "&7Player &c%PLAYER% &7is already banned from this server."
+
+globalBanPlayer: "&cYour account has been suspended.\n\n&7Banned by: &f%ADMIN%\n&7Reason: &f%REASON%\n&7Ban type: &cGLOBAL\n\n&7Visit http://mcbans.com/ to appeal."
+globalBanSuccess: "&7Player &c%PLAYER% &7has been &4banned &7by &c%ADMIN% &7for: &3%REASON%"
+globalBanError: "&4An error occurred while global banning &c%PLAYER%&4."
+globalBanWarning: "&4Error: Global bans may not contain the word: &c%BADWORD%&4"
+globalBanGroup: "&7Player &c%PLAYER% &7is banned from a server in one of your groups."
+globalBanAlready: "&7Player &c%PLAYER% &7is already banned from this server."
+
+tempBanPlayer: "&cYour account has been suspended.\n\n&7Banned by: &f%ADMIN%\n&7Reason: &f%REASON%\n&7Ban type: &bTEMPORARY\n\n&7Visit http://mcbans.com/ to appeal."
+tempBanSuccess: "&7Player &c%PLAYER% &7has been &bbanned &7by &c%ADMIN% &7for: &3%REASON%"
+tempBanError: "&4An error occurred while temporary banning &c%PLAYER%&4."
+tempBanGroup: "&7Player &c%PLAYER% &7is banned from a server in one of your groups."
+tempBanAlready: "&7Player &c%PLAYER% &7is already banned from this server."
+
+kickPlayer: "&cYou've been kicked from the server.\n\n&7Kicked by: &f%ADMIN%\n&7Reason: &f%REASON%"
+kickSuccess: "&7Player &c%PLAYER% &7has been kicked by &c%ADMIN% &7for: &3%REASON%"
+kickNoPlayer: "&7Player &c%PLAYER% &7is not online."
+kickExemptPlayer: "&4You may not kick &c%PLAYER%&4."
+
+ipBanSuccess: "&7An &cIP address &7has been banned."
+ipBanError: "&4An error occurred while IP banning &c%IP%&4."
+ipBanAlready: "&7IP address &c%IP% &7is already banned from this server."
+
+formatError: "&cIncorrect parameters."
+invalidName: "&cInvalid player name."
+invalidIP: "&cInvalid IP address!"
+invalidNameOrIP: "&cInvalid player name or IP address."
+permissionDenied: "Insufficient permissions."
+rbMethodNotFound: "Rollback plugin not found."
+unavailable: "&4The MCBans service unavailable. Please try again later."
+underMinRep: "&cYour reputation is below this server's threshold."
+overMaxAlts: "&cYou have more alternate accounts than this server permits."
+altBanned: "&cYou have an alternate account banned from this server."
+altAccounts: "&7Player &c%PLAYER% &7may have alternate accounts: &b%ALTS%"
+disputes: "&7You have &a%COUNT% &7open dispute(s)."
+previousBans: "&7Player &c%PLAYER% &7has previous bans."
+bansOnRecord: "&7You have bans on record. Check &fhttp://mcbans.com/ &7for more information."
+isMCBansMod: "&7Player &c%PLAYER% &7is an MCBans staff member."
+banReturnMessage: "&cAccess denied.\n\n&7Banned by: &f%ADMIN%\n&7Reason: &f%REASON%\n&7Ban type: &f%TYPE%\n\n&ehttp://mcbans.com/ban/%BANID%"
+successSetting: "&7Successfully changed setting: &c%REASON%"
+failSetting: "&7Failed to change setting: &c%REASON%"
+
+previousNames: '&7Player &c%PLAYER% &7has changed usernames within the last 2 months: &b%PLAYERS%'
+previousNamesHas: '&7Player &c%PLAYER% &7has recently changed their name from &b%PLAYERS%&7.'
+previousNamesNone: "&7Player &c%PLAYER% &7has no name changes on record."
+
+proxyDetected: "&7Player &c%PLAYER% &7is using a proxy: &c%REASON%"
