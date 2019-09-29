@@ -37,7 +37,7 @@ uploadArchives {
             }
             pom.version = "${version}"
             pom.artifactId = "nucleocore"
-            pom.groupId = "com.synload.nucleo"
+            pom.groupId = "com.mcbans.plugin"
         }
     }
 }
