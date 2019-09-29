@@ -1,11 +1,11 @@
 ##  Plugin Information  ##
 name: MCBans
 main: MCBans
-version: 4.4.3b
+version: 4.5
 description: A global banning solution
 website: http://mcbans.com/
 softdepend: [LogBlock, HawkEye, CoreProtect, Vault, PermissionsEx]
-author: Firestar, Syamn, Draco
+author: Firestar
 commands:
   kick:
     description: kicks a user
