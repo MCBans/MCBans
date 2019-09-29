@@ -36,8 +36,8 @@ uploadArchives {
                 authentication(userName: "admin", password: "$System.env.PASSWORD")
             }
             pom.version = "${version}"
-            pom.artifactId = "nucleocore"
-            pom.groupId = "com.synload.nucleo"
+            pom.artifactId = "mcbans-bukkit"
+            pom.groupId = "com.mcbans"
         }
     }
 }
