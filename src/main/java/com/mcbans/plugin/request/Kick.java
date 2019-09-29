@@ -11,7 +11,7 @@ import com.mcbans.plugin.events.PlayerKickEvent;
 import com.mcbans.plugin.permission.Perms;
 import com.mcbans.plugin.util.Util;
 
-public class Kick implements Runnable {
+public class Kick {
     private final MCBans plugin;
 
     private final String playerName;
@@ -34,7 +34,6 @@ public class Kick implements Runnable {
         this(plugin, playerName, "", senderName, "", reason, false);
     }
 
-    @Override
     public void run() {
     	Player playertmp = null;
     	if(!playerUUID.equals("")){

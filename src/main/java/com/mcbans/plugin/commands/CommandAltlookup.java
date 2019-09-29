@@ -26,8 +26,7 @@ public class CommandAltlookup extends BaseCommand{
 
         // Start
         AltLookupRequest request = new AltLookupRequest(plugin, new AltLookupCallback(plugin, sender), target);
-        Thread triggerThread = new Thread(request);
-        triggerThread.start();
+        new Thread(request).start();
     }
 
     @Override

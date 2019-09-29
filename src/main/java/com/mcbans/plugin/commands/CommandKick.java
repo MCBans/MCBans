@@ -27,8 +27,7 @@ public class CommandKick extends BaseCommand{
 
         // Start
         Kick kickPlayer = new Kick(plugin, target, targetUUID, senderName, senderUUID, reason, false);
-        Thread triggerThread = new Thread(kickPlayer);
-        triggerThread.start();
+        kickPlayer.run();
     }
 
     @Override

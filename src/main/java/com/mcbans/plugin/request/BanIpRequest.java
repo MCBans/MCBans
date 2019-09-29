@@ -41,7 +41,7 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
 
     @Override
     protected void execute() {
-        JSONObject response = this.request_JOBJ();
+
         
         PlayerIPBanEvent ipBanEvent = new PlayerIPBanEvent(ip, issuedBy, issuedByUUID, reason);
         plugin.getServer().getPluginManager().callEvent(ipBanEvent);
@@ -55,64 +55,61 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
         if (Util.isValidIP(ip)){
             Bukkit.getServer().banIP(ip);
         }
-        
-        try {
-            if (response != null && response.has("result")){
-                final String result = response.getString("result").trim().toLowerCase(Locale.ENGLISH);
-                if (result.equals("y")){
-                    //callback.setMessage(Util.color(msg))
-                    callback.setBroadcastMessage(ChatColor.GREEN + localize("ipBanSuccess", I18n.IP, this.ip, I18n.SENDER, this.issuedBy, I18n.REASON, this.reason));
-                    callback.success();
-                    
-                    kickPlayerByIP(this.ip, reason);
-                    
-                    log.info("IP " + ip + " has been banned [" + reason + "] [" + issuedBy + "]!");
-                    plugin.getServer().getPluginManager().callEvent(new PlayerIPBannedEvent(ip, issuedBy, issuedByUUID, reason));
-                }else if (result.equals("a")){
-                    // equals("a") if already banned ip
-                    callback.error(ChatColor.RED + localize("ipBanAlready", I18n.IP, this.ip, I18n.SENDER, this.issuedBy, I18n.REASON, this.reason));
-                    log.info(issuedBy + " tried to IPBan " + ip + "!");
-                }else if (result.equals("n")){
-                    // equals("n") if banning ip is formatted improperly
-                    callback.error(ChatColor.RED + localize("invalidIP"));
-                    log.info(issuedBy + " tried to IPBan " + ip + "!");
-                }else if (result.equals("e")){
-                    // other error
-                    callback.error(ChatColor.RED + localize("invalidIP"));
-                    log.info(issuedBy + " tried to IPBan " + ip + "!");
-                }else{
-                    log.severe("Invalid response result: " + result);
-                }
-            }else{
-                callback.error(ChatColor.RED + "MCBans API appears to be down or unreachable!");
-            }
-        } catch (JSONException ex) {
-            if (response.toString().contains("error")) {
-                if (response.toString().contains("Server Disabled")) {
-                    ActionLog.getInstance().severe("This server has been disabled by MCBans staff.");
-                    ActionLog.getInstance().severe("To appeal this decision, please file a ticket at forums.mcbans.com.");
+        new Thread(()->{
+            JSONObject response = this.request_JOBJ();
+            try {
+                if (response != null && response.has("result")){
+                    final String result = response.getString("result").trim().toLowerCase(Locale.ENGLISH);
+                    if (result.equals("y")){
+                        //callback.setMessage(Util.color(msg))
+                        callback.setBroadcastMessage(ChatColor.GREEN + localize("ipBanSuccess", I18n.IP, this.ip, I18n.SENDER, this.issuedBy, I18n.REASON, this.reason));
+                        callback.success();
 
-                    callback.error("This server has been disabled by MCBans staff.");
-                    return;
+                        kickPlayerByIP(this.ip, reason);
+
+                        log.info("IP " + ip + " has been banned [" + reason + "] [" + issuedBy + "]!");
+                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, ()->plugin.getServer().getPluginManager().callEvent(new PlayerIPBannedEvent(ip, issuedBy, issuedByUUID, reason)), 0L);
+                    }else if (result.equals("a")){
+                        // equals("a") if already banned ip
+                        callback.error(ChatColor.RED + localize("ipBanAlready", I18n.IP, this.ip, I18n.SENDER, this.issuedBy, I18n.REASON, this.reason));
+                        log.info(issuedBy + " tried to IPBan " + ip + "!");
+                    }else if (result.equals("n")){
+                        // equals("n") if banning ip is formatted improperly
+                        callback.error(ChatColor.RED + localize("invalidIP"));
+                        log.info(issuedBy + " tried to IPBan " + ip + "!");
+                    }else if (result.equals("e")){
+                        // other error
+                        callback.error(ChatColor.RED + localize("invalidIP"));
+                        log.info(issuedBy + " tried to IPBan " + ip + "!");
+                    }else{
+                        log.severe("Invalid response result: " + result);
+                    }
+                }else{
+                    callback.error(ChatColor.RED + "MCBans API appears to be down or unreachable!");
+                }
+            } catch (JSONException ex) {
+                if (response.toString().contains("error")) {
+                    if (response.toString().contains("Server Disabled")) {
+                        ActionLog.getInstance().severe("This server has been disabled by MCBans staff.");
+                        ActionLog.getInstance().severe("To appeal this decision, please file a ticket at forums.mcbans.com.");
+
+                        callback.error("This server has been disabled by MCBans staff.");
+                        return;
+                    }
+                }
+                ActionLog.getInstance().severe("A JSON error occurred while trying to localize lookup data.");
+                callback.error("An error occurred while parsing JSON data.");
+                if (plugin.getConfigs().isDebug()){
+                    ex.printStackTrace();
                 }
             }
-            ActionLog.getInstance().severe("A JSON error occurred while trying to localize lookup data.");
-            callback.error("An error occurred while parsing JSON data.");
-            if (plugin.getConfigs().isDebug()){
-                ex.printStackTrace();
-            }
-        }
+        }).start();
     }
     
     private void kickPlayerByIP(final String ip, final String kickReason){
         for (final Player p : Bukkit.getOnlinePlayers()){
             if (ip.equals(p.getAddress().getAddress().getHostAddress())){
-                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        p.kickPlayer(kickReason);
-                    }
-                }, 0L);
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, ()->p.kickPlayer(kickReason), 0L);
             }
         }
     }

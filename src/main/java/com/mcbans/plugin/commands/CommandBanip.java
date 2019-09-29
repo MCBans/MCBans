@@ -35,8 +35,7 @@ public class CommandBanip extends BaseCommand{
 
         // Start
         BanIpRequest request = new BanIpRequest(plugin, new MessageCallback(plugin, sender), target, reason, senderName, senderUUID);
-        Thread triggerThread = new Thread(request);
-        triggerThread.start();
+        request.run();
     }
 
     @Override

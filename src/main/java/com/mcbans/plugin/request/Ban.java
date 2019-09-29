@@ -28,7 +28,7 @@ import com.mcbans.plugin.org.json.JSONException;
 import com.mcbans.plugin.org.json.JSONObject;
 import com.mcbans.plugin.util.Util;
 
-public class Ban implements Runnable {
+public class Ban {
     private final MCBans plugin;
     private final ActionLog log;
 
@@ -83,16 +83,10 @@ public class Ban implements Runnable {
     	}
         final Player target = targettmp;
         if (target != null) {
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    target.kickPlayer(kickReason);
-                }
-            }, 0L);
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, ()->target.kickPlayer(kickReason), 1);
         }
     }
 
-    @Override
     public void run() {
         try {
 
@@ -109,9 +103,7 @@ public class Ban implements Runnable {
                 // Call BanEvent
                 if (action_id != 3) {
                     PlayerBanEvent banEvent = new PlayerBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure);;
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                        plugin.getServer().getPluginManager().callEvent(banEvent);
-                    }, 1);
+                    plugin.getServer().getPluginManager().callEvent(banEvent);
                     if (banEvent.isCancelled()) {
                         return;
                     }
@@ -124,7 +116,6 @@ public class Ban implements Runnable {
                 Player targettmp = null;
                 if (!playerUUID.equals("")) {
                     targettmp = MCBans.getPlayer(plugin, playerUUID);
-                    ;
                 } else {
                     targettmp = plugin.getServer().getPlayerExact(playerName);
                 }
@@ -139,22 +130,20 @@ public class Ban implements Runnable {
                         return;
                     }
                 }
-                Runnable r = null;
                 switch (action_id) {
                     case 0:
-                        r = this::globalBan;
+                        globalBan();
                         break;
                     case 1:
-                        r = this::localBan;
+                        localBan();
                         break;
                     case 2:
-                        r = this::tempBan;
+                        tempBan();
                         break;
                     case 3:
-                        r = this::unBan;
+                        unBan();
                         break;
                 }
-                Bukkit.getScheduler().runTaskLater(plugin, r, 1);
             } else {
                 err();
             }
@@ -177,45 +166,48 @@ public class Ban implements Runnable {
         if (!Util.isValidIP(playerName)){
             bukkitBan(false);
         }else{
-            Bukkit.getServer().unbanIP(playerName);
+            Bukkit.getScheduler().runTaskLater(plugin, ()->Bukkit.getServer().unbanIP(playerName), 1);
         }
         JsonHandler webHandle = new JsonHandler(plugin);
-        HashMap<String, String> url_items = new HashMap<String, String>();
+        HashMap<String, String> url_items = new HashMap<>();
         url_items.put("player", playerName);
         url_items.put("player_uuid", playerUUID);
         url_items.put("admin", senderName);
         url_items.put("admin_uuid", senderUUID);
         url_items.put("exec", "unBan");
-        HashMap<String, String> response = webHandle.mainRequest(url_items);
-        
-        if (response.containsKey("error")){
-            Util.message(senderName, ChatColor.RED + "Error: " + response.get("error"));
-            return;
-        }
-        if (!response.containsKey("result")) {
-            Util.message(senderName, ChatColor.RED + localize("unBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName));
-            return;
-        }
-        if (response.get("result").equals("y")) {
-        	if (response.containsKey("player")){
-            	playerName = response.get("player");
-            }
-            if (!Util.isValidIP(playerName)){
-                
-            }
-            Util.broadcastMessage(ChatColor.GREEN + localize("unBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName));
-            plugin.getServer().getPluginManager().callEvent(new PlayerUnbannedEvent(playerName, playerUUID, senderName, senderUUID));
+        new Thread(()->{
+            HashMap<String, String> response = webHandle.mainRequest(url_items);
 
-            log.info(senderName + " unbanned " + playerName + "!");
-            return;
-        } else if (response.get("result").equals("e")) {
-            Util.message(senderName, ChatColor.RED + localize("unBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName));
-        } else if (response.get("result").equals("s")) {
-            Util.message(senderName, ChatColor.RED + localize("unBanGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName));
-        } else if (response.get("result").equals("n")) {
-            Util.message(senderName, ChatColor.RED + localize("unBanNot", I18n.PLAYER, playerName, I18n.SENDER, senderName));
-        }
-        log.info(senderName + " tried to unban " + playerName + "!");
+            if (response.containsKey("error")){
+                Util.message(senderName, ChatColor.RED + "Error: " + response.get("error"));
+                return;
+            }
+            if (!response.containsKey("result")) {
+                Util.message(senderName, ChatColor.RED + localize("unBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName));
+                return;
+            }
+            if (response.get("result").equals("y")) {
+                if (response.containsKey("player")){
+                    playerName = response.get("player");
+                }
+                if (!Util.isValidIP(playerName)){
+
+                }
+                Util.broadcastMessage(ChatColor.GREEN + localize("unBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName));
+
+                Bukkit.getScheduler().runTaskLater(plugin, ()->plugin.getServer().getPluginManager().callEvent(new PlayerUnbannedEvent(playerName, playerUUID, senderName, senderUUID)), 1);
+
+                log.info(senderName + " unbanned " + playerName + "!");
+                return;
+            } else if (response.get("result").equals("e")) {
+                Util.message(senderName, ChatColor.RED + localize("unBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName));
+            } else if (response.get("result").equals("s")) {
+                Util.message(senderName, ChatColor.RED + localize("unBanGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName));
+            } else if (response.get("result").equals("n")) {
+                Util.message(senderName, ChatColor.RED + localize("unBanNot", I18n.PLAYER, playerName, I18n.SENDER, senderName));
+            }
+            log.info(senderName + " tried to unban " + playerName + "!");
+        }).start();
     }
 
     public void localBan() {
@@ -231,57 +223,62 @@ public class Ban implements Runnable {
         // First, add bukkit banlist
         bukkitBan(true);
 
-        JsonHandler webHandle = new JsonHandler(plugin);
-        HashMap<String, String> url_items = new HashMap<String, String>();
-        url_items.put("player", playerName);
-        url_items.put("player_uuid", playerUUID);
-        url_items.put("playerip", playerIP);
-        url_items.put("reason", reason);
-        url_items.put("admin", senderName);
-        url_items.put("admin_uuid", senderUUID);
-        if (rollback) {
-            plugin.getRbHandler().rollback(senderName, playerName);
-        }
-        if (actionData != null) {
-            url_items.put("actionData", actionData.toString());
-        }
-        url_items.put("exec", "localBan");
-        HashMap<String, String> response = webHandle.mainRequest(url_items);
-        try {
-            if (response.containsKey("error")){
-                Util.message(senderName, ChatColor.RED + "Error: " + response.get("error"));
-                return;
+        new Thread(()-> {
+            JsonHandler webHandle = new JsonHandler(plugin);
+            HashMap<String, String> url_items = new HashMap<String, String>();
+            url_items.put("player", playerName);
+            url_items.put("player_uuid", playerUUID);
+            url_items.put("playerip", playerIP);
+            url_items.put("reason", reason);
+            url_items.put("admin", senderName);
+            url_items.put("admin_uuid", senderUUID);
+            if (rollback) {
+                plugin.getRbHandler().rollback(senderName, playerName);
             }
-            if (response.containsKey("player")){
-            	playerName = response.get("player");
+            if (actionData != null) {
+                url_items.put("actionData", actionData.toString());
             }
-            if (!response.containsKey("result")) {
-                Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
-                return;
-            }
-            if (response.get("result").equals("y")) {
-                this.kickPlayer(playerName, playerUUID, localize("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-                Util.broadcastMessage(ChatColor.GREEN + localize("localBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-                plugin.getServer().getPluginManager().callEvent(new PlayerBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure));
+            url_items.put("exec", "localBan");
+            HashMap<String, String> response = webHandle.mainRequest(url_items);
+            try {
+                if (response.containsKey("error")) {
+                    Util.message(senderName, ChatColor.RED + "Error: " + response.get("error"));
+                    return;
+                }
+                if (response.containsKey("player")) {
+                    playerName = response.get("player");
+                }
+                if (!response.containsKey("result")) {
+                    Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+                    return;
+                }
+                if (response.get("result").equals("y")) {
 
-                log.info(playerName + " has been banned with a local type ban [" + reason + "] [" + senderName + "]!");
-                return;
-            } else if (response.get("result").equals("e")) {
-                Util.message(senderName,
+                    this.kickPlayer(playerName, playerUUID, localize("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+
+                    Util.broadcastMessage(ChatColor.GREEN + localize("localBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+
+                    Bukkit.getScheduler().runTaskLater(plugin, ()->plugin.getServer().getPluginManager().callEvent(new PlayerBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure)), 1);
+
+                    log.info(playerName + " has been banned with a local type ban [" + reason + "] [" + senderName + "]!");
+                    return;
+                } else if (response.get("result").equals("e")) {
+                    Util.message(senderName,
                         ChatColor.RED + localize("localBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-            } else if (response.get("result").equals("s")) {
-                Util.message(senderName,
+                } else if (response.get("result").equals("s")) {
+                    Util.message(senderName,
                         ChatColor.RED + localize("localBanGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-            } else if (response.get("result").equals("a")) {
-                Util.message(senderName,
+                } else if (response.get("result").equals("a")) {
+                    Util.message(senderName,
                         ChatColor.RED + localize("localBanAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+                }
+                log.info(senderName + " tried to ban " + playerName + " with a local type ban [" + reason + "]!");
+            } catch (Exception ex) {
+                Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+                log.warning("Error occurred with local banning. Please report this to an MCBans developer.");
+                ex.printStackTrace();
             }
-            log.info(senderName + " tried to ban " + playerName + " with a local type ban [" + reason + "]!");
-        } catch (Exception ex) {
-            Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
-            log.warning("Error occurred with local banning. Please report this to an MCBans developer.");
-            ex.printStackTrace();
-        }
+        }).start();
     }
 
     public void globalBan() {
@@ -296,65 +293,67 @@ public class Ban implements Runnable {
         
         // First, add bukkit banlist
         bukkitBan(true);
+        new Thread(()-> {
+            JsonHandler webHandle = new JsonHandler(plugin);
+            HashMap<String, String> url_items = new HashMap<String, String>();
+            url_items.put("player", playerName);
+            url_items.put("player_uuid", playerUUID);
+            url_items.put("playerip", playerIP);
+            url_items.put("reason", reason);
+            url_items.put("admin", senderName);
+            url_items.put("admin_uuid", senderUUID);
 
-        JsonHandler webHandle = new JsonHandler(plugin);
-        HashMap<String, String> url_items = new HashMap<String, String>();
-        url_items.put("player", playerName);
-        url_items.put("player_uuid", playerUUID);
-        url_items.put("playerip", playerIP);
-        url_items.put("reason", reason);
-        url_items.put("admin", senderName);
-        url_items.put("admin_uuid", senderUUID);
 
-
-        if (rollback) {
-            plugin.getRbHandler().rollback(senderName, playerName);
-        }
-        if (actionData.length() > 0) {
-            url_items.put("actionData", actionData.toString());
-        }
-        url_items.put("exec", "globalBan");
-        HashMap<String, String> response = webHandle.mainRequest(url_items);
-        try {
-            if (response.containsKey("error")){
-                Util.message(senderName, ChatColor.RED + "Error: " + response.get("error"));
-                return;
+            if (rollback) {
+                plugin.getRbHandler().rollback(senderName, playerName);
             }
-            if (response.containsKey("player")){
-            	playerName = response.get("player");
+            if (actionData.length() > 0) {
+                url_items.put("actionData", actionData.toString());
             }
-            if (!response.containsKey("result")) {
-                Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
-                return;
-            }
-            if (response.get("result").equals("y")) {
-                this.kickPlayer(playerName, playerUUID, localize("globalBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-                Util.broadcastMessage(ChatColor.GREEN + localize("globalBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-                plugin.getServer().getPluginManager().callEvent(new PlayerBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure));
+            url_items.put("exec", "globalBan");
+            HashMap<String, String> response = webHandle.mainRequest(url_items);
+            try {
+                if (response.containsKey("error")) {
+                    Util.message(senderName, ChatColor.RED + "Error: " + response.get("error"));
+                    return;
+                }
+                if (response.containsKey("player")) {
+                    playerName = response.get("player");
+                }
+                if (!response.containsKey("result")) {
+                    Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+                    return;
+                }
+                if (response.get("result").equals("y")) {
+                    this.kickPlayer(playerName, playerUUID, localize("globalBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+                    Util.broadcastMessage(ChatColor.GREEN + localize("globalBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
 
-                log.info(playerName + " has been banned with a global type ban [" + reason + "] [" + senderName + "]!");
-                return;
-            } else if (response.get("result").equals("e")) {
-                Util.message(senderName,
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getServer().getPluginManager().callEvent(new PlayerBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure)), 1);
+
+                    log.info(playerName + " has been banned with a global type ban [" + reason + "] [" + senderName + "]!");
+                    return;
+                } else if (response.get("result").equals("e")) {
+                    Util.message(senderName,
                         ChatColor.RED + localize("globalBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-            } else if (response.get("result").equals("w")) {
-                badword = response.get("word");
-                Util.message(senderName,
+                } else if (response.get("result").equals("w")) {
+                    badword = response.get("word");
+                    Util.message(senderName,
                         ChatColor.RED + localize("globalBanWarning", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP, I18n.BADWORD, badword));
-            } else if (response.get("result").equals("s")) {
-                Util.message(senderName,
+                } else if (response.get("result").equals("s")) {
+                    Util.message(senderName,
                         ChatColor.RED + localize("globalBanGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-            } else if (response.get("result").equals("a")) {
-                Util.message(senderName,
+                } else if (response.get("result").equals("a")) {
+                    Util.message(senderName,
                         ChatColor.RED + localize("globalBanAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+                }
+                log.info(senderName + " tried to ban " + playerName + " with a global type ban [" + reason + "]!");
+            } catch (Exception ex) {
+                Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+
+                log.warning("Error occurred with global banning. Please report this to an MCBans developer.");
+                ex.printStackTrace();
             }
-            log.info(senderName + " tried to ban " + playerName + " with a global type ban [" + reason + "]!");
-        } catch (Exception ex) {
-            Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
-            
-            log.warning("Error occurred with global banning. Please report this to an MCBans developer.");
-            ex.printStackTrace();
-        }
+        }).start();
     }
 
     public void tempBan() {
@@ -369,64 +368,63 @@ public class Ban implements Runnable {
         duration = tBanEvent.getDuration();
         measure = tBanEvent.getMeasure();
 
-        JsonHandler webHandle = new JsonHandler(plugin);
-        HashMap<String, String> url_items = new HashMap<String, String>();
-        url_items.put("player", playerName);
-        url_items.put("player_uuid", playerUUID);
-        url_items.put("playerip", playerIP);
-        url_items.put("reason", reason);
-        url_items.put("admin", senderName);
-        url_items.put("admin_uuid", senderUUID);
-        url_items.put("duration", duration);
-        url_items.put("measure", measure);
-        if (actionData != null) {
-            url_items.put("actionData", actionData.toString());
-        }
-        url_items.put("exec", "tempBan");
-        HashMap<String, String> response = webHandle.mainRequest(url_items);
-        try {
-            if (response.containsKey("error")){
-                Util.message(senderName, ChatColor.RED + "Error: " + response.get("error"));
-                return;
+        new Thread(()-> {
+            JsonHandler webHandle = new JsonHandler(plugin);
+            HashMap<String, String> url_items = new HashMap<String, String>();
+            url_items.put("player", playerName);
+            url_items.put("player_uuid", playerUUID);
+            url_items.put("playerip", playerIP);
+            url_items.put("reason", reason);
+            url_items.put("admin", senderName);
+            url_items.put("admin_uuid", senderUUID);
+            url_items.put("duration", duration);
+            url_items.put("measure", measure);
+            if (actionData != null) {
+                url_items.put("actionData", actionData.toString());
             }
-            if (response.containsKey("player")){
-            	playerName = response.get("player");
-            }
-            if (!response.containsKey("result")) {
-                //bukkitBan(); // don't use default ban
-                Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
-                return;
-            }
-            if (response.get("result").equals("y")) {
-                this.kickPlayer(playerName, playerUUID, localize("tempBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-                Util.broadcastMessage(ChatColor.GREEN + localize("tempBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-                plugin.getServer().getPluginManager().callEvent(new PlayerBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure));
-
-                log.info(playerName + " has been banned with a temp type ban [" + reason + "] [" + senderName + "]!");
-                return;
-            } else if (response.get("result").equals("e")) {
-                Util.message(senderName,
-                        ChatColor.RED + localize("tempBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-            } else if (response.get("result").equals("s")) {
-                Util.message(senderName,
-                        ChatColor.RED + localize("tempBanGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-            } else if (response.get("result").equals("a")) {
-                Util.message(senderName,
-                        ChatColor.RED + localize("tempBanAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
-            } else if (response.get("result").equals("n")){
-                if (response.get("msg") != null){
-                    Util.message(senderName, ChatColor.RED + response.get("msg"));
-                }else{
-                    Util.message(senderName,
-                            ChatColor.RED + localize("tempBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+            url_items.put("exec", "tempBan");
+            HashMap<String, String> response = webHandle.mainRequest(url_items);
+            try {
+                if (response.containsKey("error")) {
+                    Util.message(senderName, ChatColor.RED + "Error: " + response.get("error"));
+                    return;
                 }
+                if (response.containsKey("player")) {
+                    playerName = response.get("player");
+                }
+                if (!response.containsKey("result")) {
+                    //bukkitBan(); // don't use default ban
+                    Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+                    return;
+                }
+                if (response.get("result").equals("y")) {
+                    this.kickPlayer(playerName, playerUUID, localize("tempBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+                    Util.broadcastMessage(ChatColor.GREEN + localize("tempBanSuccess", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+
+                    Bukkit.getScheduler().runTaskLater(plugin, ()->plugin.getServer().getPluginManager().callEvent(new PlayerBanEvent(playerName, playerUUID, playerIP, senderName, senderUUID, reason, action_id, duration, measure)),1);
+
+                    log.info(playerName + " has been banned with a temp type ban [" + reason + "] [" + senderName + "]!");
+                    return;
+                } else if (response.get("result").equals("e")) {
+                    Util.message(senderName, ChatColor.RED + localize("tempBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+                } else if (response.get("result").equals("s")) {
+                    Util.message(senderName, ChatColor.RED + localize("tempBanGroup", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+                } else if (response.get("result").equals("a")) {
+                    Util.message(senderName, ChatColor.RED + localize("tempBanAlready", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+                } else if (response.get("result").equals("n")) {
+                    if (response.get("msg") != null) {
+                        Util.message(senderName, ChatColor.RED + response.get("msg"));
+                    } else {
+                        Util.message(senderName, ChatColor.RED + localize("tempBanError", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+                    }
+                }
+                log.info(senderName + " tried to ban " + playerName + " with a temp type ban [" + reason + "]!");
+            } catch (Exception ex) {
+                //bukkitBan();
+                log.warning("Error occurred with temporary banning. Please report this to an MCBans developer.");
+                ex.printStackTrace();
             }
-            log.info(senderName + " tried to ban " + playerName + " with a temp type ban [" + reason + "]!");
-        } catch (Exception ex) {
-            //bukkitBan();
-            log.warning("Error occurred with temporary banning. Please report this to an MCBans developer.");
-            ex.printStackTrace();
-        }
+        }).start();
     }
 
 	private void bukkitBan(final boolean flag){

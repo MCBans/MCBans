@@ -24,7 +24,7 @@ public class CommandMCBansSettings extends BaseCommand {
             throw new CommandException(ChatColor.RED + localize("permissionDenied"));
         }
 		if(this.args.size()>=2){
-			(new Thread(new MCBansSettings(plugin, new MCBansSettingsCallback(plugin, sender), sender.getName(), this.args.toString()))).start();
+			new Thread(new MCBansSettings(plugin, new MCBansSettingsCallback(plugin, sender), sender.getName(), this.args.toString())).start();
 		}else{
 			throw new CommandException(ChatColor.RED + localize("formatError"));
 		}

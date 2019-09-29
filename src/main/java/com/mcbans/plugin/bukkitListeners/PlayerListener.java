@@ -58,7 +58,7 @@ public class PlayerListener implements Listener {
 	            while (plugin.apiServer == null) {
 	                // waiting for server select
 	                try {
-	                    Thread.sleep(1000);
+	                    Thread.sleep(100);
 	                } catch (InterruptedException e) {}
 	                check++;
 	                if (check > 5) {
@@ -81,7 +81,7 @@ public class PlayerListener implements Listener {
 	            final URLConnection conn = new URL(uriStr).openConnection();
 	
 	            conn.setConnectTimeout(config.getTimeoutInSec() * 1000);
-	            conn.setReadTimeout(config.getTimeoutInSec() * 1000);
+	            conn.setReadTimeout(config.getTimeoutInSec() * 500);
 	            conn.setUseCaches(false);
 	
 	            BufferedReader br = null;

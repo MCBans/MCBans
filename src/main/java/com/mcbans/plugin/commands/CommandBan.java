@@ -95,8 +95,7 @@ public class CommandBan extends BaseCommand{
             Util.message(sender, ChatColor.RED + "Internal error. Please report console logs to an MCBans developer.");
             throw new RuntimeException("Undefined BanType: " + type.name());
         }
-        Thread triggerThread = new Thread(banControl);
-        triggerThread.start();
+        banControl.run();
     }
 
     @Override

@@ -33,8 +33,7 @@ public class CommandLookup extends BaseCommand{
         
         // Start
         LookupRequest request = new LookupRequest(plugin, new LookupCallback(plugin, sender), target, targetUUID, senderName, senderUUID);
-        Thread triggerThread = new Thread(request);
-        triggerThread.start();
+        new Thread(request).start();
     }
 
     @Override

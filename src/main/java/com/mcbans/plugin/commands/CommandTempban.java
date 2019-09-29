@@ -45,8 +45,7 @@ public class CommandTempban extends BaseCommand{
 
         // Start
         Ban banControl = new Ban(plugin, BanType.TEMP.getActionName(), target, targetUUID, targetIP, senderName, senderUUID, reason, duration, measure, null, false);
-        Thread triggerThread = new Thread(banControl);
-        triggerThread.start();
+        banControl.run();
     }
 
     @Override

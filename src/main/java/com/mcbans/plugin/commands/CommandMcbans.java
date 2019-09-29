@@ -20,6 +20,7 @@ import com.mcbans.plugin.util.Util;
 
 import static com.mcbans.plugin.I18n.localize;
 
+
 public class CommandMcbans extends BaseCommand{
     public CommandMcbans(){
         bePlayer = false;
@@ -128,7 +129,7 @@ public class CommandMcbans extends BaseCommand{
             if (args.size() > 0 && args.get(0).equalsIgnoreCase("all")){
                 send(ChatColor.GREEN + "Resyncing with MCBans API!");
                 ManualResync manualSyncBanRunner = new ManualResync(plugin, senderName);
-                (new Thread(manualSyncBanRunner)).start();
+                new Thread(manualSyncBanRunner).start();
             }else{
                 long syncInterval = 60 * config.getSyncInterval();
                 if(syncInterval < (60 * 60)){ // minimum 5 minutes
@@ -204,7 +205,7 @@ public class CommandMcbans extends BaseCommand{
                 send(ChatColor.RED + "An error occurred while trying to load the language file.");
             }
             ServerChoose serverChooser = new ServerChoose(plugin);
-            (new Thread(serverChooser)).start();
+            new Thread(serverChooser).start();
             return;
         }
         /* for MCBans Mod */
@@ -242,7 +243,7 @@ public class CommandMcbans extends BaseCommand{
                 
                 send("&6-=== Server Status ===-");
                 send("&6MCBans Plugin: &e" + plugin.getDescription().getVersion());
-                send("&6Name: &e" + Bukkit.getServerName() + "&6 IP: &e" + Bukkit.getServer().getIp() + ":" + Bukkit.getServer().getPort());
+                send("&6Name: &e" + Bukkit.getServer().getName() + "&6 IP: &e" + Bukkit.getServer().getIp() + ":" + Bukkit.getServer().getPort());
                 send("&6OnlineMode: &e" + Bukkit.getOnlineMode());
                 
                 send("&6-=== Online Players ===-");

@@ -43,8 +43,7 @@ public class MCBansAPI {
         }
 
         Ban banControl = new Ban(plugin, type.getActionName(), targetName, targetUUID, targetIP, senderName, senderUUID, reason, duration, measure, null, false);
-        Thread triggerThread = new Thread(banControl);
-        triggerThread.start();
+        banControl.run();
     }
 
     /**
@@ -161,8 +160,7 @@ public class MCBansAPI {
 
         // Start
         Kick kickPlayer = new Kick(plugin, targetName, targetUUID, senderName, senderUUID, reason, true);
-        Thread triggerThread = new Thread(kickPlayer);
-        triggerThread.start();
+        kickPlayer.run();
     }
 
     /**

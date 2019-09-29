@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.bukkit', name: 'bukkit', version: '1.13.2-R0.1-SNAPSHOT'
+    compile group: 'org.bukkit', name: 'bukkit', version: '1.14.4-R0.1-SNAPSHOT'
     compile group: 'de.diddiz', name: 'logblock', version: '1.13.1-SNAPSHOT'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

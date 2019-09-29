@@ -109,8 +109,8 @@ public class ManualSync implements Runnable {
         		}
             }
         } finally {
-            plugin.syncRunning = false;
-        }
+			plugin.syncRunning = false;
+		}
         plugin.lastSync = System.currentTimeMillis() / 1000;
         Util.message(commandSend, ChatColor.GREEN + "Sync is complete with " + changes + " actions." );
         save();

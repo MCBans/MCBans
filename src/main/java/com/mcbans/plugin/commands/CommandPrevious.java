@@ -23,7 +23,7 @@ public class CommandPrevious extends BaseCommand {
 		if (!this.permission(sender)){
             throw new CommandException(ChatColor.RED + localize("permissionDenied"));
         }
-		(new Thread(new PreviousNames(plugin, new PreviousCallback(plugin, sender), target, targetUUID, senderName))).start();
+		new Thread(new PreviousNames(plugin, new PreviousCallback(plugin, sender), target, targetUUID, senderName)).start();
 	}
 
 	@Override

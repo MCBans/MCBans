@@ -23,8 +23,7 @@ public class CommandUnban extends BaseCommand{
         
         // Start
         Ban banControl = new Ban(plugin, BanType.UNBAN.getActionName(), target, targetUUID, "", senderName, senderUUID, "", "", "", null, false);
-        Thread triggerThread = new Thread(banControl);
-        triggerThread.start();
+        banControl.run();
     }
 
     @Override
