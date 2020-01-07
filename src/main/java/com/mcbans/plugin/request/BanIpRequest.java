@@ -68,7 +68,7 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
                         kickPlayerByIP(this.ip, reason);
 
                         log.info("IP " + ip + " has been banned [" + reason + "] [" + issuedBy + "]!");
-                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, ()->plugin.getServer().getPluginManager().callEvent(new PlayerIPBannedEvent(ip, issuedBy, issuedByUUID, reason)), 0L);
+                        plugin.getServer().getPluginManager().callEvent(new PlayerIPBannedEvent(ip, issuedBy, issuedByUUID, reason));
                     }else if (result.equals("a")){
                         // equals("a") if already banned ip
                         callback.error(ChatColor.RED + localize("ipBanAlready", I18n.IP, this.ip, I18n.SENDER, this.issuedBy, I18n.REASON, this.reason));

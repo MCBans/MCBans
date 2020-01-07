@@ -2,6 +2,7 @@ package com.mcbans.plugin.events;
 
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -13,6 +14,8 @@ public class PlayerBanEvent extends Event implements Cancellable {
     private String duration, measure, reason, sender, playerIP, player, playerUUID, senderUUID;
 
     public PlayerBanEvent(String player, String playerUUID, String playerIP, String sender, String senderUUID, String reason, int action_id, String duration, String measure) {
+        super(!Bukkit.isPrimaryThread());
+
         this.player = player;
         this.playerIP = playerIP;
         this.sender = sender;
