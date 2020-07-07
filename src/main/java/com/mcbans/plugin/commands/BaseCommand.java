@@ -180,13 +180,15 @@ public abstract class BaseCommand {
 
     private void check() throws CommandException {
         if(banning) {
-            if(targetUUID.isEmpty()) {
-                if (!Util.checkVault((Player) sender, Bukkit.getOfflinePlayer(target))) {
-                    throw new CommandException(ChatColor.RED + localize("permissionDenied"));
-                }
-            } else {
-                if (!Util.checkVault((Player) sender, Bukkit.getOfflinePlayer(UUID.fromString(targetUUID)))) {
-                    throw new CommandException(ChatColor.RED + localize("permissionDenied"));
+            if (sender instanceof Player) {
+                if(targetUUID.isEmpty()) {
+                    if (!Util.checkVault((Player) sender, Bukkit.getOfflinePlayer(target))) {
+                        throw new CommandException(ChatColor.RED + localize("permissionDenied"));
+                    }
+                } else {
+                    if (!Util.checkVault((Player) sender, Bukkit.getOfflinePlayer(UUID.fromString(targetUUID)))) {
+                        throw new CommandException(ChatColor.RED + localize("permissionDenied"));
+                    }
                 }
             }
         }
