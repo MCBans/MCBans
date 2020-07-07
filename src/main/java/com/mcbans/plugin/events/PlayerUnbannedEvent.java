@@ -2,6 +2,7 @@ package com.mcbans.plugin.events;
 
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -12,6 +13,8 @@ public class PlayerUnbannedEvent extends Event {
     private String sender, senderUUID, playerUUID;
 
     public PlayerUnbannedEvent(String player, String playerUUID, String sender, String senderUUID) {
+        super(!Bukkit.isPrimaryThread());
+
         this.player = player;
         this.sender = sender;
         this.senderUUID = senderUUID;
