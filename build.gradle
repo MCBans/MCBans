@@ -15,16 +15,18 @@ repositories {
     maven {
         url 'http://repo.md-5.net/content/repositories/snapshots/'
     }
-    maven {
-        url 'http://ci.synload.com/plugin/repository/everything/'
-    }
+    // Spigot API
     maven {
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    // Bungeecord API
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
     }
 }
 
 dependencies {
-    compile group: 'org.bukkit', name: 'bukkit', version: '1.14.4-R0.1-SNAPSHOT'
+    compile group: 'org.bukkit', name: 'bukkit', version: '1.15.2-R0.1-SNAPSHOT'
     compile group: 'de.diddiz', name: 'logblock', version: '1.13.1-SNAPSHOT'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
