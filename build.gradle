@@ -2,7 +2,6 @@ group 'mcbans'
 version '4.5.1'
 
 apply plugin: 'java'
-apply plugin: 'maven'
 
 sourceCompatibility = 1.8
 
@@ -29,17 +28,4 @@ dependencies {
     compile group: 'org.bukkit', name: 'bukkit', version: '1.15.2-R0.1-SNAPSHOT'
     compile group: 'de.diddiz', name: 'logblock', version: '1.13.1-SNAPSHOT'
     compile fileTree(dir: 'libs', include: ['*.jar'])
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "http://nexus.synload.com/repository/releases/") {
-                authentication(userName: "admin", password: "$System.env.PASSWORD")
-            }
-            pom.version = "${version}"
-            pom.artifactId = "mcbans-bukkit"
-            pom.groupId = "com.mcbans"
-        }
-    }
 }
