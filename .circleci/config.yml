@@ -47,8 +47,5 @@ jobs:
       # run tests!
       - run: gradle test
       
-      - store_artifacts:
-        path: ~/repo/build/*
-        destination: artifact-file
       
       
