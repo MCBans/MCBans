@@ -2,7 +2,6 @@ group 'mcbans'
 version '4.5.1'
 
 apply plugin: 'java'
-apply plugin: 'maven'
 
 sourceCompatibility = 1.8
 
@@ -10,10 +9,10 @@ repositories {
     mavenCentral()
     jcenter()
     maven {
-        url 'http://maven.sk89q.com/repo/'
+        url 'https://maven.sk89q.com/repo/'
     }
     maven {
-        url 'http://repo.md-5.net/content/repositories/snapshots/'
+        url 'https://repo.md-5.net/content/repositories/snapshots/'
     }
     // Spigot API
     maven {
@@ -26,20 +25,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.bukkit', name: 'bukkit', version: '1.15.2-R0.1-SNAPSHOT'
-    compile group: 'de.diddiz', name: 'logblock', version: '1.13.1-SNAPSHOT'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "http://nexus.synload.com/repository/releases/") {
-                authentication(userName: "admin", password: "$System.env.PASSWORD")
-            }
-            pom.version = "${version}"
-            pom.artifactId = "mcbans-bukkit"
-            pom.groupId = "com.mcbans"
-        }
-    }
+    implementation('org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT')
+    implementation('de.diddiz:logblock:1.16.5.2-SNAPSHOT')
+    implementation fileTree('libs'){include '*.jar'}
 }
