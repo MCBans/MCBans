@@ -27,5 +27,5 @@ repositories {
 dependencies {
     implementation('org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT')
     implementation('de.diddiz:logblock:1.17.0.0-SNAPSHOT')
-    implementation fileTree('libs'){include: '*.jar'}
+    implementation fileTree('libs'){include '*.jar'}
 }
