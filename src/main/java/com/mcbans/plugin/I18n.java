@@ -100,12 +100,15 @@ public class I18n {
     public static final String REASON   = "%REASON%";
     public static final String BANID    = "%BANID%";
     public static final String ADMIN    = "%ADMIN%";
+    public static final String ADMINS    = "%ADMINS%";
+    public static final String SERVER    = "%SERVER%";
     public static final String TYPE     = "%TYPE%";
     public static final String PLAYERS  = "%PLAYERS%";
     public static final String BADWORD  = "%BADWORD%";
     public static final String ALTS     = "%ALTS%";
     public static final String COUNT    = "%COUNT%";
     public static final String IP       = "%IP%";
+    public static final String VERSION  = "%VERSION%";
     /* ***** End replace words ******* */
 
     public static String localize(final String key, final Object... args){

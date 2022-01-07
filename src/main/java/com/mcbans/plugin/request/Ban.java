@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.mcbans.client.response.BanResponse;
 import com.mcbans.plugin.bukkitListeners.PlayerListener;
 import com.mcbans.plugin.events.PlayerGlobalBanEvent;
 import com.mcbans.plugin.events.PlayerLocalBanEvent;
@@ -59,7 +60,7 @@ public class Ban {
         this.measure = measure;
         this.action = action;
         this.actionData = (actionData != null) ? actionData : new JSONObject();
-        String res = PlayerListener.cache.getIfPresent(playerName.toLowerCase());
+        BanResponse res = PlayerListener.cache.getIfPresent(playerName.toLowerCase());
         if(res!=null){
         	PlayerListener.cache.invalidate(playerName.toLowerCase());
         }

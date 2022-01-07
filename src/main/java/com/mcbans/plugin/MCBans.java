@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import com.mcbans.client.response.BanResponse;
 import com.mcbans.plugin.bukkitListeners.PlayerListener;
 import com.mcbans.plugin.callBacks.BanSync;
 import com.mcbans.plugin.callBacks.MainCallBack;
@@ -43,7 +44,7 @@ public class MCBans extends JavaPlugin {
 
     public int taskID = 0;
     public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
-    public HashMap<String, HashMap<String, String>> playerCache = new HashMap<String, HashMap<String, String>>();
+    public HashMap<String, BanResponse> playerCache = new HashMap<>();
     public HashMap<String, Long> resetTime = new HashMap<String, Long>();
     public Properties lastSyncs = new Properties();
     public ArrayList<String> mcbStaff = new ArrayList<String>();

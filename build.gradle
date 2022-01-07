@@ -1,5 +1,5 @@
 group 'mcbans'
-version '4.5.1'
+version '5.0alpha'
 
 apply plugin: 'java'
 
