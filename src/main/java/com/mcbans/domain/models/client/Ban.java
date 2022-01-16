@@ -1,4 +1,4 @@
-package com.mcbans.domain;
+package com.mcbans.domain.models.client;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,23 +6,22 @@ import java.util.Date;
 public class Ban implements Serializable {
     private long id;
     private String reason;
-    private String adminName;
-    private String adminUUID;
-    private String serverAddress;
+    private Player admin;
+    private Player player;
     private double reputation;
     private String type;
     private Long duration;
-    private Long server;
+    private Server server;
     private Date date;
 
     public Ban() {
     }
 
-    public Ban(String type, String reason, double reputation, String adminName) {
+    public Ban(String type, String reason, double reputation, Player admin) {
         this.reason = reason;
         this.reputation = reputation;
         this.type = type;
-        this.adminName = adminName;
+        this.admin = admin;
     }
 
     public long getId() {
@@ -39,14 +38,6 @@ public class Ban implements Serializable {
 
     public void setReason(String reason) {
         this.reason = reason;
-    }
-
-    public String getServerAddress() {
-        return serverAddress;
-    }
-
-    public void setServerAddress(String serverAddress) {
-        this.serverAddress = serverAddress;
     }
 
     public double getReputation() {
@@ -73,11 +64,11 @@ public class Ban implements Serializable {
         this.duration = duration;
     }
 
-    public Long getServer() {
+    public Server getServer() {
         return server;
     }
 
-    public void setServer(Long server) {
+    public void setServer(Server server) {
         this.server = server;
     }
 
@@ -89,19 +80,19 @@ public class Ban implements Serializable {
         this.date = date;
     }
 
-    public String getAdminName() {
-        return adminName;
+    public Player getAdmin() {
+        return admin;
     }
 
-    public void setAdminName(String adminName) {
-        this.adminName = adminName;
+    public void setAdmin(Player admin) {
+        this.admin = admin;
     }
 
-    public String getAdminUUID() {
-        return adminUUID;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setAdminUUID(String adminUUID) {
-        this.adminUUID = adminUUID;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

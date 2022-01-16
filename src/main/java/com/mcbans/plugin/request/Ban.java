@@ -60,10 +60,6 @@ public class Ban {
         this.measure = measure;
         this.action = action;
         this.actionData = (actionData != null) ? actionData : new JSONObject();
-        BanResponse res = PlayerListener.cache.getIfPresent(playerName.toLowerCase());
-        if(res!=null){
-        	PlayerListener.cache.invalidate(playerName.toLowerCase());
-        }
         responses.put("globalBan", 0);
         responses.put("localBan", 1);
         responses.put("tempBan", 2);
@@ -91,13 +87,6 @@ public class Ban {
     public void run() {
         try {
 
-            while (plugin.apiServer == null) {
-                // waiting for server select
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                }
-            }
             if (responses.containsKey(action)) {
                 action_id = responses.get(action);
 

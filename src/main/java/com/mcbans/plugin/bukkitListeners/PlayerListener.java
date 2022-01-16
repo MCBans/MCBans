@@ -13,10 +13,10 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import com.mcbans.client.BanStatusClient;
 import com.mcbans.client.Client;
 import com.mcbans.client.ConnectionPool;
 import com.mcbans.client.response.BanResponse;
-import com.mcbans.domain.Ban;
 import com.mcbans.plugin.permission.Perms;
 import com.mcbans.plugin.request.DisconnectRequest;
 import org.bukkit.Bukkit;
@@ -44,10 +44,6 @@ public class PlayerListener implements Listener {
   private final MCBans plugin;
   private final ActionLog log;
   private final ConfigurationManager config;
-  public static Cache<String, BanResponse> cache = CacheBuilder.newBuilder()
-    .maximumSize(100)
-    .expireAfterWrite(15, TimeUnit.SECONDS)
-    .build();
 
   public PlayerListener(final MCBans plugin) {
     this.plugin = plugin;
@@ -58,26 +54,22 @@ public class PlayerListener implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onAsyncPlayerPreLoginEvent(final AsyncPlayerPreLoginEvent event) {
     try {
-      BanResponse banResponse = cache.getIfPresent(event.getUniqueId().toString().toLowerCase());
+      BanResponse banResponse;
+      Client client = ConnectionPool.getConnection(config.getApiKey());
+
+      // get player information
+      banResponse = BanStatusClient.cast(client).banStatusByPlayerUUID(event.getUniqueId().toString().toLowerCase().replaceAll("-",""), event.getAddress().getHostAddress(), true);
+
+      ConnectionPool.release(client);
+
       if (banResponse == null) {
-        Client client = ConnectionPool.getConnection(config.getApiKey());
-
-        // get player information
-        banResponse = client.banStatusByPlayerUUID(event.getUniqueId().toString().toLowerCase(), event.getAddress().getHostAddress(), true);
-        ConnectionPool.release(client);
-
-        if (banResponse == null) {
-          if (config.isFailsafe()) {
-            log.warning("Null response! Kicked player: " + event.getName());
-            event.disallow(Result.KICK_BANNED, localize("unavailable"));
-          } else {
-            log.warning("Null response! Check passed player: " + event.getName());
-          }
-          return;
+        if (config.isFailsafe()) {
+          log.warning("Null response! Kicked player: " + event.getName());
+          event.disallow(Result.KICK_BANNED, localize("unavailable"));
+        } else {
+          log.warning("Null response! Check passed player: " + event.getName());
         }
-        cache.put(event.getName().toLowerCase(), banResponse);
-      } else {
-        plugin.debug("Retrieved from cache");
+        return;
       }
 
       plugin.debug("Response: " + banResponse);
@@ -120,7 +112,7 @@ public class PlayerListener implements Listener {
         if (!Perms.HIDE_VIEW.has(player)) {
           if (config.isSendDetailPrevBans()) {
             banResponse.getBans().forEach(ban ->
-              Perms.VIEW_BANS.message(localize("banInformation", I18n.ADMIN, ban.getAdminName(), I18n.REASON, ban.getReason(), I18n.SERVER, ban.getServerAddress()))
+              Perms.VIEW_BANS.message(localize("banInformation", I18n.ADMIN, ban.getAdmin().getName(), I18n.REASON, ban.getReason(), I18n.SERVER, ban.getServer().getAddress()))
             );
           }
         }
@@ -207,7 +199,7 @@ public class PlayerListener implements Listener {
         Client client = ConnectionPool.getConnection(config.getApiKey()); // get connection
 
         // get player information
-        response = client.banStatusByPlayerUUID(event.getPlayer().getUniqueId().toString().toLowerCase(), null, false);
+        response = BanStatusClient.cast(client).banStatusByPlayerUUID(event.getPlayer().getUniqueId().toString().toLowerCase().replaceAll("-",""), null, false);
         ConnectionPool.release(client);
 
         plugin.debug("Response: " + response);
@@ -222,13 +214,13 @@ public class PlayerListener implements Listener {
       }
       final Player player = event.getPlayer();
       if (response == null) return;
-      if (response.getBans().size()>0) {
+      if (response.getBans().size() > 0) {
         Util.message(player, ChatColor.RED + localize("bansOnRecord"));
         Perms.VIEW_BANS.message(ChatColor.RED + localize("previousBans", I18n.PLAYER, player.getName()));
         if (!Perms.HIDE_VIEW.has(player)) {
           if (config.isSendDetailPrevBans()) {
             response.getBans().forEach(ban ->
-              Perms.VIEW_BANS.message(localize("banInformation", I18n.ADMIN, ban.getAdminName(), I18n.REASON, ban.getReason(), I18n.SERVER, ban.getServerAddress()))
+              Perms.VIEW_BANS.message(localize("banInformation", I18n.ADMIN, ban.getAdmin().getName(), I18n.REASON, ban.getReason(), I18n.SERVER, ban.getServer().getAddress()))
             );
           }
         }
@@ -293,7 +285,7 @@ public class PlayerListener implements Listener {
   public void rejectionHandler(BanResponse response, AsyncPlayerPreLoginEvent event) {
     // check banned
     if (response.getBan() != null) {
-      event.disallow(Result.KICK_BANNED, localize("banReturnMessage", I18n.REASON, response.getBan().getReason(), I18n.ADMIN, response.getBan().getAdminName(), I18n.BANID, response.getBan().getId(), I18n.TYPE, response.getBan().getType()));
+      event.disallow(Result.KICK_BANNED, localize("banReturnMessage", I18n.REASON, response.getBan().getReason(), I18n.ADMIN, response.getBan().getAdmin().getName(), I18n.BANID, response.getBan().getId(), I18n.TYPE, response.getBan().getType()));
       return;
 
       // check reputation

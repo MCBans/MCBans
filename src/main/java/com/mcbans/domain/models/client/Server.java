@@ -1,10 +1,13 @@
-package com.mcbans.domain;
+package com.mcbans.domain.models.client;
 
 import java.io.Serializable;
 
 public class Server implements Serializable{
     private String address;
     private double reputation;
+
+    public Server() {
+    }
 
     public Server(String address, double reputation) {
         this.address = address;

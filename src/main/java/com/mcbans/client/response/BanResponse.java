@@ -1,6 +1,6 @@
 package com.mcbans.client.response;
 
-import com.mcbans.domain.Ban;
+import com.mcbans.domain.models.client.Ban;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,8 +69,8 @@ public class BanResponse {
       banList = bans.stream().map(ban ->
         "\n    " + ban.getReason() +
           "\n      id: " + ban.getId() +
-          "\n      server: " + ban.getServerAddress() +
-          "\n      admin: " + ban.getAdminName() +" ( "+ban.getAdminUUID()+" )" +
+          ((ban.getServer()!=null)?"\n      server: " + ban.getServer().getAddress():"") +
+          ((ban.getAdmin()!=null)?"\n      admin: " + ban.getAdmin().getName() +" ( "+ban.getAdmin().getUuid()+" )":"") +
           "\n      repLoss: " + ban.getReputation()
       ).collect(Collectors.joining());
     }

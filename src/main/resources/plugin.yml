@@ -2,6 +2,7 @@
 name: MCBans
 main: com.mcbans.plugin.MCBans
 version: 4.5.1
+api-version: 1.18
 description: A global banning solution
 website: http://mcbans.com/
 softdepend: [LogBlock, HawkEye, CoreProtect, Vault, PermissionsEx]
@@ -10,49 +11,62 @@ commands:
   kick:
     description: kicks a user
     usage: /<command> <playername|UUID> [reason]
+    permission: mcbans.kick
   ban:
     description: ban a user
     usage: /<command> <playername|UUID> [-g/-t/reason] [reason]
+    permission: mcbans.ban.*
   globalban:
     description: global bans a user
     aliases: [gban]
     usage: /<command> <playername|UUID> [reason]
+    permission: mcbans.ban.global
   rban:
     description: roll back bans
     usage: /<command> <playername|UUID> [-g/-t/reason] [reason]
+    permission: mcbans.ban.rollback
   namelookup:
     description: history of a players UUID
     aliases: [nlup]
     usage: /<command> <playername|UUID>
+    permission: mcbans.lookup.player
   unban:
     description: unban a user
     usage: /<command> <playername|UUID>
+    permission: mcbans.unban
   tempban:
     description: temporary ban user
     aliases: [tban]
     usage: /<command> <playername|UUID> <duration> <m(minutes) or h(hours) or d(days) or w(weeks)> [reason]
+    permission: mcbans.ban.temp
   banip:
     description: bans an IP address
     aliases: [ipban]
     usage: /<command> <ip> [reason]
+    permission: mcbans.ban.ip
   lookup:
     description: lookup a player information
     aliases: [lup]
     usage: /<command> <playername|UUID>
+    permission: mcbans.lookup.player
   banlookup:
     description: lookup a ban information
     aliases: [blup]
     usage: /<command> <banID>
+    permission: mcbans.lookup.ban
   altlookup:
     description: lookup a player alt accounts
     aliases: [alup, alt]
     usage: /<command> <playername|UUID>
+    permission: mcbans.lookup.alt
   mcbans:
     description: mcbans functions
     usage: /<command> <function>
+    permission: mcbans.admin
   mcbs:
     description: mcbans server settings
     usage: /<command> <setting> <value>
+    permission: mcbans.admin
 permissions:
   mcbans.announce:
     description: Announces bans and kicks to anyone with this permission

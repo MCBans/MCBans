@@ -3,149 +3,109 @@ package com.mcbans.plugin.callBacks;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicLong;
 
-import com.mcbans.plugin.request.JsonHandler;
+import com.mcbans.client.BadApiKeyException;
+import com.mcbans.client.BanSyncClient;
+import com.mcbans.client.Client;
+import com.mcbans.client.ConnectionPool;
+import com.mcbans.domain.models.client.Ban;
+import com.mcbans.utils.TooLargeException;
+import de.diddiz.lib.org.slf4j.event.Level;
 import org.bukkit.BanList;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import com.mcbans.plugin.MCBans;
-import com.mcbans.plugin.bukkitListeners.PlayerListener;
 import com.mcbans.plugin.org.json.JSONException;
-import com.mcbans.plugin.org.json.JSONObject;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class BanSync implements Runnable {
-    private final MCBans plugin;
+public class BanSync {
+  private final MCBans plugin;
 
-    public BanSync(MCBans plugin){
-        this.plugin = plugin;
+  public BanSync(MCBans plugin) {
+    this.plugin = plugin;
+  }
+
+  public void goRequest() {
+    this.startSync();
+  }
+
+  public void startSync() {
+    if (plugin.syncRunning) {
+      return;
     }
+    plugin.syncRunning = true;
+    try {
+      Client client = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
+      try {
+        AtomicLong lastBanId = new AtomicLong(plugin.lastID);
+        BanSyncClient.cast(client).getBanSync(plugin.lastID, new Client.ResponseHandler(){
+          @Override
+          public void bans(List<Ban> bans) {
+            bans.forEach(ban->{
+              new BukkitRunnable() {
+                @Override
+                public void run() {
+                  if(ban.getType().equals("temp")){ // ignore temp bans
 
-    @Override
-    public void run(){
-        while(true){
-            int syncInterval = ((60 * 1000) * plugin.getConfigs().getSyncInterval());
-            if(syncInterval < ((60 * 1000) * 60)){
-                syncInterval = ((60 * 1000) * 60);
-            }
-            while(plugin.apiServer == null){
-                //waiting for server select
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {}
-            }
-
-            // check isEnable auto syncing feature
-            if (plugin.getConfigs().isEnableAutoSync()){
-            	this.startSync();
-                plugin.lastSync = System.currentTimeMillis() / 1000;
-            }
-
-            try {
-                Thread.sleep(syncInterval);
-            } catch (InterruptedException e) {}
-        }
-    }
-
-    public void goRequest() {
-    	this.startSync();
-    }
-
-	public void startSync(){
-        if(plugin.syncRunning){
-            return;
-        }
-        plugin.syncRunning = true;
-        
-        try{
-            boolean goNext = true;
-        	while(goNext){
-        		if(String.valueOf(plugin.lastType).equals("") || String.valueOf(plugin.lastType)==null || String.valueOf(plugin.lastID)==null || String.valueOf(plugin.lastID).equals("")){
-        			plugin.lastType = "bans";
-        			plugin.lastID = 0;
-        			goNext =false;
-        			System.out.println(ChatColor.RED+"MCBans: Error resetting sync. Please report this to an MCBans developer.");
-        		}else{
-	                JsonHandler webHandle = new JsonHandler( plugin );
-	                HashMap<String, String> url_items = new HashMap<String, String>();
-	                url_items.put( "lastId", String.valueOf(plugin.lastID) );
-	                url_items.put( "lastType", String.valueOf(plugin.lastType) );
-	                url_items.put( "exec", "banSync" );
-	                JSONObject response = webHandle.hdl_jobj(url_items);
-	                try {
-	                    if(response.has("actions")){
-	                        if (response.getJSONArray("actions").length() > 0) {
-	                            for (int v = 0; v < response.getJSONArray("actions").length(); v++) {
-	                            	JSONObject plyer = response.getJSONArray("actions").getJSONObject(v);
-	                            	//plugin.act( plyer.getString("do"), plyer.getString("uuid"));
-	                            	OfflinePlayer d = plugin.getServer().getPlayer(plyer.getString("name"));
-	                    	    	if (d != null){
-	                    		    	if(d.isBanned()){
-	                    		            if(plyer.getString("do").equals("unban")){
-	                    		            	if (plugin.getServer().getBanList(BanList.Type.NAME).isBanned(d.getName())){
-	                    		            		plugin.getServer().getBanList(BanList.Type.NAME).pardon(d.getName());
-	                    		                }
-	                    		            }
-	                    		        }else{
-	                    		            if(plyer.getString("do").equals("ban")){
-	                    		                if (!plugin.getServer().getBanList(BanList.Type.NAME).isBanned(d.getName())){
-	                    		                	plugin.getServer().getBanList(BanList.Type.NAME).addBan(d.getName(), "", new Date(), "sync");
-	                    		                }
-	                    		                PlayerListener.cache.invalidate(plyer.getString("name"));
-	                    		            }
-	                    		        }
-	                    	    	}
-	                            }
-	                        }
-	                    }
-	                    if(response.has("lastid")){
-	                    	if(response.getLong("lastid") == 0 && plugin.lastType.equalsIgnoreCase("bans")){
-	                    		plugin.lastType = "sync";
-	                    		plugin.lastID = 0;
-	                    		plugin.debug("Bans have been retrieved!");
-	                        }else if(plugin.lastID==response.getLong("lastid") && plugin.lastType.equalsIgnoreCase("sync")){
-	                        	plugin.debug("Sync has completed!");
-	                        	goNext = false;
-	                        }else{
-	                        	plugin.debug("Received "+plugin.lastType+" from: "+plugin.lastID+" to: "+response.getLong("lastid"));
-	                        	plugin.lastID=response.getLong("lastid");
-	                        }
-	            		}
-	                    save();
-	                } catch (JSONException e) {
-	                    if(plugin.getConfigs().isDebug()){
-	                        e.printStackTrace();
-	                    }
-	                } catch (NullPointerException e) {
-	                    if(plugin.getConfigs().isDebug()){
-	                        e.printStackTrace();
-	                    }
-	                }
-	                try {
-	                    Thread.sleep(5000);
-	                } catch (InterruptedException ignore) {}
-        		}
-            }
-        } finally {
-            plugin.syncRunning = false;
-        }
+                  }else {
+                    plugin.getServer().getBanList(BanList.Type.NAME).addBan(ban.getPlayer().getName(), ban.getReason(), null, ban.getId() + ":mcbans:" + ((ban.getAdmin() != null) ? ban.getAdmin().getName() : "console"));
+                  }
+                }
+              }.runTaskLater(plugin, 0);
+              lastBanId.set((ban.getId()> lastBanId.get())?ban.getId():lastBanId.get());
+            });
+          }
+        });
+        plugin.debug("Received bans from: " + plugin.lastID + " to: " + lastBanId.get());
+        plugin.lastID = lastBanId.get();
         plugin.lastSync = System.currentTimeMillis() / 1000;
         save();
+      } catch (NullPointerException e) {
+        if (plugin.getConfigs().isDebug()) {
+          e.printStackTrace();
+        }
+      } catch (ClassNotFoundException e) {
+        if (plugin.getConfigs().isDebug()) {
+          e.printStackTrace();
+        }
+      }
+    } catch (IOException ioException) {
+      ioException.printStackTrace();
+    } catch (BadApiKeyException badApiKeyException) {
+      badApiKeyException.printStackTrace();
+    } catch (InterruptedException interruptedException) {
+      interruptedException.printStackTrace();
+    } catch (TooLargeException tooLargeException) {
+      tooLargeException.printStackTrace();
+    } finally {
+      plugin.syncRunning = false;
     }
-    public void save(){
-    	plugin.lastSyncs.setProperty("lastId", String.valueOf(plugin.lastID));
-    	plugin.lastSyncs.setProperty("lastType", String.valueOf(plugin.lastType));
-    	try {
-			plugin.lastSyncs.store(new FileOutputStream(plugin.syncIni), "Syncing ban information.");
-		} catch (FileNotFoundException e) {
-			if(plugin.getConfigs().isDebug()){
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			if(plugin.getConfigs().isDebug()){
-				e.printStackTrace();
-			}
-		}
+  }
+  public void start(){
+    new Timer().scheduleAtFixedRate(new TimerTask() {
+      public void run() {
+        if (plugin.getConfigs().isEnableAutoSync()) {
+          startSync();
+          plugin.getLog().info("Completed ban sync.");
+        }
+      }
+    }, 0, 1000*60*5); // repeat every 5 minutes.
+  }
+
+  public void save() {
+    plugin.lastSyncs.setProperty("lastId", String.valueOf(plugin.lastID));
+    try {
+      plugin.lastSyncs.store(new FileOutputStream(plugin.syncIni), "Syncing ban information.");
+    } catch (FileNotFoundException e) {
+      if (plugin.getConfigs().isDebug()) {
+        e.printStackTrace();
+      }
+    } catch (IOException e) {
+      if (plugin.getConfigs().isDebug()) {
+        e.printStackTrace();
+      }
     }
+  }
 }

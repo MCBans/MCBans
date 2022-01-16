@@ -1,7 +1,8 @@
 group 'mcbans'
-version '5.0alpha'
+version '5.0.1alpha'
 
 apply plugin: 'java'
+apply plugin: 'java-library'
 
 sourceCompatibility = 1.8
 
