@@ -36,10 +36,10 @@ public class Kick {
 
     public void run() {
     	Player playertmp = null;
-    	if(!playerUUID.equals("")){
-    		playertmp = MCBans.getPlayer(plugin,playerUUID);
+    	if(playerUUID!=null){
+    		playertmp = MCBans.getPlayer(plugin, MCBans.fromString(playerUUID));
     	}else{
-    		playertmp = (useExactName) ? plugin.getServer().getPlayerExact(playerName) : plugin.getServer().getPlayer(playerName);
+    		playertmp = (useExactName) ? MCBans.getPlayer(plugin, playerName) : plugin.getServer().getPlayer(playerName);
     	}
     	final Player player = playertmp;
         if (player != null) {

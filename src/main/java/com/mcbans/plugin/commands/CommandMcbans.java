@@ -127,7 +127,7 @@ public class CommandMcbans extends BaseCommand{
 
             // Check if all sync
             if (args.size() > 0 && args.get(0).equalsIgnoreCase("all")){
-                send(ChatColor.GREEN + "Resyncing with MCBans API!");
+                send(ChatColor.GREEN + "Resyncing with MCBans!");
                 ManualResync manualSyncBanRunner = new ManualResync(plugin, senderName);
                 new Thread(manualSyncBanRunner).start();
             }else{
@@ -137,7 +137,6 @@ public class CommandMcbans extends BaseCommand{
                 }
                 long ht = (plugin.lastSync + syncInterval) - (System.currentTimeMillis() / 1000);
                 if (ht > 10) {
-                    send(ChatColor.GREEN + "Sync has started. This will take a few moments to complete.");
                     ManualSync manualSyncBanRunner = new ManualSync(plugin, senderName);
                     (new Thread(manualSyncBanRunner)).start();
                 } else {
@@ -209,7 +208,7 @@ public class CommandMcbans extends BaseCommand{
             return;
         }
         /* for MCBans Mod */
-        if (first.equalsIgnoreCase("staff") && player != null && plugin.mcbStaff.contains(player.getName())){
+        if (first.equalsIgnoreCase("staff") && senderPlayer != null && plugin.mcbStaff.contains(senderPlayer.getName())){
             if (args.size() > 0 && args.get(0).equalsIgnoreCase("perms")){
                 send("&6-=== All Online Players Perms ===-");
                 for (Perms perm : Perms.values()){
@@ -225,14 +224,14 @@ public class CommandMcbans extends BaseCommand{
                 send("&6NCP: &e" + plugin.isEnabledNCP() + " &6AC: &e" + plugin.isEnabledAC());
             }else if(args.size() > 0 && args.get(0).equalsIgnoreCase("verify")) {
                 //Send to console
-                Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + player.getName() + " is an MCBans staff member.");
+                Util.message(Bukkit.getConsoleSender(), ChatColor.AQUA + senderPlayer.getName() + " is an MCBans staff member.");
             	//All players who should be able to see the message
                 Set<Player> players = Perms.VIEW_STAFF.getPlayers();
                 players.addAll(Perms.ADMIN.getPlayers());
                 players.addAll(Perms.BAN_GLOBAL.getPlayers());
                 //Send it
                 for (Player p : players){
-                    Util.message(p, ChatColor.AQUA + localize("isMCBansMod", I18n.PLAYER, player.getName()));
+                    Util.message(p, ChatColor.AQUA + localize("isMCBansMod", I18n.PLAYER, senderPlayer.getName()));
                 }
             }else{
                 send("&6-=== Server Settings ===-");

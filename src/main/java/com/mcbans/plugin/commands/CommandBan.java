@@ -92,7 +92,7 @@ public class CommandBan extends BaseCommand{
 
         // Start
         if (banControl == null){
-            Util.message(sender, ChatColor.RED + "Internal error. Please report console logs to an MCBans developer.");
+            Util.message(sender, ChatColor.RED + "No valid ban type specified.");
             throw new RuntimeException("Undefined BanType: " + type.name());
         }
         banControl.run();

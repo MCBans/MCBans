@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.mcbans.utils.IPTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -23,23 +24,25 @@ public abstract class BaseCommand {
     protected MCBans plugin;
     protected ConfigurationManager config;
     protected CommandSender sender;
-    protected String command;
+    protected String command=null;
 
     // Needs init
     protected List<String> args = new ArrayList<String>();
-    protected String senderName, senderUUID;
-    protected Player player;
-    protected boolean isPlayer;
+
+    // Sender
+    protected Player senderPlayer = null;
+    protected String senderName = null;
+    protected String senderUUID = null;
 
     // Set this class if banning (needs init)
-    protected String target = "";
-    protected String targetIP = "";
-    protected String targetUUID = "";
+    protected String target = null;
+    protected String targetIP = null;
+    protected String targetUUID = null;
 
     // Set extend class constructor (Command property)
-    protected String name;
+    protected String name = null;
     protected int argLength = 0;
-    protected String usage;
+    protected String usage = null;
     protected boolean bePlayer = false;
     protected boolean banning = false;
 
@@ -75,10 +78,9 @@ public abstract class BaseCommand {
             return true;
         }
         if (sender instanceof Player){
-            player = (Player)sender;
-            senderName = player.getName();
-            //senderUUID = player.getUniqueId().toString();
-            isPlayer = true;
+            senderPlayer = (Player)sender;
+            senderName = senderPlayer.getName();
+            senderUUID = senderPlayer.getUniqueId().toString().replaceAll("-", "");
         }
 
         // Check permission
@@ -94,13 +96,13 @@ public abstract class BaseCommand {
             // target = args.remove(0); // Don't touch args here
             target = args.get(0).trim();
             // get targetIP if available
-            final Player targetPlayer = Bukkit.getPlayerExact(target);
+            final Player targetPlayer = MCBans.getPlayer(plugin, target);
             if (targetPlayer != null && targetPlayer.isOnline()){
                 InetSocketAddress socket = targetPlayer.getAddress();
-                //Not all IPs are succcessfully resolved
+                //Not all IPs are successfully resolved
                 //This prevents players from being unbannable/kickable in this rare case
                 if(socket.isUnresolved()) {
-                    targetIP = socket.getHostString();
+                    targetIP = null;
                 } else {
                     targetIP = socket.getAddress().getHostAddress();
                 }
@@ -109,9 +111,9 @@ public abstract class BaseCommand {
             if (!Util.isValidName(target)){
             	if(Util.isValidUUID(target)){
             		targetUUID = target;
-            		target = "";
+            		target = null;
             	}else{
-            		if(Util.isValidIP(target)){
+            		if(IPTools.validBanIP(target)){
             			targetIP = target;
             		}else{
             			Util.message(sender, ChatColor.RED + localize("invalidName"));
@@ -143,13 +145,12 @@ public abstract class BaseCommand {
      */
     private void init(){
         this.args.clear();
-        this.player = null;
-        this.isPlayer = false;
+        this.senderPlayer = null;
         this.senderName = "Console";
 
-        this.target = "";
-        this.targetUUID = "";
-        this.targetIP = "";
+        this.target = null;
+        this.targetUUID = null;
+        this.targetIP = null;
     }
 
     /**
@@ -181,8 +182,8 @@ public abstract class BaseCommand {
     private void check() throws CommandException {
         if(banning) {
             if (sender instanceof Player) {
-                if(targetUUID.isEmpty()) {
-                    if (!Util.checkVault((Player) sender, Bukkit.getOfflinePlayer(target))) {
+                if(targetUUID==null) {
+                    if (!Util.checkVault((Player) sender, Bukkit.getPlayerExact(target))) {
                         throw new CommandException(ChatColor.RED + localize("permissionDenied"));
                     }
                 } else {

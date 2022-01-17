@@ -22,6 +22,7 @@ public class Client {
         public void bans(List<Ban> bans){}
         public void err(String error){}
         public void ack(){}
+        public void partial(long total, long current){}
     }
     public static Client cast(Client client) {
         return new Client(client);
@@ -32,7 +33,7 @@ public class Client {
         setOutputStream(c.getOutputStream());
     }
     public Client(String apiKey) throws IOException, BadApiKeyException, TooLargeException {
-        client = new Socket("api.v4.mcbans.com", 8082);
+        client = new Socket("api.v4.direct.mcbans.com", 8082);
         client.setKeepAlive(true);
         client.setSoTimeout(1000);
         outputStream = client.getOutputStream();

@@ -1,6 +1,7 @@
 package com.mcbans.plugin.commands;
 
 import com.mcbans.plugin.request.BanIpRequest;
+import com.mcbans.utils.IPTools;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import com.mcbans.plugin.callBacks.MessageCallback;
@@ -29,7 +30,7 @@ public class CommandBanip extends BaseCommand{
         }
         
         // check isValid IP address
-        if (!Util.isValidIP(target)){
+        if (!IPTools.validBanIP(target)){
             throw new CommandException(ChatColor.RED + localize("invalidIP"));
         }
 

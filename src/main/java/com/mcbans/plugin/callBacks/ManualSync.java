@@ -33,8 +33,24 @@ public class ManualSync implements Runnable {
       Util.message(commandSend, ChatColor.GREEN + "Sync is already running.");
       return;
     }
-    new BanSync(plugin).start();
+    Util.message(commandSend, ChatColor.GREEN + "Sync started at: "+plugin.lastID);
+    new Thread(()->new BanSync(plugin).startSync(new BanSync.Responder(){
+      @Override
+      void ack() {
+        Util.message(commandSend, ChatColor.GREEN + "Sync is complete. lastBanId: "+plugin.lastID);
+      }
 
-    Util.message(commandSend, ChatColor.GREEN + "Sync is complete. lastBanId: "+plugin.lastID);
+      @Override
+      void partial(long total, long current) {
+        Util.message(commandSend, ChatColor.YELLOW + "Current Percentage: "+Math.round((Long.valueOf(current).doubleValue()/Long.valueOf(total))*100)+"%");
+      }
+
+      @Override
+      void error() {
+        Util.message(commandSend, ChatColor.RED + "Error syncing bans.");
+      }
+    })).start();
+
+
   }
 }

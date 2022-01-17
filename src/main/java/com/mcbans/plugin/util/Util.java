@@ -32,7 +32,7 @@ public class Util {
    */
   public static void message(final CommandSender target, String msg) {
     if (msg != null) {
-      msg = MCBans.getPrefix() + ChatColor.WHITE + msg;
+      msg = MCBans.getPrefix() + ChatColor.WHITE +" "+ msg;
       String finalMsg = msg;
       if (target != null && target instanceof Player) {
         new BukkitRunnable() {
@@ -177,8 +177,8 @@ public class Util {
   public static boolean isValidName(final String name) {
     if (name == null) return false;
 
-    final String regex = "^[A-Za-z0-9_]{2,16}$";
-    if (!Pattern.compile(regex).matcher(name).matches()) {
+    final String regex = "^[A-Za-z0-9_]{3,16}$";
+    if (!name.matches(regex)) {
       return false;
     }
 
@@ -188,8 +188,8 @@ public class Util {
   public static boolean isValidUUID(final String name) {
     if (name == null) return false;
 
-    final String regex = "^[A-Za-z0-9_]{32}$";
-    if (!Pattern.compile(regex).matcher(name.replaceAll("(?im)-", "")).matches()) {
+    final String regex = "^[A-Za-z0-9]{32}$";
+    if (!name.replaceAll("(?im)-", "").matches(regex)) {
       return false;
     }
 
@@ -224,18 +224,6 @@ public class Util {
       return false;
     }
     return true;
-  }
-
-  /**
-   * Check string is valid IP
-   *
-   * @param str String to check
-   * @return tru if valid ip address
-   */
-  public static boolean isValidIP(String str) {
-    if (str == null) return false;
-    Matcher matcher = Pattern.compile(IP_PATTERN).matcher(str);
-    return matcher.matches();
   }
 
   public static boolean checkVault(Player sender, OfflinePlayer victim) {

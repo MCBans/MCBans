@@ -37,6 +37,7 @@ public class BanSyncClient extends Client{
             new TypeToken<List<Ban>>(){}
           )
         );
+        responseHandler.partial(chunks, i+1);
         WriteToOutputStream.writeBoolean(getOutputStream(), true);
       }
     }

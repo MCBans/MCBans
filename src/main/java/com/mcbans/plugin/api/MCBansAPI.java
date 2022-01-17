@@ -8,6 +8,7 @@ import com.mcbans.plugin.callBacks.AltLookupCallback;
 import com.mcbans.plugin.callBacks.BanLookupCallback;
 import com.mcbans.plugin.callBacks.LookupCallback;
 import com.mcbans.plugin.callBacks.MessageCallback;
+import com.mcbans.utils.IPTools;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -102,7 +103,7 @@ public class MCBansAPI {
             plugin.getLog().info("Invalid usage (null): unBan");
             return;
         }
-        if (!Util.isValidName(targetName) && !Util.isValidIP(targetName)){
+        if (!Util.isValidName(targetName) && !IPTools.validBanIP(targetName)){
             plugin.getLog().info("The target you are trying to unban is not a valid name or IP format!");
             return;
         }
@@ -124,7 +125,7 @@ public class MCBansAPI {
             plugin.getLog().info("Invalid usage (null): ipBan");
             return;
         }
-        if (!Util.isValidIP(ip)){
+        if (!IPTools.validBanIP(ip)){
             plugin.getLog().info("Invalid IP address (" + ip + "): ipBan");
             return;
         }

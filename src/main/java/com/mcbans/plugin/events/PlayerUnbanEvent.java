@@ -3,6 +3,7 @@ package com.mcbans.plugin.events;
 import java.util.UUID;
 
 import com.mcbans.plugin.util.Util;
+import com.mcbans.utils.IPTools;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -43,7 +44,7 @@ public class PlayerUnbanEvent extends Event implements Cancellable {
     }
     
     public boolean isIPBan(){
-        return Util.isValidIP(this.target);
+        return IPTools.validBanIP(this.target);
     }
 
     @Override

@@ -1,10 +1,15 @@
 package com.mcbans.plugin.request;
 
 
+import java.io.IOException;
 import java.util.Locale;
 
+import com.mcbans.client.*;
+import com.mcbans.plugin.events.PlayerBanEvent;
 import com.mcbans.plugin.events.PlayerIPBanEvent;
 import com.mcbans.plugin.events.PlayerIPBannedEvent;
+import com.mcbans.utils.IPTools;
+import com.mcbans.utils.TooLargeException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -26,12 +31,6 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
 
     public BanIpRequest(final MCBans plugin, final MessageCallback callback, final String ip, final String reason, final String issuedBy, String issuedByUUID){
         super(plugin, callback);
-
-        this.items.put("exec", "ipBan");
-        this.items.put("ip", ip);
-        this.items.put("reason", reason);
-        this.items.put("admin", issuedBy);
-        this.items.put("admin_uuid", issuedByUUID);
         
         this.ip = ip;
         this.reason = reason;
@@ -52,56 +51,35 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
         reason = ipBanEvent.getReason();
         
         // Add default bukkit ipban
-        if (Util.isValidIP(ip)){
+        if (IPTools.validIP(ip)){
             Bukkit.getServer().banIP(ip);
         }
         new Thread(()->{
-            JSONObject response = this.request_JOBJ();
             try {
-                if (response != null && response.has("result")){
-                    final String result = response.getString("result").trim().toLowerCase(Locale.ENGLISH);
-                    if (result.equals("y")){
-                        //callback.setMessage(Util.color(msg))
-                        callback.setBroadcastMessage(ChatColor.GREEN + localize("ipBanSuccess", I18n.IP, this.ip, I18n.SENDER, this.issuedBy, I18n.REASON, this.reason));
+                Client client = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
+                BanIpClient.cast(client).banIp(ip, reason, issuedByUUID, new Client.ResponseHandler(){
+                    @Override
+                    public void err(String error) {
+                        callback.error(ChatColor.RED + localize("invalidIP"));
+                        log.info(issuedBy + " tried to IPBan " + ip + "!");
+                    }
+                    @Override
+                    public void ack() {
+                        callback.setBroadcastMessage(ChatColor.GREEN + localize("ipBanSuccess", I18n.IP, ip, I18n.SENDER, issuedBy, I18n.REASON, reason));
                         callback.success();
-
-                        kickPlayerByIP(this.ip, reason);
-
+                        kickPlayerByIP(ip, reason);
                         log.info("IP " + ip + " has been banned [" + reason + "] [" + issuedBy + "]!");
                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, ()->plugin.getServer().getPluginManager().callEvent(new PlayerIPBannedEvent(ip, issuedBy, issuedByUUID, reason)), 0L);
-                    }else if (result.equals("a")){
-                        // equals("a") if already banned ip
-                        callback.error(ChatColor.RED + localize("ipBanAlready", I18n.IP, this.ip, I18n.SENDER, this.issuedBy, I18n.REASON, this.reason));
-                        log.info(issuedBy + " tried to IPBan " + ip + "!");
-                    }else if (result.equals("n")){
-                        // equals("n") if banning ip is formatted improperly
-                        callback.error(ChatColor.RED + localize("invalidIP"));
-                        log.info(issuedBy + " tried to IPBan " + ip + "!");
-                    }else if (result.equals("e")){
-                        // other error
-                        callback.error(ChatColor.RED + localize("invalidIP"));
-                        log.info(issuedBy + " tried to IPBan " + ip + "!");
-                    }else{
-                        log.severe("Invalid response result: " + result);
                     }
-                }else{
-                    callback.error(ChatColor.RED + "MCBans API appears to be down or unreachable!");
-                }
-            } catch (JSONException ex) {
-                if (response.toString().contains("error")) {
-                    if (response.toString().contains("Server Disabled")) {
-                        ActionLog.getInstance().severe("This server has been disabled by MCBans staff.");
-                        ActionLog.getInstance().severe("To appeal this decision, please file a ticket at forums.mcbans.com.");
-
-                        callback.error("This server has been disabled by MCBans staff.");
-                        return;
-                    }
-                }
-                ActionLog.getInstance().severe("A JSON error occurred while trying to localize lookup data.");
-                callback.error("An error occurred while parsing JSON data.");
-                if (plugin.getConfigs().isDebug()){
-                    ex.printStackTrace();
-                }
+                });
+                ConnectionPool.release(client);
+            } catch (IOException e) {
+                Util.message(issuedBy, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+                log.warning("Error occurred with local banning. Please report this to an MCBans developer.");
+            } catch (BadApiKeyException | TooLargeException | InterruptedException e) {
+                e.printStackTrace();
+                log.info(issuedBy + " tried to ip ban " + ip + " with the reason [" + reason + "]!");
+                Util.message(issuedBy, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
             }
         }).start();
     }
