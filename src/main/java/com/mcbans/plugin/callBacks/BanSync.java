@@ -57,7 +57,11 @@ public class BanSync {
     if (plugin.syncRunning) {
       return;
     }
+
     boolean resync = plugin.lastID == 0;
+    if(plugin.lastSyncs.getProperty("v2", "false").equals("false")){
+      resync = true;
+    }
     plugin.syncRunning = true;
     try {
       Client client = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
@@ -77,6 +81,7 @@ public class BanSync {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss Z");
         List<Ban> finalBansWithNoUUID = bansWithNoUUID;
         OutputStream finalOut = out;
+        boolean finalResync = resync;
         BanSyncClient.cast(client).getBanSync(plugin.lastID, new Client.ResponseHandler() {
           @Override
           public void bans(List<Ban> bans) {
@@ -85,7 +90,7 @@ public class BanSync {
             ).forEach(
               ban -> {
                 if (ban.getId() > lastBanId.get()) lastBanId.set(ban.getId());
-                if (resync) {
+                if (finalResync) {
                   try {
                     if (ban.getPlayer() != null && ban.getPlayer().getUuid() != null && ban.getPlayer().getUuid().length() == 32) {
                       finalOut.write((((x.get() == 0) ? "" : ",") + "{" +
@@ -175,6 +180,7 @@ public class BanSync {
 
   public void save() {
     plugin.lastSyncs.setProperty("lastId", String.valueOf(plugin.lastID));
+    plugin.lastSyncs.setProperty("v2", "true");
     try {
       plugin.lastSyncs.store(new FileOutputStream(plugin.syncIni), "Syncing ban information.");
     } catch (FileNotFoundException e) {
