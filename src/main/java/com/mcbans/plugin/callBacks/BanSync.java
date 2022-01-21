@@ -61,6 +61,7 @@ public class BanSync {
     boolean resync = plugin.lastID == 0;
     if(plugin.lastSyncs.getProperty("v2", "false").equals("false")){
       resync = true;
+      plugin.lastID=0;
     }
     plugin.syncRunning = true;
     try {
