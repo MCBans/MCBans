@@ -183,7 +183,7 @@ public abstract class BaseCommand {
         if(banning) {
             if (sender instanceof Player) {
                 if(targetUUID==null) {
-                    if (!Util.checkVault((Player) sender, Bukkit.getPlayerExact(target))) {
+                    if (!Util.checkVault((Player) sender, Bukkit.getOfflinePlayer(target))) {
                         throw new CommandException(ChatColor.RED + localize("permissionDenied"));
                     }
                 } else {
