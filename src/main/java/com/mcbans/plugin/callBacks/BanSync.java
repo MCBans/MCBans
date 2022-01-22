@@ -94,14 +94,14 @@ public class BanSync {
                 if (finalResync) {
                   try {
                     if (ban.getPlayer() != null && ban.getPlayer().getUuid() != null && ban.getPlayer().getUuid().length() == 32) {
-                      finalOut.write((((x.get() == 0) ? "" : ",") + "{" +
-                        "\"uuid\":\"" + MCBans.fromString(ban.getPlayer().getUuid()) + "\"" +
-                        ",\"name\":\"" + ban.getPlayer().getName() + "\"" +
-                        ",\"created\":\"" + dateFormat.format(ban.getDate()) + "\"" +
-                        ",\"expires\":\"forever\"" +
-                        ",\"source\":\"" + ban.getId() + ":mcbans:" + ((ban.getAdmin() != null) ? ban.getAdmin().getName() : "console") + "\"" +
-                        ",\"reason\":" + new Gson().toJson(ban.getReason()) + " " +
-                        "}").getBytes(StandardCharsets.UTF_8));
+                      finalOut.write((((x.get() == 0) ? "" : ",") + "\n{" +
+                        "\n  \"uuid\":\"" + MCBans.fromString(ban.getPlayer().getUuid()) + "\"" +
+                        ",\n  \"name\":\"" + ban.getPlayer().getName() + "\"" +
+                        ",\n  \"created\":\"" + dateFormat.format(ban.getDate()) + "\"" +
+                        ",\n  \"expires\":\"forever\"" +
+                        ",\n  \"source\":\"" + ban.getId() + ":mcbans:" + ((ban.getAdmin() != null) ? ban.getAdmin().getName() : "console") + "\"" +
+                        ",\n  \"reason\":" + new Gson().toJson(ban.getReason()) +
+                        "\n}").getBytes(StandardCharsets.UTF_8));
                     } else {
                       finalBansWithNoUUID.add(ban);
                     }

@@ -3,6 +3,7 @@ package com.mcbans.domain.models.client;
 import java.io.Serializable;
 
 public class Server implements Serializable{
+    private long id;
     private String address;
     private double reputation;
 
@@ -28,5 +29,13 @@ public class Server implements Serializable{
 
     public void setReputation(double reputation) {
         this.reputation = reputation;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
