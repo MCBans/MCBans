@@ -14,6 +14,10 @@ public enum MCBansCommands {
     BanPlayer(20),
     BanIp(21),
 
+    // Player Inventory
+    GetPlayerInventory(50),
+    SavePlayerInventory(51),
+
     // Sync bans
     BanSync(25),
 

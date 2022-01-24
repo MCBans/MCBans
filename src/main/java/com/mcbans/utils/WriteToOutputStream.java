@@ -56,7 +56,7 @@ public class WriteToOutputStream {
         writeByteArray(outputStream, data);
     }
     public static void writeByteArray(OutputStream outputStream, byte[] array) throws IOException {
-        outputStream.write(ByteBuffer.allocate(8).putLong(array.length).array());
+        outputStream.write(ByteBuffer.allocate(8).putLong(Long.valueOf(array.length)).array());
         outputStream.write(array);
     }
 }

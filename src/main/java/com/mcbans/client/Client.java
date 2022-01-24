@@ -35,7 +35,7 @@ public class Client {
     public Client(String apiKey) throws IOException, BadApiKeyException, TooLargeException {
         client = new Socket("api.v4.direct.mcbans.com", 8082);
         client.setKeepAlive(true);
-        client.setSoTimeout(5000);
+        client.setSoTimeout(15000);
         outputStream = client.getOutputStream();
         inputStream = client.getInputStream();
         registerClient(apiKey);

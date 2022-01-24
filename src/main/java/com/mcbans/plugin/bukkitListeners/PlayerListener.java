@@ -7,18 +7,16 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import com.mcbans.client.BanStatusClient;
-import com.mcbans.client.Client;
-import com.mcbans.client.ConnectionPool;
+import com.mcbans.client.*;
 import com.mcbans.client.response.BanResponse;
 import com.mcbans.plugin.permission.Perms;
 import com.mcbans.plugin.request.DisconnectRequest;
+import com.mcbans.utils.ObjectSerializer;
+import com.mcbans.utils.TooLargeException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -37,6 +35,8 @@ import com.mcbans.plugin.ConfigurationManager;
 import com.mcbans.plugin.I18n;
 import com.mcbans.plugin.MCBans;
 import com.mcbans.plugin.util.Util;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import static com.mcbans.plugin.I18n.localize;
 
@@ -171,12 +171,64 @@ public class PlayerListener implements Listener {
         Util.message(player, ChatColor.RED + "This server is secured by MCBans.");
       }
     }
+    new Thread(()->{
+      try {
+        Client c = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
+        List<ItemStack[]> itemStacks = InventorySyncClient.cast(c).get(event.getPlayer());
+        ConnectionPool.release(c);
+        if(itemStacks!=null) {
+          new BukkitRunnable() {
+            @Override
+            public void run() {
+              event.getPlayer().getInventory().setContents(itemStacks.get(0));
+              event.getPlayer().getInventory().setExtraContents(itemStacks.get(1));
+              event.getPlayer().getInventory().setStorageContents(itemStacks.get(2));
+              event.getPlayer().getInventory().setArmorContents(itemStacks.get(3));
+            }
+          }.runTaskLater(plugin, 0);
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      } catch (BadApiKeyException e) {
+        e.printStackTrace();
+      } catch (TooLargeException e) {
+        e.printStackTrace();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+      }
+    }).start();
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerQuit(final PlayerQuitEvent event) {
     // send disconnect request
     (new Thread(new DisconnectRequest(plugin, event.getPlayer().getName()))).start();
+
+
+    new Thread(()->{
+      try {
+        Client c = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
+        InventorySyncClient isc = InventorySyncClient.cast(c);
+        List<ItemStack[]> inventories = new ArrayList(){{
+          add(event.getPlayer().getInventory().getContents());
+          add(event.getPlayer().getInventory().getExtraContents());
+          add(event.getPlayer().getInventory().getStorageContents());
+          add(event.getPlayer().getInventory().getArmorContents());
+        }};
+        isc.save(event.getPlayer(), inventories);
+        ConnectionPool.release(c);
+      } catch (IOException e) {
+        e.printStackTrace();
+      } catch (BadApiKeyException e) {
+        e.printStackTrace();
+      } catch (TooLargeException e) {
+        e.printStackTrace();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }).start();
 
     if (plugin.mcbStaff.contains(event.getPlayer().getName())) {
       plugin.mcbStaff.remove(event.getPlayer().getName());

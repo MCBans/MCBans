@@ -1,7 +1,14 @@
 package com.mcbans.utils;
 
 
+import org.bukkit.Bukkit;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
+
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ObjectSerializer {
 
@@ -37,4 +44,29 @@ public class ObjectSerializer {
     return (T) o;
   }
 
+  public static <T> byte[] serializeUsingBukkit(List<T> objects) throws IOException {
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+    dataOutput.writeInt(objects.size());
+    try {
+      for(T obj: objects){
+        dataOutput.writeObject(obj);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    dataOutput.close();
+    return outputStream.toByteArray();
+  }
+  public static <T> List<T> deserializeUsingBukkit(byte[] byteObject) throws IOException, ClassNotFoundException {
+    List<T> objects = new ArrayList<>();
+    ByteArrayInputStream inputStream = new ByteArrayInputStream(byteObject);
+    BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+    int size = dataInput.readInt();
+    for (int i = 0; i < size; i++) {
+      objects.add(i, (T) dataInput.readObject());
+    }
+    dataInput.close();
+    return objects;
+  }
 }

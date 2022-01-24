@@ -45,7 +45,7 @@ public class ConnectionPool {
             try {
               client.close();
             } catch (IOException ioException) {
-              ioException.printStackTrace();
+              System.out.println("client disconnected");
             }
           }
         }

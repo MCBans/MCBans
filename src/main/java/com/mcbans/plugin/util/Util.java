@@ -1,12 +1,14 @@
 package com.mcbans.plugin.util;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.io.IOException;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.mcbans.plugin.MCBans;
 import com.mcbans.plugin.permission.Perms;
+import com.mcbans.utils.ObjectSerializer;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -15,6 +17,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -254,4 +257,35 @@ public class Util {
     }
     return false;
   }
+  /*byte[] inventoryConvert(ItemStack[] itemStacks) throws IOException {
+    return ObjectSerializer.serialize(Arrays.stream(itemStacks).map(itemStack-> {
+      try {
+        return ObjectSerializer.serialize(itemStack.serialize());
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      return null;
+    }).collect(Collectors.toList()));
+  }
+  ItemStack[] inventoryConvert(byte[] invData) throws IOException, ClassNotFoundException {
+    List<byte[]> dataList = ObjectSerializer.deserialize(invData);
+    dataList.stream().map(data->{
+      try {
+        Map<String, Object> o = ObjectSerializer.deserialize(data);
+
+      } catch (IOException e) {
+        e.printStackTrace();
+      } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+      }
+    });
+    return ObjectSerializer.serialize(Arrays.stream(itemStacks).map(itemStack-> {
+      try {
+        return ObjectSerializer.serialize(itemStack.serialize());
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      return null;
+    }).collect(Collectors.toList()));
+  }*/
 }

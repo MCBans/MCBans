@@ -34,7 +34,7 @@ public class ManualResync implements Runnable {
       Util.message(commandSend, ChatColor.GREEN + "Sync is already running.");
       return;
     }
-    plugin.lastID = 0;
+    plugin.lastID = -1;
     Util.message(commandSend, ChatColor.GREEN + "Sync started at: "+plugin.lastID);
     new Thread(()->new BanSync(plugin).startSync(new BanSync.Responder(){
       @Override

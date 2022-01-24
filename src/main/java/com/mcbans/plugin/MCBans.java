@@ -144,7 +144,7 @@ public class MCBans extends JavaPlugin {
 
     // ban sync
     bansync = new BanSync(this);
-    bansync.startSync();
+    bansync.start();
 
     ServerChoose serverChooser = new ServerChoose(this);
     (new Thread(serverChooser)).start();

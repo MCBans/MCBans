@@ -58,7 +58,7 @@ public class BanSync {
       return;
     }
 
-    boolean resync = plugin.lastID == 0;
+    boolean resync = plugin.lastID == -1;
     if(plugin.lastSyncs.getProperty("v2", "false").equals("false")){
       resync = true;
       plugin.lastID=0;
