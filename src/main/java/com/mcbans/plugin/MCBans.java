@@ -50,7 +50,7 @@ public class MCBans extends JavaPlugin {
   public Thread callbackThread = null;
   public BanSync bansync = null;
   public Thread syncBan = null;
-  public long lastID = 0;
+  public long lastID = -1;
   public File syncIni = null;
   public long lastSync = 0;
   public String lastType = "";
@@ -110,7 +110,7 @@ public class MCBans extends JavaPlugin {
       }
     } else {
       lastType = "bans";
-      lastID = 0;
+      lastID = -1;
     }
 
     // load configuration

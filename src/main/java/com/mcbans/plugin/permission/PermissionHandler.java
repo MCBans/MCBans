@@ -117,7 +117,7 @@ public class PermissionHandler {
 
             // SuperPerms
             case SUPERPERMS:
-                return player.hasPermission(permission);
+                return player.hasPermission(new org.bukkit.permissions.Permission(permission));
 
             // Ops
             case OPS:

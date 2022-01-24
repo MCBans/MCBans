@@ -184,6 +184,9 @@ public class PlayerListener implements Listener {
               event.getPlayer().getInventory().setExtraContents(itemStacks.get(1));
               event.getPlayer().getInventory().setStorageContents(itemStacks.get(2));
               event.getPlayer().getInventory().setArmorContents(itemStacks.get(3));
+              if(itemStacks.size()>4){
+                event.getPlayer().getEnderChest().setContents(itemStacks.get(4));
+              }
             }
           }.runTaskLater(plugin, 0);
         }
@@ -216,6 +219,7 @@ public class PlayerListener implements Listener {
           add(event.getPlayer().getInventory().getExtraContents());
           add(event.getPlayer().getInventory().getStorageContents());
           add(event.getPlayer().getInventory().getArmorContents());
+          add(event.getPlayer().getEnderChest().getContents());
         }};
         isc.save(event.getPlayer(), inventories);
         ConnectionPool.release(c);
