@@ -1,9 +1,13 @@
 package com.mcbans.plugin.commands;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import java.util.stream.Collectors;
 
+import com.mcbans.plugin.MCBans;
 import org.bukkit.command.CommandSender;
 
 import com.mcbans.plugin.BanType;
@@ -19,7 +23,33 @@ public class CommandTempban extends BaseCommand{
         banning = true;
     }
 
-    @Override
+  @Override
+  protected List<String> tabComplete(MCBans plugin, CommandSender sender, String cmd, String[] preArgs) {
+    switch(preArgs.length){
+      case 1:
+        return plugin.getServer().getOnlinePlayers().stream().map(p->p.getName()).filter(p->p.startsWith(preArgs[0])).collect(Collectors.toList());
+      case 2:
+        if(preArgs[1].matches("([0-9]+)")){
+          return new ArrayList(){{
+            add(preArgs[1]+"seconds");
+            add(preArgs[1]+"minutes");
+            add(preArgs[1]+"hours");
+            add(preArgs[1]+"days");
+            add(preArgs[1]+"weeks");
+          }};
+        }else if(preArgs[1].equals("")){
+          return new ArrayList(){{
+            add("30minutes");
+            add("5hours");
+            add("1day");
+            add("1week");
+          }};
+        }
+    }
+    return new ArrayList<>();
+  }
+
+  @Override
     public void execute() {
         args.remove(0); // remove target
 

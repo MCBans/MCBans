@@ -180,7 +180,7 @@ public abstract class BaseCommand {
     }
 
     private void check() throws CommandException {
-        if(banning) {
+        /*if(banning) {
             if (sender instanceof Player) {
                 if(targetUUID==null) {
                     if (!Util.checkVault((Player) sender, Bukkit.getOfflinePlayer(target))) {
@@ -192,6 +192,6 @@ public abstract class BaseCommand {
                     }
                 }
             }
-        }
+        }*/
     }
 }

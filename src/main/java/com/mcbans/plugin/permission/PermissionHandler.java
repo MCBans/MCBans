@@ -142,7 +142,7 @@ public class PermissionHandler {
         switch (permType){
             // Vault
             case VAULT:
-                return vaultPermission.has(worldName, playerName, permission);
+                return vaultPermission.playerHas(worldName, plugin.getServer().getPlayer(playerName), permission);
 
             // PEX
             case PEX:
@@ -210,6 +210,7 @@ public class PermissionHandler {
             if (permissionProvider != null){
                 vaultPermission = permissionProvider.getProvider();
             }
+
         }catch (Exception ex){
             log.warning("Unexpected error trying to setup Vault permissions!");
             ex.printStackTrace();

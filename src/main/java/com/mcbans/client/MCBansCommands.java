@@ -21,6 +21,9 @@ public enum MCBansCommands {
     // Sync bans
     BanSync(25),
 
+    // Information Callback
+    InformationCallback(40),
+
     // Unban commands
     UnBanPlayer(28),
     UnBanIp(29);

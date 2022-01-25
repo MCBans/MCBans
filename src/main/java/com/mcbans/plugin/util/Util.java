@@ -229,34 +229,6 @@ public class Util {
     return true;
   }
 
-  public static boolean checkVault(Player sender, OfflinePlayer victim) {
-    if (!VaultStuff.hasVault()) {
-      return true;
-    }
-
-    try {
-      Chat c = ((RegisteredServiceProvider<Chat>) VaultStuff.getChat()).getProvider();
-
-      Permission p = ((RegisteredServiceProvider<Permission>) VaultStuff.getPerms()).getProvider();
-
-      //Priority of sender
-      int gpri = c.getGroupInfoInteger("", p.getPrimaryGroup(sender), "mcbansPriority", 0);
-
-      //Priority of victim
-      int gpri2 = c.getGroupInfoInteger("", p.getPrimaryGroup("", victim), "mcbansPriority", 0);
-
-      if (gpri > gpri2) {
-        return true;
-      }
-    } catch (NullPointerException e) {
-      e.printStackTrace();
-      return true;
-    } catch (ClassCastException e) {
-      e.printStackTrace();
-      return true;
-    }
-    return false;
-  }
   /*byte[] inventoryConvert(ItemStack[] itemStacks) throws IOException {
     return ObjectSerializer.serialize(Arrays.stream(itemStacks).map(itemStack-> {
       try {

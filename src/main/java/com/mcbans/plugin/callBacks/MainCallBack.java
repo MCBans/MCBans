@@ -1,15 +1,24 @@
 package com.mcbans.plugin.callBacks;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.stream.Collectors;
 
+import com.mcbans.client.BadApiKeyException;
+import com.mcbans.client.Client;
+import com.mcbans.client.ConnectionPool;
+import com.mcbans.client.InformationCallbackClient;
 import com.mcbans.plugin.request.JsonHandler;
+import com.mcbans.utils.TooLargeException;
 import org.bukkit.ChatColor;
 
 import com.mcbans.plugin.ActionLog;
 import com.mcbans.plugin.MCBans;
 import com.mcbans.plugin.permission.Perms;
 
-public class MainCallBack implements Runnable {
+public class MainCallBack {
     private final MCBans plugin;
     private final ActionLog log;
     public long last_req=0;
@@ -19,54 +28,46 @@ public class MainCallBack implements Runnable {
         log = plugin.getLog();
     }
 
-    @Override
-    public void run(){
+    public void start(){
         int callBackInterval = ((60 * 1000) * plugin.getConfigs().getCallBackInterval());
         if(callBackInterval < ((60 * 1000) * 15)){
             callBackInterval = ((60 * 1000) * 15);
         }
+        int finalCallBackInterval = callBackInterval;
 
-        while(true){
-            while(plugin.apiServer == null){
-                //waiting for server select
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {}
-            }
-            this.mainRequest();
-            plugin.lastCallBack = System.currentTimeMillis() / 1000;
-            try {
-                Thread.sleep(callBackInterval);
-            } catch (InterruptedException e) {}
-        }
-    }
-
-    public void goRequest() {
-        mainRequest();
-    }
-
-    private void mainRequest(){
-        JsonHandler webHandle = new JsonHandler( plugin );
-        HashMap<String, String> url_items = new HashMap<String, String>();
-        url_items.put( "maxPlayers", String.valueOf( plugin.getServer().getMaxPlayers() ) );
-        //url_items.put( "playerList", this.playerList() );
-        url_items.put( "version", plugin.getDescription().getVersion() );
-        url_items.put( "exec", "callBack" );
-        HashMap<String, String> response = webHandle.mainRequest(url_items);
-        try {
-            if(response.containsKey("hasNotices")) {
-                for(String cb : response.keySet()) {
-                    if (cb.contains("notice")) {
-                        Perms.VIEW_BANS.message(ChatColor.GOLD + "Notice: " + ChatColor.WHITE + response.get(cb));
-                        log.info("MCBans Notice: " + response.get(cb));
-                    }
+            new Timer().scheduleAtFixedRate(new TimerTask() {
+                public void run() {
+                    new Thread(() -> {
+                        try {
+                            mainRequest();
+                            plugin.getLog().info("Completed main callback.");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (BadApiKeyException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (TooLargeException e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
+                    plugin.lastCallBack = System.currentTimeMillis() / 1000;
                 }
-            }
-        } catch (NullPointerException e) {
-            if(plugin.getConfigs().isDebug()){
-                e.printStackTrace();
-            }
-        }
+            }, 0, finalCallBackInterval); // repeat every 5 minutes.
+    }
+
+    private void mainRequest() throws IOException, BadApiKeyException, InterruptedException, TooLargeException {
+        Client c = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
+        InformationCallbackClient.cast(c).updateState(
+          plugin.getServer().getMaxPlayers(),
+          plugin.getServer().getOnlinePlayers().stream().map(p->p.getUniqueId().toString().replaceAll("-", "").toLowerCase()).collect(Collectors.toList()),
+          plugin.getDescription().getVersion(),
+          plugin.getServer().getVersion(),
+          plugin.getServer().getBukkitVersion(),
+          plugin.getServer().getOnlineMode(),
+          plugin.getServer().getName()
+        );
+        ConnectionPool.release(c);
     }
     /*private String playerList(){
 		StringBuilder playerList=new StringBuilder();

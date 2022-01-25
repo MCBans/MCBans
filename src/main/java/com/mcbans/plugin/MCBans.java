@@ -139,8 +139,7 @@ public class MCBans extends JavaPlugin {
     registerCommands();
 
     MainCallBack thisThread = new MainCallBack(this);
-    callbackThread = new Thread(thisThread);
-    callbackThread.start();
+    thisThread.start();
 
     // ban sync
     bansync = new BanSync(this);
