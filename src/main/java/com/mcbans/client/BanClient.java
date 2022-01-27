@@ -21,7 +21,7 @@ public class BanClient extends Client{
   }
 
   public void globalBan(String playerName, String playerUUID, String playerIP, String adminUUID, String reason, ResponseHandler responseHandler) throws IOException, ClassNotFoundException, TooLargeException {
-    sendCommand(MCBansCommands.BanPlayer);
+    sendCommand(ServerMCBansCommands.BanPlayer);
     WriteToOutputStream.writeString(getOutputStream(), playerName);
     if(playerUUID!=null){
       WriteToOutputStream.writeBoolean(getOutputStream(), true);
@@ -41,7 +41,7 @@ public class BanClient extends Client{
     }
   }
   public void localBan(String playerName, String playerUUID, String playerIP, String adminUUID, String reason, ResponseHandler responseHandler) throws IOException, ClassNotFoundException, TooLargeException {
-    sendCommand(MCBansCommands.BanPlayer);
+    sendCommand(ServerMCBansCommands.BanPlayer);
     WriteToOutputStream.writeString(getOutputStream(), playerName);
     if(playerUUID!=null){
       WriteToOutputStream.writeBoolean(getOutputStream(), true);
@@ -61,7 +61,7 @@ public class BanClient extends Client{
     }
   }
   public void tempBan(String playerName, String playerUUID, String playerIP, String adminUUID, String reason, String endInTimeString, ResponseHandler responseHandler) throws IOException, ClassNotFoundException, TooLargeException {
-    sendCommand(MCBansCommands.BanPlayer);
+    sendCommand(ServerMCBansCommands.BanPlayer);
     WriteToOutputStream.writeString(getOutputStream(), playerName);
     if(playerUUID!=null){
       WriteToOutputStream.writeBoolean(getOutputStream(), true);

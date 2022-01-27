@@ -106,8 +106,8 @@ enableAutoSync: true
 
 # autoSyncInterval:
 #   sync every "autoSyncInterval" and grab/delete bans in minutes
-#   DEFAULT: 5 (5 Minutes)
-autoSyncInterval: 5
+#   DEFAULT: 30 (30 Seconds)
+autoSyncInterval: 30
 
 #########################################################
 # Miscellaneous Settings

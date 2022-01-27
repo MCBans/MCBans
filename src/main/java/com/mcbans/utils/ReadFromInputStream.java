@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 
 public class ReadFromInputStream {
   static Gson gson = new Gson();
-  public static String readString(InputStream inputStream, long maxLength) throws IOException, TooLargeException {
+  public static String readString(InputStream inputStream, long maxLength) throws IOException, IndexOutOfBoundsException, TooLargeException {
     int dataLength = Long.valueOf(ByteBuffer.wrap(readByteData(inputStream, 4)).getInt()).intValue();
     if (dataLength > maxLength) {
       throw new TooLargeException();
@@ -19,29 +19,29 @@ public class ReadFromInputStream {
     return new String(readByteData(inputStream, dataLength), StandardCharsets.UTF_8);
   }
 
-  public static long readLong(InputStream inputStream) throws IOException {
+  public static long readLong(InputStream inputStream) throws IOException, IndexOutOfBoundsException {
     return Long.valueOf(ByteBuffer.wrap(readByteData(inputStream, 8)).getLong()).longValue();
   }
 
-  public static boolean readBoolean(InputStream inputStream) throws IOException {
+  public static boolean readBoolean(InputStream inputStream) throws IOException, IndexOutOfBoundsException {
     byte[] data = readByteData(inputStream, 1);
     return (data[0] == (byte) 1) ? true : false;
   }
 
-  public static byte readByte(InputStream inputStream) throws IOException {
+  public static byte readByte(InputStream inputStream) throws IOException, IndexOutOfBoundsException {
     byte[] data = readByteData(inputStream, 1);
     return data[0];
   }
 
-  public static int readInt(InputStream inputStream) throws IOException {
+  public static int readInt(InputStream inputStream) throws IOException, IndexOutOfBoundsException {
     return ByteBuffer.wrap(readByteData(inputStream, 4)).getInt();
   }
 
-  public static double readDouble(InputStream inputStream) throws IOException, TooLargeException {
+  public static double readDouble(InputStream inputStream) throws IOException, IndexOutOfBoundsException, TooLargeException {
     return ByteBuffer.wrap(readByteData(inputStream, 8)).getDouble();
   }
 
-  public static byte[] readByteArrayToStream(InputStream inputStream, long maxLength) throws IOException, TooLargeException {
+  public static byte[] readByteArrayToStream(InputStream inputStream, long maxLength) throws IOException, IndexOutOfBoundsException, TooLargeException {
     int dataLength = Long.valueOf(ByteBuffer.wrap(readByteData(inputStream, 8)).getLong()).intValue();
     if (dataLength > maxLength) {
       throw new TooLargeException();
@@ -65,7 +65,7 @@ public class ReadFromInputStream {
     return bb.array();
   }
 
-  public static byte[] readByteData(InputStream inputStream, int length) throws IOException {
+  public static byte[] readByteData(InputStream inputStream, int length) throws IOException, IndexOutOfBoundsException {
     ByteBuffer bb = ByteBuffer.allocate(length);
     int leftToRead = length;
     int readDataChunkSize = 1024 * 8;
@@ -80,6 +80,8 @@ public class ReadFromInputStream {
       System.out.println("Expected Total: "+length);
       System.out.println("Left To Read: "+leftToRead);
       System.out.println("=======================");*/
+      if(data.length<readData)
+        return null;
       bb.put(data, 0, readData);
     }
     return bb.array();

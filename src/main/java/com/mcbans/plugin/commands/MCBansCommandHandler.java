@@ -35,7 +35,7 @@ public class MCBansCommandHandler implements TabExecutor{
             return true;
         }
         
-        if (!(cmd instanceof CommandMcbans)){
+        if (!(cmd instanceof CommandMCBans)){
             if (!plugin.getConfigs().isValidApiKey()){
                 Util.message(sender, ChatColor.RED + "Missing or Invalid API key! Check API key or contact MCBans staff.");
                 return true;

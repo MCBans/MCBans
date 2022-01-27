@@ -20,7 +20,7 @@ public class UnbanClient extends Client{
   }
 
   public void unBan(String playerName, String playerUUID, ResponseHandler responseHandler) throws IOException, ClassNotFoundException, TooLargeException {
-    sendCommand(MCBansCommands.UnBanPlayer);
+    sendCommand(ServerMCBansCommands.UnBanPlayer);
     WriteToOutputStream.writeString(getOutputStream(), playerName);
     if(playerUUID!=null && playerUUID.length()==32){
       WriteToOutputStream.writeBoolean(getOutputStream(), true);

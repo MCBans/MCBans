@@ -21,14 +21,14 @@ public class BanStatusClient extends Client{
 
 
   public BanResponse banStatusByPlayerName(String playerName, String ipAddress, boolean loginRequest) throws IOException, ClassNotFoundException, TooLargeException {
-    sendCommand(MCBansCommands.BanStatusByPlayerName);
+    sendCommand(ServerMCBansCommands.BanStatusByPlayerName);
     WriteToOutputStream.writeString(getOutputStream(), playerName);
     WriteToOutputStream.writeString(getOutputStream(), ipAddress);
     WriteToOutputStream.writeBoolean(getOutputStream(), loginRequest);
     return banStatusResponseHandler();
   }
   public BanResponse banStatusByPlayerUUID(String playerUUID, String ipAddress, boolean loginRequest) throws IOException, ClassNotFoundException, TooLargeException {
-    sendCommand(MCBansCommands.BanStatusByPlayerUUID);
+    sendCommand(ServerMCBansCommands.BanStatusByPlayerUUID);
     WriteToOutputStream.writeString(getOutputStream(), playerUUID);
     WriteToOutputStream.writeString(getOutputStream(), ipAddress);
     WriteToOutputStream.writeBoolean(getOutputStream(), loginRequest);

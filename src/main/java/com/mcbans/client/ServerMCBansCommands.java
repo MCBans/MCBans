@@ -1,6 +1,6 @@
 package com.mcbans.client;
 
-public enum MCBansCommands {
+public enum ServerMCBansCommands {
     //Session Handling
     SessionRegister(127),
     VerifyConnection(126),
@@ -24,12 +24,15 @@ public enum MCBansCommands {
     // Information Callback
     InformationCallback(40),
 
+    // Pending actions
+    PendingActions(60),
+
     // Unban commands
     UnBanPlayer(28),
     UnBanIp(29);
 
     private final int value;
-    MCBansCommands(int value) {
+    ServerMCBansCommands(int value) {
         this.value = value;
     }
 

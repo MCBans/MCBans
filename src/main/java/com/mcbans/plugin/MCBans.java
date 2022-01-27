@@ -2,9 +2,12 @@ package com.mcbans.plugin;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 
+import com.mcbans.banlist.OfflineBanList;
 import com.mcbans.client.response.BanResponse;
+import com.mcbans.plugin.actions.PendingActions;
 import com.mcbans.plugin.bukkitListeners.PlayerListener;
 import com.mcbans.plugin.callBacks.BanSync;
 import com.mcbans.plugin.callBacks.MainCallBack;
@@ -28,7 +31,7 @@ import com.mcbans.plugin.commands.CommandGlobalban;
 import com.mcbans.plugin.commands.CommandKick;
 import com.mcbans.plugin.commands.CommandLookup;
 import com.mcbans.plugin.commands.CommandMCBansSettings;
-import com.mcbans.plugin.commands.CommandMcbans;
+import com.mcbans.plugin.commands.CommandMCBans;
 import com.mcbans.plugin.commands.CommandPrevious;
 import com.mcbans.plugin.commands.CommandRban;
 import com.mcbans.plugin.commands.CommandTempban;
@@ -39,6 +42,7 @@ public class MCBans extends JavaPlugin {
   public final String apiRequestSuffix = "4.4.3";
   private static MCBans instance;
 
+  private OfflineBanList offlineBanList;
   public int taskID = 0;
   public HashMap<String, Integer> connectionData = new HashMap<String, Integer>();
   public HashMap<String, BanResponse> playerCache = new HashMap<>();
@@ -50,12 +54,14 @@ public class MCBans extends JavaPlugin {
   public Thread callbackThread = null;
   public BanSync bansync = null;
   public Thread syncBan = null;
+  public PendingActions pendingActions = null;
   public long lastID = -1;
   public File syncIni = null;
   public long lastSync = 0;
   public String lastType = "";
   public boolean syncRunning = false;
   public long lastCallBack = 0;
+  public long lastPendingActions = 0;
   public static boolean AnnounceAll = false;
   public String apiServer = null;
 
@@ -89,6 +95,14 @@ public class MCBans extends JavaPlugin {
 
   @Override
   public void onEnable() {
+
+    try {
+      offlineBanList = new OfflineBanList(this);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
     instance = this;
     PluginManager pm = getServer().getPluginManager();
     log = new ActionLog(this); // setup logger
@@ -145,6 +159,9 @@ public class MCBans extends JavaPlugin {
     bansync = new BanSync(this);
     bansync.start();
 
+    pendingActions = new PendingActions(this);
+    pendingActions.start();
+
     ServerChoose serverChooser = new ServerChoose(this);
     (new Thread(serverChooser)).start();
 
@@ -190,7 +207,7 @@ public class MCBans extends JavaPlugin {
     cmds.add(new CommandLookup());
     cmds.add(new CommandBanlookup());
     cmds.add(new CommandAltlookup());
-    cmds.add(new CommandMcbans());
+    cmds.add(new CommandMCBans());
     cmds.add(new CommandPrevious());
 
     cmds.add(new CommandMCBansSettings());
@@ -280,5 +297,9 @@ public class MCBans extends JavaPlugin {
 
   public static MCBans getInstance() {
     return instance;
+  }
+
+  public OfflineBanList getOfflineBanList() {
+    return offlineBanList;
   }
 }

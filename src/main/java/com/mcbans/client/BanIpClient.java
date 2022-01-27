@@ -20,7 +20,7 @@ public class BanIpClient extends Client{
   }
 
   public void banIp(String ip, String reason, String adminUUID, ResponseHandler responseHandler) throws IOException, TooLargeException {
-    sendCommand(MCBansCommands.BanIp);
+    sendCommand(ServerMCBansCommands.BanIp);
     WriteToOutputStream.writeString(getOutputStream(), ip);
     WriteToOutputStream.writeString(getOutputStream(), reason);
     WriteToOutputStream.writeString(getOutputStream(), adminUUID);

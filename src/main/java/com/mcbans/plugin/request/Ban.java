@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
+import com.mcbans.banlist.BannedPlayer;
 import com.mcbans.client.*;
 import com.mcbans.client.response.BanResponse;
 import com.mcbans.plugin.bukkitListeners.PlayerListener;
@@ -16,6 +18,7 @@ import com.mcbans.plugin.events.PlayerLocalBanEvent;
 import com.mcbans.plugin.events.PlayerTempBanEvent;
 import com.mcbans.plugin.permission.Perms;
 import com.mcbans.utils.IPTools;
+import com.mcbans.utils.TimeTools;
 import com.mcbans.utils.TooLargeException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -78,7 +81,7 @@ public class Ban {
 
   public void kickPlayer(String playerName, String playerUUID, final String kickReason) {
     Player targettmp = null;
-    if (playerUUID!=null) {
+    if (playerUUID != null) {
       targettmp = MCBans.getPlayer(plugin, playerUUID);
     } else {
       targettmp = MCBans.getPlayer(plugin, playerName);
@@ -158,17 +161,10 @@ public class Ban {
     }
     senderName = unBanEvent.getSenderName();
 
-    // First, remove from bukkit banlist
-    if (!IPTools.validBanIP(playerName)) {
-      bukkitBan(false);
-    } else {
-      Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.getServer().unbanIP(playerName), 1);
-    }
-    JsonHandler webHandle = new JsonHandler(plugin);
     new Thread(() -> {
       try {
         Client client = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
-          Client.ResponseHandler responder =new Client.ResponseHandler() {
+        Client.ResponseHandler responder = new Client.ResponseHandler() {
           @Override
           public void err(String error) {
             Util.message(senderName, ChatColor.RED + error);
@@ -182,16 +178,27 @@ public class Ban {
             return;
           }
         };
-          if(!IPTools.validBanIP(playerName)) {
-            UnbanClient.cast(client).unBan(playerName, playerUUID, responder); // unban player
-          }else{
-            UnBanIpClient.cast(client).unBanIp(playerName, responder); // unban IP
-          }
+        if (!IPTools.validBanIP(playerName)) {
+          UnbanClient.cast(client).unBan(playerName, playerUUID, responder); // unban player
+        } else {
+          UnBanIpClient.cast(client).unBanIp(playerName, responder); // unban IP
+        }
         ConnectionPool.release(client);
-      } catch (IOException e){
-        Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+        if (!IPTools.validIP(playerName)) {
+          bukkitBan(false, null,null, false);
+        } else if(IPTools.validIP(playerName)){
+          Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.getServer().unbanIP(playerName), 1);
+        }
+      } catch (IOException e) {
+        Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. Defaulting to local unban.");
+        // First, remove from bukkit banlist
+        if (!IPTools.validBanIP(playerName)) {
+          bukkitBan(false, null, null);
+        } else if (IPTools.validIP(playerName)) {
+          Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.getServer().unbanIP(playerName), 1);
+        }
         log.warning("Error occurred with local banning. Please report this to an MCBans developer.");
-      }catch (BadApiKeyException | TooLargeException | InterruptedException | ClassNotFoundException e) {
+      } catch (BadApiKeyException | TooLargeException | InterruptedException | ClassNotFoundException e) {
         e.printStackTrace();
         log.info(senderName + " tried to unban " + playerName + "!");
         Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
@@ -208,9 +215,6 @@ public class Ban {
     }
     senderName = lBanEvent.getSenderName();
     reason = lBanEvent.getReason();
-
-    // First, add bukkit banlist
-    bukkitBan(true);
 
     new Thread(() -> {
       try {
@@ -234,7 +238,9 @@ public class Ban {
         });
         ConnectionPool.release(client);
       } catch (IOException e) {
-        Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+        Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. Offline ban added!");
+        // add to offline banlist
+        bukkitBan(true, "local", null);
         log.warning("Error occurred with local banning. Please report this to an MCBans developer.");
       } catch (BadApiKeyException | TooLargeException | InterruptedException | ClassNotFoundException e) {
         e.printStackTrace();
@@ -254,15 +260,13 @@ public class Ban {
     senderName = gBanEvent.getSenderName();
     reason = gBanEvent.getReason();
 
-    // First, add bukkit banlist
-    bukkitBan(true);
     new Thread(() -> {
       try {
         Client client = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
-        BanClient.cast(client).globalBan(playerName, playerUUID, playerIP, senderUUID, reason, new Client.ResponseHandler(){
+        BanClient.cast(client).globalBan(playerName, playerUUID, playerIP, senderUUID, reason, new Client.ResponseHandler() {
           @Override
           public void err(String error) {
-            Util.message(senderName, ChatColor.RED +  error);
+            Util.message(senderName, ChatColor.RED + error);
           }
 
           @Override
@@ -281,6 +285,8 @@ public class Ban {
         ConnectionPool.release(client);
       } catch (IOException e) {
         Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+        // add to offline banlist
+        bukkitBan(true, "global", null);
         log.warning("Error occurred with local banning. Please report this to an MCBans developer.");
       } catch (BadApiKeyException | TooLargeException | InterruptedException | ClassNotFoundException e) {
         e.printStackTrace();
@@ -305,7 +311,7 @@ public class Ban {
     new Thread(() -> {
       try {
         Client client = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
-        BanClient.cast(client).tempBan(playerName, playerUUID,playerIP,senderUUID, reason, duration+measure, new Client.ResponseHandler(){
+        BanClient.cast(client).tempBan(playerName, playerUUID, playerIP, senderUUID, reason, duration + measure, new Client.ResponseHandler() {
           @Override
           public void err(String error) {
             Util.message(senderName, ChatColor.RED + error);
@@ -322,6 +328,7 @@ public class Ban {
         ConnectionPool.release(client);
       } catch (IOException e) {
         Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+        bukkitBan(true, "temp", TimeTools.convertStringToDate(duration + "" + measure));
         log.warning("Error occurred with local banning. Please report this to an MCBans developer.");
       } catch (BadApiKeyException | TooLargeException | InterruptedException | ClassNotFoundException e) {
         e.printStackTrace();
@@ -330,20 +337,68 @@ public class Ban {
       }
     }).start();
   }
+  private void bukkitBan(final boolean flag, String type, Long expires){
+    bukkitBan(flag, type, expires, true);
+  }
 
-  private void bukkitBan(final boolean flag) {
-    OfflinePlayer target = plugin.getServer().getPlayer(playerName);
-    if (target == null) {
-      return;
+  void addBukkitBanByUUID(String name, String uuid, String type, Long expires, boolean fallback){
+    //plugin.getServer().getBanList(BanList.Type.NAME).addBan(target.getName(), reason, new Date(), senderName);
+    plugin.getOfflineBanList().addBan(uuid, new BannedPlayer(
+      type,
+      name,
+      uuid,
+      reason,
+      senderName,
+      senderUUID,
+      new Date(),
+      expires
+    ));
+    try {
+      plugin.getOfflineBanList().save();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    this.kickPlayer(playerName, uuid, localize("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+
+  }
+  private void bukkitBan(final boolean flag, String type, Long expires, boolean fallback) {
+    OfflinePlayer target = null;
+    String uuid = null;
+    String playerNameFound = null;
+    if (playerName != null && playerName.length() >= 2 && playerName.length() <= 16) {
+      target = plugin.getServer().getOfflinePlayer(playerName);
+      playerNameFound = playerName;
+    }
+    if (playerName != null && playerName.length() == 32) {
+      uuid = playerName;
+    }else if (playerUUID != null && playerUUID.length() == 32) {
+      uuid = playerUUID;
     }
     if (flag) {
-      if (!plugin.getServer().getBanList(BanList.Type.NAME).isBanned(target.getName())) {
-        plugin.getServer().getBanList(BanList.Type.NAME).addBan(target.getName(), reason, new Date(), senderName);
-        this.kickPlayer(playerName, playerUUID, localize("localBanPlayer", I18n.PLAYER, playerName, I18n.SENDER, senderName, I18n.REASON, reason, I18n.IP, playerIP));
+      if (uuid==null && playerNameFound!=null && target.getUniqueId() == null) {
+        uuid = Util.getStringUUID(playerNameFound);
+      }
+      if (!plugin.getOfflineBanList().isBanned(uuid)) {
+        addBukkitBanByUUID(playerNameFound, uuid, type, expires, fallback);
       }
     } else {
-      if (plugin.getServer().getBanList(BanList.Type.NAME).isBanned(target.getName())) {
-        plugin.getServer().getBanList(BanList.Type.NAME).pardon(target.getName());
+      BannedPlayer bannedPlayer= null;
+      if(uuid!=null) {
+        bannedPlayer = plugin.getOfflineBanList().get(uuid);
+      }else if(playerNameFound!=null){
+        bannedPlayer = plugin.getOfflineBanList().getByPlayerName(playerNameFound);
+      }
+      if (bannedPlayer!=null && bannedPlayer.isBanned()) {
+        if(fallback) {
+          bannedPlayer.setBanned(false);
+        }else{
+          plugin.getOfflineBanList().remove(bannedPlayer.getPlayerUUID());
+        }
+        try {
+          plugin.getOfflineBanList().save();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
     }
   }

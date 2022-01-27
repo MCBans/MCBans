@@ -19,6 +19,7 @@ public class CommandUnban extends BaseCommand{
     @Override
     public void execute() throws CommandException {
     	args.remove(0); // remove target
+
         //String target = args.get(0).trim(); already fetched in BaseCommand
         
         // Start

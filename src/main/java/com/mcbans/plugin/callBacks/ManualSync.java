@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.mcbans.client.BadApiKeyException;
 import com.mcbans.plugin.request.JsonHandler;
+import com.mcbans.utils.TooLargeException;
 import org.bukkit.BanList;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -33,23 +35,39 @@ public class ManualSync implements Runnable {
       Util.message(commandSend, ChatColor.GREEN + "Sync is already running.");
       return;
     }
-    Util.message(commandSend, ChatColor.GREEN + "Sync started at: "+plugin.lastID);
-    new Thread(()->new BanSync(plugin).startSync(new BanSync.Responder(){
-      @Override
-      void ack() {
-        Util.message(commandSend, ChatColor.GREEN + "Sync is complete. lastBanId: "+plugin.lastID);
-      }
+    Util.message(commandSend, ChatColor.GREEN + "Sync started at: " + plugin.lastID);
+    new Thread(() -> {
+      try {
+        new BanSync(plugin).startSync(new BanSync.Responder() {
+          @Override
+          public void ack() {
+            Util.message(commandSend, ChatColor.GREEN + "Sync is complete. lastBanId: " + plugin.lastID);
+          }
 
-      @Override
-      void partial(long total, long current) {
-        Util.message(commandSend, ChatColor.YELLOW + "Current Percentage: "+Math.round((Long.valueOf(current).doubleValue()/Long.valueOf(total))*100)+"%");
-      }
+          @Override
+          public void partial(long total, long current) {
+            Util.message(commandSend, ChatColor.YELLOW + "Current Percentage: " + Math.round((Long.valueOf(current).doubleValue() / Long.valueOf(total)) * 100) + "%");
+          }
 
-      @Override
-      void error() {
-        Util.message(commandSend, ChatColor.RED + "Error syncing bans.");
+          @Override
+          public void error() {
+            Util.message(commandSend, ChatColor.RED + "Error syncing bans.");
+          }
+        });
+      } catch (IOException e) {
+        if (plugin.getConfigs().isDebug())
+          e.printStackTrace();
+      } catch (BadApiKeyException e) {
+        if (plugin.getConfigs().isDebug())
+          e.printStackTrace();
+      } catch (InterruptedException e) {
+        if (plugin.getConfigs().isDebug())
+          e.printStackTrace();
+      } catch (TooLargeException e) {
+        if (plugin.getConfigs().isDebug())
+          e.printStackTrace();
       }
-    })).start();
+    }).start();
 
 
   }

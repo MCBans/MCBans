@@ -26,7 +26,7 @@ public class InformationCallbackClient extends Client{
     String bukkitVersion,
     boolean onlineMode,
     String serverName) throws IOException, TooLargeException {
-    sendCommand(MCBansCommands.InformationCallback);
+    sendCommand(ServerMCBansCommands.InformationCallback);
     WriteToOutputStream.writeInt(getClient().getOutputStream(), maxPlayers);
     WriteToOutputStream.writeByteArray(getClient().getOutputStream(), ObjectSerializer.serialize(players));
     WriteToOutputStream.writeString(getClient().getOutputStream(), mcbansVersion);

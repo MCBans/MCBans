@@ -24,7 +24,7 @@ public class BanSyncClient extends Client{
   }
 
   public void getBanSync(long banId, ResponseHandler responseHandler) throws IOException, ClassNotFoundException, TooLargeException {
-    sendCommand(MCBansCommands.BanSync);
+    sendCommand(ServerMCBansCommands.BanSync);
     WriteToOutputStream.writeLong(getOutputStream(), banId);
     Command c = getCommand(getInputStream());
     if(c.getCommand()==25) {

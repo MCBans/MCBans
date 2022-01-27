@@ -24,6 +24,10 @@ public class CommandGlobalban extends BaseCommand{
     public void execute() {
         args.remove(0); // remove target
 
+        if(args.size()<0){
+            Util.message(sender, "A reason is required for a global ban.");
+            return;
+        }
         // build reason
         String reason = Util.join(args, " ");
         

@@ -19,7 +19,7 @@ public class UnBanIpClient extends Client{
   }
 
   public void unBanIp(String ip, ResponseHandler responseHandler) throws IOException, TooLargeException {
-    sendCommand(MCBansCommands.UnBanIp);
+    sendCommand(ServerMCBansCommands.UnBanIp);
     WriteToOutputStream.writeString(getOutputStream(), ip);
     Command c = getCommand(getInputStream());
     if(c.getCommand()==124){

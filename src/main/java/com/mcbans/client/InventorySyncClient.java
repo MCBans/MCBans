@@ -7,8 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class InventorySyncClient extends Client{
   public InventorySyncClient(Client c) {
@@ -29,7 +27,7 @@ public class InventorySyncClient extends Client{
   }
 
   public void save(Player player, List<ItemStack[]> itemStacks) throws IOException, TooLargeException {
-    sendCommand(MCBansCommands.SavePlayerInventory);
+    sendCommand(ServerMCBansCommands.SavePlayerInventory);
     WriteToOutputStream.writeString(getOutputStream(), player.getUniqueId().toString().toLowerCase().replaceAll("-",""));
     WriteToOutputStream.writeByteArray(getOutputStream(), ObjectSerializer.serializeUsingBukkit(itemStacks));
     getOutputStream().flush();
@@ -48,7 +46,7 @@ public class InventorySyncClient extends Client{
     }
   }
   public List<ItemStack[]> get(Player player) throws IOException, TooLargeException, ClassNotFoundException {
-    sendCommand(MCBansCommands.GetPlayerInventory);
+    sendCommand(ServerMCBansCommands.GetPlayerInventory);
     WriteToOutputStream.writeString(getOutputStream(), player.getUniqueId().toString().toLowerCase().replaceAll("-",""));
     Command c = getCommand(getInputStream());
     switch (c.getCommand()){

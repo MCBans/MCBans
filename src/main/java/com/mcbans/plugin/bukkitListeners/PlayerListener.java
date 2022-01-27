@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import com.mcbans.banlist.BannedPlayer;
 import com.mcbans.client.*;
 import com.mcbans.client.response.BanResponse;
 import com.mcbans.plugin.permission.Perms;
@@ -53,6 +54,7 @@ public class PlayerListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onAsyncPlayerPreLoginEvent(final AsyncPlayerPreLoginEvent event) {
+    String uuid = event.getUniqueId().toString().replaceAll("-", "");
     try {
       BanResponse banResponse;
       Client client = ConnectionPool.getConnection(config.getApiKey());
@@ -62,38 +64,30 @@ public class PlayerListener implements Listener {
 
       ConnectionPool.release(client);
 
-      if (banResponse == null) {
-        if (config.isFailsafe()) {
-          log.warning("Null response! Kicked player: " + event.getName());
-          event.disallow(Result.KICK_BANNED, localize("unavailable"));
-        } else {
-          log.warning("Null response! Check passed player: " + event.getName());
-        }
-        return;
-      }
-
       plugin.debug("Response: " + banResponse);
       rejectionHandler(banResponse, event); // handle all ban conditions
 
     } catch (SocketTimeoutException ex) {
       log.warning("Cannot connect to the MCBans API server: timeout");
-      if (config.isFailsafe()) {
-        event.disallow(Result.KICK_BANNED, localize("unavailable"));
+      if(plugin.getOfflineBanList().isBanned(uuid)){
+        BannedPlayer bannedPlayer = plugin.getOfflineBanList().get(uuid);
+        event.disallow(Result.KICK_BANNED, localize("banReturnMessage", I18n.REASON, bannedPlayer.getReason(), I18n.ADMIN, bannedPlayer.getAdmin(), I18n.BANID, bannedPlayer.getBanId(), I18n.TYPE, bannedPlayer.getType()));
       }
     } catch (IOException ex) {
       log.warning("Cannot connect to the MCBans API server!");
       if (config.isDebug()) ex.printStackTrace();
 
-      if (config.isFailsafe()) {
-        event.disallow(Result.KICK_BANNED, localize("unavailable"));
+      if(plugin.getOfflineBanList().isBanned(uuid)){
+        BannedPlayer bannedPlayer = plugin.getOfflineBanList().get(uuid);
+        event.disallow(Result.KICK_BANNED, localize("banReturnMessage", I18n.REASON, bannedPlayer.getReason(), I18n.ADMIN, bannedPlayer.getAdmin(), I18n.BANID, bannedPlayer.getBanId(), I18n.TYPE, bannedPlayer.getType()));
       }
     } catch (Exception ex) {
       log.warning("An error occurred in AsyncPlayerPreLoginEvent. Please report this!");
       ex.printStackTrace();
 
-      if (config.isFailsafe()) {
-        log.warning("Internal exception! Kicked player: " + event.getName());
-        event.disallow(Result.KICK_BANNED, localize("unavailable"));
+      if(plugin.getOfflineBanList().isBanned(uuid)){
+        BannedPlayer bannedPlayer = plugin.getOfflineBanList().get(uuid);
+        event.disallow(Result.KICK_BANNED, localize("banReturnMessage", I18n.REASON, bannedPlayer.getReason(), I18n.ADMIN, bannedPlayer.getAdmin(), I18n.BANID, bannedPlayer.getBanId(), I18n.TYPE, bannedPlayer.getType()));
       }
     }
   }

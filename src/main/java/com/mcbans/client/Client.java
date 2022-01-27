@@ -29,24 +29,25 @@ public class Client {
     }
     public Client(Client c) {
         setClient(c.getClient());
+
         setInputStream(c.getInputStream());
         setOutputStream(c.getOutputStream());
     }
     public Client(String apiKey) throws IOException, BadApiKeyException, TooLargeException {
         client = new Socket("api.v4.direct.mcbans.com", 8082);
         client.setKeepAlive(true);
-        client.setSoTimeout(15000);
+        client.setSoTimeout(3000);
         outputStream = client.getOutputStream();
         inputStream = client.getInputStream();
         registerClient(apiKey);
     }
 
-    void sendCommand(MCBansCommands command, long referenceId) throws IOException {
+    void sendCommand(ServerMCBansCommands command, long referenceId) throws IOException {
         outputStream.write(command.getValue()); // register server to session command
         outputStream.write(ByteBuffer.allocate(8).putLong(referenceId).array());
         outputStream.flush();
     }
-    void sendCommand(MCBansCommands command) throws IOException {
+    void sendCommand(ServerMCBansCommands command) throws IOException {
         sendCommand(command, -1);
     }
     Command getCommand(InputStream inputStream) throws IOException {
@@ -56,7 +57,7 @@ public class Client {
     }
 
     void registerClient(String apiKey) throws BadApiKeyException, IOException, TooLargeException {
-        sendCommand(MCBansCommands.SessionRegister);
+        sendCommand(ServerMCBansCommands.SessionRegister);
         WriteToOutputStream.writeString(outputStream, apiKey); // apikey
         WriteToOutputStream.writeString(outputStream, ""); // secretKey
         Command command = getCommand(inputStream);
@@ -70,7 +71,7 @@ public class Client {
     }
 
     public void verifyConnection() throws IOException, TooLargeException {
-        sendCommand(MCBansCommands.VerifyConnection);
+        sendCommand(ServerMCBansCommands.VerifyConnection);
         Command command = getCommand(inputStream);
         switch(command.getCommand()) {
             case 126:
@@ -81,7 +82,7 @@ public class Client {
 
 
     public void close() throws IOException {
-        sendCommand(MCBansCommands.SessionClose);
+        sendCommand(ServerMCBansCommands.SessionClose);
     }
 
     public Socket getClient() {
