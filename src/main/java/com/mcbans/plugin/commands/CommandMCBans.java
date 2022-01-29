@@ -4,6 +4,7 @@ package com.mcbans.plugin.commands;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.mcbans.plugin.MCBans;
 import com.mcbans.plugin.callBacks.*;
@@ -387,7 +388,7 @@ public class CommandMCBans extends BaseCommand{
     @Override
     protected List<String> tabComplete(MCBans plugin, CommandSender sender, String cmd, String[] preArgs) {
         List<String> options = new ArrayList<>();
-        if(preArgs.length==0) {
+        if(preArgs.length==1) {
             options.add("banning");
             options.add("user");
             options.add("perms");
@@ -399,7 +400,7 @@ public class CommandMCBans extends BaseCommand{
             if(sender != null && plugin.mcbStaff.contains(sender.getName())) {
                 options.add("staff");
             }
-        }else{
+        }else if(preArgs.length==2){
             switch(preArgs[0].toLowerCase()){
                 case "perms":
                     options.add("ban");
@@ -423,6 +424,6 @@ public class CommandMCBans extends BaseCommand{
                     break;
             }
         }
-        return options;
+        return options.stream().filter(p->p.startsWith(preArgs[preArgs.length-1])).collect(Collectors.toList());
     }
 }

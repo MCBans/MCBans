@@ -14,22 +14,27 @@ public enum ServerMCBansCommands {
     BanPlayer(20),
     BanIp(21),
 
-    // Player Inventory
-    GetPlayerInventory(50),
-    SavePlayerInventory(51),
-
     // Sync bans
     BanSync(25),
+
+    // Unban commands
+    UnBanPlayer(28),
+    UnBanIp(29),
 
     // Information Callback
     InformationCallback(40),
 
+    // Player Inventory
+    GetPlayerInventory(50),
+    SavePlayerInventory(51),
+
     // Pending actions
     PendingActions(60),
 
-    // Unban commands
-    UnBanPlayer(28),
-    UnBanIp(29);
+    // lookups
+    PlayerLookup(70),
+    BanLookup(71);
+
 
     private final int value;
     ServerMCBansCommands(int value) {

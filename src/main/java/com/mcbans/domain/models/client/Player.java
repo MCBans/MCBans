@@ -10,6 +10,12 @@ public class Player implements Serializable {
   public Player() {
   }
 
+  public Player(long playerId, String name, String uuid) {
+    this.name = name;
+    this.playerId = playerId;
+    this.uuid = uuid;
+  }
+
   public Player(String name) {
     this.name = name;
   }

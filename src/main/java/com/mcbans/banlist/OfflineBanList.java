@@ -27,9 +27,9 @@ public class OfflineBanList {
     return bannedPlayers.getOrDefault(uuid, null);
   }
 
-  public BannedPlayer getByPlayerName(String uuid){
+  public BannedPlayer getByPlayerName(String playerName){
     for(Map.Entry<String, BannedPlayer> bp: bannedPlayers.entrySet()){
-      if(bp.getValue().getPlayerName()!=null && bp.getValue().getPlayerName().equalsIgnoreCase(bp.getValue().getPlayerName())){
+      if(bp.getValue().getPlayerName()!=null && bp.getValue().getPlayerName().equalsIgnoreCase(playerName)){
         return bp.getValue();
       }
     }

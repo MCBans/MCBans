@@ -1,66 +1,69 @@
 package com.mcbans.plugin.request;
 
+import com.mcbans.client.BadApiKeyException;
+import com.mcbans.client.BanLookupClient;
+import com.mcbans.client.Client;
+import com.mcbans.client.ConnectionPool;
+import com.mcbans.domain.models.client.Ban;
+import com.mcbans.plugin.util.Util;
+import com.mcbans.utils.TooLargeException;
 import org.bukkit.ChatColor;
 
 import com.mcbans.plugin.ActionLog;
 import com.mcbans.plugin.MCBans;
-import com.mcbans.plugin.api.data.BanLookupData;
 import com.mcbans.plugin.callBacks.BanLookupCallback;
-import com.mcbans.plugin.org.json.JSONException;
-import com.mcbans.plugin.org.json.JSONObject;
 
-public class BanLookupRequest extends BaseRequest<BanLookupCallback>{
-    private int banID;
+import java.io.IOException;
 
-    public BanLookupRequest(final MCBans plugin, final BanLookupCallback callback, final int banID) {
-        super(plugin, callback);
+public class BanLookupRequest extends BaseRequest<BanLookupCallback> {
+  private int banID;
 
-        this.items.put("ban", String.valueOf(banID));
-        this.items.put("exec", "banLookup");
+  public BanLookupRequest(final MCBans plugin, final BanLookupCallback callback, final int banID) {
+    super(plugin, callback);
+    this.banID = banID;
+  }
 
-        this.banID = banID;
+  @Override
+  protected void execute() {
+    if (callback.getSender() != null) {
+      log.info(callback.getSender().getName() + " has performed a ban lookup for ID " + banID + "!");
     }
 
-    @Override
-    protected void execute() {
-        if (callback.getSender() != null){
-            log.info(callback.getSender().getName() + " has performed a ban lookup for ID " + banID + "!");
+    try {
+      Client client = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
+      BanLookupClient.cast(client).lookupBan(banID, new BanLookupClient.DataReceived() {
+        @Override
+        public void received(Ban ban) {
+          callback.success(ban);
         }
 
-        JSONObject result = this.request_JOBJ();
-
-        try{
-            callback.success(new BanLookupData(banID, result));
+        @Override
+        public void error(String message) {
+          callback.error(message);
         }
-        catch (JSONException ex) {
-            if (result.toString().contains("error")) {
-                if (result.toString().contains("dne")){
-                    callback.error("Ban record not found: " + banID);
-                    return;
-                }
-                else if (result.toString().contains("Server Disabled")) {
-                    ActionLog.getInstance().severe("This server has been disabled by MCBans staff.");
-                    ActionLog.getInstance().severe("To appeal this decision, please file a ticket at forums.mcbans.com.");
-
-                    callback.error("This server has been disabled by MCBans staff.");
-                    return;
-                }
-            }
-            ActionLog.getInstance().severe("A JSON error occurred while trying to localize ban lookup data.");
-            callback.error("An error occurred while parsing JSON data.");
-        }
-        catch (NullPointerException ex) {
-            ActionLog.getInstance().severe("Unable to reach MCBans API.");
-            callback.error(ChatColor.RED + "Unable to reach MCBans API.");
-            if (plugin.getConfigs().isDebug()){
-                ex.printStackTrace();
-            }
-        }
-        catch (Exception ex){
-            callback.error("Unknown Error: " + ex.getMessage());
-            if (plugin.getConfigs().isDebug()){
-                ex.printStackTrace();
-            }
-        }
+      });
+      ConnectionPool.release(client);
+    } catch (IOException e) {
+      if (plugin.getConfigs().isDebug())
+        e.printStackTrace();
+    } catch (BadApiKeyException | ClassNotFoundException e) {
+      if (plugin.getConfigs().isDebug())
+        e.printStackTrace();
+    } catch (TooLargeException e) {
+      if (plugin.getConfigs().isDebug())
+        e.printStackTrace();
+    } catch (InterruptedException e) {
+      if (plugin.getConfigs().isDebug())
+        e.printStackTrace();
+    } catch (NullPointerException ex) {
+      ActionLog.getInstance().severe("Unable to reach MCBans API.");
+      callback.error(ChatColor.RED + "Unable to reach MCBans API.");
+      if (plugin.getConfigs().isDebug())
+        ex.printStackTrace();
+    } catch (Exception ex) {
+      callback.error("Unknown Error: " + ex.getMessage());
+      if (plugin.getConfigs().isDebug())
+        ex.printStackTrace();
     }
+  }
 }

@@ -1,11 +1,19 @@
 package com.mcbans.plugin.callBacks;
 
+import com.mcbans.domain.models.client.Ban;
+import com.mcbans.domain.models.client.Player;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.mcbans.plugin.MCBans;
 import com.mcbans.plugin.api.data.PlayerLookupData;
 import com.mcbans.plugin.util.Util;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class LookupCallback extends BaseCallback{
     public LookupCallback(final MCBans plugin, final CommandSender sender) {
@@ -16,35 +24,55 @@ public class LookupCallback extends BaseCallback{
     }
 
     //@Override
-    public void success(final PlayerLookupData data){
+    public void success(Player player, List<Ban> bans, Double rep){
+        List<Ban> globals= new ArrayList<>(), locals= new ArrayList<>(), temps = new ArrayList<>();
+        int totalBans = 0;
+        if(bans!=null) {
+            globals = bans.stream().filter(b -> b.getType().equals("global")).collect(Collectors.toList());
+            locals = bans.stream().filter(b -> b.getType().equals("local")).collect(Collectors.toList());
+            temps = bans.stream().filter(b -> b.getType().equals("temp")).collect(Collectors.toList());
+            totalBans = bans.size();
+        }
 
-        if (data.getGlobals().size() > 0 || data.getLocals().size() > 0 || data.getOthers().size() > 0) {
+        if (globals.size() > 0 || locals.size() > 0 || temps.size() > 0) {
             Util.message(sender, ChatColor.DARK_GRAY + "------------------------------");
         }
 
-        Util.message(sender, ChatColor.GRAY + "Player " + ChatColor.RED + data.getPlayerName() + ChatColor.GRAY + " has " + ChatColor.RED
-                + data.getTotal() + " ban(s)" + ChatColor.GRAY + " and " + ChatColor.BLUE + data.getReputation() + " REP"
-                + ChatColor.GRAY + ".");
+        Util.message(sender, ChatColor.GRAY + "Player " + ChatColor.RED + player.getName() + ChatColor.GRAY + " has " + ChatColor.RED
+                + totalBans + " ban(s)" + ChatColor.GRAY + ((rep==null)?"":" and " + ChatColor.BLUE + rep + " REP") + ChatColor.GRAY + ".");
 
-        if (data.getGlobals().size() > 0) {
+        if (globals.size() > 0) {
             Util.message(sender, ChatColor.RED + "Global Bans:");
-            for (String record : data.getGlobals()){
-                Util.message(sender, record);
+            for (Ban record : globals){
+                String reasonString = StringEscapeUtils.unescapeHtml(record.getReason());
+                if(reasonString.length()>30) {
+                    reasonString = reasonString.substring(0, 40) + "...";
+                }
+                Util.message(sender, ChatColor.YELLOW+"#"+record.getId()+" "+ChatColor.AQUA+reasonString+ChatColor.WHITE+" - ( "+ChatColor.GOLD+record.getAdmin().getName()+ChatColor.WHITE+" ) "+ChatColor.BOLD+record.getServer().getAddress());
             }
         }
-        if (data.getLocals().size() > 0) {
+        if (locals.size() > 0) {
             Util.message(sender, ChatColor.GOLD + "Local Bans:");
-            for (String record : data.getLocals()){
-                Util.message(sender, record);
+            for (Ban record : locals){
+                String reasonString = StringEscapeUtils.unescapeHtml(record.getReason());
+                if(reasonString.length()>30) {
+                    reasonString = reasonString.substring(0, 40) + "...";
+                }
+                Util.message(sender, ChatColor.YELLOW+"#"+record.getId()+" "+ChatColor.AQUA+reasonString+ChatColor.WHITE+" - ( "+ChatColor.GOLD+record.getAdmin().getName()+ChatColor.WHITE+" ) "+ChatColor.BOLD+record.getServer().getAddress());
             }
         }
-        if (data.getOthers().size() > 0) {
-            for (String record : data.getOthers()){
-                Util.message(sender, record);
+        if (temps.size() > 0) {
+            Util.message(sender, ChatColor.GRAY + "Temp Bans:");
+            for (Ban record : temps){
+                String reasonString = StringEscapeUtils.unescapeHtml(record.getReason());
+                if(reasonString.length()>30) {
+                    reasonString = reasonString.substring(0, 40) + "...";
+                }
+                Util.message(sender, ChatColor.YELLOW+"#"+record.getId()+" "+ChatColor.AQUA+reasonString+ChatColor.WHITE+" - ( "+ChatColor.GOLD+record.getAdmin().getName()+ChatColor.WHITE+" ) "+ChatColor.BOLD+record.getServer().getAddress());
             }
         }
 
-        if (data.getGlobals().size() > 0 || data.getLocals().size() > 0 || data.getOthers().size() > 0) {
+        if (globals.size() > 0 || locals.size() > 0 || temps.size() > 0) {
             Util.message(sender, ChatColor.DARK_GRAY + "------------------------------");
         }
 
