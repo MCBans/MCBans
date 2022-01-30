@@ -200,9 +200,6 @@ public class PlayerListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerQuit(final PlayerQuitEvent event) {
-    // send disconnect request
-    (new Thread(new DisconnectRequest(plugin, event.getPlayer().getName()))).start();
-
 
     new Thread(()->{
       try {
