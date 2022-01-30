@@ -294,16 +294,7 @@ public class BanSync {
                     plugin.getLog().info("Failed to complete sync.");
                 }
               });
-            } catch (IOException e) {
-              if (plugin.getConfigs().isDebug())
-                e.printStackTrace();
-            } catch (BadApiKeyException e) {
-              if (plugin.getConfigs().isDebug())
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-              if (plugin.getConfigs().isDebug())
-                e.printStackTrace();
-            } catch (TooLargeException e) {
+            } catch (InterruptedException | TooLargeException | IOException | IndexOutOfBoundsException | NullPointerException | BadApiKeyException e) {
               if (plugin.getConfigs().isDebug())
                 e.printStackTrace();
             }

@@ -18,28 +18,24 @@ public class PendingActions {
     this.plugin = plugin;
     log = plugin.getLog();
   }
+
   public void start() {
     int callBackInterval = ((30 * 1000));
 
     new Timer().scheduleAtFixedRate(new TimerTask() {
       public void run() {
         new Thread(() -> {
-          if(currentlyListening){
+          if (currentlyListening) {
             return;
           }
           currentlyListening = true;
           try {
             listen();
-            if(plugin.getConfigs().isDebug())
+            if (plugin.getConfigs().isDebug())
               plugin.getLog().info("Completed pending actions callback.");
-          } catch (IOException e) {
-            e.printStackTrace();
-          } catch (BadApiKeyException e) {
-            e.printStackTrace();
-          } catch (InterruptedException e) {
-            e.printStackTrace();
-          } catch (TooLargeException e) {
-            e.printStackTrace();
+          } catch (InterruptedException | TooLargeException | IOException | IndexOutOfBoundsException | NullPointerException | BadApiKeyException e) {
+            if (plugin.getConfigs().isDebug())
+              e.printStackTrace();
           }
           currentlyListening = false;
         }).start();
@@ -48,17 +44,22 @@ public class PendingActions {
     }, 0, callBackInterval); // repeat every 5 minutes.
   }
 
-  void listen() throws IOException, BadApiKeyException, InterruptedException, TooLargeException {
+  void listen() throws IOException, BadApiKeyException, InterruptedException, TooLargeException, NullPointerException {
     Client client = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
     PendingActionSyncClient pasc = PendingActionSyncClient.cast(client);
-    pasc.listenForPending(command->{
-      switch (ClientMCBansCommands.get(command)){
-        case UnbanSync:
-          new UnbanSync(plugin).handle(pasc.getInputStream(), pasc.getOutputStream());
-          break;
-        case END:
-          ConnectionPool.release(client);
-          break;
+    pasc.listenForPending(command -> {
+      ClientMCBansCommands clientMCBansCommand = ClientMCBansCommands.get(command);
+      if(clientMCBansCommand!=null){
+        switch (clientMCBansCommand) {
+          case UnbanSync:
+            new UnbanSync(plugin).handle(pasc.getInputStream(), pasc.getOutputStream());
+            break;
+          case END:
+            ConnectionPool.release(client);
+            break;
+        }
+      }else{
+        client.close();
       }
     });
   }

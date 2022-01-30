@@ -55,6 +55,8 @@ public class ReadFromInputStream {
       if (leftToRead < readDataChunkSize)
         data = new byte[leftToRead];
       readData = inputStream.read(data);
+      if(readData==-1)
+        return null;
       leftToRead -= readData;
       /*System.out.println("Read: "+readData);
       System.out.println("Expected Total: "+dataLength);
@@ -75,6 +77,8 @@ public class ReadFromInputStream {
       if (leftToRead < readDataChunkSize)
         data = new byte[leftToRead];
       readData = inputStream.read(data);
+      if(readData==-1)
+        return null;
       leftToRead -= readData;
       /*System.out.println("Read: "+readData);
       System.out.println("Expected Total: "+length);
@@ -121,6 +125,7 @@ public class ReadFromInputStream {
         data = new byte[Long.valueOf(leftToRead).intValue()];
       }
       leftToRead -= inputStream.read(data);
+
       outputStream.write(data);
       outputStream.flush();
     }
