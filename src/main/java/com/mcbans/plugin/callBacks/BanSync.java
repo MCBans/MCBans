@@ -286,14 +286,12 @@ public class BanSync {
                 public void ack() {
                   if(plugin.getConfigs().isDebug())
                     plugin.getLog().info("Completed ban sync.");
-                  plugin.syncRunning = false;
                 }
 
                 @Override
                 public void error() {
                   if(plugin.getConfigs().isDebug())
                     plugin.getLog().info("Failed to complete sync.");
-                  plugin.syncRunning = false;
                 }
               });
             } catch (IOException e) {
@@ -309,7 +307,7 @@ public class BanSync {
               if (plugin.getConfigs().isDebug())
                 e.printStackTrace();
             }
-
+            plugin.syncRunning = false;
           }
         }
       }, 0, finalCallbackInterval); // repeat every 5 minutes.
