@@ -42,16 +42,23 @@ public class MainCallBack {
         new Thread(() -> {
           try {
             mainRequest();
-            if(plugin.getConfigs().isDebug())
+            if (plugin.getConfigs().isDebug())
               plugin.getLog().info("Completed information callback.");
           } catch (IOException e) {
-            e.printStackTrace();
+            if (plugin.getConfigs().isDebug())
+              e.printStackTrace();
           } catch (BadApiKeyException e) {
-            e.printStackTrace();
+            if (plugin.getConfigs().isDebug())
+              e.printStackTrace();
           } catch (InterruptedException e) {
-            e.printStackTrace();
+            if (plugin.getConfigs().isDebug())
+              e.printStackTrace();
           } catch (TooLargeException e) {
-            e.printStackTrace();
+            if (plugin.getConfigs().isDebug())
+              e.printStackTrace();
+          } catch (NullPointerException e) {
+            if (plugin.getConfigs().isDebug())
+              e.printStackTrace();
           }
         }).start();
         plugin.lastCallBack = System.currentTimeMillis() / 1000;
