@@ -45,7 +45,7 @@ public class LookupCallback extends BaseCallback{
             Util.message(sender, ChatColor.RED + "Global Bans:");
             for (Ban record : globals){
                 String reasonString = StringEscapeUtils.unescapeHtml(record.getReason());
-                if(reasonString.length()>30) {
+                if(reasonString.length()>40) {
                     reasonString = reasonString.substring(0, 40) + "...";
                 }
                 Util.message(sender, ChatColor.YELLOW+"#"+record.getId()+" "+ChatColor.AQUA+reasonString+ChatColor.WHITE+" - ( "+ChatColor.GOLD+record.getAdmin().getName()+ChatColor.WHITE+" ) "+ChatColor.BOLD+record.getServer().getAddress());
@@ -55,7 +55,7 @@ public class LookupCallback extends BaseCallback{
             Util.message(sender, ChatColor.GOLD + "Local Bans:");
             for (Ban record : locals){
                 String reasonString = StringEscapeUtils.unescapeHtml(record.getReason());
-                if(reasonString.length()>30) {
+                if(reasonString.length()>40) {
                     reasonString = reasonString.substring(0, 40) + "...";
                 }
                 Util.message(sender, ChatColor.YELLOW+"#"+record.getId()+" "+ChatColor.AQUA+reasonString+ChatColor.WHITE+" - ( "+ChatColor.GOLD+record.getAdmin().getName()+ChatColor.WHITE+" ) "+ChatColor.BOLD+record.getServer().getAddress());
@@ -65,7 +65,7 @@ public class LookupCallback extends BaseCallback{
             Util.message(sender, ChatColor.GRAY + "Temp Bans:");
             for (Ban record : temps){
                 String reasonString = StringEscapeUtils.unescapeHtml(record.getReason());
-                if(reasonString.length()>30) {
+                if(reasonString.length()>40) {
                     reasonString = reasonString.substring(0, 40) + "...";
                 }
                 Util.message(sender, ChatColor.YELLOW+"#"+record.getId()+" "+ChatColor.AQUA+reasonString+ChatColor.WHITE+" - ( "+ChatColor.GOLD+record.getAdmin().getName()+ChatColor.WHITE+" ) "+ChatColor.BOLD+record.getServer().getAddress());
