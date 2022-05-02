@@ -28,7 +28,7 @@ jobs:
       run: chmod +x ./gradlew;./gradlew build
     - uses: actions/upload-artifact@v3
       with:
-        name: ${{GITHUB_REF_NAME}}
+        name: $GITHUB_REF_NAME
         path: build/libs/
   release:
    runs-on: ubuntu-latest
