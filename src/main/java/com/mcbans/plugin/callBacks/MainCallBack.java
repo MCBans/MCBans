@@ -1,6 +1,8 @@
 package com.mcbans.plugin.callBacks;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Timer;
@@ -19,6 +21,8 @@ import org.bukkit.ChatColor;
 import com.mcbans.plugin.ActionLog;
 import com.mcbans.plugin.MCBans;
 import com.mcbans.plugin.permission.Perms;
+
+import javax.crypto.NoSuchPaddingException;
 
 public class MainCallBack {
   private final MCBans plugin;
@@ -59,6 +63,12 @@ public class MainCallBack {
           } catch (NullPointerException e) {
             if (plugin.getConfigs().isDebug())
               e.printStackTrace();
+          } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+          } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+          } catch (InvalidKeyException e) {
+            e.printStackTrace();
           }
         }).start();
         plugin.lastCallBack = System.currentTimeMillis() / 1000;
@@ -66,7 +76,7 @@ public class MainCallBack {
     }, 0, finalCallBackInterval); // repeat every 5 minutes.
   }
 
-  private void mainRequest() throws IOException, BadApiKeyException, InterruptedException, TooLargeException {
+  private void mainRequest() throws IOException, BadApiKeyException, InterruptedException, TooLargeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
     Client c = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
     InformationCallbackClient.cast(c).updateState(
       plugin.getServer().getMaxPlayers(),

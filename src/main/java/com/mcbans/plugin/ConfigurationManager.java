@@ -191,6 +191,7 @@ public class ConfigurationManager {
     public int getCallBackInterval(){
         return conf.getInt("callBackInterval", 15);
     }
+    public boolean isEncryption(){ return conf.getBoolean("encryption", false); }
     /*
     public boolean isSendPreviousBans(){
         return conf.getBoolean("sendPreviousBans", true);

@@ -2,7 +2,10 @@ package com.mcbans.client;
 
 import com.mcbans.utils.*;
 
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class InformationCallbackClient extends Client{
@@ -10,7 +13,7 @@ public class InformationCallbackClient extends Client{
     super(c);
   }
 
-  public InformationCallbackClient(String apiKey) throws IOException, BadApiKeyException, TooLargeException {
+  public InformationCallbackClient(String apiKey) throws IOException, BadApiKeyException, TooLargeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
     super(apiKey);
   }
 
@@ -27,14 +30,14 @@ public class InformationCallbackClient extends Client{
     boolean onlineMode,
     String serverName) throws IOException, TooLargeException {
     sendCommand(ServerMCBansCommands.InformationCallback);
-    WriteToOutputStream.writeInt(getClient().getOutputStream(), maxPlayers);
-    WriteToOutputStream.writeByteArray(getClient().getOutputStream(), ObjectSerializer.serialize(players));
-    WriteToOutputStream.writeString(getClient().getOutputStream(), mcbansVersion);
-    WriteToOutputStream.writeString(getClient().getOutputStream(), minecraftVersion);
-    WriteToOutputStream.writeString(getClient().getOutputStream(), bukkitVersion);
-    WriteToOutputStream.writeBoolean(getClient().getOutputStream(), onlineMode);
-    WriteToOutputStream.writeString(getClient().getOutputStream(), serverName);
-    Command c = getCommand(getInputStream());
+    WriteToOutputStream.writeInt(getOutputStream(), maxPlayers);
+    WriteToOutputStream.writeByteArray(getOutputStream(), ObjectSerializer.serialize(players));
+    WriteToOutputStream.writeString(getOutputStream(), mcbansVersion);
+    WriteToOutputStream.writeString(getOutputStream(), minecraftVersion);
+    WriteToOutputStream.writeString(getOutputStream(), bukkitVersion);
+    WriteToOutputStream.writeBoolean(getOutputStream(), onlineMode);
+    WriteToOutputStream.writeString(getOutputStream(), serverName);
+    Command c = getCommand();
     switch (c.getCommand()){
       case 126:
         System.out.println("success");

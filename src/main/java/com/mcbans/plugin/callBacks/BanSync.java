@@ -2,6 +2,8 @@ package com.mcbans.plugin.callBacks;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -14,6 +16,8 @@ import com.mcbans.domain.models.client.Ban;
 import com.mcbans.utils.TimeTools;
 import com.mcbans.utils.TooLargeException;
 import com.mcbans.plugin.MCBans;
+
+import javax.crypto.NoSuchPaddingException;
 
 public class BanSync {
   private final MCBans plugin;
@@ -33,15 +37,15 @@ public class BanSync {
     this.plugin = plugin;
   }
 
-  public void goRequest() throws IOException, BadApiKeyException, InterruptedException, TooLargeException {
+  public void goRequest() throws IOException, BadApiKeyException, InterruptedException, TooLargeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
     this.startSync();
   }
 
-  public void startSync() throws IOException, BadApiKeyException, InterruptedException, TooLargeException {
+  public void startSync() throws IOException, BadApiKeyException, InterruptedException, TooLargeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
     startSync(null);
   }
 
-  void startSync(Responder responder) throws IOException, BadApiKeyException, InterruptedException, TooLargeException {
+  void startSync(Responder responder) throws IOException, BadApiKeyException, InterruptedException, TooLargeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
     if (plugin.syncRunning) {
       return;
     }
@@ -267,6 +271,12 @@ public class BanSync {
     } catch (TooLargeException tooLargeException) {
       if (plugin.getConfigs().isDebug())
         tooLargeException.printStackTrace();
+    } catch (NoSuchPaddingException e) {
+      e.printStackTrace();
+    } catch (NoSuchAlgorithmException e) {
+      e.printStackTrace();
+    } catch (InvalidKeyException e) {
+      e.printStackTrace();
     }
   }
 
@@ -297,6 +307,12 @@ public class BanSync {
             } catch (InterruptedException | TooLargeException | IOException | IndexOutOfBoundsException | NullPointerException | BadApiKeyException e) {
               if (plugin.getConfigs().isDebug())
                 e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+              e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+              e.printStackTrace();
+            } catch (InvalidKeyException e) {
+              e.printStackTrace();
             }
             plugin.syncRunning = false;
           }

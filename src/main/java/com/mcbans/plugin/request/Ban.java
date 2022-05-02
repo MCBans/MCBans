@@ -3,6 +3,8 @@ package com.mcbans.plugin.request;
 import static com.mcbans.plugin.I18n.localize;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +37,8 @@ import com.mcbans.plugin.events.PlayerUnbannedEvent;
 import com.mcbans.plugin.org.json.JSONException;
 import com.mcbans.plugin.org.json.JSONObject;
 import com.mcbans.plugin.util.Util;
+
+import javax.crypto.NoSuchPaddingException;
 
 public class Ban {
   private final MCBans plugin;
@@ -202,6 +206,12 @@ public class Ban {
         e.printStackTrace();
         log.info(senderName + " tried to unban " + playerName + "!");
         Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+      } catch (NoSuchPaddingException e) {
+        e.printStackTrace();
+      } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+      } catch (InvalidKeyException e) {
+        e.printStackTrace();
       }
     }).start();
   }
@@ -246,6 +256,12 @@ public class Ban {
         e.printStackTrace();
         log.info(senderName + " tried to ban " + playerName + " with a local type ban [" + reason + "]!");
         Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+      } catch (NoSuchPaddingException e) {
+        e.printStackTrace();
+      } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+      } catch (InvalidKeyException e) {
+        e.printStackTrace();
       }
     }).start();
   }
@@ -292,6 +308,12 @@ public class Ban {
         e.printStackTrace();
         log.info(senderName + " tried to ban " + playerName + " with a global type ban [" + reason + "]!");
         Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+      } catch (NoSuchPaddingException e) {
+        e.printStackTrace();
+      } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+      } catch (InvalidKeyException e) {
+        e.printStackTrace();
       }
     }).start();
   }
@@ -334,6 +356,12 @@ public class Ban {
         e.printStackTrace();
         log.info(senderName + " tried to ban " + playerName + " with a temp type ban [" + reason + "]!");
         Util.message(senderName, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+      } catch (NoSuchPaddingException e) {
+        e.printStackTrace();
+      } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+      } catch (InvalidKeyException e) {
+        e.printStackTrace();
       }
     }).start();
   }

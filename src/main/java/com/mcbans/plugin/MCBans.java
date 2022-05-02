@@ -63,6 +63,7 @@ public class MCBans extends JavaPlugin {
   public long lastCallBack = 0;
   public long lastPendingActions = 0;
   public static boolean AnnounceAll = false;
+  public static boolean encryptAPI = false;
   public String apiServer = null;
 
   private ActionLog log = null;
@@ -142,6 +143,8 @@ public class MCBans extends JavaPlugin {
     // load language
     log.info("Loading language file: " + config.getLanguage());
     I18n.init(config.getLanguage());
+
+    encryptAPI = config.isEncryption();
 
     pm.registerEvents(new PlayerListener(this), this);
 

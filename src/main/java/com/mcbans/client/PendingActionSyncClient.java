@@ -2,14 +2,17 @@ package com.mcbans.client;
 
 import com.mcbans.utils.TooLargeException;
 
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 public class PendingActionSyncClient extends Client{
   public PendingActionSyncClient(Client c) {
     super(c);
   }
-  public PendingActionSyncClient(String apiKey) throws IOException, BadApiKeyException, TooLargeException {
+  public PendingActionSyncClient(String apiKey) throws IOException, BadApiKeyException, TooLargeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
     super(apiKey);
   }
   public static PendingActionSyncClient cast(Client client) {

@@ -4,7 +4,10 @@ import com.mcbans.domain.models.client.Ban;
 import com.mcbans.domain.models.client.Player;
 import com.mcbans.utils.*;
 
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class PlayerLookupClient extends Client {
@@ -12,7 +15,7 @@ public class PlayerLookupClient extends Client {
     super(c);
   }
 
-  public PlayerLookupClient(String apiKey) throws IOException, BadApiKeyException, TooLargeException {
+  public PlayerLookupClient(String apiKey) throws IOException, BadApiKeyException, TooLargeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
     super(apiKey);
   }
   public static PlayerLookupClient cast(Client client) {
@@ -31,7 +34,7 @@ public class PlayerLookupClient extends Client {
     }
     sendCommand(ServerMCBansCommands.PlayerLookup);
     WriteToOutputStream.writeString(this.getOutputStream(), playerName);
-    Command c = getCommand(getInputStream());
+    Command c = getCommand();
     switch(c.getCommand()){
       case 124:
         dataReceived.error(ReadFromInputStream.readString(getInputStream(), 255));

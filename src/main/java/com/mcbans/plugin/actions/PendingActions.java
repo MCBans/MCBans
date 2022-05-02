@@ -5,7 +5,10 @@ import com.mcbans.plugin.ActionLog;
 import com.mcbans.plugin.MCBans;
 import com.mcbans.utils.TooLargeException;
 
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,6 +39,12 @@ public class PendingActions {
           } catch (InterruptedException | TooLargeException | IOException | IndexOutOfBoundsException | NullPointerException | BadApiKeyException e) {
             if (plugin.getConfigs().isDebug())
               e.printStackTrace();
+          } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+          } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+          } catch (InvalidKeyException e) {
+            e.printStackTrace();
           }
           currentlyListening = false;
         }).start();
@@ -44,7 +53,7 @@ public class PendingActions {
     }, 0, callBackInterval); // repeat every 5 minutes.
   }
 
-  void listen() throws IOException, BadApiKeyException, InterruptedException, TooLargeException, NullPointerException {
+  void listen() throws IOException, BadApiKeyException, InterruptedException, TooLargeException, NullPointerException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
     Client client = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
     PendingActionSyncClient pasc = PendingActionSyncClient.cast(client);
     pasc.listenForPending(command -> {

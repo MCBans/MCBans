@@ -165,65 +165,65 @@ public class PlayerListener implements Listener {
         Util.message(player, ChatColor.RED + "This server is secured by MCBans.");
       }
     }
-    new Thread(()->{
-      try {
-        Client c = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
-        List<ItemStack[]> itemStacks = InventorySyncClient.cast(c).get(event.getPlayer());
-        ConnectionPool.release(c);
-        if(itemStacks!=null) {
-          new BukkitRunnable() {
-            @Override
-            public void run() {
-              event.getPlayer().getInventory().setContents(itemStacks.get(0));
-              event.getPlayer().getInventory().setExtraContents(itemStacks.get(1));
-              event.getPlayer().getInventory().setStorageContents(itemStacks.get(2));
-              event.getPlayer().getInventory().setArmorContents(itemStacks.get(3));
-              if(itemStacks.size()>4){
-                event.getPlayer().getEnderChest().setContents(itemStacks.get(4));
-              }
-            }
-          }.runTaskLater(plugin, 0);
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
-      } catch (BadApiKeyException e) {
-        e.printStackTrace();
-      } catch (TooLargeException e) {
-        e.printStackTrace();
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      } catch (ClassNotFoundException e) {
-        e.printStackTrace();
-      }
-    }).start();
+//    new Thread(()->{
+//      try {
+//        Client c = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
+//        List<ItemStack[]> itemStacks = InventorySyncClient.cast(c).get(event.getPlayer());
+//        ConnectionPool.release(c);
+//        if(itemStacks!=null) {
+//          new BukkitRunnable() {
+//            @Override
+//            public void run() {
+//              event.getPlayer().getInventory().setContents(itemStacks.get(0));
+//              event.getPlayer().getInventory().setExtraContents(itemStacks.get(1));
+//              event.getPlayer().getInventory().setStorageContents(itemStacks.get(2));
+//              event.getPlayer().getInventory().setArmorContents(itemStacks.get(3));
+//              if(itemStacks.size()>4){
+//                event.getPlayer().getEnderChest().setContents(itemStacks.get(4));
+//              }
+//            }
+//          }.runTaskLater(plugin, 0);
+//        }
+//      } catch (IOException e) {
+//        e.printStackTrace();
+//      } catch (BadApiKeyException e) {
+//        e.printStackTrace();
+//      } catch (TooLargeException e) {
+//        e.printStackTrace();
+//      } catch (InterruptedException e) {
+//        e.printStackTrace();
+//      } catch (ClassNotFoundException e) {
+//        e.printStackTrace();
+//      }
+//    }).start();
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerQuit(final PlayerQuitEvent event) {
 
-    new Thread(()->{
-      try {
-        Client c = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
-        InventorySyncClient isc = InventorySyncClient.cast(c);
-        List<ItemStack[]> inventories = new ArrayList(){{
-          add(event.getPlayer().getInventory().getContents());
-          add(event.getPlayer().getInventory().getExtraContents());
-          add(event.getPlayer().getInventory().getStorageContents());
-          add(event.getPlayer().getInventory().getArmorContents());
-          add(event.getPlayer().getEnderChest().getContents());
-        }};
-        isc.save(event.getPlayer(), inventories);
-        ConnectionPool.release(c);
-      } catch (IOException e) {
-        e.printStackTrace();
-      } catch (BadApiKeyException e) {
-        e.printStackTrace();
-      } catch (TooLargeException e) {
-        e.printStackTrace();
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-    }).start();
+//    new Thread(()->{
+//      try {
+//        Client c = ConnectionPool.getConnection(plugin.getConfigs().getApiKey());
+//        InventorySyncClient isc = InventorySyncClient.cast(c);
+//        List<ItemStack[]> inventories = new ArrayList(){{
+//          add(event.getPlayer().getInventory().getContents());
+//          add(event.getPlayer().getInventory().getExtraContents());
+//          add(event.getPlayer().getInventory().getStorageContents());
+//          add(event.getPlayer().getInventory().getArmorContents());
+//          add(event.getPlayer().getEnderChest().getContents());
+//        }};
+//        isc.save(event.getPlayer(), inventories);
+//        ConnectionPool.release(c);
+//      } catch (IOException e) {
+//        e.printStackTrace();
+//      } catch (BadApiKeyException e) {
+//        e.printStackTrace();
+//      } catch (TooLargeException e) {
+//        e.printStackTrace();
+//      } catch (InterruptedException e) {
+//        e.printStackTrace();
+//      }
+//    }).start();
 
     if (plugin.mcbStaff.contains(event.getPlayer().getName())) {
       plugin.mcbStaff.remove(event.getPlayer().getName());

@@ -15,6 +15,10 @@ prefix: "&cMCBans &8>&r "
 #   Your servers apiKey can be found in your account dashboard http://my.mcbans.com/servers
 apiKey: YOUR_API_KEY_HERE
 
+# encryption:
+#   Encrypt communications between MCBans API and your Minecraft Server
+encryption: false
+
 # language:
 #   Language you want to have displayed to the players
 #   DEFAULT: default

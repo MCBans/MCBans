@@ -4,6 +4,7 @@ public enum ServerMCBansCommands {
     //Session Handling
     SessionRegister(127),
     VerifyConnection(126),
+    EncryptConnection(125),
     SessionClose(-127),
 
     // Ban Information

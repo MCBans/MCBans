@@ -9,7 +9,10 @@ import org.bukkit.ChatColor;
 import com.mcbans.plugin.MCBans;
 import com.mcbans.plugin.callBacks.MessageCallback;
 
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 public class PingRequest extends BaseRequest<MessageCallback>{
     private long startTime;
@@ -38,6 +41,12 @@ public class PingRequest extends BaseRequest<MessageCallback>{
         } catch (TooLargeException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
     }

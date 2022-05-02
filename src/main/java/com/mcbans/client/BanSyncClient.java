@@ -7,7 +7,10 @@ import com.mcbans.utils.ReadFromInputStream;
 import com.mcbans.utils.TooLargeException;
 import com.mcbans.utils.WriteToOutputStream;
 
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class BanSyncClient extends Client{
@@ -15,7 +18,7 @@ public class BanSyncClient extends Client{
     super(c);
   }
 
-  public BanSyncClient(String apiKey) throws IOException, BadApiKeyException, TooLargeException {
+  public BanSyncClient(String apiKey) throws IOException, BadApiKeyException, TooLargeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
     super(apiKey);
   }
 
@@ -26,7 +29,7 @@ public class BanSyncClient extends Client{
   public void getBanSync(long banId, ResponseHandler responseHandler) throws IOException, ClassNotFoundException, TooLargeException {
     sendCommand(ServerMCBansCommands.BanSync);
     WriteToOutputStream.writeLong(getOutputStream(), banId);
-    Command c = getCommand(getInputStream());
+    Command c = getCommand();
     if(c.getCommand()==25) {
       long chunks = ReadFromInputStream.readLong(getInputStream());
       for (long i = 0; i < chunks; i++) {
@@ -37,7 +40,6 @@ public class BanSyncClient extends Client{
             new TypeToken<List<Ban>>(){}
           )
         );
-        responseHandler.partial(chunks, i+1);
         WriteToOutputStream.writeBoolean(getOutputStream(), true);
       }
     }

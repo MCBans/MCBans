@@ -4,7 +4,10 @@ import com.mcbans.client.response.BanResponse;
 import com.mcbans.domain.models.client.Ban;
 import com.mcbans.utils.*;
 
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class BanStatusClient extends Client{
@@ -12,7 +15,7 @@ public class BanStatusClient extends Client{
     super(c);
   }
 
-  public BanStatusClient(String apiKey) throws IOException, BadApiKeyException, TooLargeException {
+  public BanStatusClient(String apiKey) throws IOException, BadApiKeyException, TooLargeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
     super(apiKey);
   }
   public static BanStatusClient cast(Client client) {
@@ -22,6 +25,7 @@ public class BanStatusClient extends Client{
 
   public BanResponse banStatusByPlayerName(String playerName, String ipAddress, boolean loginRequest) throws IOException, ClassNotFoundException, TooLargeException {
     sendCommand(ServerMCBansCommands.BanStatusByPlayerName);
+
     WriteToOutputStream.writeString(getOutputStream(), playerName);
     WriteToOutputStream.writeString(getOutputStream(), ipAddress);
     WriteToOutputStream.writeBoolean(getOutputStream(), loginRequest);
@@ -29,13 +33,16 @@ public class BanStatusClient extends Client{
   }
   public BanResponse banStatusByPlayerUUID(String playerUUID, String ipAddress, boolean loginRequest) throws IOException, ClassNotFoundException, TooLargeException {
     sendCommand(ServerMCBansCommands.BanStatusByPlayerUUID);
+
     WriteToOutputStream.writeString(getOutputStream(), playerUUID);
     WriteToOutputStream.writeString(getOutputStream(), ipAddress);
     WriteToOutputStream.writeBoolean(getOutputStream(), loginRequest);
     return banStatusResponseHandler();
   }
   public BanResponse banStatusResponseHandler() throws IOException, ClassNotFoundException, TooLargeException {
-    Command command = getCommand(getInputStream());
+    Command command = getCommand();
+
+
     switch (command.getCommand()){
       case 10:
         String uuid = ReadFromInputStream.readString(getInputStream(), 32);

@@ -5,10 +5,13 @@ import com.mcbans.utils.ReadFromInputStream;
 import com.mcbans.utils.TooLargeException;
 import com.mcbans.utils.WriteToOutputStream;
 
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 public class UnbanClient extends Client{
-  public UnbanClient(String apiKey) throws IOException, BadApiKeyException, TooLargeException {
+  public UnbanClient(String apiKey) throws IOException, BadApiKeyException, TooLargeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
     super(apiKey);
   }
   public UnbanClient(Client c) {
@@ -28,7 +31,7 @@ public class UnbanClient extends Client{
     }else{
       WriteToOutputStream.writeBoolean(getOutputStream(), false);
     }
-    Command c = getCommand(getInputStream());
+    Command c = getCommand();
     if(c.getCommand()==124){
       responseHandler.err(ReadFromInputStream.readString(getInputStream(), 50));
     }else if(c.getCommand()==126){

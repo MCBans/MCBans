@@ -2,6 +2,8 @@ package com.mcbans.plugin.request;
 
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
 import com.mcbans.client.*;
@@ -21,6 +23,8 @@ import com.mcbans.plugin.callBacks.MessageCallback;
 import com.mcbans.plugin.org.json.JSONException;
 import com.mcbans.plugin.org.json.JSONObject;
 import com.mcbans.plugin.util.Util;
+
+import javax.crypto.NoSuchPaddingException;
 
 import static com.mcbans.plugin.I18n.localize;
 
@@ -80,6 +84,12 @@ public class BanIpRequest extends BaseRequest<MessageCallback>{
                 e.printStackTrace();
                 log.info(issuedBy + " tried to ip ban " + ip + " with the reason [" + reason + "]!");
                 Util.message(issuedBy, ChatColor.RED + " MCBans API is down or unreachable. We added a default ban for you. To unban, use /pardon.");
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
             }
         }).start();
     }

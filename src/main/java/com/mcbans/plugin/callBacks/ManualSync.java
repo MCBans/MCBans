@@ -3,6 +3,8 @@ package com.mcbans.plugin.callBacks;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -17,6 +19,8 @@ import com.mcbans.plugin.MCBans;
 import com.mcbans.plugin.org.json.JSONException;
 import com.mcbans.plugin.org.json.JSONObject;
 import com.mcbans.plugin.util.Util;
+
+import javax.crypto.NoSuchPaddingException;
 
 public class ManualSync implements Runnable {
   private final MCBans plugin;
@@ -66,6 +70,12 @@ public class ManualSync implements Runnable {
       } catch (TooLargeException e) {
         if (plugin.getConfigs().isDebug())
           e.printStackTrace();
+      } catch (NoSuchPaddingException e) {
+        e.printStackTrace();
+      } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+      } catch (InvalidKeyException e) {
+        e.printStackTrace();
       }
     }).start();
 
