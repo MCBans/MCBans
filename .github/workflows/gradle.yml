@@ -30,5 +30,11 @@ jobs:
       run: chmod +x ./gradlew;./gradlew build
     - uses: actions/upload-artifact@v3
       with:
-        name: my-artifact
+        name: ${{GITHUB_REF_NAME}}
         path: build/libs/
+  release:
+   runs-on: ubuntu-latest
+   steps:
+   - name: GitHub Releases
+     uses: fnkr/github-action-ghr@v1.3
+   
