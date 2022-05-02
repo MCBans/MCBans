@@ -34,5 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-    - name: GitHub Releases
-      uses: fnkr/github-action-ghr@v1.3
+    - uses: actions/upload-artifact@v3
+      with:
+        name: my-artifact
+        path: build/libs/
