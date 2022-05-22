@@ -31,13 +31,14 @@ public class BanSyncClient extends Client{
     WriteToOutputStream.writeLong(getOutputStream(), banId);
     Command c = getCommand();
     if(c.getCommand()==25) {
-      long chunks = ReadFromInputStream.readLong(getInputStream());
+      long chunks = ReadFromInputStream.readLong(getInputStream(), false);
       for (long i = 0; i < chunks; i++) {
         responseHandler.bans(
           ReadFromInputStream.readJSONObject(
             getInputStream(),
             1024 * 25,
-            new TypeToken<List<Ban>>(){}
+            new TypeToken<List<Ban>>(){},
+            false
           )
         );
         WriteToOutputStream.writeBoolean(getOutputStream(), true);

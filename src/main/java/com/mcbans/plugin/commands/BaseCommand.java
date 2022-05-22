@@ -121,8 +121,8 @@ public abstract class BaseCommand {
             		}
             	}
             }
-            System.out.println("target: "+target);
-            System.out.println("targetUUID: "+targetUUID);
+            //System.out.println("target: "+target);
+            //System.out.println("targetUUID: "+targetUUID);
         }
 
         // Exec

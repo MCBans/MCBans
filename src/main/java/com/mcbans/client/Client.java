@@ -1,6 +1,7 @@
 package com.mcbans.client;
 
 import com.mcbans.domain.models.client.Ban;
+import com.mcbans.plugin.MCBans;
 import com.mcbans.utils.Command;
 import com.mcbans.utils.ReadFromInputStream;
 import com.mcbans.utils.TooLargeException;
@@ -50,15 +51,7 @@ public class Client {
         client.setSoTimeout(5000);
         setOutputStream(client.getOutputStream());
         setInputStream(client.getInputStream());
-        registerClient(apiKey);
-    }
-    public Client(String apiKey, boolean encryption) throws IOException, BadApiKeyException, TooLargeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
-        client = new Socket("api.v4.direct.mcbans.com", 8082);
-        client.setKeepAlive(true);
-        client.setSoTimeout(5000);
-        setOutputStream(client.getOutputStream());
-        setInputStream(client.getInputStream());
-        if(encryption){
+        if(MCBans.encryptAPI){
             encryptConnection();
         }
         registerClient(apiKey);
@@ -72,8 +65,8 @@ public class Client {
         sendCommand(command, -1);
     }
     Command getCommand() throws IOException {
-        byte commandId = ReadFromInputStream.readByte(getInputStream());
-        long referenceIdLong = ReadFromInputStream.readLong(getInputStream());
+        byte commandId = ReadFromInputStream.readByte(getInputStream(), false);
+        long referenceIdLong = ReadFromInputStream.readLong(getInputStream(), false);
         return new Command(referenceIdLong, commandId);
     }
     void encryptConnection() throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, TooLargeException {
@@ -87,11 +80,11 @@ public class Client {
         Command c = getCommand();
         switch (c.getCommand()){
         case 126:
-            System.out.println("connection encrypted!");
+            //System.out.println("connection encrypted!");
             break;
         case 124:
-            String errorMessage = ReadFromInputStream.readString(getInputStream(), 255);
-            System.out.println(errorMessage);
+            String errorMessage = ReadFromInputStream.readString(getInputStream(), 255, false);
+            //System.out.println(errorMessage);
             break;
         }
     }
@@ -103,9 +96,9 @@ public class Client {
         Command command = getCommand();
         switch(command.getCommand()){
             case -126:
-                throw new BadApiKeyException(ReadFromInputStream.readString(getInputStream(), 128) + ": "+apiKey);
+                throw new BadApiKeyException(ReadFromInputStream.readString(getInputStream(), 128, false) + ": "+apiKey);
             case 126:
-                System.out.println("registration successful");
+                //System.out.println("registration successful");
                 break;
         }
     }

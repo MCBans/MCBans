@@ -37,17 +37,17 @@ public class PlayerLookupClient extends Client {
     Command c = getCommand();
     switch(c.getCommand()){
       case 124:
-        dataReceived.error(ReadFromInputStream.readString(getInputStream(), 255));
+        dataReceived.error(ReadFromInputStream.readString(getInputStream(), 255, false));
         break;
       case 70:
-        int length = Long.valueOf(ReadFromInputStream.readLong(getInputStream())).intValue();
-        Player player = ObjectSerializer.deserialize(ReadFromInputStream.readByteData(getInputStream(), length));
+        int length = Long.valueOf(ReadFromInputStream.readLong(getInputStream(), false)).intValue();
+        Player player = ObjectSerializer.deserialize(ReadFromInputStream.readByteData(getInputStream(), length, false));
         List<Ban> bans = null;
         Double rep = null;
-        if(ReadFromInputStream.readBoolean(getInputStream())){
-          length = Long.valueOf(ReadFromInputStream.readLong(getInputStream())).intValue();
-          bans = ObjectSerializer.deserialize(ReadFromInputStream.readByteData(getInputStream(), length));
-          rep = ReadFromInputStream.readDouble(getInputStream());
+        if(ReadFromInputStream.readBoolean(getInputStream(), false)){
+          length = Long.valueOf(ReadFromInputStream.readLong(getInputStream(), false)).intValue();
+          bans = ObjectSerializer.deserialize(ReadFromInputStream.readByteData(getInputStream(), length, false));
+          rep = ReadFromInputStream.readDouble(getInputStream(), false);
         }
         dataReceived.received(player, bans, rep);
         break;

@@ -20,9 +20,9 @@ public class UnbanSync {
     this.log = plugin.getLog();
   }
   public void handle(InputStream is, OutputStream os) throws IOException, TooLargeException {
-    int numberOfUnbans = ReadFromInputStream.readInt(is);
+    int numberOfUnbans = ReadFromInputStream.readInt(is, false);
     for(int i=0;i<numberOfUnbans;i++){
-      String uuid = ReadFromInputStream.readString(is, 32);
+      String uuid = ReadFromInputStream.readString(is, 32, false);
       plugin.getOfflineBanList().remove(uuid);
       WriteToOutputStream.writeBoolean(os,true);
     }

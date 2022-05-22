@@ -33,7 +33,7 @@ public class UnbanClient extends Client{
     }
     Command c = getCommand();
     if(c.getCommand()==124){
-      responseHandler.err(ReadFromInputStream.readString(getInputStream(), 50));
+      responseHandler.err(ReadFromInputStream.readString(getInputStream(), 50, false));
     }else if(c.getCommand()==126){
       responseHandler.ack();
     }

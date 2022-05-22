@@ -45,12 +45,12 @@ public class BanStatusClient extends Client{
 
     switch (command.getCommand()){
       case 10:
-        String uuid = ReadFromInputStream.readString(getInputStream(), 32);
-        String name = ReadFromInputStream.readString(getInputStream(), 128);
-        List<Ban> bans = ObjectSerializer.deserialize(ReadFromInputStream.readByteArrayToStream(getInputStream(), 1024*25)); // 25 KB
-        double reputation = ReadFromInputStream.readDouble(getInputStream());
-        Ban ban = ObjectSerializer.deserialize(ReadFromInputStream.readByteArrayToStream(getInputStream(), 1024)); // 1KB
-        boolean mcbansStaff = ReadFromInputStream.readBoolean(getInputStream());
+        String uuid = ReadFromInputStream.readString(getInputStream(), 32, false);
+        String name = ReadFromInputStream.readString(getInputStream(), 128, false);
+        List<Ban> bans = ObjectSerializer.deserialize(ReadFromInputStream.readByteArrayToStream(getInputStream(), 1024*25, false)); // 25 KB
+        double reputation = ReadFromInputStream.readDouble(getInputStream(), false);
+        Ban ban = ObjectSerializer.deserialize(ReadFromInputStream.readByteArrayToStream(getInputStream(), 1024, false)); // 1KB
+        boolean mcbansStaff = ReadFromInputStream.readBoolean(getInputStream(), false);
         return new BanResponse(uuid, name, bans, reputation, ban, mcbansStaff);
       case -126:
         return null;

@@ -40,11 +40,11 @@ public class InformationCallbackClient extends Client{
     Command c = getCommand();
     switch (c.getCommand()){
       case 126:
-        System.out.println("success");
+        //System.out.println("success");
         break;
       case 124:
-        String errorMessage = ReadFromInputStream.readString(getInputStream(), 255);
-        System.out.println(errorMessage);
+        String errorMessage = ReadFromInputStream.readString(getInputStream(), 255, false);
+        //System.out.println(errorMessage);
         break;
     }
   }

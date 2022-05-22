@@ -32,6 +32,8 @@ public class EncryptedInputStream extends InputStream {
   long chunks = 0;
   long onChunk = 0;
 
+  boolean debug = false;
+
   // in buffer
   int position = 0;
   byte[] buffer=null;
@@ -44,12 +46,12 @@ public class EncryptedInputStream extends InputStream {
     if (buffer == null || (position == buffer.length && (onChunk <= chunks || chunks == 0))) {
       try {
         if (chunks == 0 || onChunk == chunks) {
-          length = ReadFromInputStream.readLong(is);
-          chunks = ReadFromInputStream.readLong(is);
+          length = ReadFromInputStream.readLong(is, debug);
+          chunks = ReadFromInputStream.readLong(is, debug);
           onChunk = 0;
         }
         if(chunks>0) {
-          byte[] encrypted = ReadFromInputStream.readByteArrayToStream(is, 1024 * 25);
+          byte[] encrypted = ReadFromInputStream.readByteArrayToStream(is, 1024 * 25, debug);
           buffer = decryptBytes(encrypted, privateKey);
           position = 0;
           onChunk++;
@@ -104,12 +106,12 @@ public class EncryptedInputStream extends InputStream {
       if (buffer == null || (position == buffer.length && (onChunk < chunks || chunks == 0))) {
         try {
           if (chunks == 0) {
-            length = ReadFromInputStream.readLong(is);
-            chunks = ReadFromInputStream.readLong(is);
+            length = ReadFromInputStream.readLong(is, debug);
+            chunks = ReadFromInputStream.readLong(is, debug);
             onChunk = 0;
           }
           if(chunks>0) {
-            byte[] encrypted = ReadFromInputStream.readByteArrayToStream(is, 1024 * 25);
+            byte[] encrypted = ReadFromInputStream.readByteArrayToStream(is, 1024 * 25, debug);
             buffer = decryptBytes(encrypted, privateKey);
           }
           position = 0;

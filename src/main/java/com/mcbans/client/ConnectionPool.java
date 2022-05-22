@@ -1,6 +1,5 @@
 package com.mcbans.client;
 
-import com.mcbans.plugin.MCBans;
 import com.mcbans.utils.TooLargeException;
 
 import javax.crypto.NoSuchPaddingException;
@@ -25,7 +24,7 @@ public class ConnectionPool {
       return client;
     }
     if (connections < 10) {
-      return new Client(ApiKey, MCBans.encryptAPI);
+      return new Client(ApiKey);
     }
     connections++;
     while ((client = clients.poll()) == null) {

@@ -38,7 +38,7 @@ public class BanClient extends Client{
     WriteToOutputStream.writeByte(getOutputStream(), (byte)1);
     Command c = getCommand();
     if(c.getCommand()==124){
-      responseHandler.err(ReadFromInputStream.readString(getInputStream(), 50));
+      responseHandler.err(ReadFromInputStream.readString(getInputStream(), 50, false));
     }else if(c.getCommand()==126){
       responseHandler.ack();
     }
@@ -58,7 +58,7 @@ public class BanClient extends Client{
     WriteToOutputStream.writeByte(getOutputStream(), (byte)2);
     Command c = getCommand();
     if(c.getCommand()==124){
-      responseHandler.err(ReadFromInputStream.readString(getInputStream(), 50));
+      responseHandler.err(ReadFromInputStream.readString(getInputStream(), 50, false));
     }else if(c.getCommand()==126){
       responseHandler.ack();
     }
@@ -79,7 +79,7 @@ public class BanClient extends Client{
     WriteToOutputStream.writeString(getOutputStream(), endInTimeString);
     Command c = getCommand();
     if(c.getCommand()==124){
-      responseHandler.err(ReadFromInputStream.readString(getInputStream(), 50));
+      responseHandler.err(ReadFromInputStream.readString(getInputStream(), 50, false));
     }else if(c.getCommand()==126){
       responseHandler.ack();
     }

@@ -240,7 +240,7 @@ public class Util {
       uuid = (((JsonObject)new JsonParser().parse(in)).get("id")).toString().replaceAll("\"", "");
       in.close();
     } catch (Exception e) {
-      System.out.println("Unable to get UUID of: " + name + "!");
+      //System.out.println("Unable to get UUID of: " + name + "!");
       uuid = "er";
     }
     return uuid;
@@ -253,7 +253,7 @@ public class Util {
       uuid = uuid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
       in.close();
     } catch (Exception e) {
-      System.out.println("Unable to get UUID of: " + name + "!");
+      //System.out.println("Unable to get UUID of: " + name + "!");
       uuid = "er";
     }
     return UUID.fromString(uuid);

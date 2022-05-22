@@ -33,12 +33,12 @@ public class BanLookupClient extends Client {
     Command c = getCommand();
     switch(c.getCommand()){
       case 124:
-        dataReceived.error(ReadFromInputStream.readString(getInputStream(), 255));
+        dataReceived.error(ReadFromInputStream.readString(getInputStream(), 255, false));
         break;
       case 71:
-        if(ReadFromInputStream.readBoolean(getInputStream())){
-          int length = Long.valueOf(ReadFromInputStream.readLong(getInputStream())).intValue();
-          Ban ban = ObjectSerializer.deserialize(ReadFromInputStream.readByteData(getInputStream(), length));
+        if(ReadFromInputStream.readBoolean(getInputStream(), false)){
+          int length = Long.valueOf(ReadFromInputStream.readLong(getInputStream(), false)).intValue();
+          Ban ban = ObjectSerializer.deserialize(ReadFromInputStream.readByteData(getInputStream(), length, false));
           dataReceived.received(ban);
         }
         break;

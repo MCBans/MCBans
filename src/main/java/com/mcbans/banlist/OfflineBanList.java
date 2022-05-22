@@ -19,7 +19,7 @@ public class OfflineBanList {
       in.close();
       fileIn.close();
     }
-    System.out.println(bannedPlayers.size() + " banned players.");
+    //System.out.println(bannedPlayers.size() + " banned players.");
     this.plugin = plugin;
   }
 
