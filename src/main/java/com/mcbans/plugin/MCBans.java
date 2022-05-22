@@ -39,7 +39,7 @@ import com.mcbans.plugin.commands.CommandUnban;
 import com.mcbans.plugin.commands.MCBansCommandHandler;
 
 public class MCBans extends JavaPlugin {
-  public final String apiRequestSuffix = "4.4.3";
+  public final String apiRequestSuffix = "5.2.0";
   private static MCBans instance;
 
   private OfflineBanList offlineBanList;
