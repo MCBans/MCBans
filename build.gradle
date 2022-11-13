@@ -10,9 +10,6 @@ repositories {
     mavenCentral()
     jcenter()
     maven {
-        url 'https://maven.sk89q.com/repo/'
-    }
-    maven {
         url 'https://repo.md-5.net/content/repositories/snapshots/'
     }
     // Spigot API
