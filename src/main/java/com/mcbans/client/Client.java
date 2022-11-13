@@ -46,7 +46,11 @@ public class Client {
         setOutputStream(c.getOutputStream());
     }
     public Client(String apiKey) throws IOException, BadApiKeyException, TooLargeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
-        client = new Socket("api.v4.direct.mcbans.com", 8082);
+        if(System.getenv().containsKey("OVERRIDE_API") && System.getenv().containsKey("OVERRIDE_PORT")){
+            client = new Socket(System.getenv("OVERRIDE_API"), Integer.parseInt(System.getenv("OVERRIDE_PORT")));
+        }else{
+            client = new Socket("api.v4.direct.mcbans.com", 8082);
+        }
         client.setKeepAlive(true);
         client.setSoTimeout(5000);
         setOutputStream(client.getOutputStream());
