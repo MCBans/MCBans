@@ -84,3 +84,39 @@ Permissions
 * mcbans.maxalts.exempt (default: op) - Permission to exempt from max alt account disconnect
 
 
+
+
+Docker Images and Kubernetes
+--------
+
+This project includes Docker images for testing the MCBans API:
+
+1. **mcbans-main**: A simple test that connects to the MCBans API and verifies the connection
+2. **mcbans-bantest**: A more comprehensive test that bans a player, checks the ban status, and then unbans the player
+
+### Running with Kubernetes
+
+A Kubernetes CronJob configuration is provided in `kubernetes-jobs.yaml`. This file defines two CronJobs that run every hour:
+- `mcbans-main-cronjob`: Runs the Main class to test API connectivity every hour
+- `mcbans-bantest-cronjob`: Runs the BanTest class to test ban functionality every hour
+
+To apply the configuration to your Kubernetes cluster:
+
+```bash
+# Apply the configuration
+kubectl apply -f kubernetes-jobs.yaml
+
+# Check the status of the CronJobs
+kubectl get cronjobs
+
+# Check the status of the Jobs created by the CronJobs
+kubectl get jobs
+
+# View logs from a job pod (replace JOB_POD_NAME with the actual pod name)
+kubectl logs JOB_POD_NAME
+
+# Delete the CronJobs when done
+kubectl delete -f kubernetes-jobs.yaml
+```
+
+You can customize the API key and other parameters by editing the `args` section in the YAML file before applying. You can also modify the schedule by changing the `schedule` field in the CronJob specification (default is "0 * * * *", which runs at minute 0 of every hour).

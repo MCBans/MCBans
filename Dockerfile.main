@@ -1,0 +1,19 @@
+FROM openjdk:8-jdk-alpine
+
+WORKDIR /app
+
+# Copy the compiled classes
+COPY build/classes/java/main /app/classes
+
+# Copy the dependencies
+COPY libs/*.jar /app/libs/
+
+# Set up the classpath
+ENV CLASSPATH=/app/classes
+RUN for jar in /app/libs/*.jar; do export CLASSPATH=$CLASSPATH:$jar; done
+
+# Run the Main class
+ENTRYPOINT ["java", "-cp", "/app/classes:/app/libs/*", "com.mcbans.test.Main"]
+
+# Default command line arguments (can be overridden)
+CMD ["test_api_key"]

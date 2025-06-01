@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mcbans-main-cronjob
+spec:
+  schedule: "0 * * * *"  # Run every hour at minute 0
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: mcbans-main
+            image: ghcr.io/mcbans/mcbans-main:5.1.1
+            # You can override the default CMD by uncommenting and modifying the following:
+            # args: ["your_api_key"]
+            env:
+            - name: JAVA_OPTS
+              value: "-Xmx512m"
+          restartPolicy: Never
+      backoffLimit: 3
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mcbans-bantest-cronjob
+spec:
+  schedule: "0 * * * *"  # Run every hour at minute 0
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: mcbans-bantest
+            image: ghcr.io/mcbans/mcbans-bantest:5.1.1
+            # You can override the default CMD by uncommenting and modifying the following:
+            # args: ["your_api_key", "player_to_ban"]
+            env:
+            - name: JAVA_OPTS
+              value: "-Xmx512m"
+          restartPolicy: Never
+      backoffLimit: 3
