@@ -19,6 +19,8 @@ spec:
               value: "-Xmx512m"
             - name: OVERRIDE_API
               value: 50.115.119.30
+            - name: OVERRIDE_PORT
+              value: "8082"
           restartPolicy: Never
       backoffLimit: 3
 ---
@@ -43,5 +45,7 @@ spec:
               value: "-Xmx512m"
             - name: OVERRIDE_API
               value: 50.115.119.30
+            - name: OVERRIDE_PORT
+              value: "8082"
           restartPolicy: Never
       backoffLimit: 3
