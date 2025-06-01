@@ -3,8 +3,24 @@ version = file('version.txt').text.trim()
 
 apply plugin: 'java'
 apply plugin: 'java-library'
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
+
+// Default main class (can be overridden with --args)
+mainClassName = 'com.mcbans.test.Main'
+
+// Configure run task to accept command line arguments
+run {
+    // Set args if provided via command line
+    if (project.hasProperty('args')) {
+        def argsArray = project.args.split(' ')
+        if (argsArray.length > 0) {
+            mainClassName = argsArray[0]
+            args = argsArray.length > 1 ? argsArray[1..-1] : []
+        }
+    }
+}
 
 repositories {
     mavenCentral()

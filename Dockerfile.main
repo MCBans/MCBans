@@ -2,18 +2,23 @@ FROM openjdk:8-jdk-alpine
 
 WORKDIR /app
 
-# Copy the compiled classes
-COPY build/classes/java/main /app/classes
+# Copy the entire project
+COPY . /app/
 
-# Copy the dependencies
-COPY libs/*.jar /app/libs/
+# Make gradlew executable
+RUN chmod +x /app/gradlew
 
-# Set up the classpath
-ENV CLASSPATH=/app/classes
-RUN for jar in /app/libs/*.jar; do export CLASSPATH=$CLASSPATH:$jar; done
+# Create a shell script to handle arguments
+RUN echo '#!/bin/sh' > /app/run.sh && \
+    echo 'if [ "$#" -eq 0 ]; then' >> /app/run.sh && \
+    echo '  /app/gradlew run --args="com.mcbans.test.Main test_api_key"' >> /app/run.sh && \
+    echo 'else' >> /app/run.sh && \
+    echo '  /app/gradlew run --args="com.mcbans.test.Main $@"' >> /app/run.sh && \
+    echo 'fi' >> /app/run.sh && \
+    chmod +x /app/run.sh
 
-# Run the Main class
-ENTRYPOINT ["java", "-cp", "/app/classes:/app/libs/*", "com.mcbans.test.Main"]
+# Run the shell script
+ENTRYPOINT ["/app/run.sh"]
 
 # Default command line arguments (can be overridden)
-CMD ["test_api_key"]
+CMD []
