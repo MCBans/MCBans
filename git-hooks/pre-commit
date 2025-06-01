@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# Get the current version from version.txt
+VERSION_FILE="version.txt"
+
+# Get the list of files that are about to be committed
+FILES=$(git diff --cached --name-only)
+FILE_COUNT=$(echo "$FILES" | wc -l)
+
+# Check if version.txt is the only file being committed
+if [ "$FILE_COUNT" -eq 1 ] && [ "$(echo "$FILES" | grep -c "$VERSION_FILE")" -eq 1 ]; then
+    echo "Only $VERSION_FILE is being committed. Skipping version increment."
+    exit 0
+fi
+
+if [ ! -f "$VERSION_FILE" ]; then
+    echo "0.0.1" > "$VERSION_FILE"
+    echo "Created version.txt with initial version 0.0.1"
+    git add "$VERSION_FILE"
+fi
+
+# Read current version
+CURRENT_VERSION=$(cat "$VERSION_FILE")
+
+# Check if the version is empty or invalid
+if [[ -z "$CURRENT_VERSION" || ! "$CURRENT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "Version in $VERSION_FILE is empty or invalid. Resetting to 0.0.1"
+    CURRENT_VERSION="0.0.1"
+    echo "$CURRENT_VERSION" > "$VERSION_FILE"
+fi
+
+# Parse the version components
+MAJOR=$(echo "$CURRENT_VERSION" | cut -d. -f1)
+MINOR=$(echo "$CURRENT_VERSION" | cut -d. -f2)
+PATCH=$(echo "$CURRENT_VERSION" | cut -d. -f3)
+
+# Determine which component to increment based on the number of files changed
+if [ "$FILE_COUNT" -ge 20 ]; then
+    # Increment MAJOR version when 20+ files change
+    MAJOR=$((MAJOR + 1))
+    MINOR=0
+    PATCH=0
+    echo "Large change detected ($FILE_COUNT files). Incrementing MAJOR version."
+elif [ "$FILE_COUNT" -gt 10 ]; then
+    # Increment MINOR version when more than 10 files change
+    MINOR=$((MINOR + 1))
+    PATCH=0
+    echo "Medium change detected ($FILE_COUNT files). Incrementing MINOR version."
+else
+    # Increment PATCH version for normal commits
+    PATCH=$((PATCH + 1))
+    echo "Small change detected ($FILE_COUNT files). Incrementing PATCH version."
+fi
+
+# Create the new version string
+NEXT_VERSION="$MAJOR.$MINOR.$PATCH"
+
+# Write next version back to file
+echo "$NEXT_VERSION" > "$VERSION_FILE"
+echo "Incremented version from $CURRENT_VERSION to $NEXT_VERSION"
+
+# Stage the updated version file to be included in the current commit
+git add "$VERSION_FILE"
+
+# Check if version.txt is in the list of files to be committed
+if ! echo "$FILES" | grep -q "$VERSION_FILE"; then
+    echo "Warning: $VERSION_FILE is not in the list of files to be committed"
+    echo "Trying to add it to the commit..."
+
+    # Try to force add the file to the commit
+    git update-index --add --cacheinfo 100644 $(git hash-object -w "$VERSION_FILE") "$VERSION_FILE"
+fi

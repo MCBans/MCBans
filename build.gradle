@@ -1,5 +1,5 @@
 group 'mcbans'
-version '5.1.1'
+version = file('version.txt').text.trim()
 
 apply plugin: 'java'
 apply plugin: 'java-library'

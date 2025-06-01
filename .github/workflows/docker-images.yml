@@ -25,10 +25,10 @@ jobs:
       - name: Build with Gradle
         run: chmod +x ./gradlew && ./gradlew build
 
-      - name: Extract version from build.gradle
+      - name: Extract version from version.txt
         id: gradle_version
         run: |
-          VERSION=$(grep -m 1 "version" build.gradle | awk -F "'" '{print $2}')
+          VERSION=$(cat version.txt)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "Extracted version: $VERSION"
 
