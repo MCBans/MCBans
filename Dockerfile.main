@@ -8,6 +8,8 @@ COPY . /app/
 # Make gradlew executable
 RUN chmod +x /app/gradlew
 
+RUN /app/gradlew install
+
 # Create a shell script to handle arguments
 RUN echo '#!/bin/sh' > /app/run.sh && \
     echo 'if [ "$#" -eq 0 ]; then' >> /app/run.sh && \
