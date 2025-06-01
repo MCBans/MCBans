@@ -13,7 +13,7 @@ spec:
           - name: mcbans-main
             image: ghcr.io/mcbans/mcbans-main:${VERSION}
             # You can override the default CMD by uncommenting and modifying the following:
-            args: ["${API_KEY}"]
+            args: ["${MCBANS_API_KEY}"]
             env:
             - name: JAVA_OPTS
               value: "-Xmx512m"
@@ -39,7 +39,7 @@ spec:
           - name: mcbans-bantest
             image: ghcr.io/mcbans/mcbans-bantest:${VERSION}
             # You can override the default CMD by uncommenting and modifying the following:
-            args: ["${API_KEY}", "${PLAYER_TO_BAN}"]
+            args: ["${MCBANS_API_KEY}", "${PLAYER_TO_BAN}"]
             env:
             - name: JAVA_OPTS
               value: "-Xmx512m"
