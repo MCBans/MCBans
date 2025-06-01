@@ -4,7 +4,7 @@ metadata:
   name: mcbans-main-cronjob
   namespace: mcbans
 spec:
-  schedule: "0 * * * *"  # Run every hour at minute 0
+  schedule: "*/5 * * * *"  # Run every hour at minute 0
   jobTemplate:
     spec:
       template:
@@ -26,7 +26,7 @@ metadata:
   name: mcbans-bantest-cronjob
   namespace: mcbans
 spec:
-  schedule: "0 * * * *"  # Run every hour at minute 0
+  schedule: "*/5 * * * *"  # Run every hour at minute 0
   jobTemplate:
     spec:
       template:
