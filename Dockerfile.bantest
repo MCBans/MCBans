@@ -15,7 +15,7 @@ RUN echo '#!/bin/sh' > /app/run.sh && \
     echo 'if [ "$#" -eq 0 ]; then' >> /app/run.sh && \
     echo '  /app/gradlew run --args="com.mcbans.test.BanTest test_api_key test_player"' >> /app/run.sh && \
     echo 'else' >> /app/run.sh && \
-    echo '  /app/gradlew run --args="com.mcbans.test.BanTest $@"' >> /app/run.sh && \
+    echo '  /app/gradlew run --args="com.mcbans.test.BanTest $1 $2"' >> /app/run.sh && \
     echo 'fi' >> /app/run.sh && \
     chmod +x /app/run.sh
 
