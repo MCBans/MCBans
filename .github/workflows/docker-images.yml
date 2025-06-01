@@ -2,7 +2,15 @@ name: Build and Publish Docker Images
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
+
+# Cancel in-progress runs when a new workflow is triggered
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  REGISTRY: ghcr.io
 
 jobs:
   build-and-push-images:
@@ -61,3 +69,54 @@ jobs:
           tags: |
             ghcr.io/mcbans/mcbans-bantest:latest
             ghcr.io/mcbans/mcbans-bantest:${{ env.VERSION }}
+  deploy:
+    needs: build-and-push-images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get version from version.txt
+        id: version
+        run: echo "version=$(cat version.txt)" >> $GITHUB_OUTPUT
+
+      - name: Replace VERSION in kubernetes-jobs.yaml
+        run: |
+          sed -i "s/\${VERSION}/${{ steps.version.outputs.version }}/g" kubernetes-jobs.yaml
+          echo "Replaced VERSION with ${{ steps.version.outputs.version }} in kubernetes-jobs.yaml"
+
+      - name: Replace API_KEY in kubernetes-jobs.yaml
+        run: |
+          sed -i "s/\${API_KEY}/${{ secrets.MCBANS_API_KEY }}/g" kubernetes-jobs.yaml
+          echo "Replaced API_KEY with secret in kubernetes-jobs.yaml"
+
+      - name: Replace PLAYER_TO_BAN in kubernetes-jobs.yaml
+        run: |
+          sed -i "s/\${PLAYER_TO_BAN}/${{ secrets.MCBANS_PLAYER_TO_BAN }}/g" kubernetes-jobs.yaml
+          echo "Replaced PLAYER_TO_BAN with secret in kubernetes-jobs.yaml"
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.JUMPBOX }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to Kubernetes
+        run: |
+          # First, copy the kubernetes-jobs.yaml to the jump server
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa kubernetes-jobs.yaml ${{ secrets.SSH_USER }}@${{ secrets.JUMPBOX }}:/tmp/kubernetes-jobs.yaml
+
+          # Connect to jump server and then to Kubernetes server
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.JUMPBOX }} << EOF
+            ssh-keyscan -H ${{ secrets.K8S_HUB }} >> ~/.ssh/known_hosts
+
+            # Copy the kubernetes-jobs.yaml to the Kubernetes server and apply it
+            scp -o StrictHostKeyChecking=no /tmp/kubernetes-jobs.yaml ${{ secrets.K8S_HUB }}:/tmp/kubernetes-jobs.yaml
+            ssh -o StrictHostKeyChecking=no ${{ secrets.K8S_HUB }} "kubectl apply -f /tmp/kubernetes-jobs.yaml && rm -f /tmp/kubernetes-jobs.yaml"
+
+            # Clean up on jump server
+            rm -f /tmp/kubernetes-jobs.yaml
+          EOF
