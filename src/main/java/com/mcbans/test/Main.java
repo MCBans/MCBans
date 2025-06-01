@@ -22,8 +22,11 @@ public class Main {
         MCBans.encryptAPI = false;
         LOGGER.info("Encryption set to: " + MCBans.encryptAPI);
 
-        // API key should be provided as a command line argument
-        String apiKey = args.length > 0 ? args[0] : "test_api_key";
+        // API key should be provided as an environment variable
+        String apiKey = System.getenv("MCBANS_API_KEY");
+        if (apiKey == null || apiKey.isEmpty()) {
+            apiKey = "test_api_key"; // Default fallback value
+        }
         LOGGER.info("Using API key: " + apiKey);
 
         LOGGER.info("Process: Attempting to connect to MCBans API");

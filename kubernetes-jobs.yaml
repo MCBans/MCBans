@@ -12,8 +12,6 @@ spec:
           containers:
           - name: mcbans-main
             image: ghcr.io/mcbans/mcbans-main:${VERSION}
-            # You can override the default CMD by uncommenting and modifying the following:
-            args: ["${API_KEY}"]
             env:
             - name: JAVA_OPTS
               value: "-Xmx512m"
@@ -21,6 +19,8 @@ spec:
               value: 50.115.119.30
             - name: OVERRIDE_PORT
               value: "8082"
+            - name: MCBANS_API_KEY
+              value: "${API_KEY}"
           restartPolicy: Never
       backoffLimit: 3
 ---
@@ -38,8 +38,6 @@ spec:
           containers:
           - name: mcbans-bantest
             image: ghcr.io/mcbans/mcbans-bantest:${VERSION}
-            # You can override the default CMD by uncommenting and modifying the following:
-            args: ["${API_KEY}", "${PLAYER_TO_BAN}"]
             env:
             - name: JAVA_OPTS
               value: "-Xmx512m"
@@ -47,5 +45,9 @@ spec:
               value: 50.115.119.30
             - name: OVERRIDE_PORT
               value: "8082"
+            - name: MCBANS_API_KEY
+              value: "${API_KEY}"
+            - name: MCBANS_PLAYER_TO_BAN
+              value: "${PLAYER_TO_BAN}"
           restartPolicy: Never
       backoffLimit: 3

@@ -26,12 +26,18 @@ public class BanTest {
         MCBans.encryptAPI = false;
         LOGGER.info("Encryption set to: " + MCBans.encryptAPI);
 
-        // API key should be provided as a command line argument
-        String apiKey = args.length > 0 ? args[0] : "test_api_key";
+        // API key should be provided as an environment variable
+        String apiKey = System.getenv("MCBANS_API_KEY");
+        if (apiKey == null || apiKey.isEmpty()) {
+            apiKey = "test_api_key"; // Default fallback value
+        }
         LOGGER.info("Using API key: " + apiKey);
 
-        // Player name to ban/unban should be provided as a command line argument
-        String playerName = args.length > 1 ? args[1] : "firestarthe";
+        // Player name to ban/unban should be provided as an environment variable
+        String playerName = System.getenv("MCBANS_PLAYER_TO_BAN");
+        if (playerName == null || playerName.isEmpty()) {
+            playerName = "firestarthe"; // Default fallback value
+        }
         String playerIP = "127.0.0.1"; // Default IP for testing
         String adminUUID = "00000000000000000000000000000000"; // Default admin UUID for testing
         LOGGER.info("Testing with player: " + playerName + ", IP: " + playerIP);

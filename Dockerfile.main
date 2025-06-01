@@ -10,13 +10,13 @@ RUN chmod +x /app/gradlew
 
 RUN /app/gradlew install
 
-# Create a shell script to handle arguments
+# Create a shell script to run the Main class
 RUN echo '#!/bin/sh' > /app/run.sh && \
-    echo 'if [ "$#" -eq 0 ]; then' >> /app/run.sh && \
-    echo '  /app/gradlew run --args="com.mcbans.test.Main test_api_key"' >> /app/run.sh && \
-    echo 'else' >> /app/run.sh && \
-    echo '  /app/gradlew run --args="com.mcbans.test.Main $1"' >> /app/run.sh && \
+    echo '# Set default API key if not provided as environment variable' >> /app/run.sh && \
+    echo 'if [ -z "$MCBANS_API_KEY" ]; then' >> /app/run.sh && \
+    echo '  export MCBANS_API_KEY="test_api_key"' >> /app/run.sh && \
     echo 'fi' >> /app/run.sh && \
+    echo '/app/gradlew run --args="com.mcbans.test.Main"' >> /app/run.sh && \
     chmod +x /app/run.sh
 
 # Run the shell script
