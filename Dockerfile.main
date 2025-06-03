@@ -16,7 +16,7 @@ RUN echo '#!/bin/sh' > /app/run.sh && \
     echo 'if [ -z "$MCBANS_API_KEY" ]; then' >> /app/run.sh && \
     echo '  export MCBANS_API_KEY="test_api_key"' >> /app/run.sh && \
     echo 'fi' >> /app/run.sh && \
-    echo '/app/gradlew run --args="com.mcbans.test.Main"' >> /app/run.sh && \
+    echo '/app/gradlew --offline run --args="com.mcbans.test.Main"' >> /app/run.sh && \
     chmod +x /app/run.sh
 
 # Run the shell script
