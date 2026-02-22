@@ -42,7 +42,6 @@ public class EncryptedInputStream extends InputStream {
   @Override
   public int read(byte[] bytes, int byteOffset, int byteLength) throws IOException {
     dataId++;
-    position +=byteOffset;
     if (buffer == null || (position == buffer.length && (onChunk <= chunks || chunks == 0))) {
       try {
         if (chunks == 0 || onChunk == chunks) {
@@ -84,7 +83,7 @@ public class EncryptedInputStream extends InputStream {
       int i;
 
       for (i = 0; i < readLength; i++) {
-        bytes[i] = buffer[position + i];
+        bytes[byteOffset + i] = buffer[position + i];
       }
       position += i;
       bytesRead += readLength;
